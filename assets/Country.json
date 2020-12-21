@@ -1,0 +1,1873 @@
+{
+    "m_cDetail": {
+        "m_eProcessState": 1,
+        "m_sClass": "AdoNetExecutor",
+        "m_sMethod": "ProcessResult Select(string p_sTableNameOrSqlQuery)",
+        "m_iLastId": 0,
+        "m_cDataTable": [],
+        "m_lUserMessageList": [
+            "İşlem Başarılı",
+            "Process Successful"
+        ],
+        "m_sErrorMessage": null,
+        "m_cException": null
+    },
+    "m_cData": [
+        {
+            "COUNTRY_ID": 0,
+            "COUNTRY_EN": "UNKNOWN",
+            "COUNTRY_TR": "Bilinmiyor",
+            "ABBREVIATION": "Unk",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 1,
+            "COUNTRY_EN": "TURKEY",
+            "COUNTRY_TR": "Türkiye",
+            "ABBREVIATION": "TR",
+            "ICON": "tr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 2,
+            "COUNTRY_EN": "USA",
+            "COUNTRY_TR": "Abd",
+            "ABBREVIATION": "USA",
+            "ICON": "us",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 3,
+            "COUNTRY_EN": "USA ( ALASKA )",
+            "COUNTRY_TR": "Abd ( alaska )",
+            "ABBREVIATION": "AK",
+            "ICON": "us",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 4,
+            "COUNTRY_EN": "USA ( HAWAII)",
+            "COUNTRY_TR": "Abd ( havai)",
+            "ABBREVIATION": "HI",
+            "ICON": "us",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 5,
+            "COUNTRY_EN": "AFGHANISTAN",
+            "COUNTRY_TR": "Afganistan",
+            "ABBREVIATION": "AF",
+            "ICON": "af",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 6,
+            "COUNTRY_EN": "GERMANY",
+            "COUNTRY_TR": "Almanya",
+            "ABBREVIATION": "DE",
+            "ICON": "de",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 7,
+            "COUNTRY_EN": "AMERICAN SAMOA",
+            "COUNTRY_TR": "Amerikan samoa",
+            "ABBREVIATION": "AS",
+            "ICON": "as",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 8,
+            "COUNTRY_EN": "ANDORRA",
+            "COUNTRY_TR": "Andorra",
+            "ABBREVIATION": "AD",
+            "ICON": "ad",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 9,
+            "COUNTRY_EN": "ANGOLA",
+            "COUNTRY_TR": "Angola",
+            "ABBREVIATION": "AO",
+            "ICON": "ao",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 10,
+            "COUNTRY_EN": "ANGUILLA",
+            "COUNTRY_TR": "Anguilla",
+            "ABBREVIATION": "AI",
+            "ICON": "ai\t",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 11,
+            "COUNTRY_EN": "ANTIGUA",
+            "COUNTRY_TR": "Antigua",
+            "ABBREVIATION": "AG",
+            "ICON": "ag",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 12,
+            "COUNTRY_EN": "ARGENTINA",
+            "COUNTRY_TR": "Arjantin",
+            "ABBREVIATION": "AR",
+            "ICON": "ar",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 13,
+            "COUNTRY_EN": "ALBANIA",
+            "COUNTRY_TR": "Arnavutluk",
+            "ABBREVIATION": "AL",
+            "ICON": "al",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 14,
+            "COUNTRY_EN": "ARUBA",
+            "COUNTRY_TR": "Aruba",
+            "ABBREVIATION": "AW",
+            "ICON": "aw",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 15,
+            "COUNTRY_EN": "ASCENSİON",
+            "COUNTRY_TR": "Asensiyon",
+            "ABBREVIATION": "AC",
+            "ICON": "gb uk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 16,
+            "COUNTRY_EN": "AUSTRALIA",
+            "COUNTRY_TR": "Avustralya",
+            "ABBREVIATION": "AU",
+            "ICON": "au",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 17,
+            "COUNTRY_EN": "AUSTRIA",
+            "COUNTRY_TR": "Avusturya",
+            "ABBREVIATION": "AT",
+            "ICON": "at",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 18,
+            "COUNTRY_EN": "AZERBAIJAN",
+            "COUNTRY_TR": "Azerbaycan",
+            "ABBREVIATION": "AZ",
+            "ICON": "az",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 19,
+            "COUNTRY_EN": "UNITED ARAB EMIRATES",
+            "COUNTRY_TR": "Bae",
+            "ABBREVIATION": "AE",
+            "ICON": "ae",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 20,
+            "COUNTRY_EN": "BAHAMAS",
+            "COUNTRY_TR": "Bahama",
+            "ABBREVIATION": "BS",
+            "ICON": "bs",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 21,
+            "COUNTRY_EN": "BAHRAIN",
+            "COUNTRY_TR": "Bahreyn",
+            "ABBREVIATION": "BH",
+            "ICON": "bh",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 22,
+            "COUNTRY_EN": "BANGLADESH",
+            "COUNTRY_TR": "Banglades",
+            "ABBREVIATION": "BD",
+            "ICON": "bd",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 23,
+            "COUNTRY_EN": "BARBADOS",
+            "COUNTRY_TR": "Barbados",
+            "ABBREVIATION": "BB",
+            "ICON": "bb",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 24,
+            "COUNTRY_EN": "WESTERN SAMOA",
+            "COUNTRY_TR": "Bati samoa",
+            "ABBREVIATION": "EH",
+            "ICON": "ws",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 25,
+            "COUNTRY_EN": "BELGIUM",
+            "COUNTRY_TR": "Belcika",
+            "ABBREVIATION": "BE",
+            "ICON": "be",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 26,
+            "COUNTRY_EN": "BELIZE",
+            "COUNTRY_TR": "Belize",
+            "ABBREVIATION": "BZ",
+            "ICON": "bz",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 27,
+            "COUNTRY_EN": "BENIN",
+            "COUNTRY_TR": "Benin",
+            "ABBREVIATION": "BJ",
+            "ICON": "bj",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 28,
+            "COUNTRY_EN": "BERMUDA",
+            "COUNTRY_TR": "Bermuda",
+            "ABBREVIATION": "BM",
+            "ICON": "bm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 29,
+            "COUNTRY_EN": "BELARUS",
+            "COUNTRY_TR": "Beyaz rusya",
+            "ABBREVIATION": "BY",
+            "ICON": "by",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 30,
+            "COUNTRY_EN": "BOLIVIA",
+            "COUNTRY_TR": "Bolivya",
+            "ABBREVIATION": "BO",
+            "ICON": "bo",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 31,
+            "COUNTRY_EN": "BOSNIA  & HERZEGOVINA",
+            "COUNTRY_TR": "Bosna hersek",
+            "ABBREVIATION": "BA",
+            "ICON": "ba",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 32,
+            "COUNTRY_EN": "BOTSWANA",
+            "COUNTRY_TR": "Botsvana",
+            "ABBREVIATION": "BW",
+            "ICON": "bw",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 33,
+            "COUNTRY_EN": "BRAZIL",
+            "COUNTRY_TR": "Brezilya",
+            "ABBREVIATION": "BR",
+            "ICON": "br",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 34,
+            "COUNTRY_EN": "BRUNEI DARRUSSALAM",
+            "COUNTRY_TR": "Bruney",
+            "ABBREVIATION": "BN",
+            "ICON": "bn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 35,
+            "COUNTRY_EN": "BULGARIA",
+            "COUNTRY_TR": "Bulgaristan",
+            "ABBREVIATION": "BG",
+            "ICON": "bg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 36,
+            "COUNTRY_EN": "BURKINA FASO",
+            "COUNTRY_TR": "Burkina faso",
+            "ABBREVIATION": "BF",
+            "ICON": "bf",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 37,
+            "COUNTRY_EN": "MYANMAR",
+            "COUNTRY_TR": "Burma",
+            "ABBREVIATION": "MM",
+            "ICON": "mm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 38,
+            "COUNTRY_EN": "BURUNDI",
+            "COUNTRY_TR": "Burundi",
+            "ABBREVIATION": "BI",
+            "ICON": "bi",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 39,
+            "COUNTRY_EN": "BHUTAN",
+            "COUNTRY_TR": "Butan",
+            "ABBREVIATION": "BT",
+            "ICON": "bt",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 40,
+            "COUNTRY_EN": "CHAD",
+            "COUNTRY_TR": "Cad",
+            "ABBREVIATION": "TD",
+            "ICON": "td",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 41,
+            "COUNTRY_EN": "GIBRALTAR",
+            "COUNTRY_TR": "Cebelitarik",
+            "ABBREVIATION": "GI",
+            "ICON": "gi",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 42,
+            "COUNTRY_EN": "CZECH REPUBLIC",
+            "COUNTRY_TR": "Cek cum.",
+            "ABBREVIATION": "CZ",
+            "ICON": "cz",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 43,
+            "COUNTRY_EN": "ALGERIA",
+            "COUNTRY_TR": "Cezayir",
+            "ABBREVIATION": "DZ",
+            "ICON": "dz",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 44,
+            "COUNTRY_EN": "DJIBOUTI",
+            "COUNTRY_TR": "Cibuti",
+            "ABBREVIATION": "DJ",
+            "ICON": "dj",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 45,
+            "COUNTRY_EN": "CHINA",
+            "COUNTRY_TR": "Cin",
+            "ABBREVIATION": "CN",
+            "ICON": "cn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 46,
+            "COUNTRY_EN": "DENMARK",
+            "COUNTRY_TR": "Danimarka",
+            "ABBREVIATION": "DK",
+            "ICON": "dk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 47,
+            "COUNTRY_EN": "DIEGO GARSIA",
+            "COUNTRY_TR": "Diego garsia",
+            "ABBREVIATION": " BIOT",
+            "ICON": "gb uk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 48,
+            "COUNTRY_EN": "DOMINICA",
+            "COUNTRY_TR": "Dominik",
+            "ABBREVIATION": "DM",
+            "ICON": "dm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 49,
+            "COUNTRY_EN": "DOMINICAN REPUBLIC",
+            "COUNTRY_TR": "Dominik cum.",
+            "ABBREVIATION": "DO",
+            "ICON": "do",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 50,
+            "COUNTRY_EN": "ECUADOR",
+            "COUNTRY_TR": "Ekvator",
+            "ABBREVIATION": "EC",
+            "ICON": "ec",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 51,
+            "COUNTRY_EN": "EQUATORIAL GUINEA",
+            "COUNTRY_TR": "Ekvator gine",
+            "ABBREVIATION": "GQ",
+            "ICON": "gq",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 52,
+            "COUNTRY_EN": "EL SALVADOR",
+            "COUNTRY_TR": "El salvador",
+            "ABBREVIATION": "SV",
+            "ICON": "sv",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 53,
+            "COUNTRY_EN": "INDONESIA",
+            "COUNTRY_TR": "Endonezya",
+            "ABBREVIATION": "ID",
+            "ICON": "id",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 54,
+            "COUNTRY_EN": "ERITREA",
+            "COUNTRY_TR": "Eritre",
+            "ABBREVIATION": "ER",
+            "ICON": "er",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 55,
+            "COUNTRY_EN": "ARMENIA",
+            "COUNTRY_TR": "Ermenistan",
+            "ABBREVIATION": "AM",
+            "ICON": "am",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 56,
+            "COUNTRY_EN": "ESTONIA",
+            "COUNTRY_TR": "Estonya",
+            "ABBREVIATION": "EE",
+            "ICON": "ee",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 57,
+            "COUNTRY_EN": "ETHIOPIA",
+            "COUNTRY_TR": "Etiyopya",
+            "ABBREVIATION": "ET",
+            "ICON": "et",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 58,
+            "COUNTRY_EN": "FALKLAND ISLANDS",
+            "COUNTRY_TR": "Falkland adl.",
+            "ABBREVIATION": "FK",
+            "ICON": "fk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 59,
+            "COUNTRY_EN": "FAROE ISLANDS",
+            "COUNTRY_TR": "Faroe adalari",
+            "ABBREVIATION": "FO",
+            "ICON": "fo",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 60,
+            "COUNTRY_EN": "MOROCCO",
+            "COUNTRY_TR": "Fas",
+            "ABBREVIATION": "MA",
+            "ICON": "ma",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 61,
+            "COUNTRY_EN": "FIJI",
+            "COUNTRY_TR": "Fiji",
+            "ABBREVIATION": "FJ",
+            "ICON": "fj",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 62,
+            "COUNTRY_EN": "CÔTE D’IVORIE",
+            "COUNTRY_TR": "Fildisi sahili",
+            "ABBREVIATION": "CI",
+            "ICON": "ci",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 63,
+            "COUNTRY_EN": "PHILIPPINES",
+            "COUNTRY_TR": "Filipinler",
+            "ABBREVIATION": "PH",
+            "ICON": "ph",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 64,
+            "COUNTRY_EN": "PALESTINE",
+            "COUNTRY_TR": "Filistin",
+            "ABBREVIATION": "PS",
+            "ICON": "ps",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 65,
+            "COUNTRY_EN": "FINLAND",
+            "COUNTRY_TR": "Finlandiya",
+            "ABBREVIATION": "FI",
+            "ICON": "fi",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 66,
+            "COUNTRY_EN": "FRANCE",
+            "COUNTRY_TR": "Fransa",
+            "ABBREVIATION": "FR",
+            "ICON": "fr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 67,
+            "COUNTRY_EN": "FRENCH GUIANA",
+            "COUNTRY_TR": "Fransiz guyanasi",
+            "ABBREVIATION": "GF",
+            "ICON": "gf",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 68,
+            "COUNTRY_EN": "FRENCH POLYNESIA",
+            "COUNTRY_TR": "Fransiz polinezyasi",
+            "ABBREVIATION": "PF",
+            "ICON": "pf",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 69,
+            "COUNTRY_EN": "GABON",
+            "COUNTRY_TR": "Gabon",
+            "ABBREVIATION": "GA",
+            "ICON": "ga",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 70,
+            "COUNTRY_EN": "GAMBIA",
+            "COUNTRY_TR": "Gambia",
+            "ABBREVIATION": "GM",
+            "ICON": "gm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 71,
+            "COUNTRY_EN": "GHANA",
+            "COUNTRY_TR": "Gana",
+            "ABBREVIATION": "GH",
+            "ICON": "gh",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 72,
+            "COUNTRY_EN": "GUINEA",
+            "COUNTRY_TR": "Gine",
+            "ABBREVIATION": "GN",
+            "ICON": "gn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 73,
+            "COUNTRY_EN": "GUINEA-BISSAU",
+            "COUNTRY_TR": "Gine bissau",
+            "ABBREVIATION": "GW",
+            "ICON": "gw",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 74,
+            "COUNTRY_EN": "GRENADA",
+            "COUNTRY_TR": "Grenada",
+            "ABBREVIATION": "GD",
+            "ICON": "gd",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 75,
+            "COUNTRY_EN": "GREENLAND",
+            "COUNTRY_TR": "Gronland",
+            "ABBREVIATION": "GL",
+            "ICON": "gl",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 76,
+            "COUNTRY_EN": "GUADALUPE",
+            "COUNTRY_TR": "Guadalup",
+            "ABBREVIATION": "GP",
+            "ICON": "gp",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 77,
+            "COUNTRY_EN": "GUAM",
+            "COUNTRY_TR": "Guam",
+            "ABBREVIATION": "GU",
+            "ICON": "gu",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 78,
+            "COUNTRY_EN": "GUATEMALA",
+            "COUNTRY_TR": "Guatemala",
+            "ABBREVIATION": "GT",
+            "ICON": "gt",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 79,
+            "COUNTRY_EN": "REPUBLIC OF SOUTH AFRICA",
+            "COUNTRY_TR": "Guney afrika cum.",
+            "ABBREVIATION": "ZA",
+            "ICON": "za",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 80,
+            "COUNTRY_EN": "GREEK CYPRIOT ADMINISTRATION OF SOUTHERN CYPRUS",
+            "COUNTRY_TR": "Guney kibris rum yonetimi",
+            "ABBREVIATION": "CY",
+            "ICON": "cy",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 81,
+            "COUNTRY_EN": "SOUTH KOREA",
+            "COUNTRY_TR": "Guney kore",
+            "ABBREVIATION": "KP",
+            "ICON": "kr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 82,
+            "COUNTRY_EN": "GEORGIA",
+            "COUNTRY_TR": "Gurcistan",
+            "ABBREVIATION": "GE",
+            "ICON": "ge",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 83,
+            "COUNTRY_EN": "GUYANA",
+            "COUNTRY_TR": "Guyana",
+            "ABBREVIATION": "GY",
+            "ICON": "gy",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 84,
+            "COUNTRY_EN": "HAITI",
+            "COUNTRY_TR": "Haiti",
+            "ABBREVIATION": "HT",
+            "ICON": "ht",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 85,
+            "COUNTRY_EN": "INDIA",
+            "COUNTRY_TR": "Hindistan",
+            "ABBREVIATION": "IN",
+            "ICON": "in",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 86,
+            "COUNTRY_EN": "CROATIA",
+            "COUNTRY_TR": "Hirvatistan",
+            "ABBREVIATION": "HR",
+            "ICON": "hr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 87,
+            "COUNTRY_EN": "NETHERLANDS",
+            "COUNTRY_TR": "Hollanda",
+            "ABBREVIATION": "NL",
+            "ICON": "nl",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 88,
+            "COUNTRY_EN": "NETHERLANDS ANTİLLES",
+            "COUNTRY_TR": "Hollanda antilleri",
+            "ABBREVIATION": "AN",
+            "ICON": "an",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 89,
+            "COUNTRY_EN": "HONDURAS",
+            "COUNTRY_TR": "Honduras",
+            "ABBREVIATION": "HN",
+            "ICON": "hn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 90,
+            "COUNTRY_EN": "HONG KONG",
+            "COUNTRY_TR": "Hongkong",
+            "ABBREVIATION": "HK",
+            "ICON": "hk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 91,
+            "COUNTRY_EN": "BRITISH VIRGIN ISLANDS",
+            "COUNTRY_TR": "Ingiliz virjin adl.",
+            "ABBREVIATION": "VG",
+            "ICON": "vg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 92,
+            "COUNTRY_EN": "UNITED KINGDOM",
+            "COUNTRY_TR": "Ingiltere",
+            "ABBREVIATION": "GB",
+            "ICON": "gb uk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 93,
+            "COUNTRY_EN": "IRAQ",
+            "COUNTRY_TR": "Irak",
+            "ABBREVIATION": "IQ",
+            "ICON": "iq",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 94,
+            "COUNTRY_EN": "IRAN",
+            "COUNTRY_TR": "Iran",
+            "ABBREVIATION": "IR",
+            "ICON": "ir",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 95,
+            "COUNTRY_EN": "IRELAND",
+            "COUNTRY_TR": "Irlanda",
+            "ABBREVIATION": "IE",
+            "ICON": "ie",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 96,
+            "COUNTRY_EN": "SPAIN",
+            "COUNTRY_TR": "Ispanya",
+            "ABBREVIATION": "ES",
+            "ICON": "es",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 97,
+            "COUNTRY_EN": "ISRAEL",
+            "COUNTRY_TR": "Israil",
+            "ABBREVIATION": "IL",
+            "ICON": "il",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 98,
+            "COUNTRY_EN": "SWEDEN",
+            "COUNTRY_TR": "Isvec",
+            "ABBREVIATION": "SE",
+            "ICON": "se",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 99,
+            "COUNTRY_EN": "SWITZERLAND",
+            "COUNTRY_TR": "Isvicre",
+            "ABBREVIATION": "CH",
+            "ICON": "ch",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 100,
+            "COUNTRY_EN": "ITALY",
+            "COUNTRY_TR": "Italya",
+            "ABBREVIATION": "IT",
+            "ICON": "it",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 101,
+            "COUNTRY_EN": "ICELAND",
+            "COUNTRY_TR": "Izlanda",
+            "ABBREVIATION": "IS",
+            "ICON": "is",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 102,
+            "COUNTRY_EN": "JAMAICA",
+            "COUNTRY_TR": "Jamaika",
+            "ABBREVIATION": "JM",
+            "ICON": "jm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 103,
+            "COUNTRY_EN": "JAPAN",
+            "COUNTRY_TR": "Japonya",
+            "ABBREVIATION": "JP",
+            "ICON": "jp",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 104,
+            "COUNTRY_EN": "CAMBODIA",
+            "COUNTRY_TR": "Kambocya",
+            "ABBREVIATION": "KH",
+            "ICON": "kh",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 105,
+            "COUNTRY_EN": "CAMEROON",
+            "COUNTRY_TR": "Kamerun",
+            "ABBREVIATION": "CM",
+            "ICON": "cm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 106,
+            "COUNTRY_EN": "CANADA",
+            "COUNTRY_TR": "Kanada",
+            "ABBREVIATION": "CA",
+            "ICON": "ca",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 107,
+            "COUNTRY_EN": "CAPE VERDE",
+            "COUNTRY_TR": "Kap verd",
+            "ABBREVIATION": "CV",
+            "ICON": "cv",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 108,
+            "COUNTRY_EN": "MONTENEGRO",
+            "COUNTRY_TR": "Karadag",
+            "ABBREVIATION": "ME",
+            "ICON": "me",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 109,
+            "COUNTRY_EN": "QATAR",
+            "COUNTRY_TR": "Katar",
+            "ABBREVIATION": "QA",
+            "ICON": "qa",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 110,
+            "COUNTRY_EN": "CAYMAN ISLANDS",
+            "COUNTRY_TR": "Kayman adalari",
+            "ABBREVIATION": "KY",
+            "ICON": "ky",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 111,
+            "COUNTRY_EN": "KAZAKHISTAN",
+            "COUNTRY_TR": "Kazakistan",
+            "ABBREVIATION": "KZ",
+            "ICON": "kz",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 112,
+            "COUNTRY_EN": "KENYA",
+            "COUNTRY_TR": "Kenya",
+            "ABBREVIATION": "KE",
+            "ICON": "ke",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 113,
+            "COUNTRY_EN": "KYRGYZSTAN",
+            "COUNTRY_TR": "Kirgizistan",
+            "ABBREVIATION": "KG",
+            "ICON": "kg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 114,
+            "COUNTRY_EN": "KIRIBATI",
+            "COUNTRY_TR": "Kiribati",
+            "ABBREVIATION": "KI",
+            "ICON": "ki",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 115,
+            "COUNTRY_EN": "COLOMBIA",
+            "COUNTRY_TR": "Kolombiya",
+            "ABBREVIATION": "CO",
+            "ICON": "co",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 116,
+            "COUNTRY_EN": "COMOROS ISLANDS",
+            "COUNTRY_TR": "Komor adalari",
+            "ABBREVIATION": "KM",
+            "ICON": "km",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 117,
+            "COUNTRY_EN": "CONGO",
+            "COUNTRY_TR": "Kongo cum.",
+            "ABBREVIATION": "CG",
+            "ICON": "cd",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 118,
+            "COUNTRY_EN": "DEMOCRATIC REPUBLIC OF CONGO",
+            "COUNTRY_TR": "Kongo dem. cum.",
+            "ABBREVIATION": "CD",
+            "ICON": "cd",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 119,
+            "COUNTRY_EN": "COSTA RICA",
+            "COUNTRY_TR": "Kosta rika",
+            "ABBREVIATION": "CR",
+            "ICON": "cr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 120,
+            "COUNTRY_EN": "CUBA",
+            "COUNTRY_TR": "Kuba",
+            "ABBREVIATION": "CU",
+            "ICON": "cu",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 121,
+            "COUNTRY_EN": "COOK ISLANDS",
+            "COUNTRY_TR": "Kuk adasi",
+            "ABBREVIATION": "CK",
+            "ICON": "ck",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 122,
+            "COUNTRY_EN": "KUWAIT",
+            "COUNTRY_TR": "Kuveyt",
+            "ABBREVIATION": "KW",
+            "ICON": "kw",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 123,
+            "COUNTRY_EN": "KOREA, DEMOCRATIC PEOPLE’S REPUBLIC OF",
+            "COUNTRY_TR": "Kuzey kore",
+            "ABBREVIATION": "KP",
+            "ICON": "kp",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 124,
+            "COUNTRY_EN": "LAO PEOPLE’S DEMOCRATIC REPUBLIC",
+            "COUNTRY_TR": "Lao dem. halk cum.",
+            "ABBREVIATION": "LA",
+            "ICON": "la",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 125,
+            "COUNTRY_EN": "LESOTHO",
+            "COUNTRY_TR": "Lesotho",
+            "ABBREVIATION": "LS",
+            "ICON": "ls",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 126,
+            "COUNTRY_EN": "LATVIA",
+            "COUNTRY_TR": "Letonya",
+            "ABBREVIATION": "LV",
+            "ICON": "lv",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 127,
+            "COUNTRY_EN": "LIBERIA",
+            "COUNTRY_TR": "Liberya",
+            "ABBREVIATION": "LR",
+            "ICON": "lr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 128,
+            "COUNTRY_EN": "LIBYAN ARAB JAMAHIRIYA",
+            "COUNTRY_TR": "Libya",
+            "ABBREVIATION": "LY",
+            "ICON": "ly",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 129,
+            "COUNTRY_EN": "LIECHTENSTEIN",
+            "COUNTRY_TR": "Lihtenstayn",
+            "ABBREVIATION": "LI",
+            "ICON": "li",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 130,
+            "COUNTRY_EN": "LITHUANIA",
+            "COUNTRY_TR": "Litvanya",
+            "ABBREVIATION": "LT",
+            "ICON": "lt",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 131,
+            "COUNTRY_EN": "LEBANON",
+            "COUNTRY_TR": "Lubnan",
+            "ABBREVIATION": "LB",
+            "ICON": "lb",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 132,
+            "COUNTRY_EN": "LUXEMBOURG",
+            "COUNTRY_TR": "Luksemburg",
+            "ABBREVIATION": "LU",
+            "ICON": "lu",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 133,
+            "COUNTRY_EN": "HUNGARY",
+            "COUNTRY_TR": "Macaristan",
+            "ABBREVIATION": "HU",
+            "ICON": "hu",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 134,
+            "COUNTRY_EN": "MADAGASCAR",
+            "COUNTRY_TR": "Madagaskar",
+            "ABBREVIATION": "MG",
+            "ICON": "mg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 135,
+            "COUNTRY_EN": "MACAO",
+            "COUNTRY_TR": "Makao",
+            "ABBREVIATION": "MO",
+            "ICON": "mo",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 136,
+            "COUNTRY_EN": "MACEDONIA",
+            "COUNTRY_TR": "Makedonya",
+            "ABBREVIATION": "MK",
+            "ICON": "mk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 137,
+            "COUNTRY_EN": "MALAWI",
+            "COUNTRY_TR": "Malavi",
+            "ABBREVIATION": "MW",
+            "ICON": "mw",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 138,
+            "COUNTRY_EN": "MALDIVES",
+            "COUNTRY_TR": "Maldiv adalari",
+            "ABBREVIATION": "MV",
+            "ICON": "mv",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 139,
+            "COUNTRY_EN": "MALAYSIA",
+            "COUNTRY_TR": "Malezya",
+            "ABBREVIATION": "MY",
+            "ICON": "my",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 140,
+            "COUNTRY_EN": "MALI",
+            "COUNTRY_TR": "Mali",
+            "ABBREVIATION": "ML",
+            "ICON": "ml",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 141,
+            "COUNTRY_EN": "MALTA",
+            "COUNTRY_TR": "Malta",
+            "ABBREVIATION": "MT",
+            "ICON": "mt",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 142,
+            "COUNTRY_EN": "MARIANA ISLANDS",
+            "COUNTRY_TR": "Mariyan adalari",
+            "ABBREVIATION": "MP",
+            "ICON": "mp",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 143,
+            "COUNTRY_EN": "MASHALL ISLANDS",
+            "COUNTRY_TR": "Marsal adalari",
+            "ABBREVIATION": "MH",
+            "ICON": "mh",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 144,
+            "COUNTRY_EN": "MARTINIQUE",
+            "COUNTRY_TR": "Martinik",
+            "ABBREVIATION": "MQ",
+            "ICON": "mq",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 145,
+            "COUNTRY_EN": "MAYOTTE ISLANDS",
+            "COUNTRY_TR": "Mayotte adalari",
+            "ABBREVIATION": "YT",
+            "ICON": "yt",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 146,
+            "COUNTRY_EN": "MEXICO",
+            "COUNTRY_TR": "Meksika",
+            "ABBREVIATION": "MX",
+            "ICON": "mx",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 147,
+            "COUNTRY_EN": "CENTRAL REPUBLIC OF AFRICAN",
+            "COUNTRY_TR": "Merkezi afrika cum.",
+            "ABBREVIATION": "CF",
+            "ICON": "cf",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 148,
+            "COUNTRY_EN": "MICRONESIA, FEDERATED STATES OF",
+            "COUNTRY_TR": "Mikronezya",
+            "ABBREVIATION": "FM",
+            "ICON": "fm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 149,
+            "COUNTRY_EN": "EGYPT",
+            "COUNTRY_TR": "Misir",
+            "ABBREVIATION": "EG",
+            "ICON": "eg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 150,
+            "COUNTRY_EN": "MONGOLIA",
+            "COUNTRY_TR": "Mogolistan",
+            "ABBREVIATION": "MN",
+            "ICON": "mn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 151,
+            "COUNTRY_EN": "MOLDOVA, REPUBLIC OF",
+            "COUNTRY_TR": "Moldovya",
+            "ABBREVIATION": "MD",
+            "ICON": "md",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 152,
+            "COUNTRY_EN": "MONACO",
+            "COUNTRY_TR": "Monaco",
+            "ABBREVIATION": "MC",
+            "ICON": "mc",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 153,
+            "COUNTRY_EN": "MONTSERRAT",
+            "COUNTRY_TR": "Montserrat",
+            "ABBREVIATION": "MS",
+            "ICON": "ms",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 154,
+            "COUNTRY_EN": "MAURITIUS ISLANDS",
+            "COUNTRY_TR": "Moris adalari",
+            "ABBREVIATION": "MU",
+            "ICON": "mu",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 155,
+            "COUNTRY_EN": "MAURITANIA",
+            "COUNTRY_TR": "Moritanya",
+            "ABBREVIATION": "MR",
+            "ICON": "mr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 156,
+            "COUNTRY_EN": "MOZAMBIQUE",
+            "COUNTRY_TR": "Mozambik",
+            "ABBREVIATION": "MZ",
+            "ICON": "mz",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 157,
+            "COUNTRY_EN": "NAMIBIA",
+            "COUNTRY_TR": "Namibya",
+            "ABBREVIATION": "NA",
+            "ICON": "na",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 158,
+            "COUNTRY_EN": "NAURU",
+            "COUNTRY_TR": "Nauru adasi",
+            "ABBREVIATION": "NR",
+            "ICON": "nr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 159,
+            "COUNTRY_EN": "NEPAL",
+            "COUNTRY_TR": "Nepal",
+            "ABBREVIATION": "NP",
+            "ICON": "np",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 160,
+            "COUNTRY_EN": "NIGER",
+            "COUNTRY_TR": "Nijer",
+            "ABBREVIATION": "NE",
+            "ICON": "ne",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 161,
+            "COUNTRY_EN": "NIGERIA",
+            "COUNTRY_TR": "Nijerya",
+            "ABBREVIATION": "NG",
+            "ICON": "ng",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 162,
+            "COUNTRY_EN": "NICARAGUA",
+            "COUNTRY_TR": "Nikaragua",
+            "ABBREVIATION": "NI",
+            "ICON": "ni",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 163,
+            "COUNTRY_EN": "NIUE ISLANDS",
+            "COUNTRY_TR": "Niue adalari",
+            "ABBREVIATION": "NU",
+            "ICON": "nu",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 164,
+            "COUNTRY_EN": "NORFOLK ISLAND",
+            "COUNTRY_TR": "Norfolk adalari",
+            "ABBREVIATION": "NF",
+            "ICON": "nf",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 165,
+            "COUNTRY_EN": "NORWAY",
+            "COUNTRY_TR": "Norvec",
+            "ABBREVIATION": "NO",
+            "ICON": "no",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 166,
+            "COUNTRY_EN": "UZBEKISTAN",
+            "COUNTRY_TR": "Ozbekistan",
+            "ABBREVIATION": "UZ",
+            "ICON": "uz",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 167,
+            "COUNTRY_EN": "PAKISTAN",
+            "COUNTRY_TR": "Pakistan",
+            "ABBREVIATION": "PK",
+            "ICON": "pk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 168,
+            "COUNTRY_EN": "PANAMA",
+            "COUNTRY_TR": "Panama",
+            "ABBREVIATION": "PA",
+            "ICON": "pa",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 169,
+            "COUNTRY_EN": "PAPUA NEW GUINEA",
+            "COUNTRY_TR": "Papua yeni gine",
+            "ABBREVIATION": "PG",
+            "ICON": "pg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 170,
+            "COUNTRY_EN": "PARAGUAY",
+            "COUNTRY_TR": "Paraguay",
+            "ABBREVIATION": "PY",
+            "ICON": "py",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 171,
+            "COUNTRY_EN": "PERU",
+            "COUNTRY_TR": "Peru",
+            "ABBREVIATION": "PE",
+            "ICON": "pe",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 172,
+            "COUNTRY_EN": "POLAND",
+            "COUNTRY_TR": "Polonya",
+            "ABBREVIATION": "PL",
+            "ICON": "pl",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 173,
+            "COUNTRY_EN": "PORTUGAL",
+            "COUNTRY_TR": "Portekiz",
+            "ABBREVIATION": "PT",
+            "ICON": "pt",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 174,
+            "COUNTRY_EN": "PORTO RICO",
+            "COUNTRY_TR": "Porto riko",
+            "ABBREVIATION": "PR",
+            "ICON": "pr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 175,
+            "COUNTRY_EN": "REUNİON",
+            "COUNTRY_TR": "Reunyon",
+            "ABBREVIATION": "RE",
+            "ICON": "re",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 176,
+            "COUNTRY_EN": "ROMANIA",
+            "COUNTRY_TR": "Romanya",
+            "ABBREVIATION": "RO",
+            "ICON": "ro",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 177,
+            "COUNTRY_EN": "RWANDA",
+            "COUNTRY_TR": "Ruanda",
+            "ABBREVIATION": "RW",
+            "ICON": "rw",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 178,
+            "COUNTRY_EN": "RUSSIAN FEDERATION",
+            "COUNTRY_TR": "Rusya federasyonu",
+            "ABBREVIATION": "RU",
+            "ICON": "ru",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 179,
+            "COUNTRY_EN": "SAN MARINO",
+            "COUNTRY_TR": "San marino",
+            "ABBREVIATION": "SM",
+            "ICON": "sm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 180,
+            "COUNTRY_EN": "SAO TOME & PRINCIPE",
+            "COUNTRY_TR": "Sao tome & principe",
+            "ABBREVIATION": "ST",
+            "ICON": "st",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 181,
+            "COUNTRY_EN": "SENEGAL",
+            "COUNTRY_TR": "Senegal",
+            "ABBREVIATION": "SN",
+            "ICON": "sn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 182,
+            "COUNTRY_EN": "SEYCHELLES",
+            "COUNTRY_TR": "Seysel",
+            "ABBREVIATION": "SC",
+            "ICON": "sc",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 183,
+            "COUNTRY_EN": "SIERRA LEONE",
+            "COUNTRY_TR": "Sierra leone",
+            "ABBREVIATION": "SL",
+            "ICON": "sl",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 184,
+            "COUNTRY_EN": "CHILE",
+            "COUNTRY_TR": "Sili",
+            "ABBREVIATION": "CL",
+            "ICON": "cl",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 185,
+            "COUNTRY_EN": "SINGAPORE",
+            "COUNTRY_TR": "Singapur",
+            "ABBREVIATION": "SG",
+            "ICON": "sg",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 186,
+            "COUNTRY_EN": "SERBIA",
+            "COUNTRY_TR": "Sirbistan",
+            "ABBREVIATION": "XS",
+            "ICON": "cs",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 187,
+            "COUNTRY_EN": "SLOVAKIA",
+            "COUNTRY_TR": "Slovak cum.",
+            "ABBREVIATION": "SK",
+            "ICON": "sk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 188,
+            "COUNTRY_EN": "SLOVENIA",
+            "COUNTRY_TR": "Slovenya",
+            "ABBREVIATION": "SI",
+            "ICON": "si",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 189,
+            "COUNTRY_EN": "SOLOMON ISLANDS",
+            "COUNTRY_TR": "Solomon adalari",
+            "ABBREVIATION": "SB",
+            "ICON": "sb",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 190,
+            "COUNTRY_EN": "SOMALIA",
+            "COUNTRY_TR": "Somali",
+            "ABBREVIATION": "SO",
+            "ICON": "so",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 191,
+            "COUNTRY_EN": "SRI LANKA",
+            "COUNTRY_TR": "Sri lanka",
+            "ABBREVIATION": "LK",
+            "ICON": "lk",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 192,
+            "COUNTRY_EN": "SAINT HELENA",
+            "COUNTRY_TR": "St.helena",
+            "ABBREVIATION": "SH",
+            "ICON": "sh",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 193,
+            "COUNTRY_EN": "SAINT KITTS & NEVIS",
+            "COUNTRY_TR": "St.kittis & nevis",
+            "ABBREVIATION": "KN",
+            "ICON": "kn",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 194,
+            "COUNTRY_EN": "ST. LUCIA",
+            "COUNTRY_TR": "St.lucia",
+            "ABBREVIATION": "LC",
+            "ICON": "lc",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 195,
+            "COUNTRY_EN": "ST. PIERRE & MIQUELON",
+            "COUNTRY_TR": "St.piyer & mikelon",
+            "ABBREVIATION": "PM",
+            "ICON": "pm",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 196,
+            "COUNTRY_EN": "ST. VINCENT & GRENADINES",
+            "COUNTRY_TR": "St.vincent & grenada",
+            "ABBREVIATION": "VC",
+            "ICON": "vc",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 197,
+            "COUNTRY_EN": "SUDAN",
+            "COUNTRY_TR": "Sudan",
+            "ABBREVIATION": "SD",
+            "ICON": "sd",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 198,
+            "COUNTRY_EN": "SURINAME",
+            "COUNTRY_TR": "Surinam",
+            "ABBREVIATION": "SR",
+            "ICON": "sr",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 199,
+            "COUNTRY_EN": "SYRIA",
+            "COUNTRY_TR": "Suriye",
+            "ABBREVIATION": "SY",
+            "ICON": "sy",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 200,
+            "COUNTRY_EN": "SAUDI ARABIA",
+            "COUNTRY_TR": "Suudi arabistan",
+            "ABBREVIATION": "SA",
+            "ICON": "sa",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 201,
+            "COUNTRY_EN": "SWAZILAND",
+            "COUNTRY_TR": "Svaziland",
+            "ABBREVIATION": "SZ",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 202,
+            "COUNTRY_EN": "TAJIKISTAN",
+            "COUNTRY_TR": "Tacikistan",
+            "ABBREVIATION": "TJ",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 203,
+            "COUNTRY_EN": "TANZANIA",
+            "COUNTRY_TR": "Tanzanya",
+            "ABBREVIATION": "TZ",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 204,
+            "COUNTRY_EN": "THAILAND",
+            "COUNTRY_TR": "Tayland",
+            "ABBREVIATION": "TH",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 205,
+            "COUNTRY_EN": "TAIWAN",
+            "COUNTRY_TR": "Tayvan",
+            "ABBREVIATION": "TW",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 206,
+            "COUNTRY_EN": "TOGO",
+            "COUNTRY_TR": "Togo",
+            "ABBREVIATION": "TG",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 207,
+            "COUNTRY_EN": "TONGA",
+            "COUNTRY_TR": "Tonga",
+            "ABBREVIATION": "TO",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 208,
+            "COUNTRY_EN": "TRINIDAD & TOBAGO",
+            "COUNTRY_TR": "Trinidad & tobago",
+            "ABBREVIATION": "TT",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 209,
+            "COUNTRY_EN": "TUNISIA",
+            "COUNTRY_TR": "Tunus",
+            "ABBREVIATION": "TN",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 210,
+            "COUNTRY_EN": "TURKMENISTAN",
+            "COUNTRY_TR": "Turkmenistan",
+            "ABBREVIATION": "TM",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 211,
+            "COUNTRY_EN": "TURKS & CAICOS ISLANDS",
+            "COUNTRY_TR": "Turks & caicos adl.",
+            "ABBREVIATION": "TC",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 212,
+            "COUNTRY_EN": "TUVALU",
+            "COUNTRY_TR": "Tuvalu",
+            "ABBREVIATION": "TV",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 213,
+            "COUNTRY_EN": "U.S. VIRGIN ISLANDS",
+            "COUNTRY_TR": "U.s. virjin adasi",
+            "ABBREVIATION": "VI ",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 214,
+            "COUNTRY_EN": "UGANDA",
+            "COUNTRY_TR": "Uganda",
+            "ABBREVIATION": "UG",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 215,
+            "COUNTRY_EN": "UKRAINE",
+            "COUNTRY_TR": "Ukrayna",
+            "ABBREVIATION": "UA",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 216,
+            "COUNTRY_EN": "OMAN",
+            "COUNTRY_TR": "Umman",
+            "ABBREVIATION": "OM",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 217,
+            "COUNTRY_EN": "URUGUAY",
+            "COUNTRY_TR": "Urdun",
+            "ABBREVIATION": "UY",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 218,
+            "COUNTRY_EN": "JORDAN",
+            "COUNTRY_TR": "Uruguay",
+            "ABBREVIATION": "JO",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 219,
+            "COUNTRY_EN": "WALLIS & FUTUNA",
+            "COUNTRY_TR": "Vallis futuna adalari",
+            "ABBREVIATION": "WF",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 220,
+            "COUNTRY_EN": "VENEZUELA",
+            "COUNTRY_TR": "Venezuela",
+            "ABBREVIATION": "VE",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 221,
+            "COUNTRY_EN": "VIET-NAM",
+            "COUNTRY_TR": "Vietnam",
+            "ABBREVIATION": "VN",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 222,
+            "COUNTRY_EN": "REPUBLIC OF YEMEN",
+            "COUNTRY_TR": "Yemen arap cum.",
+            "ABBREVIATION": "YE",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 223,
+            "COUNTRY_EN": "NEW HEBRIDES",
+            "COUNTRY_TR": "Yeni hebritler",
+            "ABBREVIATION": "NH",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 224,
+            "COUNTRY_EN": "NEW CALEDONIA",
+            "COUNTRY_TR": "Yeni kaledonya",
+            "ABBREVIATION": "NC",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 225,
+            "COUNTRY_EN": "NEW ZEALAND",
+            "COUNTRY_TR": "Yeni zelanda",
+            "ABBREVIATION": "NZ",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 226,
+            "COUNTRY_EN": "GREECE",
+            "COUNTRY_TR": "Yunanistan",
+            "ABBREVIATION": "GR",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 227,
+            "COUNTRY_EN": "ZAMBIA",
+            "COUNTRY_TR": "Zambiya",
+            "ABBREVIATION": "ZM",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 228,
+            "COUNTRY_EN": "ZIMBABWE",
+            "COUNTRY_TR": "Zimbabve",
+            "ABBREVIATION": "ZW",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 229,
+            "COUNTRY_EN": "YUGOSLAVIA",
+            "COUNTRY_TR": "Yugoslavya",
+            "ABBREVIATION": "YUG",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 230,
+            "COUNTRY_EN": "CYPRUS",
+            "COUNTRY_TR": "Kibris",
+            "ABBREVIATION": "CYP",
+            "ICON": "",
+            "CODE": 0
+        },
+        {
+            "COUNTRY_ID": 231,
+            "COUNTRY_EN": "ANTARCTICA",
+            "COUNTRY_TR": "Antartika",
+            "ABBREVIATION": "ATA",
+            "ICON": "",
+            "CODE": 0
+        }
+    ]
+}
