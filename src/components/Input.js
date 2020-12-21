@@ -1,6 +1,7 @@
   
 import React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
+import { multiply } from 'react-native-reanimated';
 
 
 
@@ -20,7 +21,9 @@ export function Input({style, ...props}) {
   }
     
   return (
-        <TextInput {...props} style={[styles.input, style]}
+        <TextInput {...props} 
+        style={[styles.input, style]}
+        multiline={true}
           
         />
             

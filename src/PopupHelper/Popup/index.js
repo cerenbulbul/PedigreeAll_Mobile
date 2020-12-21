@@ -48,7 +48,7 @@ class Popup extends Component {
 				useNativeDriver: false
 			}),
 			Animated.spring(this.state.positionPopup, {
-				toValue: (HEIGHT / 2) - (this.state.popupHeight / 2),
+				toValue: (HEIGHT / 4) ,
 				bounciness: 15,
 				useNativeDriver: true
 			})

@@ -168,7 +168,6 @@ export function RegistrationScreen({ route, navigation }) {
             } else {
               //navigation.navigate("Main");
             }
-            navigation.navigate("MainStack");
           } catch (e) {
             console.log(e);
           }

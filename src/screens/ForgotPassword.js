@@ -14,7 +14,6 @@ import { AuthContext } from "../context/AuthContext";
 import Icon from "react-native-vector-icons/FontAwesome5";
  
 export function ForgotPassword({ navigation }) {
-  const { login } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checked, toggleChecked] = React.useState(false);

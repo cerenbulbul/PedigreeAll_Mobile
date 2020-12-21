@@ -14,6 +14,14 @@ export function TopBarView({ navigation }) {
             <Icon style={styles.TopBarIcon} name="bars" size={20} color="white" />
           </TouchableOpacity>
           <Text style={styles.TopBartText}>PedigreeAll</Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          >
+            <Icon style={styles.TopBarIconSetting} name="cogs" size={20} color="white" />
+          </TouchableOpacity>
         </View>
         
     );
@@ -30,6 +38,13 @@ const styles = StyleSheet.create({
     },
     TopBarIcon: {
       marginLeft: 30,
+    },
+    TopBarIconSetting:{
+      right:0,
+    alignItems:'flex-end',
+    alignContent:'flex-end',
+    alignSelf:'flex-end',
+    
     },
     TopBartText: {
       color: "#fff",

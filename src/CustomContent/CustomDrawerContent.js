@@ -8,15 +8,11 @@ import {
     Dimensions,
     Platform,
     StatusBar,
-    TouchableNativeFeedback,
     SafeAreaView,
   LayoutAnimation,
   UIManager,
-    SectionList,
-    FlatList } from "react-native";
+  Image, } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import {Avatar} from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -40,50 +36,18 @@ export const StatusBarHeight = Platform.select({
 })
 const SideNavBarContainerHeight = Platform.select({
   ios: isIPhoneX() ? 70 : 20,
-  android: 20,
+  android: StatusBar.currentHeight,
+  default: 0
 })
 
-
-const DATA = [
-  {
-    id: '0',
-    title: 'First Item',
-    data: ['asd','sadsd']
-  },
-  {
-    id: '1',
-    title: 'Second Item',
-  },
-  {
-    id: '2',
-    title: 'Third Item',
-  },
-];
-
-const Item = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress}>
-    <Text style={styles.title}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
-
+const StatusBarColor = Platform.select({
+  ios: "#2e3f6e",
+  android: "#26345a",
+  default:"#2e3f6e"
+})
 
 export default function CustomDrawerContent(props,navigation) {
-  const [selectedId, setSelectedId] = useState(null);
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-    
-    if(selectedId === 0) {
-      
-    }
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        style={{ backgroundColor }}
-      />
-    );
-  };
+
 
   const MyStatusBar = ({backgroundColor, ...props}) => (
     <View style={[styles.statusBar, { backgroundColor }]}>
@@ -91,72 +55,73 @@ export default function CustomDrawerContent(props,navigation) {
     </View>
   );
 
-
-
     return (
         
         <View style={{ flex: 1 }}>
-          <MyStatusBar backgroundColor="#2e3f6e" barStyle="light-content" />
+          <MyStatusBar backgroundColor={StatusBarColor} barStyle="light-content" />
         <View style={styles.ProfileContainer}>
-        
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Avatar size='large' rounded icon={{ name: 'user-circle-o', type: 'font-awesome', size: 60 }} />
-                <Text style={{ color: '#f9f9f9'}}>Name</Text>
-                <Text style={{ color: '#f9f9f9'}}>Surname</Text>
-              </View>
-            </View>
+          <Image 
+          resizeMode={'contain'}
+          style={{width: "65%", height: "90%", }}
+          source={require('../../assets/logo.png')}></Image>
+          <TouchableOpacity
+          style={{padding:10}}
+          onPress={() => {
+            props.navigation.closeDrawer();
+          }}>
+            <Icon  name="times" size={26} color="#96999c" />
+          </TouchableOpacity>
+        </View>
 
         <DrawerContentScrollView>
           <View forceInset={{ top: 'always', horizontal: 'never' }}>
           <SideBarToggleList props = {props} navigation={navigation}/>
 
+          <View style={{justifyContent:'center',alignItems:'center'}}>
+          <View style={{width:'100%', paddingRight:2, paddingLeft:2, paddingVertical:5}}>
+            <TouchableOpacity 
+            style={{padding:5, backgroundColor:'#e0e1e2',borderRadius:6}}
+            onPress={() => {
+              props.navigation.navigate('Login');
+            }}>
+              <Text style={{textAlign:'center', fontSize:16,fontWeight:'500'}}>Login</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{width:'100%', paddingRight:2, paddingLeft:2, paddingVertical:5}}>
+            <TouchableOpacity 
+            style={{padding:5, backgroundColor:'#e0e1e2',borderRadius:6}}
+            onPress={() => {
+              props.navigation.navigate("Register", {
+                headerTitle: "abc",
+                countryID: 0,
+                countryCode: "",
+                countryName: "Select a country",
+                countryIcon: "flag",
+              });
+            }}>
+            <Text style={{textAlign:'center', fontSize:16,fontWeight:'500'}}>Register</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
+          
+
             <View style={styles.SocialIconContainer}>
-              <TouchableOpacity style={{ marginTop: '2%' }}>
-              <Icon name="facebook" size={20} color="#2e3f6e" />
+              <TouchableOpacity style={styles.SocialMediaItems}>
+              <Icon name="facebook" size={32} color="#222" />
               </TouchableOpacity>
-              <TouchableOpacity style={{ marginTop: '3%' }}>
-              <Icon name="instagram" size={20} color="#2e3f6e" />
+              <TouchableOpacity style={styles.SocialMediaItems}>
+              <Icon name="twitter" size={32} color="#222" />
               </TouchableOpacity>
-              <TouchableOpacity style={{ marginTop: '5%' }}>
-              <Icon  name="twitter" size={20} color="#2e3f6e" />
+              <TouchableOpacity style={styles.SocialMediaItems}>
+              <Icon  name="instagram" size={32} color="#222" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.SocialMediaItems}>
+              <Icon  name="linkedin" size={32} color="#222" />
               </TouchableOpacity>
             </View>
           </View>
         </DrawerContentScrollView>
-
-        <View style={styles.AuthenticationContainer}>
-
-        <View onPress ={() => {
-          navigation.navigate('Login')
-        }} style={styles.Exit}>
-          <TouchableNativeFeedback >
-            <View>
-            <Icon name="sign-out-alt" size={20} color="#2e3f6e" />
-              <Text style={{ color: 'black' }}>Logout</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-
-          <View style={{justifyContent:'center',flexDirection:'row'}}>
-            <View style={{justifyContent:'center'}}>
-            <TouchableOpacity style={styles.Authentication}>
-            <Text style={{color:'white'}}>Login</Text>
-          </TouchableOpacity>
-          </View>
-          <View style={{justifyContent:'center'}}>
-          <TouchableOpacity style={styles.Authentication}>
-            <Text style={{color:'white'}}>Register</Text>
-          </TouchableOpacity>
-            </View>
-          
-          </View>
-          
-       
-          
-
-        </View>
-
-        
 
       </View>
     )
@@ -179,13 +144,18 @@ const updateLayout = (index) => {
     if(index === 0){
       props.navigation.navigate('Main')
     }
+    if(index=== 6) {
+      props.navigation.navigate('Contact')
+    }
+    if(index=== 5) {
+      props.navigation.navigate('Blog')
+    }
     if(index ===1 || index ===2 || index===3 || index===4) {
       array.map((value, placeindex) =>
       placeindex === index
         ? (array[placeindex]['isExpanded'] =
            !array[placeindex]['isExpanded'])
         : (array[placeindex]['isExpanded'] = false),
-        console.log(index)
     );
   }
     }
@@ -246,7 +216,7 @@ function ExpandableComponent({item, onClickFunction, props, navigation}){
         {item.category_name === 'My Request'
           || item.category_name === 'Analysis For Breeder'
           || item.category_name === 'Race Analysis'
-          || item.category_name === 'Reports || EfectiveNick' ? <Icon name="caret-down" size={20} color="#adb5bd" />: null}
+          || item.category_name === 'Reports || EfectiveNick' ? <Icon name="caret-down" size={20} color="#adb5bd" style={{marginRight:10}}/>: null}
 
           </View>
         
@@ -262,7 +232,12 @@ function ExpandableComponent({item, onClickFunction, props, navigation}){
             key={key}
             style={styles.content}
             onPress={
-              () => {props.navigation.navigate('Main')}
+              () => {
+                if(item.id === 1){
+                  props.navigation.navigate('AddAHorse')
+                }
+                
+              }
               //alert('Id: ' + item.id + ' val: ' + item.val)
           }>
             <View style={styles.ListViewItem}>
@@ -286,10 +261,15 @@ const styles = StyleSheet.create({
     justifyContent:'space-around',
     alignItems:'center',
     flexDirection: "row",
+    marginVertical:20,
   },
   ProfileContainer:{
-    backgroundColor: '#2e3f6e',
-    padding:SideNavBarContainerHeight,
+    width:'100%',
+    marginTop:40,
+    backgroundColor: '#fff',
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-around',
   },
   Exit:{
     backgroundColor: '#fff',
@@ -300,24 +280,21 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  title: {
-    fontSize: 32,
-  },
   container: {
     flex: 1,
   },
-  titleText: {
-    flex: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
   header: {
+    borderBottomWidth:1,
+    borderColor:'#e8e8e8',
     backgroundColor: 'white',
-    padding: 20,
+    paddingBottom:15,
+    paddingTop:15,
   },
   headerText: {
     fontSize: 16,
     fontWeight: '500',
+    marginBottom:5,
+    marginLeft:10,
   },
   text: {
     fontSize: 16,
@@ -330,13 +307,14 @@ const styles = StyleSheet.create({
   },
   ListView:{
     flexDirection:'row',
-    justifyContent:'space-between'
+    justifyContent:'space-between',
   },
   ListViewItem:{
     flexDirection:'row',
   },
   ListViewItemIcon:{
-    paddingTop:12,
+    justifyContent:'center',
+    paddingTop:13
   },
   AuthenticationContainer:{
     flexDirection:'row',
@@ -346,8 +324,14 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     marginRight:5,
     padding:5,
-    borderRadius:8,
+    borderRadius:6,
     backgroundColor:'#2e3f6e'
+  },
+  SocialMediaItems:{
+   borderWidth:1,
+   padding:10,
+   borderRadius:6, 
+   borderColor:'#e0e1e2'
   }
 });
 

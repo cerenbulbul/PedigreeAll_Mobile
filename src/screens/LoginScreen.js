@@ -12,7 +12,7 @@ import { FilledButton } from "../components/FilledButton";
 import { Input } from "../components/Input";
 import { Error } from "../components/Error";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { SwipeablePanel } from "rn-swipeable-panel";
+//import { SwipeablePanel } from "rn-swipeable-panel";
 import { Root, Popup,Toast } from "../components/Popup";
 export function LoginScreen({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -65,16 +65,7 @@ export function LoginScreen({ navigation }) {
         style={styles.image}
         source={require("../../assets/logo.png")}
       />
-      <SwipeablePanel
-        {...panelProps}
-        isActive={isPanelActive}
-        style={styles.swipeContainer}
-      >
-        <View style={styles.ViewContainer}>
-          <Text>Bottom Popup</Text>
-        </View>
-      </SwipeablePanel>
-
+      
       <View
         style={{ paddingTop: 50, flex: 1, padding: 16, alignItems: "center" }}
       >
@@ -162,7 +153,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingTop: 120,
+    paddingTop: 150,
     alignItems: "center",
     backgroundColor: "white",
   },
@@ -277,6 +268,19 @@ const closePanel = () => {
       </SwipeablePanel>
     </View>
 
+
+
+    <SwipeablePanel
+        {...panelProps}
+        isActive={isPanelActive}
+        style={styles.swipeContainer}
+      >
+        <View style={styles.ViewContainer}>
+          <Text>Bottom Popup</Text>
+        </View>
+      </SwipeablePanel>
+
+      
 */
 
 /*

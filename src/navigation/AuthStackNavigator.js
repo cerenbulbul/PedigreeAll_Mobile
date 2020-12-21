@@ -6,7 +6,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LoginScreen } from "../screens/LoginScreen";
 import { RegistrationScreen } from "../screens/RegistrationScreen";
 import { ForgotPassword } from "../screens/ForgotPassword";
-import { HomeScreen } from "../screens/HomeScreen";
 import { Country } from "../screens/Country";
 import { DetailsComponent } from "../screens/DetailsComponent";
 import { MainScreen } from "../screens/MainScreen";
@@ -94,7 +93,6 @@ export function AuthStackNavigator() {
           headerShown: true,
         }}
       />
-      <AuthStack.Screen name={"HomeScreen"} component={HomeScreen} />
 
       
 
