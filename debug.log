@@ -1,2 +1,6 @@
 [1211/094118.280:ERROR:directory_reader_win.cc(43)] FindFirstFile: Sistem belirtilen yolu bulamýyor. (0x3)
 [1213/122808.858:ERROR:directory_reader_win.cc(43)] FindFirstFile: Sistem belirtilen yolu bulamýyor. (0x3)
+[1229/092321.465:ERROR:directory_reader_win.cc(43)] FindFirstFile: Sistem belirtilen yolu bulamýyor. (0x3)
+[1231/111228.468:ERROR:directory_reader_win.cc(43)] FindFirstFile: Sistem belirtilen yolu bulamýyor. (0x3)
+[0103/220809.844:ERROR:directory_reader_win.cc(43)] FindFirstFile: Sistem belirtilen yolu bulamýyor. (0x3)
+[0104/155317.006:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Ceren\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\7fd93813-795e-4b6b-a385-188ca9a939b3: Sistem belirtilen yolu bulamýyor. (0x3)

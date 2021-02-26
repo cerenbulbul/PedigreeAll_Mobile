@@ -8,6 +8,39 @@ import { AuthContainer } from "../components/AuthContainer";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ListItem, SearchBar,CheckBox } from "react-native-elements";
 import Flag from "react-native-flags";
+import { Root, Popup, Toast } from "../components/Popup";
+
+
+
+function showMessage(data, navigation) {
+
+  console.log(data.m_eProcessState)
+  if (data.m_eProcessState > 0) {
+    Popup.show({
+      type: 'Success',
+      title: 'Register',
+      button: true,
+      textBody: data.m_lUserMessageList[1],
+      buttonText: 'Ok',
+      callback: () => {
+        navigation.navigate('LoginScreen')
+      }
+    })
+  }
+  else if(data.m_eProcessState == -1) {
+    Popup.show({
+      type: 'Danger',
+      title: 'Register',
+      button: true,
+      textBody: data.m_lUserMessageList[1],
+      buttonText: 'Ok',
+      callback: () => Popup.hide()
+    })
+  }
+
+}
+
+
 
 export function RegistrationScreen({ route, navigation }) {
   const { countryID, countryCode,countryName, countryIcon } = route.params;
@@ -24,7 +57,8 @@ export function RegistrationScreen({ route, navigation }) {
   const [countryIconText, setCountryIcon] = React.useState(countryIcon);
   const onSelect = (country) => {
     setFlagText(countryName);
-    console.log(countryName)
+    //console.log(countryName)
+    console.log(country)
   }
   const unsubscribe = navigation.addListener('focus', () => {
     // The screen is focused
@@ -39,14 +73,20 @@ export function RegistrationScreen({ route, navigation }) {
   })
  
  
+  
 
   return (
+        
+<Root>
 
-    <AuthContainer>
-      <ScrollView style={styles.scrollContainer}>
 
-        <Error error={error} />
-        <View style={styles.inputView}>
+       
+         <View style={styles.Container}>
+           
+
+         <ScrollView style={styles.scrollContainer}>
+         
+         <View style={styles.inputView}>
           <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
           <Input
             placeholder={"Email"}
@@ -140,50 +180,67 @@ export function RegistrationScreen({ route, navigation }) {
           />
           
         </View>
-      </ScrollView>
-
-      <FilledButton
+      
+        
+        <FilledButton
         title="Register"
         style={styles.registerButton}
         onPress={async (e) => {
-          try {
-            //await register(email, password);
-            //console.log(e);
-            //alert(selectedPersonTypeValue+ ' ' +selectedCountryValue);
-            if (email === "") {
-              setError("Email is required");
-              Vibration.vibrate(10);
-            } else if (password === "" || password_again === "") {
-              setError("Password is required");
-              Vibration.vibrate(10);
-            } else if (password_again != password) {
-              setError("Passwords are not match");
-              Vibration.vibrate(10);
-            } else if (name === "") {
-              setError("Name is required");
-              Vibration.vibrate(10);
-            } else if (surname === "") {
-              setError("Surname is required");
-              Vibration.vibrate(10);
-            } else {
-              //navigation.navigate("Main");
-            }
-          } catch (e) {
-            console.log(e);
-          }
-          //register(email,password);
+
+          fetch('https://api.pedigreeall.com/systemuser/SignUp', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    NAME: name,
+                    SURNAME: surname,
+                    EMAIL: email,
+                    PASSWORD: password,
+                    ADDRESS: password_again,
+                    COUNTRY_OBJECT:{
+                      COUNTRY_ID: countryID
+                    } ,          
+                     PERSON_TYPE_OBJECT: {
+                      PERSON_TYPE_ID: (
+                        checked_1 ? 1:2
+                      )
+                    }
+                  })
+                })
+                  .then((response) => response.json())
+                  .then((json) => {
+                    //alert(json.m_lUserMessageList[0])
+                    showMessage(json, navigation);
+                      
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  })
         }}
       />
-    </AuthContainer>
+
+      <View style={{backgroundColor:'white', height:200}}></View>
+  
+       </ScrollView>
+      
+
+         </View>
+  
+    
+         </Root>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    alignItems: "center",
+  Container: {
     backgroundColor: "white",
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   input: {
     marginVertical: 8,
@@ -192,8 +249,9 @@ const styles = StyleSheet.create({
     marginVertical: 32,
   },
   scrollContainer: {
-    paddingTop: 0,
-    width: "100%",
+    padding:20,
+    width:'100%',
+    backgroundColor:'#fff',
   },
   picker: {
     backgroundColor: "#e8e8e8",
@@ -376,5 +434,13 @@ FLAGG
               }
             }}
           />
+
+*/
+
+
+/*
+
+
+
 
 */

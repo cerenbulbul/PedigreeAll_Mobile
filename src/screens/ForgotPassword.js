@@ -51,11 +51,25 @@ export function ForgotPassword({ navigation }) {
         </View>
         
         <FilledButton
-          title="Reset Password"
+          title="Send Password"
           style = {styles.button}
           onPress={async () => {
-            login(email, password);
-            navigation.push("Main");
+            fetch('https://api.pedigreeall.com/systemuser/RemindPassword?p_sEmail='+ email, {
+                  method: 'GET',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                })
+                  .then((response) => response.json())
+                  .then((json) => {
+                    alert(json.m_lUserMessageList[0])
+                    navigation.navigate('LoginScreen')
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  })
+            
           }}
         />
         

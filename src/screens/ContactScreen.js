@@ -1,6 +1,5 @@
-import React ,{useState} from 'react'
-import { View,Text,StyleSheet , Image, Dimensions,Switch,TouchableOpacity} from 'react-native'
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import React ,{useState, useRef} from 'react'
+import { View,Text,StyleSheet , Image, Dimensions,Switch,TouchableOpacity, TextInput} from 'react-native'
 import { Input } from "../components/Input";
 import { Error } from "../components/Error";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -8,11 +7,12 @@ import { FilledButton } from "../components/FilledButton";
 import { Root, Popup,Toast } from "../components/Popup";
 import Flag from "react-native-flags";
 import { SwipeablePanel } from "rn-swipeable-panel";
-
-
+import RBSheet from "react-native-raw-bottom-sheet";
+import {SettingBottomSheet} from '../components/SettingBottomSheet'
+import {BlueButton} from '../components/BlueButton';
 
 export function ContactScreen({navigation}) {
-
+    const refRBSheet = useRef();
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [phone, setPhone] = React.useState("");
@@ -45,7 +45,7 @@ export function ContactScreen({navigation}) {
             <TouchableOpacity
               style={{marginRight:20}}
               onPress={()=>{
-                setIsPanelActive(!isPanelActive)
+                refRBSheet.current.open()
               }}>
                 <Icon  name="cogs" size={24} color="#fff" />
             </TouchableOpacity>
@@ -70,42 +70,54 @@ export function ContactScreen({navigation}) {
 
             <View style={styles.ButtonsContainer}>
 
-            <Input
-            style={styles.Input}
-            placeholder={"Name"}
-            name={"username"}
-            value={name}
-            onChangeText={setName}
-          />
+            <View style={styles.TextInputContainer}>
+              <Icon name="user" size={16} color="#222" />
+              <Text style={styles.TextInputHeader}>Your Name: </Text>
+              <TextInput
+                style={styles.HalfInputStyle}
+                placeholder={"Name"}
+                name={"username"}
+                value={name}
+                onChange={setName}
+                />
+            </View>
 
-            <Input
-            style={styles.Input}
-            placeholder={"Email"}
-            keyboardType={"email-address"}
-            name={"mail"}
-            value={email}
-            onChangeText={setEmail}
-          />
+            <View style={styles.TextInputContainer}>
+              <Icon name="envelope" size={16} color="#222" />
+              <Text style={styles.TextInputHeader}>Your Name: </Text>
+              <TextInput
+                style={styles.HalfInputStyle}
+                placeholder={"Email"}
+                keyboardType={"email-address"}
+                name={"mail"}
+                value={email}
+                onChangeText={setEmail}
+                />
+            </View>
 
-            <Input
-            style={styles.Input}
-            placeholder={"Phone"}
-            keyboardType={"phone-pad"}
-            name={"phone"}
-            value={phone}
-            onChangeText={setPhone}
-          />
+            <View style={styles.TextInputContainer}>
+              <Icon name="phone" size={16} color="#222" />
+              <Text style={styles.TextInputHeader}>Phone: </Text>
+              <TextInput
+                style={styles.HalfInputStyle}
+                placeholder={"Phone"}
+                keyboardType={"numeric"}
+                name={"phone"}
+                value={phone}
+                onChangeText={setPhone}
+                />
+            </View>
+
+            <TextInput
+              style={styles.LongImputStyle}
+              placeholder={"Message"}
+              name={"message"}
+              value={message}
+              onChangeText={setMessage}
+            />
 
 
-        <Input
-            style={styles.InputMessage}
-            placeholder={"Message"}
-            name={"message"}
-            value={message}
-            onChangeText={setMessage}
-          />
-
-        <FilledButton
+        <BlueButton
           title="Submit"
           style={styles.SubmitButton}
           onPress={async(e) =>
@@ -155,6 +167,31 @@ export function ContactScreen({navigation}) {
         />
 
         <Text style={styles.ThankfullText}>Thank You For Contacting Us.</Text>
+        <View style={{width:'100%', alignItems:'center'}}> 
+        <View style={styles.SocialIconContainer}>
+            <TouchableOpacity
+              onPress={() => { Linking.openURL('https://www.facebook.com/pedigreeallcom'); }}
+              style={styles.SocialMediaItems}>
+              <Icon name="facebook" size={32} color="#222" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { Linking.openURL('https://twitter.com/pedigreeall'); }}
+              style={styles.SocialMediaItems}>
+              <Icon name="twitter" size={32} color="#222" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { Linking.openURL('https://www.instagram.com/pedigreeallcom/'); }}
+              style={styles.SocialMediaItems}>
+              <Icon name="instagram" size={32} color="#222" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { Linking.openURL('https://www.linkedin.com/company/pedigreeall'); }}
+              style={styles.SocialMediaItems}>
+              <Icon name="linkedin" size={32} color="#222" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        
             </View>
             </View>
 
@@ -162,38 +199,7 @@ export function ContactScreen({navigation}) {
             </View>
             
 
-            <SwipeablePanel
-        {...panelProps}
-        isActive={isPanelActive}
-        style={styles.swipeContainer}>
-        <View style={styles.SwipeablePanelContainer}>
-          <View style={styles.SwipeablePanelItem}>
-            <Text style={styles.SwipeablePanelText}>Notifications:</Text>
-            <Switch
-              trackColor={{ false: "#a3a3a3", true: "#2f406f" }}
-              thumbColor={isEnabled ? "#fff" : "#fff"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isEnabled} 
-            />
-          </View>
-
-          <View style={styles.SwipeablePanelItem}>
-            <Text style={styles.SwipeablePanelText}>Languages:</Text>
-            
-            <View style={styles.FlagContainer}>
-              <TouchableOpacity style={{marginRight:5}}>
-                <Flag code='US' size={24} />
-              </TouchableOpacity>
-              <TouchableOpacity style={{marginRight:5}} >
-                <Flag code='TR' size={24} />
-              </TouchableOpacity>
-            </View>
-
-          </View>
-          
-        </View>
-      </SwipeablePanel>
+           
         </View>
 
 </Root>
@@ -240,7 +246,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         marginVertical:5,
         fontSize:16,
-
+        color:'#2169ab'
     },
     swipeContainer: {
         width: "100%",
@@ -258,5 +264,61 @@ const styles = StyleSheet.create({
       },
       FlagContainer:{
         flexDirection:'row',
-      }
+      },
+      SwipableCloseIcon:{
+        width:'100%',
+        flexDirection:'row-reverse',
+        marginRight:-25
+      },
+      TextInputContainer:{
+        padding:10,
+        borderWidth:0.5,
+        borderColor:'silver',
+        borderRadius:8,
+        flexDirection:'row',
+        marginVertical:5,
+        alignItems:'center'
+    },
+    TextInputHeader:{
+      fontSize:16,
+      fontWeight:'bold',
+      marginLeft:5
+    },
+    InformationText:{
+      fontSize:16,
+      marginLeft:5
+    },
+    HalfInputStyle:{
+      width:'90%',
+      paddingLeft:20,
+      fontSize:16,
+      margin:0,
+  },
+  LongImputStyle:{
+    marginVertical:5,
+    width:'100%',
+    height:100,
+    paddingLeft:20,
+    borderRadius:8,
+    fontSize:18,
+    margin:0,
+    padding:10,
+    borderColor:'silver',
+    borderWidth:0.5,
+    lineHeight: 23,
+    textAlignVertical: 'top',
+},
+SocialIconContainer: {
+  width: '70%',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  flexDirection: "row",
+  marginVertical: 20,
+},
+SocialMediaItems: {
+  borderWidth: 1,
+  padding: 10,
+  borderRadius: 6,
+  borderColor: '#e0e1e2'
+},
   });

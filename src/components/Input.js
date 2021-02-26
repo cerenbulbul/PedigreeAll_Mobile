@@ -5,7 +5,7 @@ import { multiply } from 'react-native-reanimated';
 
 
 
-export function Input({style, ...props}) {
+export function Input({style, keyboard, ...props}) {
 
   
   function blur() {
@@ -23,8 +23,8 @@ export function Input({style, ...props}) {
   return (
         <TextInput {...props} 
         style={[styles.input, style]}
-        multiline={true}
-          
+        multiline={false}
+        keyboardType = {keyboard}
         />
             
     
@@ -34,7 +34,7 @@ export function Input({style, ...props}) {
 const styles = StyleSheet.create({
   input: {
     backgroundColor:'#e8e8e8',
-    width:'100%',
+    width:'90%',
     paddingLeft:20,
     //padding:20,
     borderRadius:8,
