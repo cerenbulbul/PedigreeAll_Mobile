@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import WebView from 'react-native-webview';
 
 
-export function HorseDetailScreenTJK() {
+export function HorseDetailScreenTJK({navigation}) {
   const [getTJKReport, setTJKReport] = React.useState();
   const [time, setTime] = React.useState(true);
   const [moreDetail, setMoreDetail] = React.useState(false);
@@ -142,10 +142,7 @@ export function HorseDetailScreenTJK() {
                           style={styles.TableCellStyle}
                           onPress={() => {
                             const supported = Linking.canOpenURL(item.VIDEO.replace('amp;', ''));
-
                             if (supported) {
-                              // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-                              // by some browser in the mobile
                               Linking.openURL(item.VIDEO.replace('amp;', ''));
                             } else {
                               Alert.alert(`Don't know how to open this URL: ${item.VIDEO.replace('amp;', '')}`);

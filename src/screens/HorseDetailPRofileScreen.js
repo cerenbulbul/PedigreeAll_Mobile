@@ -116,7 +116,7 @@ export function HorseDetailPRofileScreen({ route, navigation }) {
 
                 </View>
                 :
-            null}
+                null}
 
             {time ?
                 <ActivityIndicator size="large" color="000" />
@@ -421,11 +421,11 @@ export function HorseDetailPRofileScreen({ route, navigation }) {
                                     javaScriptEnabledAndroid={true}
                                     scrollEnabled={false}
                                     injectedJavaScript="
-                        setTimeout(function() { 
-                            window.ReactNativeWebView.postMessage(1050);
-                          }, 500);
-                          true;
-                        "
+                                        setTimeout(function() { 
+                                            window.ReactNativeWebView.postMessage(1050);
+                                        }, 500);
+                                        true;
+                                        "
                                     onMessage={onMessage}
                                     renderLoading={() => (
                                         <ActivityIndicator
@@ -441,10 +441,6 @@ export function HorseDetailPRofileScreen({ route, navigation }) {
                 </>
 
                 : null}
-
-
-
-
 
 
 
@@ -538,14 +534,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff'
     },
-    BackButton:{
-        flexDirection:'row',
-        alignSelf:'baseline',
-        padding:10,
-        width:'100%',
-        borderBottomWidth:0.5, 
-        borderColor:'silver',
-        marginBottom:10
-      },
+    BackButton: {
+        flexDirection: 'row',
+        alignSelf: 'baseline',
+        padding: 10,
+        width: '100%',
+        borderBottomWidth: 0.5,
+        borderColor: 'silver',
+        marginBottom: 10
+    },
 
 })

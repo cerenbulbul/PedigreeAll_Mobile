@@ -1,9 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Platform, Animated, ActivityIndicator, Dimensions, Modal, TouchableHighlight, TouchableOpacity, Image, ScrollView } from 'react-native'
+import {
+  View,
+  Linking,
+  Text,
+  StyleSheet,
+  Platform,
+  Animated,
+  ActivityIndicator,
+  Dimensions,
+  Modal,
+  TouchableHighlight,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable } from 'react-native-paper';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 import { Global } from '../Global'
 import { HorseDetailScreenPedigree } from './HorseDetailScreenPedigree'
@@ -17,9 +32,10 @@ import { HorseDetailBroodMareSireScreen } from "./HorseDetailBroodMareSireScreen
 import { HorseDetailLinebreedingScreen } from './HorseDetailLinebreedingScreen'
 import { HorseDetailScreenFemaleFamily } from './HorseDetailScreenFemaleFamily';
 import { HorseDetailScreenTJK } from './HorseDetailScreenTJK';
-import RBSheet from "react-native-raw-bottom-sheet";
 import WebView from 'react-native-webview';
 const Tab = createMaterialTopTabNavigator();
+
+const REMOTE_IMAGE_PATH ='https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1'
 
 
 export function HorseDetailScreen({ route, navigation }) {
@@ -167,6 +183,7 @@ function TabScreen(HorseInformationData) {
     readFoalInfo();
     readStatisticInfo();
   }, [])
+
 
   return (
     <View style={styles.Container}>
@@ -405,13 +422,26 @@ function TabScreen(HorseInformationData) {
                 </TouchableOpacity>
               </View>
               <View style={styles.StabilInformationButtonContainer2Value}>
-                <TouchableOpacity style={styles.StabilInformationButton}>
+                <TouchableOpacity
+                  onPress={() => {
+                    const supported = Linking.canOpenURL('https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1');
+                    if (supported) {
+                      Linking.openURL('https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1');
+                    } else {
+                      Alert.alert(`Don't know how to open this URL: ${'https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1'}`);
+                    }
+                  }}
+                  style={styles.StabilInformationButton}>
                   <Icon name="file-pdf" size={16} color="#fff"></Icon>
-                  <Text style={styles.StabilInformationButtonText}>Pedigree</Text>
+                  <Text style={styles.StabilInformationButtonText}>Download</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.StabilInformationButton}>
+                <TouchableOpacity
+                  onPress={() => {
+                    //checkPermission();
+                  }}
+                  style={styles.StabilInformationButton}>
                   <Icon name="image" size={16} color="#fff"></Icon>
-                  <Text style={styles.StabilInformationButtonText}>Pedigree</Text>
+                  <Text style={styles.StabilInformationButtonText}>Download</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.Line} />
@@ -473,7 +503,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="Profile"
           component={HorseDetailPRofileScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: () => (
@@ -484,7 +514,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="Progeny"
           component={HorseDetailProgencyScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Progeny',
             tabBarIcon: () => (
@@ -495,7 +525,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="SiblingsMare"
           component={HorseDetailSiblingMareScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Siblings (Mare)',
             tabBarIcon: () => (
@@ -506,7 +536,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="SiblingsSire"
           component={HorseDetailSiblingSireScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Siblings (Sire)',
             tabBarIcon: () => (
@@ -517,7 +547,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="SiblingBroodmareSire"
           component={HorseDetailSiblingBroodmareSireScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Siblings (BroodMareSire)',
             tabBarIcon: () => (
@@ -528,7 +558,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="TailFemale"
           component={HorseDetailTailFemaleScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Tail Female',
             tabBarIcon: () => (
@@ -549,7 +579,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="Linebreeding"
           component={HorseDetailLinebreedingScreen}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Linebreeding',
             tabBarIcon: () => (
@@ -560,7 +590,7 @@ function TabScreen(HorseInformationData) {
         <Tab.Screen
           name="FemaleFamiliy"
           component={HorseDetailScreenFemaleFamily}
-          initialParams={{BackButton: false}}
+          initialParams={{ BackButton: false }}
           options={{
             tabBarLabel: 'Female Family',
             tabBarIcon: () => (

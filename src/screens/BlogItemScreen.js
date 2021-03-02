@@ -25,7 +25,7 @@ export function BlogItemScreen({ route, navigation }) {
   const { selectedBlog } = route.params;
   return (
 
-    <View style={styles.Container}>
+    <ScrollView style={styles.Container}>
       <TouchableOpacity
         onPress={() => { navigation.navigate('Blog') }}
         style={styles.SideBarTopBackIcon}>
@@ -58,28 +58,25 @@ export function BlogItemScreen({ route, navigation }) {
                 source={{ uri: 'https://www.pedigreeall.com/blog/' + selectedBlog.IMAGE }} />
 
 
-              <View
-                style={{ width: '100%', height: '100%', marginTop:10 }} >
 
                 <WebView
                   source={{ html: selectedBlog.BLOG_EN }}
-                  startInLoadingState={true}
-                  style={{ width: '100%', height: '100%' }}
+                  automaticallyAdjustContentInsets={true}
                   javaScriptEnabledAndroid={true}
-                  showsHorizontalScrollIndicator={true}
-                  scrollEnabled={true}
-                  showsVerticalScrollIndicator={true}
+                  scrollEnabled={false}
+                  startInLoadingState={true}
+                  bounces={true}
+                  style={{width:'100%',height:300, marginTop:10}}
                   renderLoading={() => <ActivityIndicator color='#000' size='large' />}
                 />
 
-              </View>
 
 
 
             </Card>
         }
 
-    </View>
+    </ScrollView>
 
   )
 }
@@ -87,8 +84,6 @@ export function BlogItemScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   Container: {
-    width: '100%',
-    height: '100%',
     backgroundColor: '#fff'
   },
   Title: {
