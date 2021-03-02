@@ -239,7 +239,7 @@ export function MyAddingRequestScreen({ navigation }) {
                   placeholder={"ID"}
                   name={"ID"}
                   keyboardType="numeric"
-                  value={getAddRequestID}
+                  value={getAddRequestID.toString()}
                   onChangeText={setAddRequestID}
                 />
               </View>

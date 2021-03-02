@@ -532,10 +532,10 @@ function SearchScreen({ route, navigation }) {
     const [getBottomSheetText, setBottomSheetText] = React.useState();
     const [GenerationTitle, setGenerationTitle] = React.useState("Gen 5");
     const [CrossLineTitle, setCrossTitle] = React.useState("x2");
-    const [state, setState] = React.useState({ checked: [] });
+    const [state, setState] = React.useState({ checked: [] }); 
     const [chekedItem, setChekedItem] = React.useState(5)
     const [stateCrossLine, setStateCrossLine] = React.useState({ checkedCrossLine: [] });
-    const [chekedItemCrossLine, setChekedItemCrossLine] = React.useState(5)
+    const [chekedItemCrossLine, setChekedItemCrossLine] = React.useState(2)
     const [searchValue, setSearchValue] = React.useState()
     const [SireMareHorseData, setSireMareHorseData] = React.useState();
     const [SireMareHorseName, setSireMareHorseName] = React.useState();
@@ -604,6 +604,7 @@ function SearchScreen({ route, navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         refRBSheetGeneration.current.close();
+                        
                         setGenerationTitle("Gen " + chekedItem);
                         setCrossTitle("x" + chekedItemCrossLine)
                     }}
@@ -676,7 +677,7 @@ function SearchScreen({ route, navigation }) {
                                                 uncheckedColor='rgb(232, 237, 241)'
                                                 onPress={() => {
                                                     setStateCrossLine({ checkedCrossLine: [stateCrossLine, item.id] });
-                                                    setChekedItemCrossLine(item.title)
+                                                    setChekedItemCrossLine(item.id)
                                                     if (Global.BreedingContentScreenName === "Linebreeding") {
                                                         Global.MinCross = item.id;
                                                     }

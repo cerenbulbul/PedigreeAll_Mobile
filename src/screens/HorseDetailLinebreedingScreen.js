@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Text, Alert } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
@@ -42,6 +42,20 @@ export function HorseDetailLinebreedingScreen({ route, navigation }) {
     React.useEffect(() => {
         readLinebreedingHorse();
     }, [])
+
+    const alertDialog = (messageTitle, message) =>
+    Alert.alert(
+        messageTitle,
+        message,
+        [
+            {
+                text: "OK",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+            },
+        ],
+        { cancelable: false }
+    );
 
     return (
         <ScrollView style={{backgroundColor:'#fff'}} showsVerticalScrollIndicator={true}>
@@ -114,9 +128,12 @@ export function HorseDetailLinebreedingScreen({ route, navigation }) {
                                     <>
                                         {LinebreedingHorse.LINEBREEDING_LIST.map((item, index) => (
                                             <DataTable.Row key={index}>
-                                                <DataTable.Cell style={{ width: 100 }} onPress={() => {
-                                                    alert(item.HORSE_INFO_OBJECT.HORSE_NAME)
-                                                }}>{item.HORSE_INFO_OBJECT.HORSE_NAME}</DataTable.Cell>
+                                                <DataTable.Cell 
+                                                    style={{ width: 100 }} 
+                                                    onPress={() => {
+                                                        alertDialog("Name" , item.HORSE_INFO_OBJECT.HORSE_NAME)
+                                                    }}
+                                                >{item.HORSE_INFO_OBJECT.HORSE_NAME}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.STATISTICS}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100, marginLeft: 20 }}>{item.CROSS}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.LINES}</DataTable.Cell>
@@ -128,9 +145,15 @@ export function HorseDetailLinebreedingScreen({ route, navigation }) {
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.EARN} {item.HORSE_INFO_OBJECT.EARN_ICON}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.FAMILY_TEXT}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.COLOR_TEXT}</DataTable.Cell>
-                                                <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.FATHER_NAME}</DataTable.Cell>
-                                                <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.MOTHER_NAME}</DataTable.Cell>
-                                                <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.BM_SIRE_NAME}</DataTable.Cell>
+                                                <DataTable.Cell onPress = {()=>{
+                                                    alertDialog("Sire" , item.HORSE_INFO_OBJECT.FATHER_NAME)
+                                                }} style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.FATHER_NAME}</DataTable.Cell>
+                                                <DataTable.Cell onPress={()=>{
+                                                    alertDialog("Dam", item.HORSE_INFO_OBJECT.MOTHER_NAME)
+                                                }} style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.MOTHER_NAME}</DataTable.Cell>
+                                                <DataTable.Cell onPress={()=>{
+                                                    alertDialog("Broodmare Sire" , item.HORSE_INFO_OBJECT.BM_SIRE_NAME)
+                                                }} style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.BM_SIRE_NAME}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.START_COUNT}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.FIRST}</DataTable.Cell>
@@ -145,9 +168,15 @@ export function HorseDetailLinebreedingScreen({ route, navigation }) {
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.RM}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.ANZ}</DataTable.Cell>
                                                 <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.PA}</DataTable.Cell>
-                                                <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.OWNER}</DataTable.Cell>
-                                                <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.BREEDER}</DataTable.Cell>
-                                                <DataTable.Cell style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.COACH}</DataTable.Cell>
+                                                <DataTable.Cell onPress={()=>{
+                                                    alertDialog("Owner" , item.HORSE_INFO_OBJECT.OWNER)
+                                                }} style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.OWNER}</DataTable.Cell>
+                                                <DataTable.Cell onPress={()=>{
+                                                    alertDialog("Breeder", item.HORSE_INFO_OBJECT.BREEDER)
+                                                }} style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.BREEDER}</DataTable.Cell>
+                                                <DataTable.Cell onPress={()=>{
+                                                    alertDialog("Coach", item.HORSE_INFO_OBJECT.COACH)
+                                                }} style={{ width: 100 }}>{item.HORSE_INFO_OBJECT.COACH}</DataTable.Cell>
                                                 {item.HORSE_INFO_OBJECT.IS_DEAD ?
                                                     <DataTable.Cell style={{ width: 100 }}>DEAD</DataTable.Cell> :
                                                     <DataTable.Cell style={{ width: 100 }}>ALIVE</DataTable.Cell>}

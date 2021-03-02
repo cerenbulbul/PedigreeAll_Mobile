@@ -17,7 +17,7 @@ export function RacesScreen({ navigation }) {
   const BottomSheetSmall = React.useRef();
 
   const [showReport, setShowReport] = React.useState(false);
-
+  const [getLoadingForTable, setLoadingForTable] = React.useState(false)
   const [Header, setHeader] = useState()
   const [PrizeMin, setPrizeMin] = useState()
   const [PrizeMax, setPrizeMax] = useState()
@@ -213,6 +213,7 @@ export function RacesScreen({ navigation }) {
             setHorseGetFilter(json.m_cData)
             setTime(false)
             console.log(json)
+            setLoadingForTable(false)
           })
           .catch((error) => {
             console.error(error);
@@ -979,79 +980,87 @@ export function RacesScreen({ navigation }) {
                 <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
               </TouchableOpacity>
             </View>
-            {isLoading && (
-              <View style={{ width: "100%", justifyContent: "center", position: 'absolute', zIndex: 1 }}>
+
+
+            {getLoadingForTable ?
+              <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
                 <ActivityIndicator
-                  style={{ height: 100, top: 150 }}
                   color="#3F51B5"
                   size="large"
                 />
               </View>
-            )}
-            {getHorseGetFilter !== undefined ?
-              <>
-                {getHorseGetFilter.length === 0 ?
-                  <View style={styles.ErrorMessageContainer}>
-                    <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
-                  </View>
-                  :
-                  <ScrollView style={styles.ScrollViewContainer}>
-                    <ScrollView horizontal={true}>
-
-                      <DataTable>
-                        <DataTable.Header>
-                          <DataTable.Title >ID</DataTable.Title>
-                          <DataTable.Title >Analysis</DataTable.Title>
-                          <DataTable.Title >Header</DataTable.Title>
-                          <DataTable.Title >Country</DataTable.Title>
-                          <DataTable.Title >City</DataTable.Title>
-                          <DataTable.Title >Race</DataTable.Title>
-                          <DataTable.Title >Race G.</DataTable.Title>
-                          <DataTable.Title >Distance</DataTable.Title>
-                          <DataTable.Title >Runway</DataTable.Title>
-                          <DataTable.Title >Class</DataTable.Title>
-                          <DataTable.Title >Prize</DataTable.Title>
-                          <DataTable.Title >Date</DataTable.Title>
-                          <DataTable.Title >Horse Count</DataTable.Title>
-                          <DataTable.Title >Visit. Count</DataTable.Title>
-                          <DataTable.Title >Link</DataTable.Title>
-                        </DataTable.Header>
-                        {getHorseGetFilter.map((item, i) => (
-                          <DataTable.Row key={i}>
-                            <DataTable.Cell numeric>{item.HORSE_RACE_ID}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 110, justifyContent: 'center' }} >Analysis</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 110, justifyContent: 'center' }} >{item.HORSE_RACE_TITLE}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.RACE_CITY_OBJECT.COUNTRY.COUNTRY_EN}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_CITY_OBJECT.RACE_CITY_EN}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_OBJECT.RACE_EN}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_GROUP_EN}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_DISTANCE_OBJECT.DISTANCE}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_FLOOR_OBJECT.RACE_FLOOR_EN}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_TYPE_OBJECT.RACE_TYPE_EN}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 80, justifyContent: 'center' }}>{item.PRIZE1}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.DATE}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.HORSE_COUNT}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.COUNTER}</DataTable.Cell>
-                            <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>Link</DataTable.Cell>
-                          </DataTable.Row>
-                        )
-                        )}
-                      </DataTable>
-
-                    </ScrollView>
-                  </ScrollView>}
-              </>
               :
-              <View style={styles.ErrorMessageContainer}>
-                <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
-              </View>
+              <ScrollView>
+                {getHorseGetFilter !== undefined ?
+                  <>
+                    {getHorseGetFilter.length === 0 ?
+                      <View style={styles.ErrorMessageContainer}>
+                        <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                      </View>
+                      :
+                      <ScrollView style={styles.ScrollViewContainer}>
+                        <ScrollView horizontal={true}>
+
+                          <DataTable>
+                            <DataTable.Header>
+                              <DataTable.Title >ID</DataTable.Title>
+                              <DataTable.Title >Analysis</DataTable.Title>
+                              <DataTable.Title >Header</DataTable.Title>
+                              <DataTable.Title >Country</DataTable.Title>
+                              <DataTable.Title >City</DataTable.Title>
+                              <DataTable.Title >Race</DataTable.Title>
+                              <DataTable.Title >Race G.</DataTable.Title>
+                              <DataTable.Title >Distance</DataTable.Title>
+                              <DataTable.Title >Runway</DataTable.Title>
+                              <DataTable.Title >Class</DataTable.Title>
+                              <DataTable.Title >Prize</DataTable.Title>
+                              <DataTable.Title >Date</DataTable.Title>
+                              <DataTable.Title >Horse Count</DataTable.Title>
+                              <DataTable.Title >Visit. Count</DataTable.Title>
+                              <DataTable.Title >Link</DataTable.Title>
+                            </DataTable.Header>
+                            {getHorseGetFilter.map((item, i) => (
+                              <DataTable.Row key={i}>
+                                <DataTable.Cell numeric>{item.HORSE_RACE_ID}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 110, justifyContent: 'center' }} >Analysis</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 110, justifyContent: 'center' }} >{item.HORSE_RACE_TITLE}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.RACE_CITY_OBJECT.COUNTRY.COUNTRY_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_CITY_OBJECT.RACE_CITY_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_OBJECT.RACE_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_GROUP_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_DISTANCE_OBJECT.DISTANCE}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_FLOOR_OBJECT.RACE_FLOOR_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_TYPE_OBJECT.RACE_TYPE_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 80, justifyContent: 'center' }}>{item.PRIZE1}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.DATE}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.HORSE_COUNT}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.COUNTER}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>Link</DataTable.Cell>
+                              </DataTable.Row>
+                            )
+                            )}
+                          </DataTable>
+
+                        </ScrollView>
+                      </ScrollView>}
+                  </>
+                  :
+                  <View style={styles.ErrorMessageContainer}>
+                    <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
+                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  </View>
+                }
+              </ScrollView>
             }
+
+
+
           </>
+
           :
 
           <>
@@ -1205,7 +1214,7 @@ export function RacesScreen({ navigation }) {
                   style={styles.HalfInputStyle}
                   placeholder={"Prize Min"}
                   keyboardType="numeric"
-                  value={getMinPrize}
+                  value={getMinPrize.toString()}
                   onChange={setMinPrize}
                 />
               </View>
@@ -1215,7 +1224,7 @@ export function RacesScreen({ navigation }) {
                   style={styles.HalfInputStyle}
                   placeholder={"Prize Max"}
                   keyboardType="numeric"
-                  value={getMaxPrize}
+                  value={getMaxPrize.toString()}
                   onChange={setMaxPrize}
                 />
               </View>
@@ -1247,6 +1256,7 @@ export function RacesScreen({ navigation }) {
                 title="View"
                 style={{ width: '95%' }}
                 onPress={() => {
+                  setLoadingForTable(true)
                   readHorseRaceGetFilter();
                   setShowReport(true)
                 }}

@@ -267,7 +267,7 @@ export function MyDeleteRequestScreen({navigation}) {
                 placeholder={"ID"}
                 name={"ID"}
                 keyboardType ="numeric"
-                value={getDeleteRequestID}
+                value={getDeleteRequestID.toString()}
                 onChangeText={setDeleteRequestID}
                 />
             </View>

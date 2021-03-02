@@ -119,6 +119,7 @@ function SearchScreen({ navigation }) {
   }
   React.useEffect(() => {
     readUser();
+    setState({ checked: [state, 4] })
   }, [])
 
   return (
@@ -170,7 +171,8 @@ function SearchScreen({ navigation }) {
                     onPress={() => {
                       setState({ checked: [state, item.id] });
                       setChekedItem(item.id)
-                    }} />
+                    }} >
+                    </ListItem.CheckBox>
                   <ListItem.Content>
                     <ListItem.Title>{item.title}</ListItem.Title>
                   </ListItem.Content>

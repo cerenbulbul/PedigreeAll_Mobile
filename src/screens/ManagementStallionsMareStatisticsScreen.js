@@ -24,6 +24,7 @@ export function ManagementStallionsMareStatisticsScreen() {
     const [showAddProfileForm, setShowAddProfileForm] = React.useState(false)
     const [getSearchValue, setSearchValue] = React.useState();
     const [getSearchValueForOwnerBreeder, setSearchValueForOwnerBreeder] = React.useState()
+    const [getLoadingForTable, setLoadingForTable] = React.useState(false)
 
 
     const [getID, setID] = React.useState(0)
@@ -68,6 +69,7 @@ export function ManagementStallionsMareStatisticsScreen() {
                     .then((json) => {
                         setParentPageData(json.m_cData)
                         setLoading(false)
+                        setLoadingForTable(false)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -424,9 +426,9 @@ export function ManagementStallionsMareStatisticsScreen() {
                         || getBottomSheetText === "BlogKategoriForm" &&
 
                         <>
-                        {console.log(getBlogCategoryData)}
+                            {console.log(getBlogCategoryData)}
                             {getBlogCategoryData !== undefined &&
-                                
+
                                 <ScrollView>
                                     {console.log(getBlogCategoryData)}
                                     {getBlogCategoryData.map((item, index) => (
@@ -708,11 +710,11 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.OneValueInLineButton}>
                             <Icon name="horse" size={20} color="#2169ab" />
                             {getBlogCategoryName !== undefined ?
-                            <Text style={styles.InformationText}>{getBlogCategoryName}</Text>
-                            :
-                            <Text style={styles.InformationText}>Blog Kategori</Text>
+                                <Text style={styles.InformationText}>{getBlogCategoryName}</Text>
+                                :
+                                <Text style={styles.InformationText}>Blog Kategori</Text>
                             }
-                            
+
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Icon name="arrow-alt-circle-down" size={24} color="silver" />
@@ -831,6 +833,7 @@ export function ManagementStallionsMareStatisticsScreen() {
 
                         <BlueButton
                             onPress={() => {
+                                setLoadingForTable(true)
                                 setLoading(true)
                                 readGetParentPage();
                             }}
@@ -840,8 +843,13 @@ export function ManagementStallionsMareStatisticsScreen() {
 
                     </View>
 
-                    {getLoading ?
-                        <ActivityIndicator size="large" color="#000" />
+                    {getLoadingForTable ?
+                        <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                            <ActivityIndicator
+                                color="#3F51B5"
+                                size="large"
+                            />
+                        </View>
                         :
                         <>
 
@@ -945,10 +953,11 @@ export function ManagementStallionsMareStatisticsScreen() {
                                     }
                                 </>
                                 :
-                                <View style={styles.ErrorMessageContainer}>
-                                    <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                    <ActivityIndicator
+                                        color="#3F51B5"
+                                        size="large"
+                                    />
                                 </View>
                             }
 

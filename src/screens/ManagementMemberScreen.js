@@ -996,15 +996,18 @@ export function ManagementMemberScreen() {
                                     </TouchableOpacity>
                                 </View>
 
-                                <ScrollView style={styles.ScrollViewContainer}>
-
-                                    {getLoadingForTable ?
+                                {getLoadingForTable ?
+                                    <View style={{ width: '100%', height: '100%',  alignItems: 'center' }}>
                                         <ActivityIndicator
-                                            style={{ height: 100, top: 150 }}
                                             color="#3F51B5"
                                             size="large"
                                         />
-                                        :
+                                    </View>
+                                    :
+
+                                    <ScrollView style={styles.ScrollViewContainer}>
+
+
                                         <>
                                             {getSystemUserData !== undefined ?
                                                 <>
@@ -1064,10 +1067,12 @@ export function ManagementMemberScreen() {
                                                 </View>
                                             }
                                         </>
-                                    }
 
 
-                                </ScrollView>
+
+                                    </ScrollView>
+                            
+                                        }
                             </>
                             :
                             <>
@@ -1078,7 +1083,7 @@ export function ManagementMemberScreen() {
                                         style={styles.HalfInputStyle}
                                         placeholder={"ID"}
                                         keyboardType="numeric"
-                                        value={getSystemUserID}
+                                        value={getSystemUserID.toString()}
                                         onChangeText={setSystemUserID}
                                     />
                                 </View>
@@ -1190,7 +1195,7 @@ export function ManagementMemberScreen() {
                                         style={styles.HalfInputStyle}
                                         placeholder={"CellPhone"}
                                         keyboardType="phone-pad"
-                                        value={getCellPhone}
+                                        value={getCellPhone.toString()}
                                         onChangeText={setCellPhone}
                                     />
                                 </View>

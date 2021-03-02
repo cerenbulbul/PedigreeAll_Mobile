@@ -259,7 +259,7 @@ export function MyEditRequestsScreen({ navigation }) {
                   placeholder={"ID"}
                   name={"ID"}
                   keyboardType="numeric"
-                  value={getUpdateRequestID}
+                  value={getUpdateRequestID.toString()}
                   onChangeText={setUpdateRequestID}
                 />
               </View>

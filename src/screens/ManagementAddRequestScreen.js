@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, Text, ActivityIndicator } from 'react-native';
 import Title from '../components/Title';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from 'react-native-gesture-handler';
@@ -22,7 +22,7 @@ export function ManagementAddRequestScreen() {
     const [showReport, setShowReport] = useState(false)
 
     const [getHorseAddRequestData, setHorseAddRequestData] = React.useState();
-
+    const [getLoadingForTable, setLoadingForTable] = React.useState(false)
     const [getAddRequestID, setAddRequestID] = React.useState(-1)
     const [getHorseName, setHorseName] = React.useState("")
     const [getFatherName, setFatherName] = React.useState("")
@@ -183,6 +183,7 @@ export function ManagementAddRequestScreen() {
                         setHorseAddRequestData(json.m_cData)
                         //setTime(false)
                         console.log(json.m_cData)
+                        setLoadingForTable(false)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -222,7 +223,7 @@ export function ManagementAddRequestScreen() {
                 }}
             >
                 <TouchableOpacity
-                    onPress={() => { 
+                    onPress={() => {
 
                         let RequestStatusID
                         if (checkStateMultiRequestStatus.checked.length > 0) {
@@ -238,7 +239,7 @@ export function ManagementAddRequestScreen() {
                         console.log(RequestStatusID)
                         setRequestStatusID(RequestStatusID);
 
-                        BottomSheetSmall.current.close() 
+                        BottomSheetSmall.current.close()
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
@@ -299,7 +300,7 @@ export function ManagementAddRequestScreen() {
                 }}
             >
                 <TouchableOpacity
-                    onPress={() => { 
+                    onPress={() => {
                         let RequestOwnerID
                         if (checkStateMultiRequestOwner.checked.length > 0) {
                             for (let i = 0; i < checkStateMultiRequestOwner.checked.length; i++) {
@@ -328,7 +329,7 @@ export function ManagementAddRequestScreen() {
                         console.log(EditorID)
                         setEditorID(EditorID);
 
-                        BottomSheetLong.current.close() 
+                        BottomSheetLong.current.close()
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
@@ -428,69 +429,85 @@ export function ManagementAddRequestScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        {getHorseAddRequestData !== undefined ?
-                            <>
-                                {getHorseAddRequestData.length === 0 ?
-                                    <View style={styles.ErrorMessageContainer}>
-                                        <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
-                                    </View>
-                                    :
-                                    <ScrollView horizontal={true}>
-
-                                        <DataTable>
-                                            <DataTable.Header>
-                                                <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Name</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Sire</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Dam</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Request Status</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Request Date</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Last Action Date</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Request Owner</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Editor</DataTable.Title>
-                                                <DataTable.Title style={{ width: 120 }}>Action</DataTable.Title>
-                                            </DataTable.Header>
-
-                                            {getHorseAddRequestData.map((item, i) => (
-                                                <DataTable.Row key={i}>
-                                                    <DataTable.Cell style={{ width: 120 }} >{item.HORSE_ID}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.HORSE_NAME}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.FATHER_NAME}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.MOTHER_NAME}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_OWNER}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 120 }}>{item.EDITOR}</DataTable.Cell>
-                                                    <DataTable.Cell style={{ width: 150 }}>
-                                                        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                                                            <TouchableOpacity style={styles.TableActionButtonContainer}>
-                                                                <Text style={styles.TableActionButtonText}>Approve</Text>
-                                                            </TouchableOpacity>
-                                                            <TouchableOpacity style={[styles.TableActionButtonContainer, {marginLeft:5}]} >
-                                                                <Text style={styles.TableActionButtonText}>Reject</Text>
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </DataTable.Cell>
-
-                                                </DataTable.Row>
-                                            )
-                                            )}
-                                        </DataTable>
-
-                                    </ScrollView>
-                                }
-                            </>
-                            :
-                            <View style={styles.ErrorMessageContainer}>
-                                <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                        {getLoadingForTable ?
+                            <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                <ActivityIndicator
+                                    color="#3F51B5"
+                                    size="large"
+                                />
                             </View>
+                            :
+
+                            <ScrollView>
+
+                                {getHorseAddRequestData !== undefined ?
+                                    <>
+                                        {getHorseAddRequestData.length === 0 ?
+                                            <View style={styles.ErrorMessageContainer}>
+                                                <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                                                <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                            </View>
+                                            :
+                                            <ScrollView horizontal={true}>
+
+                                                <DataTable>
+                                                    <DataTable.Header>
+                                                        <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Name</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Sire</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Dam</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Request Status</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Request Date</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Last Action Date</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Request Owner</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Editor</DataTable.Title>
+                                                        <DataTable.Title style={{ width: 120 }}>Action</DataTable.Title>
+                                                    </DataTable.Header>
+
+                                                    {getHorseAddRequestData.map((item, i) => (
+                                                        <DataTable.Row key={i}>
+                                                            <DataTable.Cell style={{ width: 120 }} >{item.HORSE_ID}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.HORSE_NAME}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.FATHER_NAME}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.MOTHER_NAME}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_OWNER}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }}>{item.EDITOR}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 150 }}>
+                                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                                    <TouchableOpacity style={styles.TableActionButtonContainer}>
+                                                                        <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                    </TouchableOpacity>
+                                                                    <TouchableOpacity style={[styles.TableActionButtonContainer, { marginLeft: 5 }]} >
+                                                                        <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            </DataTable.Cell>
+
+                                                        </DataTable.Row>
+                                                    )
+                                                    )}
+                                                </DataTable>
+
+                                            </ScrollView>
+                                        }
+                                    </>
+                                    :
+                                    <View style={styles.ErrorMessageContainer}>
+                                        <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
+                                        <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                        <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                    </View>
+                                }
+
+                            </ScrollView>
                         }
+
+
                     </>
                     :
 
@@ -504,7 +521,7 @@ export function ManagementAddRequestScreen() {
                                     placeholder={"ID"}
                                     name={"ID"}
                                     keyboardType="numeric"
-                                    value={getAddRequestID}
+                                    value={getAddRequestID.toString()}
                                     onChangeText={setAddRequestID}
                                 />
                             </View>
@@ -662,6 +679,7 @@ export function ManagementAddRequestScreen() {
                             onPress={() => {
                                 readGetHorseAddRequest()
                                 setShowReport(true);
+                                setLoadingForTable(true)
                             }}
                         />
                     </View>
@@ -794,15 +812,15 @@ const styles = StyleSheet.create({
         color: '#2169ab',
         fontSize: 14,
     },
-    TableActionButtonContainer:{
-        padding:10,
-        borderWidth:0.5,
-        borderColor:'silver',
-        borderRadius:8,
-        backgroundColor:'rgb(232, 237, 241)'
+    TableActionButtonContainer: {
+        padding: 10,
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        borderRadius: 8,
+        backgroundColor: 'rgb(232, 237, 241)'
     },
 
-    TableActionButtonText:{
-        color:'#352c2a'
+    TableActionButtonText: {
+        color: '#352c2a'
     }
 })
