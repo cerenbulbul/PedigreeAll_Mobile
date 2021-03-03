@@ -12,6 +12,8 @@ export function ManagementStallionsMareStatisticsScreen() {
     const BottomSheetLong = React.useRef()
     const BottomSheetSmall = React.useRef()
 
+    const [isEditting, setIsEditting] = React.useState(false)
+
     const [getBottomSheetText, setBottomSheetText] = React.useState();
 
     const [getParentPageData, setParentPageData] = React.useState();
@@ -38,6 +40,23 @@ export function ManagementStallionsMareStatisticsScreen() {
     const [getRegistrationIDForm, setRegistrationIDForm] = React.useState();
     const [getBlogCategoryName, setBlogCategoryName] = React.useState()
     const [getBlogCategoryID, setBlogCategoryID] = React.useState()
+    const [getFoal, setFoal] = React.useState();
+    const [getRacingFoal, setRacingFoal] = React.useState();
+    const [getRaceWinnerFoal, setRaceWinnerFoal] = React.useState();
+    const [getGroupRaceWinnerFoal, setGroupRaceWinnerFoal] = React.useState();
+    const [getBlackTypeFoal, setBlackTypeFoal] = React.useState();
+    const [getStart, setStart] = React.useState();
+    const [getFirst, setFirst] = React.useState();
+    const [getSecond, setSecond] = React.useState();
+    const [getThird, setThird] = React.useState();
+    const [getFourth, setFourth] = React.useState();
+    const [getLink, setLink] = React.useState();
+    const [getCoverLink, setCoverLink] = React.useState();
+    const [getFacebook, setFacebook] = React.useState();
+    const [getInstagram, setInstagram] = React.useState();
+    const [getTwitter, setTwitter] = React.useState();
+    const [getWebsite, setWebsite] = React.useState();
+    const [getEarning, setEarning] = React.useState();
 
     const [checkStateMultiSireName, setcheckStateMultiSireName] = React.useState({ checked: [] });
     const [checkStateMultiSireNameString, setcheckStateMultiSireNameString] = React.useState({ checkedString: [] });
@@ -191,6 +210,82 @@ export function ManagementStallionsMareStatisticsScreen() {
                 console.log("Basarisiz")
             }
         } catch (e) {
+        }
+    }
+
+    const readParentPageUpdate = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/ParentPage/Update', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "BLOG_CATEGORY_ID": getBlogCategoryID,
+                        "B_WINNER_FOAL": getBlackTypeFoal,
+                        "B_WINNER_FOAL_PERCENTAGE" : "",
+                        "COVER_LINK": getCoverLink,
+                        "EARN" : getEarning,
+                        "EARN_CURRENCY_OBJECT" : "",
+                        "FACEBOOK": getFacebook,
+                        "FIRST": getFirst,
+                        "FIRST_PERCENTAGE" : "",
+                        "FOAL" : getFoal,
+                        "FOURTH" : getFourth,
+                        "FOURTH_PERCENTAGE" : "",
+                        "G_WINNER_FOAL" : getGroupRaceWinnerFoal,
+                        "G_WINNER_FOAL_PERCENTAGE" : "",
+                        "INSTAGRAM" : getInstagram,
+                        "LINK" : getLink,
+                        "PARENT_ID": getSireMareIDForm,
+                        "PARENT_PAGE_ID" : "",
+                        "PARENT_TEXT" : getSireMareNameForm,
+                        "RACE_FOAL" : getRacingFoal,
+                        "RACE_FOAL_PERCENTAGE" : "",
+                        "REGISTRATION" : "",
+                        "SECOND" : getSecond,
+                        "SECOND_PERCENTAGE" : "",
+                        "START" : getStart,
+                        "SYSTEM_USER" : "",
+                        "THIRD" : getThird, 
+                        "TWITTER" : getTwitter,
+                        "THIRD_PERCENTAGE" : "",
+                        "TOP4" : "",
+                        "TOP4_PERCENTAGE" : "",
+                        "WEB_SITE" : getWebsite,
+                        "WINNER_FOAL" : getRaceWinnerFoal,
+                        "WINNER_FOAL_PERCENTAGE" : "",
+                })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setBlogCategoryTRForEditting("")
+                            setBlogCategoryENForEditting("");
+                            setIsEditting(false)
+                            readGetBlogCategoryData()
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
@@ -522,7 +617,33 @@ export function ManagementStallionsMareStatisticsScreen() {
                 <TouchableOpacity
                     style={styles.FilteringContainer}
                     onPress={() => {
+                        setIsEditting(false)
                         setShowAddProfileForm(true)
+                        setSireMareIDForm()
+                        setSireMareNameForm()
+                        setRelatedPersonForm()
+                        setRelatedPersonIDForm()
+                        setRegistrationForm()
+                        setRegistrationIDForm()
+                        setFoal("")
+                        setRacingFoal("")
+                        setRaceWinnerFoal("")
+                        setGroupRaceWinnerFoal("")
+                        setBlackTypeFoal("")
+                        setStart("")
+                        setFirst("")
+                        setSecond("")
+                        setThird("")
+                        setFourth("")
+                        setLink("")
+                        setCoverLink("")
+                        setFacebook("")
+                        setInstagram("")
+                        setTwitter("")
+                        setWebsite("")
+                        setEarning("")
+                        setBlogCategoryID()
+                        setBlogCategoryName()
                     }}>
                     <Icon name="plus" size={16} color="#fff" style={{ justifyContent: 'center' }} />
                 </TouchableOpacity>
@@ -617,6 +738,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Foal"}
                             keyboardType="numeric"
+                            value={getFoal.toString()}
+                            onChangeText={setFoal}
                         />
                     </View>
 
@@ -626,6 +749,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"RacingFoal"}
                             keyboardType="numeric"
+                            value={getRacingFoal.toString()}
+                            onChangeText={setRacingFoal}
                         />
                     </View>
 
@@ -635,6 +760,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"RaceWinnerFoal"}
                             keyboardType="numeric"
+                            value={getRaceWinnerFoal.toString()}
+                            onChangeText={setRaceWinnerFoal}
                         />
                     </View>
 
@@ -644,6 +771,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"GroupRaceWinnerFoal"}
                             keyboardType="numeric"
+                            value={getGroupRaceWinnerFoal.toString()}
+                            onChangeText={setGroupRaceWinnerFoal}
                         />
                     </View>
 
@@ -653,6 +782,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"BlackTypeFoal"}
                             keyboardType="numeric"
+                            value={getBlackTypeFoal.toString()}
+                            onChangeText={setBlackTypeFoal}
                         />
                     </View>
 
@@ -662,6 +793,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Start"}
                             keyboardType="numeric"
+                            value={getStart.toString()}
+                            onChangeText={setStart}
                         />
                     </View>
 
@@ -671,6 +804,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"1st"}
                             keyboardType="numeric"
+                            value={getFirst.toString()}
+                            onChangeText={setFirst}
                         />
                     </View>
 
@@ -680,6 +815,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"2nd"}
                             keyboardType="numeric"
+                            value={getSecond.toString()}
+                            onChangeText={setSecond}
                         />
                     </View>
 
@@ -689,6 +826,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"3rd"}
                             keyboardType="numeric"
+                            value={getThird.toString()}
+                            onChangeText={setThird}
                         />
                     </View>
 
@@ -698,6 +837,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"4th"}
                             keyboardType="numeric"
+                            value={getFourth.toString()}
+                            onChangeText={setFourth}
                         />
                     </View>
 
@@ -727,6 +868,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Link"}
                             keyboardType="url"
+                            value={getLink}
+                            onChangeText={setLink}
                         />
                     </View>
 
@@ -736,6 +879,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"CoverLink"}
                             keyboardType="url"
+                            value={getCoverLink}
+                            onChangeText={setCoverLink}
                         />
                     </View>
 
@@ -745,6 +890,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Facebook"}
                             keyboardType="url"
+                            value={getFacebook}
+                            onChangeText={setFacebook}
                         />
                     </View>
 
@@ -754,6 +901,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Instagram"}
                             keyboardType="url"
+                            value={getInstagram}
+                            onChangeText={setInstagram}
                         />
                     </View>
 
@@ -763,6 +912,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Twitter"}
                             keyboardType="twitter"
+                            value={getTwitter}
+                            onChangeText={setTwitter}
                         />
                     </View>
 
@@ -772,6 +923,8 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"WebSite"}
                             keyboardType="url"
+                            value={getWebsite}
+                            onChangeText={setWebsite}
                         />
                     </View>
 
@@ -781,13 +934,23 @@ export function ManagementStallionsMareStatisticsScreen() {
                             style={styles.HalfInputStyle}
                             placeholder={"Earning"}
                             keyboardType="numeric"
+                            value={getEarning.toString()}
+                            onChangeText={setEarning}
                         />
                     </View>
 
-                    <BlueButton
-                        style={{ marginVertical: 20 }}
-                        title="Save"
-                    />
+                    {isEditting ?
+                        <BlueButton
+                            style={{ marginVertical: 20 }}
+                            title="Edit"
+                        />
+                        :
+                        <BlueButton
+                            style={{ marginVertical: 20 }}
+                            title="Save"
+                        />
+                    }
+
 
                 </ScrollView>
 
@@ -824,8 +987,7 @@ export function ManagementStallionsMareStatisticsScreen() {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => {
-                                    //setBMSireName("Sire Name");
-                                    //setBmSireID("");
+
                                 }}>
                                 <Icon name="times-circle" size={24} color="silver" />
                             </TouchableOpacity>
@@ -933,7 +1095,7 @@ export function ManagementStallionsMareStatisticsScreen() {
                                                             }}
                                                         >
                                                             {item.SYSTEM_USER.NAME.substring(0, 8)}...
-                                            </DataTable.Cell>
+                                                        </DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.LINK}</DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.COVER_LINK}</DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.WEB_SITE}</DataTable.Cell>
@@ -941,7 +1103,45 @@ export function ManagementStallionsMareStatisticsScreen() {
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.INSTAGRAM}</DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.TWITTER}</DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>
-                                                            <TouchableOpacity style={styles.TableActionButtonContainer}>
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    setIsEditting(true)
+                                                                    setShowAddProfileForm(true)
+                                                                    setSireMareIDForm(item.PARENT_ID)
+                                                                    setSireMareNameForm(item.PARENT_TEXT)
+                                                                    setRelatedPersonForm(item.SYSTEM_USER.NAME)
+                                                                    setRelatedPersonIDForm(item.SYSTEM_USER.ID)
+                                                                    setRegistrationForm(item.REGISTRATION.REGISTRATION_EN)
+                                                                    setRegistrationIDForm(item.REGISTRATION.REGISTRATION_ID)
+                                                                    setFoal(item.FOAL)
+                                                                    setRacingFoal(item.RACE_FOAL)
+                                                                    setRaceWinnerFoal(item.WINNER_FOAL)
+                                                                    setGroupRaceWinnerFoal(item.G_WINNER_FOAL)
+                                                                    setBlackTypeFoal(item.B_WINNER_FOAL)
+                                                                    setStart(item.START)
+                                                                    setFirst(item.FIRST)
+                                                                    setSecond(item.SECOND)
+                                                                    setThird(item.THIRD)
+                                                                    setFourth(item.FOURTH)
+                                                                    setLink(item.LINK)
+                                                                    setCoverLink(item.COVER_LINK)
+                                                                    setFacebook(item.FACEBOOK)
+                                                                    setInstagram(item.INSTAGRAM)
+                                                                    setTwitter(item.TWITTER)
+                                                                    setWebsite(item.WEB_SITE)
+                                                                    setEarning(item.EARN)
+                                                                    setBlogCategoryID(item.BLOG_CATEGORY_ID)
+                                                                    console.log(getBlogCategoryData)
+                                                                    for (let i = 0; i < getBlogCategoryData.length; i++) {
+                                                                        if (getBlogCategoryData[i].BLOG_CATEGORY_ID === item.BLOG_CATEGORY_ID) {
+                                                                            setBlogCategoryName(getBlogCategoryData[i].BLOG_CATEGORY_EN)
+                                                                        }
+                                                                    }
+
+
+
+                                                                }}
+                                                                style={styles.TableActionButtonContainer}>
                                                                 <Text style={styles.TableActionButtonText}>Edit</Text>
                                                             </TouchableOpacity>
                                                         </DataTable.Cell>
