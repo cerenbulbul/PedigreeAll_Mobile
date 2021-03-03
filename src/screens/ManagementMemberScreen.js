@@ -1,5 +1,15 @@
 import React, { useRef } from 'react'
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, TextInput, ActivityIndicator } from 'react-native'
+import {
+    View,
+    StyleSheet,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    Dimensions,
+    TextInput,
+    ActivityIndicator,
+    Alert
+} from 'react-native'
 import Title from '../components/Title';
 import RBSheet from "react-native-raw-bottom-sheet";
 import AsyncStorage from '@react-native-community/async-storage'
@@ -13,6 +23,8 @@ export function ManagementMemberScreen() {
 
     const BottomSheetSmall = useRef();
     const BottomSheetLong = useRef();
+
+    const [visible, setVisible] = React.useState(false)
 
     const [showReport, setShowReport] = React.useState(false);
     const [getBottomSheetText, setBottomSheetText] = React.useState();
@@ -29,6 +41,7 @@ export function ManagementMemberScreen() {
     const [getCountryData, setCountryData] = React.useState()
 
     const [getCountryText, setCountryText] = React.useState("")
+
 
     const [getSystemUserID, setSystemUserID] = React.useState(-1)
     const [getSystemUserTypeID, setSystemUserTypeID] = React.useState("")
@@ -59,6 +72,28 @@ export function ManagementMemberScreen() {
     const [checkStateMultiUserTypeFormString, setcheckStateMultiUserTypeFormString] = React.useState({ checkedString: [] });
     const [checkStateMultiPersonTypeForm, setcheckStateMultiPersonTypeForm] = React.useState({ checked: [] });
     const [checkStateMultiPersonTypeFormString, setcheckStateMultiPersonTypeFormString] = React.useState({ checkedString: [] });
+
+
+    const [getSystemUserTypeIDForAdding, setSystemUserTypeIDForAdding] = React.useState("1");
+    const [getSystemUserIDForAdding, setSystemUserIDForAdding] = React.useState(-1);
+    const [getSystemPersonTypeIDForAdding, setSystemPersonTypeIDForAdding] = React.useState("1");
+    const [getNameForAdding, setNameForAdding] = React.useState("")
+    const [getSurnameForAdding, setSurnameForAdding] = React.useState("")
+    const [getEmailForAdding, setEmailForAdding] = React.useState("")
+    const [getPasswordForAdding, setPasswordForAdding] = React.useState("")
+    const [getPasswordAgainForAdding, setPasswordAgainForAdding] = React.useState("")
+    const [getTitleForAdding, setTitleForAdding] = React.useState("")
+    const [getIDForAdding, setIDForAdding] = React.useState("")
+    const [getTaxOfficeForAdding, setTaxOfficeForAdding] = React.useState("")
+    const [getCountryIDForAdding, setCountryIDForAdding] = React.useState("0")
+    const [getAddressForAdding, setAddressForAdding] = React.useState("")
+    const [getCellPhoneForAdding, setCellPhoneForAdding] = React.useState("")
+    const [getBreederIDForAdding, setBreederIDForAdding] = React.useState("")
+    const [getOwnerIDForAdding, setOwnerIDForAdding] = React.useState("")
+    const [getCoachIDForAdding, setCoachIDForAdding] = React.useState("")
+    const [getJockeyIDForAdding, setJockeyIDForAdding] = React.useState("")
+    const [getIBANForAdding, setIBANForAdding] = React.useState("")
+
 
     const pressUserType = item => {
         const { checked } = checkStateMultiUserType;
@@ -294,12 +329,89 @@ export function ManagementMemberScreen() {
         }
     }
 
+    const readAddSystemUser = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/SystemUser/Add', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "SYSTEM_USER_TYPE_OBJECT": {
+                            'SYSTEM_USER_TYPE_ID': getSystemUserTypeIDForAdding
+                        },
+                        "SYSTEM_USER_ID": getSystemUserIDForAdding,
+
+                        "PERSON_TYPE_OBJECT": {
+                            'PERSON_TYPE_ID': getSystemPersonTypeIDForAdding
+                        },
+                        "NAME": getNameForAdding,
+                        "SURNAME": getSurnameForAdding,
+                        "EMAIL": getEmailForAdding,
+                        "PASSWORD": getPasswordForAdding,
+                        "TITLE": getTitleForAdding,
+                        "ID": getIDForAdding,
+                        "TAX_OFFICE": getTaxOfficeForAdding,
+                        "COUNTRY_OBJECT": {
+                            'COUNTRY_ID': getCountryIDForAdding
+                        },
+                        "ADDRESS": getAddressForAdding,
+                        "CELL_PHONE": getCellPhoneForAdding,
+                        "BREEDER_ID": getBreederIDForAdding,
+                        "OWNER_ID": getOwnerIDForAdding,
+                        "COACH_ID": getCoachIDForAdding,
+                        'JOCKEY_ID': getJockeyIDForAdding,
+                        "IBAN": getIBANForAdding
+
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json)
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setOpenAddNewMemberForm(false)
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     React.useEffect(() => {
         readPersonTypeList();
         readSystemUserTypeList();
         readBoolList()
         readCountryGet()
     }, [])
+
+    const alertDialog = (messageTitle, message) =>
+        Alert.alert(
+            messageTitle,
+            message,
+            [
+                {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+            ],
+            { cancelable: false }
+        );
 
     return (
         <View style={styles.Container}>
@@ -606,6 +718,7 @@ export function ManagementMemberScreen() {
                                             button
                                             onPress={() => {
                                                 pressUserTypeForm(item)
+                                                setSystemUserTypeIDForAdding(item.SYSTEM_USER_TYPE_ID)
 
                                             }}
                                         >
@@ -618,6 +731,7 @@ export function ManagementMemberScreen() {
                                                 uncheckedColor='rgb(232, 237, 241)'
                                                 onPress={() => {
                                                     pressUserTypeForm(item)
+                                                    setSystemUserTypeIDForAdding(item.SYSTEM_USER_TYPE_ID)
                                                 }} />
                                             <ListItem.Content>
                                                 <ListItem.Title>{item.SYSTEM_USER_TYPE_EN}</ListItem.Title>
@@ -657,6 +771,7 @@ export function ManagementMemberScreen() {
                                             button
                                             onPress={() => {
                                                 pressPersonTypeForm(item)
+                                                setSystemPersonTypeIDForAdding(item.PERSON_TYPE_ID)
                                             }}
                                         >
                                             <ListItem.CheckBox
@@ -668,6 +783,7 @@ export function ManagementMemberScreen() {
                                                 uncheckedColor='rgb(232, 237, 241)'
                                                 onPress={() => {
                                                     pressPersonTypeForm(item)
+                                                    setSystemPersonTypeIDForAdding(item.PERSON_TYPE_ID)
                                                 }} />
                                             <ListItem.Content>
                                                 <ListItem.Title>{item.PERSON_TYPE_EN}</ListItem.Title>
@@ -756,6 +872,7 @@ export function ManagementMemberScreen() {
                                             onPress={() => {
                                                 setCountryText(item.COUNTRY_EN)
                                                 BottomSheetLong.current.close()
+                                                setCountryIDForAdding(item.COUNTRY_ID)
                                             }}
                                         >
                                             <ListItem.Content>
@@ -785,6 +902,25 @@ export function ManagementMemberScreen() {
                 <View style={styles.SortTypeContainer}>
                     <TouchableOpacity
                         onPress={() => {
+                            setSystemUserTypeIDForAdding("1")
+                            setSystemUserIDForAdding(-1)
+                            setSystemPersonTypeIDForAdding("1")
+                            setNameForAdding("")
+                            setSurnameForAdding("")
+                            setEmailForAdding("")
+                            setPasswordForAdding("")
+                            setPasswordAgainForAdding("")
+                            setTitleForAdding("")
+                            setIDForAdding("")
+                            setTaxOfficeForAdding("")
+                            setCountryIDForAdding("0")
+                            setAddressForAdding("")
+                            setCellPhoneForAdding("")
+                            setBreederIDForAdding("")
+                            setOwnerIDForAdding("")
+                            setCoachIDForAdding("")
+                            setJockeyIDForAdding("")
+                            setIBANForAdding("")
                             setOpenAddNewMemberForm(true);
                         }}
                         style={styles.SortTypeButton}>
@@ -797,6 +933,20 @@ export function ManagementMemberScreen() {
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
+                                    setSystemUserID(-1);
+                                    setSystemUserTypeID("")
+                                    setPersonTypeID("")
+                                    setName("")
+                                    setSurname("")
+                                    setEmail("")
+                                    setTitle("")
+                                    setID("")
+                                    setTaxOffice("")
+                                    setCountryID("")
+                                    setAddress("")
+                                    setCellPhone("")
+                                    setApproved("")
+                                    setActive("")
                                     setOpenAddNewMemberForm(false)
                                 }}
                                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
@@ -818,8 +968,6 @@ export function ManagementMemberScreen() {
                                     :
                                     <Text style={styles.InformationText}>{checkStateMultiUserTypeFormString.checkedString}</Text>
                                 }
-
-
                             </TouchableOpacity>
                             <TouchableOpacity>
                                 <Icon name="arrow-alt-circle-down" size={24} color="silver" />
@@ -831,6 +979,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"Name"}
+                                value={getNameForAdding}
+                                onChangeText={setNameForAdding}
                             />
                         </View>
 
@@ -839,6 +989,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"Surname"}
+                                value={getSurnameForAdding}
+                                onChangeText={setSurnameForAdding}
                             />
                         </View>
 
@@ -847,22 +999,43 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"E-mail"}
+                                value={getEmailForAdding}
+                                onChangeText={setEmailForAdding}
                             />
                         </View>
+
+                        {visible ?
+                            <View style={[styles.TextInputContainer]}>
+                                <Text style={styles.TextInputHeader}>Password: </Text>
+                                <TextInput
+                                    style={styles.HalfInputStyle}
+                                    placeholder={"Password"}
+                                    secureTextEntry
+                                />
+                            </View>
+                            :
+                            null}
+
 
                         <View style={[styles.TextInputContainer]}>
                             <Text style={styles.TextInputHeader}>Password: </Text>
                             <TextInput
+                                secureTextEntry
                                 style={styles.HalfInputStyle}
                                 placeholder={"Password"}
+                                value={getPasswordForAdding}
+                                onChangeText={setPasswordForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
                             <Text style={styles.TextInputHeader}>Password Again: </Text>
                             <TextInput
+                                secureTextEntry
                                 style={styles.HalfInputStyle}
                                 placeholder={"Password Again"}
+                                value={getPasswordAgainForAdding}
+                                onChangeText={setPasswordAgainForAdding}
                             />
                         </View>
 
@@ -891,6 +1064,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"Title"}
+                                value={getTitleForAdding}
+                                onChangeText={setTitleForAdding}
                             />
                         </View>
 
@@ -899,6 +1074,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"ID/Passport/Tax No"}
+                                value={getIDForAdding}
+                                onChangeText={setIDForAdding}
                             />
                         </View>
 
@@ -907,8 +1084,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"Tax Office"}
-                                value={getTaxOffice}
-                                onChangeText={setTaxOffice}
+                                value={getTaxOfficeForAdding}
+                                onChangeText={setTaxOfficeForAdding}
                             />
                         </View>
 
@@ -938,6 +1115,8 @@ export function ManagementMemberScreen() {
                                 style={[styles.HalfInputStyle]}
                                 placeholder={"Address"}
                                 multiline={true}
+                                value={getAddressForAdding}
+                                onChangeText={setAddressForAdding}
                             />
                         </View>
 
@@ -946,6 +1125,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"Phone"}
+                                value={getCellPhoneForAdding}
+                                onChangeText={setCellPhoneForAdding}
                             />
                         </View>
 
@@ -954,6 +1135,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"CoachID"}
+                                value={getCoachIDForAdding}
+                                onChangeText={setCoachIDForAdding}
                             />
                         </View>
 
@@ -962,6 +1145,8 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"GrowerID"}
+                                value={getBreederIDForAdding}
+                                onChangeText={setBreederIDForAdding}
                             />
                         </View>
 
@@ -970,11 +1155,23 @@ export function ManagementMemberScreen() {
                             <TextInput
                                 style={styles.HalfInputStyle}
                                 placeholder={"OwnerID"}
+                                value={getOwnerIDForAdding}
+                                onChangeText={setOwnerIDForAdding}
                             />
                         </View>
 
                         <View style={styles.ButtonContainer}>
                             <BlueButton
+                                onPress={() => {
+
+                                    if (getPasswordForAdding === getPasswordAgainForAdding) {
+                                        readAddSystemUser();
+                                    }
+                                    else {
+                                        alertDialog("Passwords are not matching")
+                                    }
+
+                                }}
                                 title="Save"
                                 style={{ width: '95%' }}
                             />
@@ -997,7 +1194,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 {getLoadingForTable ?
-                                    <View style={{ width: '100%', height: '100%',  alignItems: 'center' }}>
+                                    <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
                                         <ActivityIndicator
                                             color="#3F51B5"
                                             size="large"
@@ -1071,8 +1268,8 @@ export function ManagementMemberScreen() {
 
 
                                     </ScrollView>
-                            
-                                        }
+
+                                }
                             </>
                             :
                             <>

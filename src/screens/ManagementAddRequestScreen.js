@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput, Text, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, Text, ActivityIndicator, Alert } from 'react-native';
 import Title from '../components/Title';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from 'react-native-gesture-handler';
@@ -21,6 +21,8 @@ export function ManagementAddRequestScreen() {
 
     const [showReport, setShowReport] = useState(false)
 
+    const [isApprove, setIsApprove] = React.useState();
+
     const [getHorseAddRequestData, setHorseAddRequestData] = React.useState();
     const [getLoadingForTable, setLoadingForTable] = React.useState(false)
     const [getAddRequestID, setAddRequestID] = React.useState(-1)
@@ -41,6 +43,21 @@ export function ManagementAddRequestScreen() {
     const [checkStateMultiRequestOwnerString, setcheckStateMultiRequestOwnerString] = React.useState({ checkedString: [] });
     const [checkStateMultiEditor, setcheckStateMultiEditor] = React.useState({ checked: [] });
     const [checkStateMultiEditorString, setcheckStateMultiEditorString] = React.useState({ checkedString: [] });
+
+    const alertDialog = (messageTitle, message) =>
+        Alert.alert(
+            messageTitle,
+            message,
+            [
+                {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+            ],
+            { cancelable: false }
+        );
+
 
     const pressRequestStatus = item => {   // The onPress method
         const { checked } = checkStateMultiRequestStatus;
@@ -197,12 +214,133 @@ export function ManagementAddRequestScreen() {
         }
     }
 
+    const readApproveHorseAddRequest = async (HorseAddRequestID) => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/HorseAddRequest/Approve', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "HORSE_ADD_REQUEST_ID": HorseAddRequestID,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setLoadingForTable(true)
+                            readGetHorseAddRequest();
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const readMakeInReviewHorseAddRequest = async (HorseAddRequestID) => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/HorseAddRequest/MakeInReview', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "HORSE_ADD_REQUEST_ID": HorseAddRequestID,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setLoadingForTable(true)
+                            readGetHorseAddRequest();
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const readRejectHorseAddRequest = async (HorseAddRequestID) => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/HorseAddRequest/Reject', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "HORSE_ADD_REQUEST_ID": HorseAddRequestID,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setLoadingForTable(true)
+                            readGetHorseAddRequest();
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     React.useEffect(() => {
         readDataRequestStatusList();
         readGetHorseAddRequest()
         readDataSystemUserGetNameAndIDList();
         readDataSystemUserGetEditor()
     }, [])
+
 
 
     return (
@@ -468,7 +606,7 @@ export function ManagementAddRequestScreen() {
 
                                                     {getHorseAddRequestData.map((item, i) => (
                                                         <DataTable.Row key={i}>
-                                                            <DataTable.Cell style={{ width: 120 }} >{item.HORSE_ID}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 120 }} >{item.HORSE_ADD_REQUEST_ID}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.HORSE_NAME}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.FATHER_NAME}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.MOTHER_NAME}</DataTable.Cell>
@@ -477,13 +615,59 @@ export function ManagementAddRequestScreen() {
                                                             <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_OWNER}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.EDITOR}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 150 }}>
+                                                            <DataTable.Cell style={{ width: 200 }}>
                                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                    <TouchableOpacity style={styles.TableActionButtonContainer}>
-                                                                        <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                    <TouchableOpacity
+                                                                        onPress={() => {
+                                                                            if (item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 1) {
+                                                                                readApproveHorseAddRequest(item.HORSE_ADD_REQUEST_ID);
+                                                                            }
+                                                                            if (item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 2) {
+                                                                                readMakeInReviewHorseAddRequest(item.HORSE_ADD_REQUEST_ID)
+                                                                            }
+
+                                                                            if (item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 3) {
+                                                                                readMakeInReviewHorseAddRequest(item.HORSE_ADD_REQUEST_ID)
+                                                                            }
+
+                                                                        }}
+                                                                        style={styles.TableActionButtonContainer}>
+                                                                        {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 1 &&
+                                                                            <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                        }
+
+                                                                        {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 2 &&
+                                                                            <Text style={styles.TableActionButtonText}>Take Review</Text>
+                                                                        }
+                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 3 &&
+                                                                            <Text style={styles.TableActionButtonText}>Take Review</Text>
+                                                                        }
+
+
                                                                     </TouchableOpacity>
-                                                                    <TouchableOpacity style={[styles.TableActionButtonContainer, { marginLeft: 5 }]} >
-                                                                        <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                    <TouchableOpacity
+                                                                        onPress={() => {
+                                                                            if (item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 1) {
+                                                                                readRejectHorseAddRequest(item.HORSE_ADD_REQUEST_ID);
+                                                                            }
+                                                                            if (item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 2) {
+                                                                                readRejectHorseAddRequest(item.HORSE_ADD_REQUEST_ID)
+                                                                            }
+                                                                            if (item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 3) {
+                                                                                readApproveHorseAddRequest(item.HORSE_ADD_REQUEST_ID)
+                                                                            }
+                                                                        }}
+                                                                        style={[styles.TableActionButtonContainer, { marginLeft: 5 }]} >
+                                                                        {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 1 &&
+                                                                            <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                        }
+
+                                                                        {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 2 &&
+                                                                            <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                        }
+                                                                        {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 3 &&
+                                                                            <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                        }
                                                                     </TouchableOpacity>
                                                                 </View>
                                                             </DataTable.Cell>
