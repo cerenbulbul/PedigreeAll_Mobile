@@ -11,12 +11,15 @@ export function ManagementStallionAdsScreen() {
 
     const BottomSheetLong = React.useRef()
 
+    const [isEditting, setIsEditting] = React.useState(false)
+
     const [getBottomSheetText, setBottomSheetText] = React.useState();
     const [getSearchValue, setSearchValue] = React.useState();
 
     const [getStallionAdsData, setStallionAdsData] = React.useState()
     const [geHorseNameData, seHorseNameData] = React.useState();
     const [getYearData, setYearData] = React.useState();
+    const [getPlaceData, setPlaceData] = React.useState();
     const [getCurrencyTypeData, setCurrencyTypeData] = React.useState()
 
     const [isLoading, setLoading] = React.useState(true);
@@ -42,6 +45,23 @@ export function ManagementStallionAdsScreen() {
     const [checkStateMultiYear, setcheckStateMultiYear] = React.useState({ checked: [] });
     const [checkStateMultiYearString, setcheckStateMultiYearSireNameString] = React.useState({ checkedString: [] });
 
+    const [getAliveCount, setAliveCount] = React.useState("");
+    const [getCurrencyObject, setCurrencyObject] = React.useState();
+    const [getDeadMareCount, setDeadMareCount] = React.useState("");
+    const [getEmptyCount, setEmptyCount] = React.useState("");
+    const [getFee, setFee] = React.useState("");
+    const [getMareCount, setMareCount] = React.useState("");
+    const [getMaxCount, setMaxCount] = React.useState("");
+    const [getPlaceObject, setPlaceObject] = React.useState();
+    const [getPregnantCount, setPregnantCount] = React.useState("");
+    const [getSireID, setSireID] = React.useState("");
+    const [getSireText, setSireText] = React.useState("")
+    const [getStallionAdsID, setStallionAdsID] = React.useState("");
+    const [getUnchekedCount, setUnchekedCount] = React.useState("");
+    const [getYearObject, setYearObject] = React.useState();
+
+    const [loadingForData, setLoadingForData] = React.useState(false)
+
     const pressSireName = item => {
         const { checked } = checkStateMultiSireName;
         const { checkedString } = checkStateMultiSireNameString;
@@ -66,7 +86,6 @@ export function ManagementStallionAdsScreen() {
         }
     }
 
-
     const alertDialog = (messageTitle, message) =>
         Alert.alert(
             messageTitle,
@@ -80,7 +99,6 @@ export function ManagementStallionAdsScreen() {
             ],
             { cancelable: false }
         );
-
 
     const readGetStallionAds = async (ID, SireID, YearID) => {
         try {
@@ -167,6 +185,34 @@ export function ManagementStallionAdsScreen() {
         }
     }
 
+    const readGetPlace = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/Place/GetAsNameId', {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        setPlaceData(json.m_cData)
+                        //setLoading(false)
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+        }
+    }
+
     const readDataCurrencyList = async () => {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
@@ -195,11 +241,156 @@ export function ManagementStallionAdsScreen() {
         }
     }
 
+    const readStallionAdsUpdate = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/StallionAds/Update', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "ALIVE_COUNT": getAliveCount,
+                        "CURRENCY_OBJECT": getCurrencyObject,
+                        "DEAD_MARE_COUNT": getDeadMareCount,
+                        "EMPTY_COUNT": getEmptyCount,
+                        "FEE": getFee,
+                        "MARE_COUNT": getMareCount,
+                        "MAX_COUNT": getMaxCount,
+                        "PLACE_OBJECT": getPlaceObject,
+                        "PREGNANT_COUNT": getPregnantCount,
+                        "SIRE_ID": getSireID,
+                        "SIRE_TEXT": getSireText,
+                        "STALLION_ADS_ID": getStallionAdsID,
+                        "UNCHECKED_COUNT": getUnchekedCount,
+                        "YEAR_OBJECT": getYearObject
+
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setIsEditting(false)
+                            setShowReport(false)
+
+                            setAliveCount("")
+                            setCurrencyObject()
+                            setDeadMareCount("")
+                            setEmptyCount("")
+                            setFee("")
+                            setMareCount("")
+                            setMaxCount("")
+                            setPlaceObject()
+                            setPregnantCount("")
+                            setSireID("")
+                            setSireText()
+                            setStallionAdsID("")
+                            setUnchekedCount("")
+                            setYearObject()
+
+                            setLoadingForData(false)
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const readStallionAdsAdd = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/StallionAds/Add', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "ALIVE_COUNT": getAliveCount,
+                        "CURRENCY_OBJECT": getCurrencyObject,
+                        "DEAD_MARE_COUNT": getDeadMareCount,
+                        "EMPTY_COUNT": getEmptyCount,
+                        "FEE": getFee,
+                        "MARE_COUNT": getMareCount,
+                        "MAX_COUNT": getMaxCount,
+                        "PLACE_OBJECT": getPlaceObject,
+                        "PREGNANT_COUNT": getPregnantCount,
+                        "SIRE_ID": getSireID,
+                        "SIRE_TEXT": getSireText,
+                        "STALLION_ADS_ID": getStallionAdsID,
+                        "UNCHECKED_COUNT": getUnchekedCount,
+                        "YEAR_OBJECT": getYearObject
+
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setIsEditting(false)
+                            setShowReport(false)
+
+                            setAliveCount("")
+                            setCurrencyObject()
+                            setDeadMareCount("")
+                            setEmptyCount("")
+                            setFee("")
+                            setMareCount("")
+                            setMaxCount("")
+                            setPlaceObject()
+                            setPregnantCount("")
+                            setSireID("")
+                            setSireText()
+                            setStallionAdsID("")
+                            setUnchekedCount("")
+                            setYearObject()
+
+                            setLoadingForData(false)
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     React.useEffect(() => {
         readGetStallionAds(-1, '', '')
         readGetHorseName();
         readGetYear();
         readDataCurrencyList();
+        readGetPlace();
     }, [])
 
     return (
@@ -374,6 +565,7 @@ export function ManagementStallionAdsScreen() {
                                             onPress={() => {
                                                 setCurrencyTypeYearText(item.ICON)
                                                 setCurrencyTypeID(item.CURRENCY_ID)
+                                                setCurrencyObject(item)
                                                 BottomSheetLong.current.close()
                                             }}
                                         >
@@ -388,6 +580,123 @@ export function ManagementStallionAdsScreen() {
                             }
                         </>
 
+                        || getBottomSheetText === "Place" &&
+
+                        <>
+                            {getPlaceData !== undefined &&
+
+                                <ScrollView>
+                                    {getPlaceData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            bottomDivider
+                                            button
+                                            onPress={() => {
+                                                setPlaceForm(item.NAME)
+                                                setPlaceIDForm(item.ID)
+                                                setPlaceObject(item)
+                                                BottomSheetLong.current.close()
+                                            }}
+                                        >
+                                            <ListItem.Content>
+                                                <ListItem.Title>{item.NAME}</ListItem.Title>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron />
+                                        </ListItem>
+                                    ))}
+                                </ScrollView>
+
+                            }
+                        </>
+
+                        || getBottomSheetText === "SireNameForm" &&
+
+                        <>
+
+                            <SearchBar
+                                placeholder={getSearchValue}
+                                lightTheme
+                                platform="ios"
+                                cancelButtonTitle=""
+                                inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+                                containerStyle={{ backgroundColor: 'transparent', }}
+                                inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+                                rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                                leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                                value={getSearchValue}
+                                onChangeText={setSearchValue}
+                                onSubmitEditing={() => {
+                                    readGetHorseName();
+                                }}
+                                showLoading={true}
+                            />
+
+                            {geHorseNameData !== undefined &&
+
+                                <ScrollView>
+                                    {geHorseNameData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            bottomDivider
+                                            button
+                                            onPress={() => {
+                                                setSireMareIDForm(item.HORSE_ID)
+                                                setSireMareNameForm(item.HORSE_NAME)
+                                                setSireText(item.HORSE_NAME)
+                                                setSireID(item.HORSE_ID)
+                                                BottomSheetLong.current.close()
+                                            }}
+                                        >
+                                            <Image
+                                                source={{
+                                                    uri:
+                                                        'https://www.pedigreeall.com//upload/1000/' + item.IMAGE,
+                                                }}
+                                                style={{ width: 100, height: 100 }}
+                                                resizeMode='contain'
+                                                transition={false} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                                                <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron />
+                                        </ListItem>
+                                    ))}
+                                </ScrollView>
+
+                            }
+
+                        </>
+
+                        || getBottomSheetText === "YearForm" &&
+
+                        <>
+                            {getYearData !== undefined &&
+
+                                <ScrollView>
+                                    {getYearData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            bottomDivider
+                                            button
+                                            onPress={() => {
+                                                setYearIDForm(item.YEAR_ID)
+                                                setYearForm(item.YEAR_TEXT)
+                                                setYearObject(item)
+                                                BottomSheetLong.current.close();
+                                            }}
+                                        >
+                                            <ListItem.Content>
+                                                <ListItem.Title>{item.YEAR_TEXT}</ListItem.Title>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron />
+                                        </ListItem>
+                                    ))}
+                                </ScrollView>
+
+                            }
+                        </>
                     }
 
                 </View>
@@ -399,11 +708,40 @@ export function ManagementStallionAdsScreen() {
                 <TouchableOpacity
                     style={styles.FilteringContainer}
                     onPress={() => {
+                        setIsEditting(false)
                         setShowReport(true)
                         setShowAddProfileForm(true)
+
+                        setAliveCount("")
+                        setCurrencyObject()
+                        setDeadMareCount("")
+                        setEmptyCount("")
+                        setFee("")
+                        setMareCount("")
+                        setMaxCount("")
+                        setPlaceObject()
+                        setPregnantCount("")
+                        setSireID("")
+                        setSireText()
+                        setStallionAdsID("")
+                        setUnchekedCount("")
+                        setYearObject()
+
                     }}>
                     <Icon name="plus" size={16} color="#fff" style={{ justifyContent: 'center' }} />
                 </TouchableOpacity>
+
+            }
+
+            {loadingForData &&
+
+                <View style={{ width: "100%", justifyContent: "center", position: 'absolute', zIndex: 1 }}>
+                    <ActivityIndicator
+                        style={{ height: 100, top: 150 }}
+                        color="#000"
+                        size="large"
+                    />
+                </View>
 
             }
 
@@ -424,13 +762,13 @@ export function ManagementStallionAdsScreen() {
                     <View style={[styles.OneValueInLine]}>
                         <TouchableOpacity
                             onPress={() => {
-                                setBottomSheetText("SireMareForm")
+                                setBottomSheetText("SireNameForm")
                                 BottomSheetLong.current.open()
                             }}
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
-                            {getSireMareNameForm !== undefined ?
-                                <Text style={styles.InformationText}>{getSireMareNameForm}</Text>
+                            {getSireText !== undefined ?
+                                <Text style={styles.InformationText}>{getSireText}</Text>
                                 :
                                 <Text style={styles.InformationText}>Sire | Mare</Text>
                             }
@@ -453,8 +791,8 @@ export function ManagementStallionAdsScreen() {
                             }}
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
-                            {getYearForm !== undefined ?
-                                <Text style={styles.InformationText}>{getYearForm}</Text>
+                            {getYearObject !== undefined ?
+                                <Text style={styles.InformationText}>{getYearObject.YEAR_TEXT}</Text>
                                 :
                                 <Text style={styles.InformationText}>Year</Text>
                             }
@@ -472,13 +810,13 @@ export function ManagementStallionAdsScreen() {
                     <View style={[styles.OneValueInLine]}>
                         <TouchableOpacity
                             onPress={() => {
-                                setBottomSheetText("PlaceForm")
+                                setBottomSheetText("Place")
                                 BottomSheetLong.current.open()
                             }}
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
-                            {getPlaceForm !== undefined ?
-                                <Text style={styles.InformationText}>{getPlaceForm}</Text>
+                            {getPlaceObject !== undefined ?
+                                <Text style={styles.InformationText}>{getPlaceObject.NAME}</Text>
                                 :
                                 <Text style={styles.InformationText}>Place</Text>
                             }
@@ -498,6 +836,8 @@ export function ManagementStallionAdsScreen() {
                             style={styles.EarningPriceInput}
                             placeholder={"Fee"}
                             keyboardType="numeric"
+                            value={getFee.toString()}
+                            onChangeText={setFee}
                         />
                         <TouchableOpacity
                             onPress={() => {
@@ -505,8 +845,8 @@ export function ManagementStallionAdsScreen() {
                                 BottomSheetLong.current.open();
                             }}
                             style={styles.EarningPriceButtonContainer}>
-                            {getCurrencyTypeText !== undefined ?
-                                <Text style={styles.EarningPriceButtonText}>{getCurrencyTypeText}</Text>
+                            {getCurrencyObject !== undefined ?
+                                <Text style={styles.EarningPriceButtonText}>{getCurrencyObject.ICON}</Text>
                                 :
                                 <Text style={styles.EarningPriceButtonText}>TL</Text>
                             }
@@ -520,6 +860,8 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Quota"}
+                            value={getMaxCount.toString()}
+                            onChangeText={setMaxCount}
                         />
                     </View>
 
@@ -528,6 +870,8 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Mare"}
+                            value={getMareCount.toString()}
+                            onChangeText={setMareCount}
                         />
                     </View>
 
@@ -536,6 +880,8 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Pregnant"}
+                            value={getPregnantCount.toString()}
+                            onChangeText={setPregnantCount}
                         />
                     </View>
 
@@ -544,6 +890,8 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Empty"}
+                            value={getEmptyCount.toString()}
+                            onChangeText={setEmptyCount}
                         />
                     </View>
 
@@ -552,6 +900,8 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Uncheked"}
+                            value={getUnchekedCount.toString()}
+                            onChangeText={setUnchekedCount}
                         />
                     </View>
 
@@ -560,6 +910,8 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Dead Mare"}
+                            value={getDeadMareCount.toString()}
+                            onChangeText={setDeadMareCount}
                         />
                     </View>
 
@@ -568,13 +920,30 @@ export function ManagementStallionAdsScreen() {
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"Alive Fool"}
+                            value={getAliveCount.toString()}
+                            onChangeText={setAliveCount}
                         />
                     </View>
 
-                    <BlueButton
-                        style={{ marginVertical: 20 }}
-                        title="Save"
-                    />
+                    {isEditting ?
+                        <BlueButton
+                            onPress={() => {
+                                setLoadingForData(true)
+                                readStallionAdsUpdate();
+                            }}
+                            style={{ marginVertical: 20 }}
+                            title="Edit"
+                        />
+                        :
+                        <BlueButton
+                            onPress={() => {
+                                setLoadingForData(true)
+                                readStallionAdsAdd()
+                            }}
+                            style={{ marginVertical: 20 }}
+                            title="Save"
+                        />
+                    }
 
                 </ScrollView>
                 :
@@ -714,7 +1083,30 @@ export function ManagementStallionAdsScreen() {
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.DEAD_MARE_COUNT}</DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>{item.ALIVE_COUNT}</DataTable.Cell>
                                                         <DataTable.Cell style={styles.DataTableCellText}>
-                                                            <TouchableOpacity style={styles.TableActionButtonContainer}>
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    setIsEditting(true)
+                                                                    setShowReport(true)
+                                                                    setSireMareNameForm(item.SIRE_TEXT)
+                                                                    setSireMareIDForm(item.SIRE_ID)
+
+                                                                    setAliveCount(item.ALIVE_COUNT)
+                                                                    setCurrencyObject(item.CURRENCY_OBJECT)
+                                                                    setDeadMareCount(item.DEAD_MARE_COUNT)
+                                                                    setEmptyCount(item.EMPTY_COUNT)
+                                                                    setFee(item.FEE)
+                                                                    setMareCount(item.MARE_COUNT)
+                                                                    setMaxCount(item.MAX_COUNT)
+                                                                    setPlaceObject(item.PLACE_OBJECT)
+                                                                    setPregnantCount(item.PREGNANT_COUNT)
+                                                                    setSireID(item.SIRE_ID)
+                                                                    setSireText(item.SIRE_TEXT)
+                                                                    setStallionAdsID(item.STALLION_ADS_ID)
+                                                                    setUnchekedCount(item.UNCHECKED_COUNT)
+                                                                    setYearObject(item.YEAR_OBJECT)
+
+                                                                }}
+                                                                style={styles.TableActionButtonContainer}>
                                                                 <Text style={styles.TableActionButtonText}>Edit</Text>
                                                             </TouchableOpacity>
                                                         </DataTable.Cell>

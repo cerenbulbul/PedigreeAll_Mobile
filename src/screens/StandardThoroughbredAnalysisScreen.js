@@ -316,7 +316,11 @@ export function StandardThoroughbredAnalysisScreen({ route,navigation }) {
                             }
                             
                             <View style={styles.ButtonContainer}>
-                                <TouchableOpacity style={[styles.Button,{backgroundColor:'#4DB7FE'}]}>
+                                <TouchableOpacity 
+                                    onPress={()=>{
+                                        navigation.navigate('ThoroughbredStallionsSearch')
+                                    }}
+                                    style={[styles.Button,{backgroundColor:'#4DB7FE'}]}>
                                     <Icon style={{alignSelf:'center'}} name="eye" size={16} color="#fff" />
                                     <Text style={styles.ButtonText}>View Sample Report</Text>
                                 </TouchableOpacity>

@@ -7,7 +7,7 @@ import { DataTable } from 'react-native-paper';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { SearchBar, ListItem } from 'react-native-elements'
 
-export function ManagementStallionsMareStatisticsScreen() {
+export function ManagementStallionsMareStatisticsScreen({ navigation }) {
 
     const BottomSheetLong = React.useRef()
     const BottomSheetSmall = React.useRef()
@@ -21,6 +21,7 @@ export function ManagementStallionsMareStatisticsScreen() {
     const [getOwnerBreederData, setOwnerBreederData] = React.useState();
     const [getRegistrationData, setRegistrationData] = React.useState();
     const [getBlogCategoryData, setBlogCategoryData] = React.useState();
+    const [CurrencyTypeList, setCurrencyList] = React.useState()
 
     const [getLoading, setLoading] = React.useState(true);
     const [showAddProfileForm, setShowAddProfileForm] = React.useState(false)
@@ -29,8 +30,11 @@ export function ManagementStallionsMareStatisticsScreen() {
     const [getLoadingForTable, setLoadingForTable] = React.useState(false)
 
 
+
     const [getID, setID] = React.useState(0)
     const [getParentId, setParentID] = React.useState("")
+    const [earningText, setEarningText] = React.useState("$")
+    const [getEarnCurrencyID, setEarnCurrencyID] = React.useState(1)
 
     const [getSireMareNameForm, setSireMareNameForm] = React.useState();
     const [getSireMareIDForm, setSireMareIDForm] = React.useState();
@@ -57,9 +61,29 @@ export function ManagementStallionsMareStatisticsScreen() {
     const [getTwitter, setTwitter] = React.useState();
     const [getWebsite, setWebsite] = React.useState();
     const [getEarning, setEarning] = React.useState();
+    const [getEarnCurrecyObject, setEarnCurrencyObject] = React.useState()
+    const [getRegistrationObject, setRegistrationObject] = React.useState()
+    const [getSystemUserObject, setSystemUserObject] = React.useState();
+    const [getParentPageID, setParentPageID] = React.useState();
 
     const [checkStateMultiSireName, setcheckStateMultiSireName] = React.useState({ checked: [] });
     const [checkStateMultiSireNameString, setcheckStateMultiSireNameString] = React.useState({ checkedString: [] });
+
+    const [loadingForData, setLoadingForData] = React.useState(false)
+
+    const alertDialog = (messageTitle, message) =>
+        Alert.alert(
+            messageTitle,
+            message,
+            [
+                {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+            ],
+            { cancelable: false }
+        );
 
     const pressSireName = item => {
         const { checked } = checkStateMultiSireName;
@@ -213,6 +237,23 @@ export function ManagementStallionsMareStatisticsScreen() {
         }
     }
 
+    const readDataCurrencyList = async () => {
+        fetch('https://api.pedigreeall.com/Currency/Get', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                setCurrencyList(json.m_cData)
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }
+
     const readParentPageUpdate = async () => {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
@@ -227,49 +268,163 @@ export function ManagementStallionsMareStatisticsScreen() {
                     body: JSON.stringify({
                         "BLOG_CATEGORY_ID": getBlogCategoryID,
                         "B_WINNER_FOAL": getBlackTypeFoal,
-                        "B_WINNER_FOAL_PERCENTAGE" : "",
                         "COVER_LINK": getCoverLink,
-                        "EARN" : getEarning,
-                        "EARN_CURRENCY_OBJECT" : "",
+                        "EARN": getEarning,
+                        "EARN_CURRENCY_OBJECT": getEarnCurrecyObject,
                         "FACEBOOK": getFacebook,
                         "FIRST": getFirst,
-                        "FIRST_PERCENTAGE" : "",
-                        "FOAL" : getFoal,
-                        "FOURTH" : getFourth,
-                        "FOURTH_PERCENTAGE" : "",
-                        "G_WINNER_FOAL" : getGroupRaceWinnerFoal,
-                        "G_WINNER_FOAL_PERCENTAGE" : "",
-                        "INSTAGRAM" : getInstagram,
-                        "LINK" : getLink,
+                        "FOAL": getFoal,
+                        "FOURTH": getFourth,
+                        "G_WINNER_FOAL": getGroupRaceWinnerFoal,
+                        "INSTAGRAM": getInstagram,
+                        "LINK": getLink,
                         "PARENT_ID": getSireMareIDForm,
-                        "PARENT_PAGE_ID" : "",
-                        "PARENT_TEXT" : getSireMareNameForm,
-                        "RACE_FOAL" : getRacingFoal,
-                        "RACE_FOAL_PERCENTAGE" : "",
-                        "REGISTRATION" : "",
-                        "SECOND" : getSecond,
-                        "SECOND_PERCENTAGE" : "",
-                        "START" : getStart,
-                        "SYSTEM_USER" : "",
-                        "THIRD" : getThird, 
-                        "TWITTER" : getTwitter,
-                        "THIRD_PERCENTAGE" : "",
-                        "TOP4" : "",
-                        "TOP4_PERCENTAGE" : "",
-                        "WEB_SITE" : getWebsite,
-                        "WINNER_FOAL" : getRaceWinnerFoal,
-                        "WINNER_FOAL_PERCENTAGE" : "",
-                })
+                        "PARENT_PAGE_ID": getParentPageID,
+                        "PARENT_TEXT": getSireMareNameForm,
+                        "RACE_FOAL": getRacingFoal,
+                        "REGISTRATION": getRegistrationObject,
+                        "SECOND": getSecond,
+                        "START": getStart,
+                        "SYSTEM_USER": getSystemUserObject,
+                        "THIRD": getThird,
+                        "TWITTER": getTwitter,
+                        "WEB_SITE": getWebsite,
+                        "WINNER_FOAL": getRaceWinnerFoal,
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
 
                         if (json.m_eProcessState === 1) {
                             alertDialog("Congratulations", json.m_lUserMessageList[1])
-                            setBlogCategoryTRForEditting("")
-                            setBlogCategoryENForEditting("");
                             setIsEditting(false)
-                            readGetBlogCategoryData()
+                            setShowAddProfileForm(false)
+                            setSireMareIDForm("")
+                            setSireMareNameForm("")
+                            setRelatedPersonForm("")
+                            setRelatedPersonIDForm("")
+                            setSystemUserObject([])
+                            setRegistrationForm("")
+                            setRegistrationIDForm("")
+                            setRegistrationObject([])
+                            setFoal("")
+                            setRacingFoal("")
+                            setRaceWinnerFoal("")
+                            setGroupRaceWinnerFoal("")
+                            setBlackTypeFoal("")
+                            setStart("")
+                            setFirst("")
+                            setSecond("")
+                            setThird("")
+                            setFourth("")
+                            setLink("")
+                            setCoverLink("")
+                            setFacebook("")
+                            setInstagram("")
+                            setTwitter("")
+                            setWebsite("")
+                            setEarning("")
+                            setEarnCurrencyObject([])
+                            setEarningText("$")
+                            setBlogCategoryID("")
+                            setParentPageID("")
+                            setBlogCategoryName("")
+                            setLoadingForData(false)
+                        }
+                        else {
+                            alertDialog("Error", json.m_lUserMessageList[1])
+                        }
+
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const readParentPageAdd = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/ParentPage/Add', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        "BLOG_CATEGORY_ID": getBlogCategoryID,
+                        "B_WINNER_FOAL": getBlackTypeFoal,
+                        "COVER_LINK": getCoverLink,
+                        "EARN": getEarning,
+                        "EARN_CURRENCY_OBJECT": getEarnCurrecyObject,
+                        "FACEBOOK": getFacebook,
+                        "FIRST": getFirst,
+                        "FOAL": getFoal,
+                        "FOURTH": getFourth,
+                        "G_WINNER_FOAL": getGroupRaceWinnerFoal,
+                        "INSTAGRAM": getInstagram,
+                        "LINK": getLink,
+                        "PARENT_ID": getSireMareIDForm,
+                        "PARENT_PAGE_ID": getParentPageID,
+                        "PARENT_TEXT": getSireMareNameForm,
+                        "RACE_FOAL": getRacingFoal,
+                        "REGISTRATION": getRegistrationObject,
+                        "SECOND": getSecond,
+                        "START": getStart,
+                        "SYSTEM_USER": getSystemUserObject,
+                        "THIRD": getThird,
+                        "TWITTER": getTwitter,
+                        "WEB_SITE": getWebsite,
+                        "WINNER_FOAL": getRaceWinnerFoal,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+
+                        if (json.m_eProcessState === 1) {
+                            alertDialog("Congratulations", json.m_lUserMessageList[1])
+                            setIsEditting(false)
+                            setShowAddProfileForm(false)
+                            setSireMareIDForm("")
+                            setSireMareNameForm("")
+                            setRelatedPersonForm("")
+                            setRelatedPersonIDForm("")
+                            setSystemUserObject([])
+                            setRegistrationForm("")
+                            setRegistrationIDForm("")
+                            setRegistrationObject([])
+                            setFoal("")
+                            setRacingFoal("")
+                            setRaceWinnerFoal("")
+                            setGroupRaceWinnerFoal("")
+                            setBlackTypeFoal("")
+                            setStart("")
+                            setFirst("")
+                            setSecond("")
+                            setThird("")
+                            setFourth("")
+                            setLink("")
+                            setCoverLink("")
+                            setFacebook("")
+                            setInstagram("")
+                            setTwitter("")
+                            setWebsite("")
+                            setEarning("")
+                            setEarnCurrencyObject([])
+                            setEarningText("$")
+                            setBlogCategoryID("")
+                            setParentPageID("")
+                            setBlogCategoryName("")
+                            setLoadingForData(false)
                         }
                         else {
                             alertDialog("Error", json.m_lUserMessageList[1])
@@ -295,21 +450,20 @@ export function ManagementStallionsMareStatisticsScreen() {
         readGetOwnerBreeder()
         readGetRegistration()
         readGetBlogCategory()
+        readDataCurrencyList()
     }, [])
 
-    const alertDialog = (messageTitle, message) =>
-        Alert.alert(
-            messageTitle,
-            message,
-            [
-                {
-                    text: "OK",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                },
-            ],
-            { cancelable: false }
-        );
+    React.useEffect(() => {
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            readGetParentPage()
+        });
+
+        return () => {
+            unsubscribe;
+        };
+    }, [navigation]);
+
 
     return (
         <View style={styles.Container}>
@@ -521,7 +675,6 @@ export function ManagementStallionsMareStatisticsScreen() {
                         || getBottomSheetText === "BlogKategoriForm" &&
 
                         <>
-                            {console.log(getBlogCategoryData)}
                             {getBlogCategoryData !== undefined &&
 
                                 <ScrollView>
@@ -545,6 +698,33 @@ export function ManagementStallionsMareStatisticsScreen() {
                                     ))}
                                 </ScrollView>
 
+                            }
+                        </>
+
+                        || getBottomSheetText === "CurrencyList" &&
+
+                        <>
+                            {CurrencyTypeList !== undefined &&
+                                <ScrollView>
+                                    {CurrencyTypeList.filter((x) => x.ICON).map(
+                                        (item, i) => (
+                                            <ListItem
+                                                key={i}
+                                                bottomDivider
+                                                button
+                                                onPress={() => {
+                                                    setEarningText(item.ICON)
+                                                    setEarnCurrencyID(item.CURRENCY_ID)
+                                                    setEarnCurrencyObject(item)
+                                                    BottomSheetLong.current.close()
+                                                }} >
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{item.ICON}</ListItem.Title>
+                                                </ListItem.Content>
+                                                <ListItem.Chevron />
+                                            </ListItem>
+                                        ))}
+                                </ScrollView>
                             }
                         </>
 
@@ -592,6 +772,7 @@ export function ManagementStallionsMareStatisticsScreen() {
                                             onPress={() => {
                                                 setRegistrationForm(item.REGISTRATION_EN)
                                                 setRegistrationIDForm(item.REGISTRATION_ID)
+                                                setRegistrationObject(item)
                                                 BottomSheetSmall.current.close()
                                             }}
                                         >
@@ -647,6 +828,18 @@ export function ManagementStallionsMareStatisticsScreen() {
                     }}>
                     <Icon name="plus" size={16} color="#fff" style={{ justifyContent: 'center' }} />
                 </TouchableOpacity>
+
+            }
+
+            {loadingForData &&
+
+                <View style={{ width: "100%", justifyContent: "center", position: 'absolute', zIndex: 1 }}>
+                    <ActivityIndicator
+                        style={{ height: 100, top: 150 }}
+                        color="#000"
+                        size="large"
+                    />
+                </View>
 
             }
 
@@ -928,24 +1121,44 @@ export function ManagementStallionsMareStatisticsScreen() {
                         />
                     </View>
 
-                    <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                        <Text style={styles.TextInputHeader}>Earning: </Text>
+
+
+                    <View style={styles.EarningPriceItemContainer}>
                         <TextInput
-                            style={styles.HalfInputStyle}
+                            style={styles.EarningPriceInput}
                             placeholder={"Earning"}
                             keyboardType="numeric"
                             value={getEarning.toString()}
                             onChangeText={setEarning}
                         />
+                        <TouchableOpacity
+                            onPress={() => {
+                                setBottomSheetText("CurrencyList");
+                                BottomSheetLong.current.open();
+                            }}
+                            style={styles.EarningPriceButtonContainer}>
+                            <Text style={styles.EarningPriceButtonText}>{earningText}</Text>
+                            <Icon name="caret-down" size={20} color="silver" />
+                        </TouchableOpacity>
                     </View>
+
+
 
                     {isEditting ?
                         <BlueButton
+                            onPress={() => {
+                                setLoadingForData(true)
+                                readParentPageUpdate();
+                            }}
                             style={{ marginVertical: 20 }}
                             title="Edit"
                         />
                         :
                         <BlueButton
+                            onPress={()=>{
+                                setLoadingForData(true)
+                                readParentPageAdd()
+                            }}
                             style={{ marginVertical: 20 }}
                             title="Save"
                         />
@@ -1031,6 +1244,7 @@ export function ManagementStallionsMareStatisticsScreen() {
                                                 <DataTable.Header>
                                                     <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
                                                     <DataTable.Title style={styles.DataTableTitle}>Sire | Mare</DataTable.Title>
+                                                    <DataTable.Title style={styles.DataTableTitle}>Registration Type</DataTable.Title>
                                                     <DataTable.Title style={styles.DataTableTitle}>Foal</DataTable.Title>
                                                     <DataTable.Title style={styles.DataTableTitle}>Racing</DataTable.Title>
                                                     <DataTable.Title style={styles.DataTableTitle}>Racing %</DataTable.Title>
@@ -1111,8 +1325,10 @@ export function ManagementStallionsMareStatisticsScreen() {
                                                                     setSireMareNameForm(item.PARENT_TEXT)
                                                                     setRelatedPersonForm(item.SYSTEM_USER.NAME)
                                                                     setRelatedPersonIDForm(item.SYSTEM_USER.ID)
+                                                                    setSystemUserObject(item.SYSTEM_USER)
                                                                     setRegistrationForm(item.REGISTRATION.REGISTRATION_EN)
                                                                     setRegistrationIDForm(item.REGISTRATION.REGISTRATION_ID)
+                                                                    setRegistrationObject(item.REGISTRATION)
                                                                     setFoal(item.FOAL)
                                                                     setRacingFoal(item.RACE_FOAL)
                                                                     setRaceWinnerFoal(item.WINNER_FOAL)
@@ -1130,7 +1346,10 @@ export function ManagementStallionsMareStatisticsScreen() {
                                                                     setTwitter(item.TWITTER)
                                                                     setWebsite(item.WEB_SITE)
                                                                     setEarning(item.EARN)
+                                                                    setEarnCurrencyObject(item.EARN_CURRENCY_OBJECT)
+                                                                    setEarningText(item.EARN_CURRENCY_OBJECT.ICON)
                                                                     setBlogCategoryID(item.BLOG_CATEGORY_ID)
+                                                                    setParentPageID(item.PARENT_PAGE_ID)
                                                                     console.log(getBlogCategoryData)
                                                                     for (let i = 0; i < getBlogCategoryData.length; i++) {
                                                                         if (getBlogCategoryData[i].BLOG_CATEGORY_ID === item.BLOG_CATEGORY_ID) {
@@ -1291,5 +1510,34 @@ const styles = StyleSheet.create({
     InformationText: {
         fontSize: 16,
         marginLeft: 10
+    },
+    EarningPriceItemContainer: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+        borderRadius: 8,
+        borderColor: 'silver',
+        borderWidth: 0.5,
+        marginVertical: 5
+    },
+    EarningPriceButtonContainer: {
+        flexDirection: 'row',
+        borderLeftWidth: 0.5,
+        borderColor: 'silver',
+        padding: 5,
+        justifyContent: 'space-around',
+        width: '40%'
+    },
+    EarningPriceInput: {
+        padding: 5,
+        borderTopLeftRadius: 8,
+        borderBottomLeftRadius: 8,
+        width: '60%',
+        fontSize: 16,
+        marginLeft: 10
+    },
+    EarningPriceButtonText: {
+        fontSize: 16,
+        marginRight: 5,
     },
 })
