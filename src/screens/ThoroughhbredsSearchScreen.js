@@ -151,21 +151,21 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
     const [getMaxFourth, setMaxFourth] = React.useState("");
     const [getReference1, setReference1] = React.useState("");
     const [getReference2, setReference2] = React.useState("");
-    const [getB, setB] = React.useState("");
-    const [getI, setI] = React.useState("");
-    const [getC, setC] = React.useState("");
-    const [getS, setS] = React.useState("");
-    const [getP, setP] = React.useState("");
-    const [getRmB, setRmB] = React.useState("");
-    const [getRmI, setRmI] = React.useState("");
-    const [getRmC, setRmC] = React.useState("");
-    const [getRmS, setRmS] = React.useState("");
-    const [getRmP, setRmP] = React.useState("");
-    const [getAnzB, setAnzB] = React.useState("");
-    const [getAnzI, setAnzI] = React.useState("");
-    const [getAnzC, setAnzC] = React.useState("");
-    const [getAnzS, setAnzS] = React.useState("");
-    const [getAnzP, setAnzP] = React.useState("");
+    const [getB, setB] = React.useState(0);
+    const [getI, setI] = React.useState(0);
+    const [getC, setC] = React.useState(0);
+    const [getS, setS] = React.useState(0);
+    const [getP, setP] = React.useState(0);
+    const [getRmB, setRmB] = React.useState(0);
+    const [getRmI, setRmI] = React.useState(0);
+    const [getRmC, setRmC] = React.useState(0);
+    const [getRmS, setRmS] = React.useState(0);
+    const [getRmP, setRmP] = React.useState(0);
+    const [getAnzB, setAnzB] = React.useState(0);
+    const [getAnzI, setAnzI] = React.useState(0);
+    const [getAnzC, setAnzC] = React.useState(0);
+    const [getAnzS, setAnzS] = React.useState(0);
+    const [getAnzP, setAnzP] = React.useState(0);
     //const [getSortTypeID, setSortTypeID] = React.useState("1");
 
     const pressRM = item => {   // The onPress method
@@ -1856,6 +1856,87 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         BottomSheetSmall.current.close()
+
+                        console.log(checkStateMultiRM)
+                        console.log(checkStateMultiRM.checked)
+                        console.log(checkStateMultiRM.checked.length)
+
+                        setRmB(0)
+                        setRmI(0)
+                        setRmC(0)
+                        setRmS(0)
+                        setRmP(0)
+                        setB(0)
+                        setI(0)
+                        setC(0)
+                        setS(0)
+                        setP(0)
+                        setAnzB(0)
+                        setAnzI(0)
+                        setAnzC(0)
+                        setAnzP(0)
+                        setAnzS(0)
+
+                        if(checkStateMultiRM.checked.length>0) {
+                            for(let i=0; i<checkStateMultiRM.checked.length; i++) {
+                                if(checkStateMultiRM.checked[i] === "B"){
+                                    setRmB(1)
+                                }
+                                if(checkStateMultiRM.checked[i] === "I"){
+                                    setRmI(1)
+                                }
+                                if(checkStateMultiRM.checked[i] === "C"){
+                                    setRmC(1)
+                                }
+                                if(checkStateMultiRM.checked[i] === "S"){
+                                    setRmS(1)
+                                }
+                                if(checkStateMultiRM.checked[i] === "P"){
+                                    setRmP(1)
+                                }
+                            }
+                        }
+
+                        if(checkStateMultiPA.checked.length>0) {
+                            for(let i=0; i<checkStateMultiPA.checked.length; i++) {
+                                if(checkStateMultiPA.checked[i] === "B"){
+                                    setB(1)
+                                }
+                                if(checkStateMultiPA.checked[i] === "I"){
+                                    setI(1)
+                                }
+                                if(checkStateMultiPA.checked[i] === "C"){
+                                    setC(1)
+                                }
+                                if(checkStateMultiPA.checked[i] === "S"){
+                                    setS(1)
+                                }
+                                if(checkStateMultiPA.checked[i] === "P"){
+                                    setP(1)
+                                }
+                            }
+                        }
+
+                        if(checkStateMultiANZ.checked.length>0) {
+                            for(let i=0; i<checkStateMultiANZ.checked.length; i++) {
+                                if(checkStateMultiANZ.checked[i] === "B"){
+                                    setAnzB(1)
+                                }
+                                if(checkStateMultiANZ.checked[i] === "I"){
+                                    setAnzI(1)
+                                }
+                                if(checkStateMultiANZ.checked[i] === "C"){
+                                    setAnzC(1)
+                                }
+                                if(checkStateMultiANZ.checked[i] === "S"){
+                                    setAnzS(1)
+                                }
+                                if(checkStateMultiANZ.checked[i] === "P"){
+                                    setAnzP(1)
+                                }
+                            }
+                        }
+
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />

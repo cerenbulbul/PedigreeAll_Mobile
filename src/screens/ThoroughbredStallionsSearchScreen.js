@@ -2325,6 +2325,82 @@ export function ThoroughbredStallionsSearchScreen() {
                         }
                         setRegistrationTypeID(RegistirationTypeID);
 
+                        setRmB(0)
+                        setRmI(0)
+                        setRmC(0)
+                        setRmS(0)
+                        setRmP(0)
+                        setB(0)
+                        setI(0)
+                        setC(0)
+                        setS(0)
+                        setP(0)
+                        setAnzB(0)
+                        setAnzI(0)
+                        setAnzC(0)
+                        setAnzP(0)
+                        setAnzS(0)
+
+                        if (checkStateMultiRM.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiRM.checked.length; i++) {
+                                if (checkStateMultiRM.checked[i] === "B") {
+                                    setRmB(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "I") {
+                                    setRmI(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "C") {
+                                    setRmC(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "S") {
+                                    setRmS(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "P") {
+                                    setRmP(1)
+                                }
+                            }
+                        }
+
+                        if (checkStateMultiPA.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiPA.checked.length; i++) {
+                                if (checkStateMultiPA.checked[i] === "B") {
+                                    setB(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "I") {
+                                    setI(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "C") {
+                                    setC(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "S") {
+                                    setS(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "P") {
+                                    setP(1)
+                                }
+                            }
+                        }
+
+                        if (checkStateMultiANZ.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiANZ.checked.length; i++) {
+                                if (checkStateMultiANZ.checked[i] === "B") {
+                                    setAnzB(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "I") {
+                                    setAnzI(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "C") {
+                                    setAnzC(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "S") {
+                                    setAnzS(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "P") {
+                                    setAnzP(1)
+                                }
+                            }
+                        }
+
 
                         BottomSheetSmall.current.close()
                     }}
@@ -2688,7 +2764,7 @@ export function ThoroughbredStallionsSearchScreen() {
                                 <>
                                     {getHorseGetFilter.map((item, index) => (
                                         <TouchableOpacity
-                                            onPress={()=>{
+                                            onPress={() => {
                                                 Linking.openURL("https://" + item.LINK + ".pedigreeall.com")
                                             }}
                                             key={index}>
