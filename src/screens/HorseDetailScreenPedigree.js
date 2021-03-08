@@ -79,7 +79,7 @@ export function HorseDetailScreenPedigree() {
       <View style={{width:'100%',height:'100%'}}>
 
           {time ?
-          <ActivityIndicator size="large" color="000" />
+          <ActivityIndicator size="large" color="#000" />
           :
           <>
             {getPedigreeReport !== undefined &&

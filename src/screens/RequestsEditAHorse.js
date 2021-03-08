@@ -8,11 +8,34 @@ import AsyncStorage from '@react-native-community/async-storage'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Flag from "react-native-flags";
 
+const RomanMillerData = [
+    {
+        id: "1",
+        title: "B",
+    },
+    {
+        id: "2",
+        title: "I",
+    },
+    {
+        id: "3",
+        title: "C",
+    },
+    {
+        id: "4",
+        title: "S",
+    },
+    {
+        id: "5",
+        title: "P",
+    },
+]
+
 export function RequestsEditAHorse() {
 
     const BottomSheetLong = React.useRef();
     const BottomSheetRef = useRef();
-    const [searchText, setSearchText] = React.useState("");
+    const [searchText, setSearchText] = React.useState("cerenin");
     const [showEdition, setShowEdition] = React.useState(false)
 
     const [getHorseGetByName, setHorseGetByName] = React.useState();
@@ -74,21 +97,21 @@ export function RequestsEditAHorse() {
     const [getThird, setThird] = React.useState("");
     const [getFourth, setFourth] = React.useState("");
     const [getImage, setImage] = React.useState("");
-    const [getB, setB] = React.useState(0);
-    const [getI, setI] = React.useState(0);
-    const [getC, setC] = React.useState(0);
-    const [getS, setS] = React.useState(0);
-    const [getP, setP] = React.useState(0);
-    const [getRMB, setRMB] = React.useState(0);
-    const [getRMI, setRMI] = React.useState(0);
-    const [getRMC, setRMC] = React.useState(0);
-    const [getRMS, setRMS] = React.useState(0);
-    const [getRMP, setRMP] = React.useState(0);
-    const [getANZB, setANZB] = React.useState(0);
-    const [getANZI, setANZI] = React.useState(0);
-    const [getANZC, setANZC] = React.useState(0);
-    const [getANZS, setANZS] = React.useState(0);
-    const [getANZP, setANZP] = React.useState(0);
+    const [getB, setB] = React.useState("");
+    const [getI, setI] = React.useState("");
+    const [getC, setC] = React.useState("");
+    const [getS, setS] = React.useState("");
+    const [getP, setP] = React.useState("");
+    const [getRmB, setRmB] = React.useState("");
+    const [getRmI, setRmI] = React.useState("");
+    const [getRmC, setRmC] = React.useState("");
+    const [getRmS, setRmS] = React.useState("");
+    const [getRmP, setRmP] = React.useState("");
+    const [getAnzB, setAnzB] = React.useState("");
+    const [getAnzI, setAnzI] = React.useState("");
+    const [getAnzC, setAnzC] = React.useState("");
+    const [getAnzS, setAnzS] = React.useState("");
+    const [getAnzP, setAnzP] = React.useState("");
 
 
     const [getFatherID, setFatherID] = React.useState();
@@ -113,6 +136,41 @@ export function RequestsEditAHorse() {
     const [SireText, setSireText] = React.useState("Sire");
     const [MareText, setMareText] = React.useState("Mare");
 
+    const [checkStateMultiRM, setcheckStateMultiRM] = React.useState({ checked: [] });
+    const [checkStateMultiANZ, setcheckStateMultiANZ] = React.useState({ checked: [] });
+    const [checkStateMultiPA, setcheckStateMultiPA] = React.useState({ checked: [] });
+
+    const [textOfPA, setTextOfPA] = React.useState();
+
+    const pressRM = item => {   // The onPress method
+        const { checked } = checkStateMultiRM;
+        // These ensures that multiple checkboxes don't all get affected when one is clicked
+        if (!checked.includes(item.title)) {
+            setcheckStateMultiRM({ checked: [...checked, item.title] });
+        } else {
+            setcheckStateMultiRM({ checked: checked.filter(a => a !== item.title) });
+        }
+    }
+
+    const pressANZ = item => {   // The onPress method
+        const { checked } = checkStateMultiANZ;
+        // These ensures that multiple checkboxes don't all get affected when one is clicked
+        if (!checked.includes(item.title)) {
+            setcheckStateMultiANZ({ checked: [...checked, item.title] });
+        } else {
+            setcheckStateMultiANZ({ checked: checked.filter(a => a !== item.title) });
+        }
+    }
+
+    const pressPA = item => {   // The onPress method
+        const { checked } = checkStateMultiPA;
+        // These ensures that multiple checkboxes don't all get affected when one is clicked
+        if (!checked.includes(item.title)) {
+            setcheckStateMultiPA({ checked: [...checked, item.title] });
+        } else {
+            setcheckStateMultiPA({ checked: checked.filter(a => a !== item.title) });
+        }
+    }
 
     const readHorseGetByName = async () => {
         try {
@@ -191,16 +249,77 @@ export function RequestsEditAHorse() {
                             setC(json.m_cData[0].C)
                             setS(json.m_cData[0].S)
                             setP(json.m_cData[0].P)
-                            setRMB(json.m_cData[0].RM_B)
-                            setRMI(json.m_cData[0].RM_I)
-                            setRMC(json.m_cData[0].RM_C)
-                            setRMS(json.m_cData[0].RM_S)
-                            setRMP(json.m_cData[0].RM_P)
-                            setANZB(json.m_cData[0].ANZ_B)
-                            setANZI(json.m_cData[0].ANZ_I)
-                            setANZC(json.m_cData[0].ANZ_C)
-                            setANZS(json.m_cData[0].ANZ_S)
-                            setANZP(json.m_cData[0].ANZ_P)
+                            setRmB(json.m_cData[0].RM_B)
+                            setRmI(json.m_cData[0].RM_I)
+                            setRmC(json.m_cData[0].RM_C)
+                            setRmS(json.m_cData[0].RM_S)
+                            setRmP(json.m_cData[0].RM_P)
+                            setAnzB(json.m_cData[0].ANZ_B)
+                            setAnzI(json.m_cData[0].ANZ_I)
+                            setAnzC(json.m_cData[0].ANZ_C)
+                            setAnzS(json.m_cData[0].ANZ_S)
+                            setAnzP(json.m_cData[0].ANZ_P)
+
+                            console.log(json)
+
+                            const paArray = []
+
+                            if (json.m_cData[0].B === 1) {
+                                paArray.push("B")
+                            }
+                            if (json.m_cData[0].I === 1) {
+                                paArray.push("I")
+                            }
+                            if (json.m_cData[0].C === 1) {
+                                paArray.push("C")
+                            }
+                            if (json.m_cData[0].S === 1) {
+                                paArray.push("S")
+                            }
+                            if (json.m_cData[0].P === 1) {
+                                paArray.push("P")
+                            }
+                            setcheckStateMultiPA({checked: paArray})
+
+                            const rmArray = []
+
+                            if (json.m_cData[0].RM_B === 1) {
+                                rmArray.push("B")
+                            }
+                            if (json.m_cData[0].RM_I === 1) {
+                                rmArray.push("I")
+                            }
+                            if (json.m_cData[0].RM_C === 1) {
+                                rmArray.push("C")
+                            }
+                            if (json.m_cData[0].RM_S === 1) {
+                                rmArray.push("S")
+                            }
+                            if (json.m_cData[0].RM_P === 1) {
+                                rmArray.push("P")
+                            }
+                            setcheckStateMultiRM({checked: rmArray})
+
+
+                            const anzArray = []
+
+                            if (json.m_cData[0].ANZ_B === 1) {
+                                anzArray.push("B")
+                            }
+                            if (json.m_cData[0].ANZ_I === 1) {
+                                anzArray.push("I")
+                            }
+                            if (json.m_cData[0].ANZ_C === 1) {
+                                anzArray.push("C")
+                            }
+                            if (json.m_cData[0].ANZ_S === 1) {
+                                anzArray.push("S")
+                            }
+                            if (json.m_cData[0].ANZ_P === 1) {
+                                anzArray.push("P")
+                            }
+                            setcheckStateMultiANZ({checked: anzArray})
+
 
 
                             if (json.m_cData[0].IS_DEAD_OBJECT.BOOL_ID === 0) {
@@ -448,7 +567,7 @@ export function RequestsEditAHorse() {
                         "SEX_OBJECT": {
                             "SEX_ID": getSexID.toString()
                         },
-                        "COUNTRY_OBJECT	": {
+                        "COUNTRY_OBJECT": {
                             "COUNTRY_ID": getCountryID
                         },
                         "PRICE": getPrice,
@@ -492,16 +611,16 @@ export function RequestsEditAHorse() {
                         "C": getC,
                         "S": getS,
                         "P": getP,
-                        "RM_B": getRMB,
-                        "RM_I": getRMI,
-                        "RM_C": getRMC,
-                        "RM_S": getRMS,
-                        "RM_P": getRMP,
-                        "ANZ_B": getANZB,
-                        "ANZ_I": getANZI,
-                        "ANZ_C": getANZC,
-                        "ANZ_S": getANZS,
-                        "ANZ_P": getANZP,
+                        "RM_B": getRmB,
+                        "RM_I": getRmI,
+                        "RM_C": getRmC,
+                        "RM_S": getRmS,
+                        "RM_P": getRmP,
+                        "ANZ_B": getAnzB,
+                        "ANZ_I": getAnzI,
+                        "ANZ_C": getAnzC,
+                        "ANZ_S": getAnzS,
+                        "ANZ_P": getAnzP,
                         "FAMILY_OBJECT": {
                             "FAMILY_ID": getFamilyID.toString()
                         },
@@ -541,16 +660,16 @@ export function RequestsEditAHorse() {
                             setC(0)
                             setS(0)
                             setP(0)
-                            setRMB(0)
-                            setRMI(0)
-                            setRMC(0)
-                            setRMS(0)
-                            setRMP(0)
-                            setANZB(0)
-                            setANZC(0)
-                            setANZI(0)
-                            setANZP(0)
-                            setANZS(0)
+                            setRmB(0)
+                            setRmI(0)
+                            setRmC(0)
+                            setRmS(0)
+                            setRmP(0)
+                            setAnzB(0)
+                            setAnzC(0)
+                            setAnzI(0)
+                            setAnzP(0)
+                            setAnzS(0)
                             setFatherID(-1)
                             setMotherID(-1)
                             setSexID(1)
@@ -681,7 +800,70 @@ export function RequestsEditAHorse() {
                 }}
             >
                 <TouchableOpacity
-                    onPress={() => { BottomSheetRef.current.close() }}
+                    onPress={() => {
+
+                        if (checkStateMultiRM.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiRM.checked.length; i++) {
+                                if (checkStateMultiRM.checked[i] === "B") {
+                                    setRmB(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "I") {
+                                    setRmI(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "C") {
+                                    setRmC(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "S") {
+                                    setRmS(1)
+                                }
+                                if (checkStateMultiRM.checked[i] === "P") {
+                                    setRmP(1)
+                                }
+                            }
+                        }
+
+                        if (checkStateMultiPA.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiPA.checked.length; i++) {
+                                if (checkStateMultiPA.checked[i] === "B") {
+                                    setB(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "I") {
+                                    setI(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "C") {
+                                    setC(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "S") {
+                                    setS(1)
+                                }
+                                if (checkStateMultiPA.checked[i] === "P") {
+                                    setP(1)
+                                }
+                            }
+                        }
+
+                        if (checkStateMultiANZ.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiANZ.checked.length; i++) {
+                                if (checkStateMultiANZ.checked[i] === "B") {
+                                    setAnzB(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "I") {
+                                    setAnzI(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "C") {
+                                    setAnzC(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "S") {
+                                    setAnzS(1)
+                                }
+                                if (checkStateMultiANZ.checked[i] === "P") {
+                                    setAnzP(1)
+                                }
+                            }
+                        }
+                        console.log(checkStateMultiPA)
+                        BottomSheetRef.current.close()
+                    }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
                 </TouchableOpacity>
@@ -1020,6 +1202,97 @@ export function RequestsEditAHorse() {
                             </>
 
                         )
+
+                        || BottomSheet === "RomanMiller" &&
+
+                        <>
+                            {RomanMillerData.map((item, i) => (
+                                <ListItem
+                                    key={i}
+                                    bottomDivider
+                                    onPress={() => {
+                                        pressRM(item)
+
+                                    }}
+                                >
+                                    <ListItem.CheckBox
+                                        checked={checkStateMultiRM.checked.includes(item.title)}
+                                        checkedIcon='circle'
+                                        uncheckedIcon='circle'
+                                        center={true}
+                                        checkedColor='#2169ab'
+                                        uncheckedColor='rgb(232, 237, 241)'
+                                        onPress={() => {
+                                            pressRM(item)
+                                        }} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                    </ListItem.Content>
+
+                                </ListItem>
+                            ))}
+                        </>
+
+                        || BottomSheet === "ANZ" &&
+
+                        <>
+                            {RomanMillerData.map((item, i) => (
+                                <ListItem
+                                    key={i}
+                                    bottomDivider
+                                    onPress={() => {
+                                        pressANZ(item)
+
+                                    }}
+                                >
+                                    <ListItem.CheckBox
+                                        checked={checkStateMultiANZ.checked.includes(item.title)}
+                                        checkedIcon='circle'
+                                        uncheckedIcon='circle'
+                                        center={true}
+                                        checkedColor='#2169ab'
+                                        uncheckedColor='rgb(232, 237, 241)'
+                                        onPress={() => {
+                                            pressANZ(item)
+                                        }} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                    </ListItem.Content>
+
+                                </ListItem>
+                            ))}
+                        </>
+
+                        || BottomSheet === "PA" &&
+
+                        <>
+                            {RomanMillerData.map((item, i) => (
+                                <ListItem
+                                    key={i}
+                                    bottomDivider
+                                    onPress={() => {
+                                        pressPA(item)
+
+                                    }}
+                                >
+                                    
+                                    <ListItem.CheckBox
+                                        checked={checkStateMultiPA.checked.includes(item.title)}
+                                        checkedIcon='circle'
+                                        uncheckedIcon='circle'
+                                        center={true}
+                                        checkedColor='#2169ab'
+                                        uncheckedColor='rgb(232, 237, 241)'
+                                        onPress={() => {
+                                            pressPA(item)
+                                        }} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                    </ListItem.Content>
+
+                                </ListItem>
+                            ))}
+                        </>
 
                     }
                 </View>
@@ -1361,7 +1634,7 @@ export function RequestsEditAHorse() {
                                             BottomSheetRef.current.open()
                                         }}
                                         style={styles.ThreeValueInLineButton}>
-                                       <Text>{getCoach}</Text>
+                                        <Text>{getCoach}</Text>
                                         <Icon name="plus-circle" size={24} color="silver" />
                                     </TouchableOpacity>
 
@@ -1405,11 +1678,16 @@ export function RequestsEditAHorse() {
                                 <View style={[styles.OneValueInLine, { marginTop: 50 }]}>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            setBottomSheetText("RomanMiller")
-                                            BottomSheetSmall.current.open();
+                                            setBottomSheet("RomanMiller")
+                                            BottomSheetRef.current.open();
+
                                         }}
                                         style={styles.InputTouchableContainer}>
-                                        <Text style={styles.InformationText}>Roman Miller</Text>
+                                        {checkStateMultiRM.checked.length === 0 ?
+                                            <Text style={styles.InformationText}>Roman Miller</Text>
+                                            :
+                                            <Text style={styles.InformationText}>{checkStateMultiRM.checked}</Text>
+                                        }
                                     </TouchableOpacity>
                                     <TouchableOpacity>
                                         <Icon name="caret-down" size={24} color="silver" />
@@ -1419,11 +1697,15 @@ export function RequestsEditAHorse() {
                                 <View style={[styles.OneValueInLine]}>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            setBottomSheetText("ANZ")
-                                            BottomSheetSmall.current.open();
+                                            setBottomSheet("ANZ")
+                                            BottomSheetRef.current.open();
                                         }}
                                         style={styles.InputTouchableContainer}>
-                                        <Text style={styles.InformationText}>ANZ</Text>
+                                        {checkStateMultiANZ.checked.length === 0 ?
+                                            <Text style={styles.InformationText}>ANZ</Text>
+                                            :
+                                            <Text style={styles.InformationText}>{checkStateMultiANZ.checked}</Text>
+                                        }
                                     </TouchableOpacity>
                                     <TouchableOpacity>
                                         <Icon name="caret-down" size={24} color="silver" />
@@ -1433,11 +1715,15 @@ export function RequestsEditAHorse() {
                                 <View style={[styles.OneValueInLine]}>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            setBottomSheetText("PedigreeAll")
-                                            BottomSheetSmall.current.open();
+                                            setBottomSheet("PA")
+                                            BottomSheetRef.current.open();
                                         }}
                                         style={styles.InputTouchableContainer}>
-                                        <Text style={styles.InformationText}>PedigreeAll.com</Text>
+                                        {checkStateMultiPA.checked.length === 0 ?
+                                            <Text style={styles.InformationText}>PedigreeAll.com</Text>
+                                            :
+                                            <Text style={styles.InformationText}>{checkStateMultiPA.checked}</Text>
+                                        }
                                     </TouchableOpacity>
                                     <TouchableOpacity>
                                         <Icon name="caret-down" size={24} color="silver" />
