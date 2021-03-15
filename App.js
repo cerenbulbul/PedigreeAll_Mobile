@@ -67,6 +67,7 @@ import { HorseDetailPRofileScreen } from './src/screens/HorseDetailPRofileScreen
 import { HorseDetailLinebreedingScreen } from './src/screens/HorseDetailLinebreedingScreen'
 import { HorseDetailScreenFemaleFamily } from './src/screens/HorseDetailScreenFemaleFamily'
 import { BreedingFoalsAsBroodMareSireScreen } from './src/screens/BreedingFoalsAsBroodMareSireScreen'
+import { Global } from './src/Global';
 
 const Drawer = createDrawerNavigator();
 const LoginStack = createStackNavigator();
@@ -145,6 +146,7 @@ export default function App() {
     }
   }
   React.useEffect(() => {
+    Global.getBasket();
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -192,6 +194,7 @@ export default function App() {
           name="Basket"
           component={BasketStackScreen}
           options={{
+            tabBarBadge: Global.TabBarBasketNotification ,
             tabBarIcon: ({ color }) => (
               <Icon name="shopping-basket" size={18} color={color} />
             )

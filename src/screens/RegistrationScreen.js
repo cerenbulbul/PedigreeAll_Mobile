@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import { StyleSheet, ScrollView, View, Vibration, Text, TouchableOpacity ,InteractionManager,Switch } from "react-native";
+import { StyleSheet, ScrollView, View, Vibration, Text, TouchableOpacity, InteractionManager, Switch } from "react-native";
 import { FilledButton } from "../components/FilledButton";
 import { Input } from "../components/Input";
 import { Error } from "../components/Error";
 import { AuthContainer } from "../components/AuthContainer";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { ListItem, SearchBar,CheckBox } from "react-native-elements";
+import { ListItem, SearchBar, CheckBox } from "react-native-elements";
 import Flag from "react-native-flags";
 import { Root, Popup, Toast } from "../components/Popup";
 
@@ -27,7 +27,7 @@ function showMessage(data, navigation) {
       }
     })
   }
-  else if(data.m_eProcessState == -1) {
+  else if (data.m_eProcessState == -1) {
     Popup.show({
       type: 'Danger',
       title: 'Register',
@@ -43,8 +43,8 @@ function showMessage(data, navigation) {
 
 
 export function RegistrationScreen({ route, navigation }) {
-  const { countryID, countryCode,countryName, countryIcon } = route.params;
-  const {headerTitle} = route.params;
+  const { countryID, countryCode, countryName, countryIcon } = route.params;
+  const { headerTitle } = route.params;
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [password_again, setPassword_again] = React.useState("");
@@ -71,165 +71,165 @@ export function RegistrationScreen({ route, navigation }) {
     navigation.setParams({ name: headerTitle })
     console.log(navigation);
   })
- 
- 
-  
+
+
+
 
   return (
-        
-<Root>
+
+    <Root>
 
 
-       
-         <View style={styles.Container}>
-           
 
-         <ScrollView style={styles.scrollContainer}>
-         
-         <View style={styles.inputView}>
-          <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
-          <Input
-            placeholder={"Email"}
-            keyboardType={"email-address"}
-            name={"username"}
-            value={email}
-            onChangeText={setEmail}
-          />
-        </View>
+      <View style={styles.Container}>
 
-        <View style={styles.inputView}>
-          <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
-          <Input
-            placeholder={"Password"}
-            secureTextEntry
-            name={"password"}
-            value={password}
-            onChangeText={setPassword}
-          />
-        </View>
 
-        <View style={styles.inputView}>
-          <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
-          <Input
-            placeholder={"Password Again"}
-            secureTextEntry
-            name={"password"}
-            value={password_again}
-            onChangeText={setPassword_again}
-          />
-        </View>
+        <ScrollView style={styles.scrollContainer}>
 
-        <View style={styles.inputView}>
-          <Icon style={styles.icon} name="user" size={20} color="#2e3f6e" />
-          <Input placeholder={"Name"} value={name} onChangeText={setname} />
-        </View>
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
+            <Input
+              placeholder={"Email"}
+              keyboardType={"email-address"}
+              name={"username"}
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
 
-        <View style={styles.inputView}>
-          <Icon style={styles.icon} name="user" size={20} color="#2e3f6e" />
-          <Input
-            placeholder={"Surname"}
-            value={surname}
-            onChangeText={setsurname}
-          />
-        </View>
-       
-       
-        <TouchableOpacity  style={styles.FlagContainer} onPress={() => {
-              navigation.navigate("Countries");
-              //setFlagText(countryName);
-              //console.log(setFlagText);
-              
-            }}>
-            {countryIconText === 'flag' ? 
-              <Icon style={styles.icon} name={countryIconText} size={20} color="#2e3f6e" /> 
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
+            <Input
+              placeholder={"Password"}
+              secureTextEntry
+              name={"password"}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
+            <Input
+              placeholder={"Password Again"}
+              secureTextEntry
+              name={"password"}
+              value={password_again}
+              onChangeText={setPassword_again}
+            />
+          </View>
+
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="user" size={20} color="#2e3f6e" />
+            <Input placeholder={"Name"} value={name} onChangeText={setname} />
+          </View>
+
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="user" size={20} color="#2e3f6e" />
+            <Input
+              placeholder={"Surname"}
+              value={surname}
+              onChangeText={setsurname}
+            />
+          </View>
+
+
+          <TouchableOpacity style={styles.FlagContainer} onPress={() => {
+            navigation.navigate("Countries");
+            //setFlagText(countryName);
+            //console.log(setFlagText);
+
+          }}>
+            {countryIconText === 'flag' ?
+              <Icon style={styles.icon} name={countryIconText} size={20} color="#2e3f6e" />
               : <Flag code={countryIconText} size={24} />
             }
-            
-            
+
+
             <Text style={styles.FlagText}>{flagText}</Text>
-        </TouchableOpacity>
-        <View style={styles.CheckboxView}>
-        <CheckBox
-            center
-            title="Bireysel"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            style={styles.checkbox}
-            checked={checked_1}
-            onPress={() => {
-              if (checked_2 === true) {
-                toggleChecked_1(!checked_1);
-                toggleChecked_2(!checked_2);
-              }
-            }}
-          />
+          </TouchableOpacity>
+          <View style={styles.CheckboxView}>
+            <CheckBox
+              center
+              title="Bireysel"
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              style={styles.checkbox}
+              checked={checked_1}
+              onPress={() => {
+                if (checked_2 === true) {
+                  toggleChecked_1(!checked_1);
+                  toggleChecked_2(!checked_2);
+                }
+              }}
+            />
 
-          <CheckBox
-            center
-            title="Kurumsal"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            style={styles.checkbox}
-            checked={checked_2}
-            onPress={() => {
-              if (checked_1 === true) {
-                toggleChecked_2(!checked_2);
-                toggleChecked_1(!checked_1);
-              }
-            }}
-          />
-          
-        </View>
-      
-        
-        <FilledButton
-        title="Register"
-        style={styles.registerButton}
-        onPress={async (e) => {
+            <CheckBox
+              center
+              title="Kurumsal"
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              style={styles.checkbox}
+              checked={checked_2}
+              onPress={() => {
+                if (checked_1 === true) {
+                  toggleChecked_2(!checked_2);
+                  toggleChecked_1(!checked_1);
+                }
+              }}
+            />
 
-          fetch('https://api.pedigreeall.com/systemuser/SignUp', {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
+          </View>
+
+
+          <FilledButton
+            title="Register"
+            style={styles.registerButton}
+            onPress={async (e) => {
+
+              fetch('https://api.pedigreeall.com/systemuser/SignUp', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  NAME: name,
+                  SURNAME: surname,
+                  EMAIL: email,
+                  PASSWORD: password,
+                  ADDRESS: password_again,
+                  COUNTRY_OBJECT: {
+                    COUNTRY_ID: countryID
                   },
-                  body: JSON.stringify({
-                    NAME: name,
-                    SURNAME: surname,
-                    EMAIL: email,
-                    PASSWORD: password,
-                    ADDRESS: password_again,
-                    COUNTRY_OBJECT:{
-                      COUNTRY_ID: countryID
-                    } ,          
-                     PERSON_TYPE_OBJECT: {
-                      PERSON_TYPE_ID: (
-                        checked_1 ? 1:2
-                      )
-                    }
-                  })
+                  PERSON_TYPE_OBJECT: {
+                    PERSON_TYPE_ID: (
+                      checked_1 ? 1 : 2
+                    )
+                  }
                 })
-                  .then((response) => response.json())
-                  .then((json) => {
-                    //alert(json.m_lUserMessageList[0])
-                    showMessage(json, navigation);
-                      
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                  })
-        }}
-      />
+              })
+                .then((response) => response.json())
+                .then((json) => {
+                  //alert(json.m_lUserMessageList[0])
+                  showMessage(json, navigation);
 
-      <View style={{backgroundColor:'white', height:200}}></View>
-  
-       </ScrollView>
-      
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
+            }}
+          />
 
-         </View>
-  
-    
-         </Root>
+          <View style={{ backgroundColor: 'white', height: 200 }}></View>
+
+        </ScrollView>
+
+
+      </View>
+
+
+    </Root>
   );
 }
 
@@ -249,9 +249,9 @@ const styles = StyleSheet.create({
     marginVertical: 32,
   },
   scrollContainer: {
-    padding:20,
-    width:'100%',
-    backgroundColor:'#fff',
+    padding: 20,
+    width: '100%',
+    backgroundColor: '#fff',
   },
   picker: {
     backgroundColor: "#e8e8e8",
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   FlagText: {
     fontSize: 18,
-    paddingLeft:20,
+    paddingLeft: 20,
   },
   flag: {
     marginRight: 8,
@@ -362,7 +362,7 @@ Picker
 
 /*
 
-Group Button 
+Group Button
 
 <RadioButton.Group
           onValueChange={(newValue) => setValue(newValue)}
@@ -383,7 +383,7 @@ Group Button
 */
 
 /*
-FLAGG 
+FLAGG
 
 
 {country === null && (
@@ -403,7 +403,7 @@ FLAGG
 */
 
 
-/* 
+/*
 
 <CheckBox
             center

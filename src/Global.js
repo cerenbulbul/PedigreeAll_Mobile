@@ -20,6 +20,8 @@ export class Global {
   static MinCross_Fename_Family = 2;
   static getBlogListData;
   static laodingForBlog = true;
+  static Sepetim=[];
+  static TabBarBasketNotification = 0;
 
   static getToken = async () => {
     try {
@@ -41,6 +43,21 @@ export class Global {
       }
       else {
         this.IsLogin = false
+      }
+    } catch (e) {
+      console.log("User Error")
+    }
+  };
+
+  static getBasket = async () => {
+    try {
+      const userKey = await AsyncStorage.getItem('SEPETIM')
+      if (userKey !== null) {
+        this.Sepetim.push(JSON.parse(userKey)[0]) 
+        this.TabBarBasketNotification = JSON.parse(userKey).length;
+        console.log(JSON.parse(userKey).length)
+        console.log(this.Sepetim)
+        console.log("getBasket kaydedildi")
       }
     } catch (e) {
       console.log("User Error")

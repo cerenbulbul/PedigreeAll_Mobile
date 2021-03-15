@@ -318,7 +318,7 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                             <Tab.Screen
                                 name="Thoroughbred"
                                 component={BuildReportHorseSearchScreen}
-                                initialParams={{ ScreenName: "Thoroughbred" }}
+                                initialParams={{ ScreenName: "Thoroughbred", EffectiveNick_Code: EffectiveNick_Code }}
                                 options={{
                                     tabBarLabel: 'Thoroughbred'
                                 }}
@@ -326,7 +326,7 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                             <Tab.Screen
                                 name="Hypothetical"
                                 component={BuildReportHorseSearchScreen}
-                                initialParams={{ ScreenName: "Hypothetical" }}
+                                initialParams={{ ScreenName: "Hypothetical", EffectiveNick_Code: EffectiveNick_Code }}
                                 options={{
                                     tabBarLabel: 'Hypothetical',
                                 }}
@@ -433,8 +433,8 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
 
                                 {getCounter !== undefined &&
 
-                                    <View style={{marginVertical:8, marginBottom:5, width:'100%', marginLeft:15}}>
-                                        <Text style={{fontSize:14, fontWeight:'700'}}>{getCounter.REPORT} Reports Created</Text>
+                                    <View style={{ marginVertical: 8, marginBottom: 5, width: '100%', marginLeft: 15 }}>
+                                        <Text style={{ fontSize: 14, fontWeight: '700' }}>{getCounter.REPORT} Reports Created</Text>
                                     </View>
 
                                 }
@@ -589,7 +589,7 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
 }
 
 function BuildReportHorseSearchScreen({ route, navigation }) {
-    const { ScreenName } = route.params;
+    const { ScreenName, EffectiveNick_Code } = route.params;
 
     const [searchValue, setSearchValue] = React.useState()
     const [isLoading, SetisLoading] = React.useState(true);
@@ -601,6 +601,9 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
 
     const [getHorseList, setHorseList] = React.useState();
 
+    const [getProductType, setProductType] = React.useState();
+    const [getProduct, setProduct] = React.useState();
+
     const BottomSheetLong = React.useRef();
 
 
@@ -608,13 +611,17 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -632,9 +639,105 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
         }
     }
 
+    const readGetProductUsingTypeID = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
+                fetch('https://api.pedigreeall.com/Product/Get?p_iProductTypeId=' + -1, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json)
+                        setProductType(json.m_cData)
+                        let id;
+                        switch (EffectiveNick_Code) {
+                            case "StandardThoroughbred":
+                                id = 1;
+                                break;
+                            case "AdvancedThoroughbred":
+                                id = 2;
+                                break;
+                            case "ProfessionalThoroughbred":
+                                id = 3;
+                                break;
+                            case "StandardMare":
+                                id = 4;
+                                break;
+                            case "AdvancedMare":
+                                id = 5;
+                                break;
+                            case "ProfessionalMare":
+                                id = 6;
+                                break;
+                            case "StandartStallion":
+                                id = 7;
+                                break;
+                            case "AdvancedStallion":
+                                id = 8;
+                                break;
+                            case "ProfessionalStallion":
+                                id = 9;
+                                break;
+
+                        }
+                        console.log(id)
+                        json.m_cData.map((item, index) => (
+                            <>
+                                {item.PRODUCT_ID === id &&
+                                    setProduct(item)
+                                }
+                            </>
+                        ))
+
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+        }
+    }
+
+    const saveData = async (Basket) => {
+        try {
+            await AsyncStorage.setItem("SEPETIM", JSON.stringify(Basket))
+            console.log('Data successfully saved')
+        } catch (e) {
+            console.log('Failed to save the data to the storage')
+        }
+    }
+
+    const checkSepet = async (Basket) => {
+        try {
+          const userKey = await AsyncStorage.getItem('SEPETIM')
+          if (userKey !== null) {
+            Basket.push(JSON.parse(userKey)[0])
+            saveData(Basket);
+            
+        }
+        else {
+            saveData(Basket);
+        }
+        } catch (e) {
+          console.log("User Error")
+        }
+      };
+
+
 
     React.useEffect(() => {
         readHorseGetByName();
+        readGetProductUsingTypeID()
     }, [])
 
     return (
@@ -806,6 +909,25 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
 
             <View style={{ padding: 15 }}>
                 <BlueButton
+                    onPress={() => {
+
+                        console.log(getProduct)
+                        if (getProduct !== undefined) {
+                            const Basket = [
+                                {
+                                    "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
+                                    "COST_USD": getProduct.FEE,
+                                    "INFO": getHorseName,
+                                    "ORDER_DETAIL_ID": 0,
+                                    "ORDER_ID": -1,
+                                    "PRODUCT": getProduct
+                                }
+                            ]
+                            checkSepet(Basket)
+                            
+                        }
+
+                    }}
                     style={{ marginVertical: 20 }}
                     title="Add To Basket"
                 />
