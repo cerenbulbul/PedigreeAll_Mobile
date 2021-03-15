@@ -8,7 +8,8 @@ import {
     Dimensions,
     Image,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -104,7 +105,7 @@ function ThoroughbredAnalysisScreen({ navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/StallionPage/GetLastSeasonRegisteredStallions', {
+                fetch('https://api.pedigreeall.com/StallionPage/GetLastSeasonRegisteredStallions?p_iRaceId=' + 1, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -132,13 +133,17 @@ function ThoroughbredAnalysisScreen({ navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -365,7 +370,13 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         OpenSmallBottomSheet.current.close();
-                        setStallionCode(chekedItem);
+                        if (chekedItem === undefined) {
+                            setStallionCode("-")
+                        }
+                        else{
+                            setStallionCode(chekedItem);
+                        }
+                        
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
@@ -412,7 +423,7 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                             OpenFullBottomSheet.current.open();
                         }}
                         style={styles.SireMareButtonContainer}>
-                        <Text>{getRegisteredStallionsName.substring(0, 10)} ...</Text>
+                        <Text>{getRegisteredStallionsName.substring(0, 10)}...</Text>
                         <Icon name="chevron-down" size={16} color="#5f6368" />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -421,7 +432,7 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                             OpenFullBottomSheet.current.open();
                         }}
                         style={styles.SireMareButtonContainer}>
-                        <Text>{getSireName.substring(0, 10)} ...</Text>
+                        <Text>{getSireName.substring(0, 10)}...</Text>
                         <Icon name="chevron-down" size={16} color="#5f6368" />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -438,7 +449,20 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         if (getFirstHorseID === undefined || getSecondHorseID === undefined || getRegistrationID === undefined) {
-                            alert("Choose!!")
+                            Alert.alert(
+                                "Searching Error",
+                                "You have to fill spaces.",
+                                [
+                                    {
+                                        text: "OK",
+                                        onPress: () => console.log("Cancel Pressed"),
+                                        style: "cancel"
+                                    },
+                                ],
+                                { cancelable: false }
+                            );
+
+
                         }
                         else {
                             navigation.navigate('EffectivenickSearchReport', {
@@ -484,7 +508,7 @@ function MareAnalysisScreen({ navigation }) {
     const [getSecondHorseID, setSecondHorseID] = React.useState();
     const [getRegistrationID, setRegistrationID] = React.useState();
 
-    const [checkStateMultiThoroughbred, setcheckStateMultiThoroughbred] = React.useState({ checked: [] });
+    const [checkStateMultiThoroughbred, setcheckStateMultiThoroughbred] = React.useState({ checked: [1] });
     const [checkStateMultiThoroughbredString, setcheckStateMultiThoroughbredString] = React.useState({ checkedString: [] });
 
     const pressThoroughbred = item => {   // The onPress method
@@ -505,7 +529,7 @@ function MareAnalysisScreen({ navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/StallionPage/GetLastSeasonRegisteredStallions', {
+                fetch('https://api.pedigreeall.com/StallionPage/GetLastSeasonRegisteredStallions?p_iRaceId=' + 1, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -533,13 +557,17 @@ function MareAnalysisScreen({ navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -830,7 +858,14 @@ function MareAnalysisScreen({ navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         OpenSmallBottomSheet.current.close();
-                        setStallionCode(chekedItem);
+                        console.log(chekedItem)
+                        if (chekedItem === undefined) {
+                            setStallionCode("-")
+                        }
+                        else{
+                            setStallionCode(chekedItem);
+                        }
+                        
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
@@ -848,23 +883,11 @@ function MareAnalysisScreen({ navigation }) {
                                             onPress={() => {
                                                 setState({ checked: [state, item.NAME] });
                                                 setChekedItem(item.REGISTRATION_EN)
-                                                setStallionCode(item.REGISTRATION_EN)
                                                 setRegistrationID(item.REGISTRATION_ID)
+                                                 setStallionCode(item.REGISTRATION_EN);
+                                                OpenSmallBottomSheet.current.close();
                                             }}
                                         >
-                                            <ListItem.CheckBox
-                                                checked={state.checked.includes(item.REGISTRATION_EN)}
-                                                checkedIcon='circle'
-                                                uncheckedIcon='circle'
-                                                center={true}
-                                                checkedColor='#2169ab'
-                                                uncheckedColor='rgb(232, 237, 241)'
-                                                onPress={() => {
-                                                    setState({ checked: [state, item.REGISTRATION_EN] });
-                                                    setChekedItem(item.REGISTRATION_EN)
-                                                    setStallionCode(item.REGISTRATION_EN)
-                                                    setRegistrationID(item.REGISTRATION_ID)
-                                                }} />
                                             <ListItem.Content>
                                                 <ListItem.Title>{item.REGISTRATION_EN}</ListItem.Title>
                                             </ListItem.Content>
@@ -914,7 +937,18 @@ function MareAnalysisScreen({ navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         if (getFirstHorseID === undefined || getSecondHorseID === undefined || getRegistrationID === undefined) {
-                            alert("Choose!!")
+                            Alert.alert(
+                                "Searching Error",
+                                "You have to fill spaces.",
+                                [
+                                    {
+                                        text: "OK",
+                                        onPress: () => console.log("Cancel Pressed"),
+                                        style: "cancel"
+                                    },
+                                ],
+                                { cancelable: false }
+                            );
                         }
                         else {
                             navigation.navigate('MareAnalysisReport', {
@@ -986,5 +1020,30 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#fff",
         fontWeight: '500'
+    },
+    ErrorMessageContainer: {
+        width: '100%',
+        height: '55%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+    },
+    ErrorMessageTitle: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#222'
+    },
+    ErrorMessageText: {
+        fontSize: 16,
+        color: '#c7c1c1',
+        textAlign: 'center',
+        marginTop: 5
+    },
+    ErrorMessageButtonContainer: {
+        width: '80%',
+        marginTop: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
 })

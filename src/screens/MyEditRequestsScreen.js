@@ -25,7 +25,7 @@ export function MyEditRequestsScreen({ navigation }) {
   const [showReport, setShowReport] = useState(false)
   const [getHorseUpdateRequest, setHorseUpdateRequest] = React.useState();
 
-  const [getUpdateRequestID, setUpdateRequestID] = React.useState(-1)
+  const [getUpdateRequestID, setUpdateRequestID] = React.useState()
   const [getHorseName, setHorseName] = React.useState("")
   const [getFatherName, setFatherName] = React.useState("")
   const [getMotherName, setMotherName] = React.useState("")
@@ -63,7 +63,8 @@ export function MyEditRequestsScreen({ navigation }) {
             "REQUEST_OWNER_ID": getRequestOwnerID,
             "EDITOR_ID": getEditorID,
             "PAGE_NO": 1,
-            "PAGE_COUNT": 100
+            "PAGE_COUNT": 100,
+            "RACE_ID" : 1,
           })
         })
           .then((response) => response.json())
@@ -259,7 +260,7 @@ export function MyEditRequestsScreen({ navigation }) {
                   placeholder={"ID"}
                   name={"ID"}
                   keyboardType="numeric"
-                  value={getUpdateRequestID.toString()}
+                  value={getUpdateRequestID}
                   onChangeText={setUpdateRequestID}
                 />
               </View>

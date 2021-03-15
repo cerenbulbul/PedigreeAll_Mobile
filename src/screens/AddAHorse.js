@@ -299,13 +299,18 @@ export function AddAHorse({ navigation }) {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
         //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-        fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-          method: 'GET',
+        fetch('https://api.pedigreeall.com/Horse/GetByName', {
+          method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             'Authorization': "Basic " + token,
           },
+          body: JSON.stringify({
+            ID: 1,
+            NAME: searchValue,
+          })
+          
         })
           .then((response) => response.json())
           .then((json) => {
@@ -400,6 +405,7 @@ export function AddAHorse({ navigation }) {
             "ANZ_C": getAnzC,
             "ANZ_S": getAnzS,
             "ANZ_P": getAnzP,
+            "RACE_ID" : 1,
             "FAMILY_OBJECT": {
               "FAMILY_ID": getFamilyID.toString()
             },

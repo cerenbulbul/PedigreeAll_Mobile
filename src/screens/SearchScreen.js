@@ -24,13 +24,17 @@ export function SearchScreen({navigation}) {
           console.log(token)
           if (token !== null) {
             //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-            fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-              method: 'GET',
+            fetch('https://api.pedigreeall.com/Horse/GetByName', {
+              method: 'POST',
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': "Basic " + token,
               },
+              body: JSON.stringify({
+                ID: 1,
+                NAME: searchValue,
+              })
             })
               .then((response) => response.json())
               .then((json) => {

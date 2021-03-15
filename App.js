@@ -56,6 +56,7 @@ import { ManagementStallionAdsScreen } from './src/screens/ManagementStallionAds
 import { ManagementReportScreen } from './src/screens/ManagementReportScreen'
 import { MareAnalysisReportScreen } from './src/screens/MareAnalysisReportScreen'
 import { BreedersScreen } from './src/screens/BreedersScreen'
+import { BasketScreen } from './src/screens/BasketScreen'
 
 import { HorseDetailSiblingMareScreen } from './src/screens/HorseDetailSiblingMareScreen'
 import { HorseDetailSiblingSireScreen } from './src/screens/HorseDetailSiblingSireScreen'
@@ -188,6 +189,16 @@ export default function App() {
         />
 
         <Tab.Screen
+          name="Basket"
+          component={BasketStackScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Icon name="shopping-basket" size={18} color={color} />
+            )
+          }}
+        />
+
+        <Tab.Screen
           name="Search"
           component={SearchStackScreen}
           options={{
@@ -215,6 +226,20 @@ export default function App() {
     </ProfileAuthStack.Navigator>
   );
 
+  const BasketAuthStack = createStackNavigator();
+  const BasketStackScreen = () => (
+    <BasketAuthStack.Navigator
+      mode={"modal"}
+      screenOptions={{
+        headerShown: false,
+      }}>
+
+      <BasketAuthStack.Screen
+        name={"Profile"}
+        component={BasketScreen}
+      />
+    </BasketAuthStack.Navigator>
+  );
 
   const SearchAuthStack = createStackNavigator();
   const SearchStackScreen = () => (

@@ -105,7 +105,7 @@ export function ManagementStallionAdsScreen() {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 fetch('https://api.pedigreeall.com/StallionAds/Get?p_iId=' + ID +
-                    '&p_sSireId=' + SireID + '&p_sYearId=' + YearID + '&p_iPageNo=' + 1 + '&p_iPageCount=' + 100, {
+                    '&p_sSireId=' + SireID + '&p_sYearId=' + YearID + '&p_iRaceId=' + 1 + '&p_iPageNo=' + 1 + '&p_iPageCount=' + 100, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -133,13 +133,17 @@ export function ManagementStallionAdsScreen() {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + getSearchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -1201,7 +1205,7 @@ const styles = StyleSheet.create({
     },
     ErrorMessageContainer: {
         width: '100%',
-        height: '100%',
+        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,

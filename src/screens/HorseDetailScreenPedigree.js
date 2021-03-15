@@ -54,7 +54,7 @@ export function HorseDetailScreenPedigree() {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve("data");
-      }, 12000);
+      }, 15000);
     });
   }
 

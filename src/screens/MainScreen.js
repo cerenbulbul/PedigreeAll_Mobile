@@ -10,6 +10,7 @@ import {
   ScrollView,
   UIManager,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { SearchBar, Tabs, Card, CheckBox, ListItem } from "react-native-elements";
@@ -600,7 +601,18 @@ function HypotheticalScreen({ navigation }) {
           style={[styles.SearchButtonStyle, { marginVertical: 34 }]}
           onPress={() => {
             if (getSelectedSire === undefined || getSelectedMare === undefined) {
-              alert("Choose!!")
+              Alert.alert(
+                "Searching Error",
+                "You have to fill spaces",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                ],
+                { cancelable: false }
+              );
             }
             else {
               Global.Generation_Hypothetical = chekedItem;
@@ -656,7 +668,7 @@ function EffectiveNickSearchScreen({ navigation }) {
             'Content-Type': 'application/json',
             'Authorization': "Basic " + token,
           },
-          
+
         })
           .then((response) => response.json())
           .then((json) => {
@@ -994,7 +1006,18 @@ function EffectiveNickSearchScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => {
             if (getFirstHorseID === undefined || getSecondHorseID === undefined || getRegistrationID === undefined) {
-              alert("Choose!!")
+              Alert.alert(
+                "Searching Error",
+                "You have to fill spaces",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                ],
+                { cancelable: false }
+              );
             }
             else {
               navigation.navigate('EffectivenickSearchReport', {

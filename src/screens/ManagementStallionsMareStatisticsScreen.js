@@ -30,8 +30,9 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
     const [getLoadingForTable, setLoadingForTable] = React.useState(false)
 
 
+    const [getIDTextInput, setIDTextInput] = React.useState()
 
-    const [getID, setID] = React.useState(0)
+    const [getID, setID] = React.useState("0")
     const [getParentId, setParentID] = React.useState("")
     const [earningText, setEarningText] = React.useState("$")
     const [getEarnCurrencyID, setEarnCurrencyID] = React.useState(1)
@@ -96,11 +97,11 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
             setcheckStateMultiSireNameString({ checkedString: checkedString.filter(a => a !== item.HORSE_NAME) });
         }
     }
-    const readGetParentPage = async () => {
+    const readGetParentPage = async (ID) => {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/ParentPage/Get?p_iId=' + getID + '&p_sParentId=' + getParentId + '&p_iPageNo=' + 1 + '&p_iPageCount=' + 100, {
+                fetch('https://api.pedigreeall.com/ParentPage/Get?p_iId=' + ID +  '&p_iRaceId=' + 1 + '&p_sParentId=' + getParentId + '&p_iPageNo=' + 1 + '&p_iPageCount=' + 100, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -213,13 +214,17 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + getSearchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: getSearchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -445,7 +450,7 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
     }
 
     React.useEffect(() => {
-        readGetParentPage()
+        readGetParentPage('0')
         readGeHorseName()
         readGetOwnerBreeder()
         readGetRegistration()
@@ -456,7 +461,8 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
     React.useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
-            readGetParentPage()
+            readGetParentPage('0')
+            
         });
 
         return () => {
@@ -1177,8 +1183,8 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                 style={styles.HalfInputStyle}
                                 placeholder={"ID"}
                                 keyboardType="numeric"
-                                value={getID.toString()}
-                                onChangeText={setID}
+                                value={getIDTextInput}
+                                onChangeText={setIDTextInput}
                             />
                         </View>
 
@@ -1210,7 +1216,18 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                             onPress={() => {
                                 setLoadingForTable(true)
                                 setLoading(true)
-                                readGetParentPage();
+                                console.log(getIDTextInput)
+                                if (getIDTextInput === undefined) {
+                                    readGetParentPage("0");
+                                }
+                                else if (getIDTextInput === "") {
+                                    readGetParentPage("0");
+                                }
+                                else{
+                                    readGetParentPage(getIDTextInput.toString())
+                                }
+                               
+                               
                             }}
                             style={{ marginVertical: 20 }}
                             title="Search"
@@ -1416,7 +1433,7 @@ const styles = StyleSheet.create({
     },
     ErrorMessageContainer: {
         width: '100%',
-        height: '100%',
+        height: '55%',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,

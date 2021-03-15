@@ -16,23 +16,35 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
     const [openModal, setOpenModal] = React.useState(false);
 
     const [buildReport, setBuildReport] = React.useState(false)
+    const [getCounter, setCounter] = React.useState();
 
 
-    const readDataPaymentTypeList = async (data) => {
-        fetch('https://api.pedigreeall.com/Page/Get', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json.m_cData)
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+    const readCounter = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
+                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + 2 + '&p_iRaceId=' + 1, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        setCounter(json.m_cData[0])
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+        }
     }
 
     const StandardThoroughbredList = [
@@ -250,7 +262,7 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
 
 
     React.useEffect(() => {
-        readDataPaymentTypeList();
+        readCounter();
     }, [])
 
 
@@ -418,6 +430,15 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                         <Text style={styles.ButtonText}>Build Report</Text>
                                     </TouchableOpacity>
                                 </View>
+
+                                {getCounter !== undefined &&
+
+                                    <View style={{marginVertical:8, marginBottom:5, width:'100%', marginLeft:15}}>
+                                        <Text style={{fontSize:14, fontWeight:'700'}}>{getCounter.REPORT} Reports Created</Text>
+                                    </View>
+
+                                }
+
                                 <Text style={[styles.BoldText, { textAlign: 'center' }]}>Available for any horse or hypothetical mating.</Text>
                                 <Text style={[styles.Text, { textAlign: 'center' }]}>Reports are created after the data of the relevant pedigree are compiled and checked by our data experts.</Text>
                                 {EffectiveNick_Code === "StandardThoroughbred" &&
@@ -783,7 +804,7 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
             }
 
 
-            <View style={{padding:15}}>
+            <View style={{ padding: 15 }}>
                 <BlueButton
                     style={{ marginVertical: 20 }}
                     title="Add To Basket"
@@ -909,14 +930,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         marginRight: -25
     },
-    SearchIconContainer:{
-        padding:15,
-        backgroundColor:'#2169ab',
-        alignItems:'center',
+    SearchIconContainer: {
+        padding: 15,
+        backgroundColor: '#2169ab',
+        alignItems: 'center',
         borderBottomWidth: 0.5,
         borderColor: 'silver',
         borderRadius: 50,
         elevation: 10,
-        justifyContent:'center'
+        justifyContent: 'center'
     }
 })

@@ -29,7 +29,7 @@ export function MyAddingRequestScreen({ navigation }) {
 
   const [getHorseAddRequestData, setHorseAddRequestData] = React.useState();
 
-  const [getAddRequestID, setAddRequestID] = React.useState(-1)
+  const [getAddRequestID, setAddRequestID] = React.useState()
   const [getHorseName, setHorseName] = React.useState("")
   const [getFatherName, setFatherName] = React.useState("")
   const [getMotherName, setMotherName] = React.useState("")
@@ -85,7 +85,8 @@ export function MyAddingRequestScreen({ navigation }) {
             "REQUEST_OWNER_ID": getRequestOwnerID,
             "EDITOR_ID": getEditorID,
             "PAGE_NO": 1,
-            "PAGE_COUNT": 100
+            "PAGE_COUNT": 100,
+            "RACE_ID" : 1,
           })
         })
           .then((response) => response.json())
@@ -239,7 +240,7 @@ export function MyAddingRequestScreen({ navigation }) {
                   placeholder={"ID"}
                   name={"ID"}
                   keyboardType="numeric"
-                  value={getAddRequestID.toString()}
+                  value={getAddRequestID}
                   onChangeText={setAddRequestID}
                 />
               </View>

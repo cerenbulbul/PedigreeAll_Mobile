@@ -375,7 +375,8 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                         "ANZ_P": getAnzP,
                         "SORT_TYPE_ID": getSortTypeID,
                         "PAGE_NO": 1,
-                        "PAGE_COUNT": 16
+                        "PAGE_COUNT": 16,
+                        "RACE_ID" : 1
                     })
                 })
                     .then((response) => response.json())
@@ -395,17 +396,21 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         }
     }
 
-    const readHorseGetByName = async () => {
+    const readHorseGetByName = async () => { 
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -1941,7 +1946,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
                 </TouchableOpacity>
-                <View>
+                <ScrollView>
 
                     {getBottomSheetText === "Confirmation" &&
 
@@ -2149,7 +2154,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                         </>
                     }
 
-                </View>
+                </ScrollView>
             </RBSheet>
 
             <TouchableOpacity
@@ -2533,6 +2538,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
+        marginVertical:30
       },
       ErrorMessageTitle: {
         textAlign: 'center',

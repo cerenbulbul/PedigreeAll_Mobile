@@ -176,13 +176,18 @@ export function RequestsEditAHorse() {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchText, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchText,
+                      })
+
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -492,7 +497,7 @@ export function RequestsEditAHorse() {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Family/Get', {
+                fetch('https://api.pedigreeall.com/Family/Get?p_iRaceId=' + 1, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -621,6 +626,7 @@ export function RequestsEditAHorse() {
                         "ANZ_C": getAnzC,
                         "ANZ_S": getAnzS,
                         "ANZ_P": getAnzP,
+                        "RACE_ID" : 1,
                         "FAMILY_OBJECT": {
                             "FAMILY_ID": getFamilyID.toString()
                         },

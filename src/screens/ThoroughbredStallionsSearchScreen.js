@@ -187,28 +187,28 @@ export function ThoroughbredStallionsSearchScreen() {
     const [getAnzS, setAnzS] = React.useState("");
     const [getAnzP, setAnzP] = React.useState("");
 
-    const [getMinEarningAsFoal, setMinEarningAsFoal] = React.useState(-1)
-    const [getMaxEarningAsFoal, setMaxEarningAsFoal] = React.useState(-1)
-    const [getMinStartsAsFoal, setMinStartAsFoal] = React.useState(-1)
-    const [getMaxStartsAsFoal, setMaxStartsAsFoal] = React.useState(-1)
-    const [getMinFirstAsFoal, setMinFirstAsFoal] = React.useState(-1);
-    const [getMaxFirstAsFoal, setMaxFirstAsFoal] = React.useState(-1)
-    const [getMinSecondAsFoal, setMinSecondAsFoal] = React.useState(-1)
-    const [getMaxSecondAsFoal, setMaxSecondAsFoal] = React.useState(-1)
-    const [getMinThirdAsFoal, setMinThirdAsFoal] = React.useState(-1)
-    const [getMaxThirdAsFoal, setMaxThirdAsFoal] = React.useState(-1)
-    const [getMinFourthAsFoal, setMinFourthAsFoal] = React.useState(-1)
-    const [getMaxFourthAsFoal, setMaxFourthAsFoal] = React.useState(-1)
-    const [getMinBWinnerFoal, setMinBWinnerFoal] = React.useState(-1)
-    const [getMaxBWinnerFoal, setMaxBWinnerFoal] = React.useState(-1)
-    const [getMinGWinnerFoal, setMinGWinnerFoal] = React.useState(-1)
-    const [getMaxGWinnerFoal, setMaxGWinnerFoal] = React.useState(-1)
-    const [getMinWinnerFoal, setMinWinnerFoal] = React.useState(-1)
-    const [getMaxWinnerFoal, setMaxWinnerFoal] = React.useState(-1)
-    const [getMinRaceFoal, setMinRaceFoal] = React.useState(-1)
-    const [getMaxRaceFoal, setMaxRaceFoal] = React.useState(-1)
-    const [getMinFoal, setMinFoal] = React.useState(-1)
-    const [getMaxFoal, setMaxFoal] = React.useState(-1)
+    const [getMinEarningAsFoal, setMinEarningAsFoal] = React.useState()
+    const [getMaxEarningAsFoal, setMaxEarningAsFoal] = React.useState()
+    const [getMinStartsAsFoal, setMinStartAsFoal] = React.useState()
+    const [getMaxStartsAsFoal, setMaxStartsAsFoal] = React.useState()
+    const [getMinFirstAsFoal, setMinFirstAsFoal] = React.useState();
+    const [getMaxFirstAsFoal, setMaxFirstAsFoal] = React.useState()
+    const [getMinSecondAsFoal, setMinSecondAsFoal] = React.useState()
+    const [getMaxSecondAsFoal, setMaxSecondAsFoal] = React.useState()
+    const [getMinThirdAsFoal, setMinThirdAsFoal] = React.useState()
+    const [getMaxThirdAsFoal, setMaxThirdAsFoal] = React.useState()
+    const [getMinFourthAsFoal, setMinFourthAsFoal] = React.useState()
+    const [getMaxFourthAsFoal, setMaxFourthAsFoal] = React.useState()
+    const [getMinBWinnerFoal, setMinBWinnerFoal] = React.useState()
+    const [getMaxBWinnerFoal, setMaxBWinnerFoal] = React.useState()
+    const [getMinGWinnerFoal, setMinGWinnerFoal] = React.useState()
+    const [getMaxGWinnerFoal, setMaxGWinnerFoal] = React.useState()
+    const [getMinWinnerFoal, setMinWinnerFoal] = React.useState()
+    const [getMaxWinnerFoal, setMaxWinnerFoal] = React.useState()
+    const [getMinRaceFoal, setMinRaceFoal] = React.useState()
+    const [getMaxRaceFoal, setMaxRaceFoal] = React.useState()
+    const [getMinFoal, setMinFoal] = React.useState()
+    const [getMaxFoal, setMaxFoal] = React.useState()
     const [getPlaceID, setPlaceID] = React.useState("");
     const [getRegistrationTypeID, setRegistrationTypeID] = React.useState("")
 
@@ -470,7 +470,8 @@ export function ThoroughbredStallionsSearchScreen() {
                         "ANZ_P": getAnzP,
                         "SORT_TYPE_ID": getSortTypeID,
                         "PAGE_NO": 1,
-                        "PAGE_COUNT": 15
+                        "PAGE_COUNT": 15,
+                        "RACE_ID" : 1
                     })
                 })
                     .then((response) => response.json())
@@ -551,13 +552,17 @@ export function ThoroughbredStallionsSearchScreen() {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -862,7 +867,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 50 }]}
                         placeholder={"Min Foal"}
                         name={"MinFoal"}
-                        value={getMinFoal.toString()}
+                        value={getMinFoal}
                         onChangeText={setMinFoal}
                         keyboardType={"numeric"}
                     />
@@ -870,7 +875,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Foal"}
                         name={"MaxFoal"}
-                        value={getMaxFoal.toString()}
+                        value={getMaxFoal}
                         onChangeText={setMaxFoal}
                         keyboardType={"numeric"}
                     />
@@ -879,7 +884,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min Race Foal"}
                         name={"MinRaceFoal"}
-                        value={getMinRaceFoal.toString()}
+                        value={getMinRaceFoal}
                         onChangeText={setMinRaceFoal}
                         keyboardType={"numeric"}
                     />
@@ -888,7 +893,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Race Foal"}
                         name={"MaxRaceFoal"}
-                        value={getMaxRaceFoal.toString()}
+                        value={getMaxRaceFoal}
                         onChangeText={setMaxRaceFoal}
                         keyboardType={"numeric"}
                     />
@@ -897,7 +902,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min Winner Foal"}
                         name={"MinWinnerFoal"}
-                        value={getMinWinnerFoal.toString()}
+                        value={getMinWinnerFoal}
                         onChangeText={setMinWinnerFoal}
                         keyboardType={"numeric"}
                     />
@@ -906,7 +911,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Winner Foal"}
                         name={"MaxWinnerFoal"}
-                        value={getMaxWinnerFoal.toString()}
+                        value={getMaxWinnerFoal}
                         onChangeText={setMaxWinnerFoal}
                         keyboardType={"numeric"}
                     />
@@ -915,7 +920,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min Group Race Winner Foal"}
                         name={"MinGroupRaceWinnerFoal"}
-                        value={getMinGWinnerFoal.toString()}
+                        value={getMinGWinnerFoal}
                         onChangeText={setMinGWinnerFoal}
                         keyboardType={"numeric"}
                     />
@@ -924,7 +929,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Group Race Winner Foal"}
                         name={"MaxGroupRaceWinnerFoal"}
-                        value={getMaxGWinnerFoal.toString()}
+                        value={getMaxGWinnerFoal}
                         onChangeText={setMaxGWinnerFoal}
                         keyboardType={"numeric"}
                     />
@@ -933,7 +938,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min Black Type Foal"}
                         name={"MinBlackTypeFoal"}
-                        value={getMinBWinnerFoal.toString()}
+                        value={getMinBWinnerFoal}
                         onChangeText={setMinBWinnerFoal}
                         keyboardType={"numeric"}
                     />
@@ -942,7 +947,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Black Type Foal"}
                         name={"MaxBlackTypeFoal"}
-                        value={getMaxBWinnerFoal.toString()}
+                        value={getMaxBWinnerFoal}
                         onChangeText={setMaxBWinnerFoal}
                         keyboardType={"numeric"}
                     />
@@ -951,7 +956,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min Earning"}
                         name={"MinEarning"}
-                        value={getMinEarningAsFoal.toString()}
+                        value={getMinEarningAsFoal}
                         onChangeText={setMinEarningAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -960,7 +965,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Earning"}
                         name={"MaxEarning"}
-                        value={getMaxEarningAsFoal.toString()}
+                        value={getMaxEarningAsFoal}
                         onChangeText={setMaxEarningAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -969,7 +974,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min Start"}
                         name={"MinStart"}
-                        value={getMinStartsAsFoal.toString()}
+                        value={getMinStartsAsFoal}
                         onChangeText={setMinStartAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -978,7 +983,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max Start"}
                         name={"MaxStart"}
-                        value={getMaxStartsAsFoal.toString()}
+                        value={getMaxStartsAsFoal}
                         onChangeText={setMinStartAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -987,7 +992,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min 1st place"}
                         name={"Min1stplace"}
-                        value={getMinFirstAsFoal.toString()}
+                        value={getMinFirstAsFoal}
                         onChangeText={setMinFirstAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -996,7 +1001,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max 1st place"}
                         name={"Max1stplace"}
-                        value={getMaxFirstAsFoal.toString()}
+                        value={getMaxFirstAsFoal}
                         onChangeText={setMaxFirstAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -1005,7 +1010,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min 2nd place"}
                         name={"Min2ndplace"}
-                        value={getMinSecondAsFoal.toString()}
+                        value={getMinSecondAsFoal}
                         onChangeText={setMinSecondAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -1014,7 +1019,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max 2nd place"}
                         name={"Max2ndplace"}
-                        value={getMaxSecondAsFoal.toString()}
+                        value={getMaxSecondAsFoal}
                         onChangeText={setMaxSecondAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -1023,7 +1028,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min 3rd place"}
                         name={"Min3rdplace"}
-                        value={getMinThirdAsFoal.toString()}
+                        value={getMinThirdAsFoal}
                         onChangeText={setMinThirdAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -1032,7 +1037,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max 3rd place"}
                         name={"Max3rdplace"}
-                        value={getMaxThirdAsFoal.toString()}
+                        value={getMaxThirdAsFoal}
                         onChangeText={setMaxThirdAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -1041,7 +1046,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
                         placeholder={"Min 4th place"}
                         name={"Min4thplace"}
-                        value={getMinFourthAsFoal.toString()}
+                        value={getMinFourthAsFoal}
                         onChangeText={setMinFourthAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -1050,7 +1055,7 @@ export function ThoroughbredStallionsSearchScreen() {
                         style={styles.FullInputStyle}
                         placeholder={"Max 4th place"}
                         name={"Max4thplace"}
-                        value={getMaxFourthAsFoal.toString()}
+                        value={getMaxFourthAsFoal}
                         onChangeText={setMaxFourthAsFoal}
                         keyboardType={"numeric"}
                     />
@@ -2407,7 +2412,7 @@ export function ThoroughbredStallionsSearchScreen() {
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
                 </TouchableOpacity>
-                <View>
+                <ScrollView>
 
                     {getBottomSheetText === "Place" &&
 
@@ -2708,7 +2713,7 @@ export function ThoroughbredStallionsSearchScreen() {
 
                     }
 
-                </View>
+                </ScrollView>
             </RBSheet>
 
             <TouchableOpacity
@@ -3017,6 +3022,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
+        marginVertical:30
     },
     ErrorMessageTitle: {
         textAlign: 'center',

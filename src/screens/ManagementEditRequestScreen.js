@@ -24,7 +24,7 @@ export function ManagementEditRequestScreen() {
 
     const [getHorseAddRequestData, setHorseAddRequestData] = React.useState();
     const [getLoadingForTable, setLoadingForTable] = React.useState(false)
-    const [getAddRequestID, setAddRequestID] = React.useState(-1)
+    const [getAddRequestID, setAddRequestID] = React.useState()
     const [getHorseName, setHorseName] = React.useState("")
     const [getFatherName, setFatherName] = React.useState("")
     const [getMotherName, setMotherName] = React.useState("")
@@ -179,7 +179,7 @@ export function ManagementEditRequestScreen() {
                         'Authorization': "Basic " + token,
                     },
                     body: JSON.stringify({
-                        "ADD_REQUEST_ID": getAddRequestID,
+                        "HORSE_UPDATE_REQUEST_ID": getAddRequestID,
                         "HORSE_NAME": getHorseName,
                         "FATHER_NAME": getFatherName,
                         "MOTHER_NAME": getMotherName,
@@ -191,7 +191,8 @@ export function ManagementEditRequestScreen() {
                         "REQUEST_OWNER_ID": getRequestOwnerID,
                         "EDITOR_ID": getEditorID,
                         "PAGE_NO": 1,
-                        "PAGE_COUNT": 100
+                        "PAGE_COUNT": 100,
+                        "RACE_ID" : 1
                     })
                 })
                     .then((response) => response.json())
@@ -603,9 +604,29 @@ export function ManagementEditRequestScreen() {
                                                     {getHorseAddRequestData.map((item, i) => (
                                                         <DataTable.Row key={i}>
                                                             <DataTable.Cell style={{ width: 120 }} >{item.HORSE_UPDATE_REQUEST_ID}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.HORSE_NAME}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.FATHER_NAME}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.MOTHER_NAME}</DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                style={{ width: 120 }}
+                                                                onPress={()=>{
+                                                                    alertDialog("Name", item.HORSE_NAME)
+                                                                }}
+                                                                >
+                                                                    {item.HORSE_NAME.substring(0, 10)}...
+                                                            </DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Sire" , item.FATHER_NAME)
+                                                                }}
+                                                                style={{ width: 120 }}
+                                                                >
+                                                                    {item.FATHER_NAME.substring(0, 10)}...
+                                                            </DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Dam", item.MOTHER_NAME)
+                                                                }}
+                                                                style={{ width: 120 }}>
+                                                                    {item.MOTHER_NAME.substring(0, 10)}...
+                                                            </DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
@@ -698,7 +719,7 @@ export function ManagementEditRequestScreen() {
                                     placeholder={"ID"}
                                     name={"ID"}
                                     keyboardType="numeric"
-                                    value={getAddRequestID.toString()}
+                                    value={getAddRequestID}
                                     onChangeText={setAddRequestID}
                                 />
                             </View>

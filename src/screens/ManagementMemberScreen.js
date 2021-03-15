@@ -43,7 +43,7 @@ export function ManagementMemberScreen() {
     const [getCountryText, setCountryText] = React.useState("")
 
 
-    const [getSystemUserID, setSystemUserID] = React.useState(-1)
+    const [getSystemUserID, setSystemUserID] = React.useState()
     const [getSystemUserTypeID, setSystemUserTypeID] = React.useState("")
     const [getPersonTypeID, setPersonTypeID] = React.useState("")
     const [getName, setName] = React.useState("")
@@ -1280,7 +1280,7 @@ export function ManagementMemberScreen() {
                                         style={styles.HalfInputStyle}
                                         placeholder={"ID"}
                                         keyboardType="numeric"
-                                        value={getSystemUserID.toString()}
+                                        value={getSystemUserID}
                                         onChangeText={setSystemUserID}
                                     />
                                 </View>

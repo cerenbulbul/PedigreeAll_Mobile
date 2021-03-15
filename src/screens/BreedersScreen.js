@@ -10,6 +10,7 @@ import {
     ScrollView,
     UIManager,
     ActivityIndicator,
+    Alert
 } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Global } from '../Global';
@@ -102,13 +103,17 @@ export function BreedersScreen({ route, navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -453,7 +458,18 @@ export function BreedersScreen({ route, navigation }) {
                         onPress={() => {
                             if (Global.BreedingContentScreenName === "Hypo Mating") {
                                 if (getSelectedSire === undefined || getSelectedMare === undefined) {
-                                    alert("Choose!!")
+                                    Alert.alert(
+                                        "Searching Error",
+                                        "You have to fill spaces.",
+                                        [
+                                            {
+                                                text: "OK",
+                                                onPress: () => console.log("Cancel Pressed"),
+                                                style: "cancel"
+                                            },
+                                        ],
+                                        { cancelable: false }
+                                    );
                                 }
                                 else {
                                     Global.Generation_Hypothetical = chekedItem;
@@ -554,13 +570,17 @@ function SearchScreen({ route, navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {

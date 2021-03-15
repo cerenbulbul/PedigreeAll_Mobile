@@ -27,13 +27,17 @@ export function CompareHorsesScreen() {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-                    method: 'GET',
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': "Basic " + token,
                     },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                      })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -297,8 +301,8 @@ export function CompareHorsesScreen() {
                                                     <DataTable.Cell onPress={() => { 
                                                         setImageURL(item.IMAGE)
                                                         setFullScreenVisible(true) 
-                                                    }} style={{ width: 120, height: 'auto', alignItems: 'center' }}>
-                                                        <Image style={{ width: 100, height: 100, alignSelf:'center', justifyContent:'center' }} source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }} />
+                                                    }} style={{ width:120, justifyContent:'center' }}>
+                                                        <Image style={{ width: 100, height: 100, alignSelf:'center' }} source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }} />
                                                     </DataTable.Cell>
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ width: 100, height: 'auto' }}>{item.HORSE_NAME}</DataTable.Cell>
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 15, width: 80, justifyContent: 'center' }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>

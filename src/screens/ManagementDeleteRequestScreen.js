@@ -23,7 +23,7 @@ export function ManagementDeleteRequestScreen() {
 
     const [getHorseAddRequestData, setHorseAddRequestData] = React.useState();
     const [getLoadingForTable, setLoadingForTable] = React.useState(false)
-    const [getAddRequestID, setAddRequestID] = React.useState(-1)
+    const [getAddRequestID, setAddRequestID] = React.useState()
     const [getHorseName, setHorseName] = React.useState("")
     const [getFatherName, setFatherName] = React.useState("")
     const [getMotherName, setMotherName] = React.useState("")
@@ -597,15 +597,45 @@ export function ManagementDeleteRequestScreen() {
 
                                                     {getHorseAddRequestData.map((item, i) => (
                                                         <DataTable.Row key={i}>
-                                                            <DataTable.Cell style={{ width: 120 }} >{item.HORSE_DELETE_REQUEST_ID}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.HORSE_NAME}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.FATHER_NAME}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.MOTHER_NAME}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_OWNER}</DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 120 }}>{item.EDITOR}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 150 }} >{item.HORSE_DELETE_REQUEST_ID}</DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Name", item.HORSE_NAME)
+                                                                }}
+                                                                style={{ width: 150 }}>
+                                                                    {item.HORSE_NAME.substring(0, 10)}...
+                                                            </DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Sire", item.FATHER_NAME)
+                                                                }}
+                                                                style={{ width: 150 }}>
+                                                                    {item.FATHER_NAME.substring(0, 10)}...
+                                                            </DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Dam", item.MOTHER_NAME)
+                                                                }}
+                                                                style={{ width: 150 }}>
+                                                                    {item.MOTHER_NAME.substring(0, 10)}...
+                                                            </DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 150 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 150 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ width: 150 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Request Owner", item.REQUEST_OWNER)
+                                                                }}
+                                                                style={{ width: 150 }}>
+                                                                    {item.REQUEST_OWNER.substring(0, 10)}...
+                                                            </DataTable.Cell>
+                                                            <DataTable.Cell 
+                                                                onPress={()=>{
+                                                                    alertDialog("Editor", item.EDITOR)
+                                                                }}
+                                                                style={{ width: 150 }}>
+                                                                    {item.EDITOR.substring(0, 10)}...
+                                                            </DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 200 }}>
                                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                                     <TouchableOpacity
@@ -692,7 +722,7 @@ export function ManagementDeleteRequestScreen() {
                                     placeholder={"ID"}
                                     name={"ID"}
                                     keyboardType="numeric"
-                                    value={getAddRequestID.toString()}
+                                    value={getAddRequestID}
                                     onChangeText={setAddRequestID}
                                 />
                             </View>

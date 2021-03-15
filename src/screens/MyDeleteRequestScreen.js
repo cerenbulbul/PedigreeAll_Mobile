@@ -38,7 +38,7 @@ export function MyDeleteRequestScreen({navigation}) {
     const [getHorseDeleteRequest, setHorseDeleteRequest] = React.useState();
     const [showReport, setShowReport] = useState(false)
 
-    const [getDeleteRequestID, setDeleteRequestID] = React.useState(-1)
+    const [getDeleteRequestID, setDeleteRequestID] = React.useState()
     const [getHorseName, setHorseName] = React.useState("")
     const [getFatherName, setFatherName] = React.useState("")
     const [getMotherName, setMotherName] = React.useState("")
@@ -92,7 +92,8 @@ export function MyDeleteRequestScreen({navigation}) {
               "REQUEST_OWNER_ID": getRequestOwnerID,
               "EDITOR_ID": getEditorID,
               "PAGE_NO": 1,
-              "PAGE_COUNT": 100
+              "PAGE_COUNT": 100,
+              "RACE_ID" : 1,
             })
           })
             .then((response) => response.json())
@@ -267,7 +268,7 @@ export function MyDeleteRequestScreen({navigation}) {
                 placeholder={"ID"}
                 name={"ID"}
                 keyboardType ="numeric"
-                value={getDeleteRequestID.toString()}
+                value={getDeleteRequestID}
                 onChangeText={setDeleteRequestID}
                 />
             </View>

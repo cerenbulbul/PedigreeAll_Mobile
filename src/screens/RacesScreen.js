@@ -18,7 +18,7 @@ export function RacesScreen({ navigation }) {
 
   const [showReport, setShowReport] = React.useState(false);
   const [getLoadingForTable, setLoadingForTable] = React.useState(false)
-  const [Header, setHeader] = useState()
+  const [Header, setHeader] = useState("")
   const [PrizeMin, setPrizeMin] = useState()
   const [PrizeMax, setPrizeMax] = useState()
   const [CounrtyText, setCounrtyText] = useState("Select a Country")
@@ -57,7 +57,7 @@ export function RacesScreen({ navigation }) {
   const [getRaceRunwayData, setRaceRunwayData] = React.useState();
   const [getRaceClassData, setRaceClassData] = React.useState();
 
-  const [getHorseRaceID, setHorseRaceID] = React.useState(-1);
+  const [getHorseRaceID, setHorseRaceID] = React.useState('-1');
   const [getHorseRaceTitle, setHorseRaceTitle] = React.useState("")
   const [getCountryID, setCountryID] = React.useState("")
   const [getCityID, setCityID] = React.useState("")
@@ -68,8 +68,8 @@ export function RacesScreen({ navigation }) {
   const [getRaceTypeID, setRaceTypeID] = React.useState("")
   const [getStartDate, setStartDate] = React.useState("")
   const [getEndDate, setEndDate] = React.useState("")
-  const [getMinPrize, setMinPrize] = React.useState(-1)
-  const [getMaxPrize, setMaxPrize] = React.useState(-1)
+  const [getMinPrize, setMinPrize] = React.useState()
+  const [getMaxPrize, setMaxPrize] = React.useState()
   const [getActive, setActive] = React.useState("")
 
   const [checkStateMultiCountry, setcheckStateMultiCountry] = React.useState({ checked: [] });
@@ -1214,7 +1214,7 @@ export function RacesScreen({ navigation }) {
                   style={styles.HalfInputStyle}
                   placeholder={"Prize Min"}
                   keyboardType="numeric"
-                  value={getMinPrize.toString()}
+                  value={getMinPrize}
                   onChange={setMinPrize}
                 />
               </View>
@@ -1224,7 +1224,7 @@ export function RacesScreen({ navigation }) {
                   style={styles.HalfInputStyle}
                   placeholder={"Prize Max"}
                   keyboardType="numeric"
-                  value={getMaxPrize.toString()}
+                  value={getMaxPrize}
                   onChange={setMaxPrize}
                 />
               </View>
