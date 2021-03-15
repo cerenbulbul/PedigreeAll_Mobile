@@ -91,7 +91,7 @@ function SearchScreen({ navigation }) {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
         //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-        fetch('https://api.pedigreeall.com/Horse/GetByNameAsPost', {
+        fetch('https://api.pedigreeall.com/Horse/GetByName', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -99,6 +99,7 @@ function SearchScreen({ navigation }) {
             'Authorization': "Basic " + token,
           },
           body: JSON.stringify({
+            ID: 1,
             NAME: searchValue,
           })
         })
@@ -172,7 +173,7 @@ function SearchScreen({ navigation }) {
                       setState({ checked: [state, item.id] });
                       setChekedItem(item.id)
                     }} >
-                    </ListItem.CheckBox>
+                  </ListItem.CheckBox>
                   <ListItem.Content>
                     <ListItem.Title>{item.title}</ListItem.Title>
                   </ListItem.Content>
@@ -228,7 +229,7 @@ function SearchScreen({ navigation }) {
             }}
             showLoading={true}
           />
-          {HorseData.m_cData !== undefined ?
+          {HorseData.m_cData !== undefined &&
             <ScrollView style={{ marginBottom: 30 }}>
               {HorseData.m_cData.filter((x) => x.HORSE_NAME).map(
                 (item, i) => (
@@ -261,14 +262,6 @@ function SearchScreen({ navigation }) {
                   </ListItem>
                 ))}
             </ScrollView>
-            :
-            <View style={styles.ErrorMessageContainer}>
-              <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-              <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-              <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
-              <View style={styles.ErrorMessageButtonContainer}>
-              </View>
-            </View>
           }
           {HorseData.m_cDetail !== undefined &&
             <>
@@ -346,7 +339,7 @@ function HypotheticalScreen({ navigation }) {
   const [GenerationTitle, setGenerationTitle] = React.useState("Gen 5");
   const [state, setState] = React.useState({ checked: [] });
   const [chekedItem, setChekedItem] = React.useState(5)
-  const [searchValue, setSearchValue] = React.useState()
+  const [searchValue, setSearchValue] = React.useState("")
   const [SireMareHorseData, setSireMareHorseData] = React.useState();
   const [SireMareHorseName, setSireMareHorseName] = React.useState();
   const [SireData, setSireData] = React.useState();
@@ -363,13 +356,17 @@ function HypotheticalScreen({ navigation }) {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
         //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-        fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-          method: 'GET',
+        fetch('https://api.pedigreeall.com/Horse/GetByName', {
+          method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             'Authorization': "Basic " + token,
           },
+          body: JSON.stringify({
+            ID: 1,
+            NAME: searchValue,
+          })
         })
           .then((response) => response.json())
           .then((json) => {
@@ -472,6 +469,7 @@ function HypotheticalScreen({ navigation }) {
           style={styles.SwipableCloseIcon}>
           <Icon name="times" size={20} color="#adb5bd" />
         </TouchableOpacity>
+
         <View>
           <SearchBar
             placeholder={searchValue}
@@ -486,53 +484,50 @@ function HypotheticalScreen({ navigation }) {
             value={searchValue}
             onChangeText={setSearchValue}
             onSubmitEditing={() => {
-              readUser();
               setLoader(true);
+              readUser();
             }}
             showLoading={true}
           />
-          {SireMareHorseData !== undefined ?
-            <ScrollView style={{ marginBottom: 30 }}>
-              {SireMareHorseData.m_cData.filter((x) => x.HORSE_NAME).map(
-                (item, i) => (
-                  <ListItem
-                    key={i}
-                    bottomDivider
-                    button
-                    onPress={() => {
-                      BottomSheetSearchNavigation.current.close();
-                      if (SireMareHorseName === 'Sire') {
-                        setSireText(item.HORSE_NAME);
-                        setSireData(item);
-                        setSelectedSire(item.HORSE_ID);
-                      }
-                      else if (SireMareHorseName === 'Mare') {
-                        setMareText(item.HORSE_NAME);
-                        setMareData(item);
-                        setSelectedMare(item.HORSE_ID);
-                      }
-                    }} >
-                    <Image
-                      style={{ width: 70, height: 70, borderRadius: 50 }}
-                      source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
-                    />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
-                      <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
-                      <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem>
-                ))}
-            </ScrollView>
-            :
-            <View style={styles.ErrorMessageContainer}>
-              <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-              <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-              <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
-              <View style={styles.ErrorMessageButtonContainer}>
-              </View>
-            </View>
+          {SireMareHorseData !== undefined &&
+            <>
+              {SireMareHorseData.m_cData !== undefined &&
+
+                <ScrollView style={{ marginBottom: 30 }}>
+                  {SireMareHorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+                    (item, i) => (
+                      <ListItem
+                        key={i}
+                        bottomDivider
+                        button
+                        onPress={() => {
+                          BottomSheetSearchNavigation.current.close();
+                          if (SireMareHorseName === 'Sire') {
+                            setSireText(item.HORSE_NAME);
+                            setSireData(item);
+                            setSelectedSire(item.HORSE_ID);
+                          }
+                          else if (SireMareHorseName === 'Mare') {
+                            setMareText(item.HORSE_NAME);
+                            setMareData(item);
+                            setSelectedMare(item.HORSE_ID);
+                          }
+                        }} >
+                        <Image
+                          style={{ width: 70, height: 70, borderRadius: 50 }}
+                          source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                        />
+                        <ListItem.Content>
+                          <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                          <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                          <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                      </ListItem>
+                    ))}
+                </ScrollView>
+              }
+            </>
           }
 
           {SireMareHorseData !== undefined &&
@@ -607,18 +602,18 @@ function HypotheticalScreen({ navigation }) {
             if (getSelectedSire === undefined || getSelectedMare === undefined) {
               alert("Choose!!")
             }
-            else{
+            else {
               Global.Generation_Hypothetical = chekedItem;
               Global.Horse_First_ID = SireData.HORSE_ID;
               Global.Horse_Second_ID = MareData.HORSE_ID;
               navigation.navigate('HypotheticalSearch', {
-              SireHorseData: SireData,
-              MareHorseData: MareData,
-              Generation: chekedItem
-            });
+                SireHorseData: SireData,
+                MareHorseData: MareData,
+                Generation: chekedItem
+              });
             }
-            
-            
+
+
           }}>
           <Text style={styles.SearchButtonText}>Search</Text>
         </TouchableOpacity>
@@ -627,7 +622,7 @@ function HypotheticalScreen({ navigation }) {
   );
 }
 
-function EffectiveNickSearchScreen({navigation}) {
+function EffectiveNickSearchScreen({ navigation }) {
   const OpenFullBottomSheet = useRef();
   const OpenSmallBottomSheet = useRef();
   const [loader, setLoader] = useState(false)
@@ -654,13 +649,14 @@ function EffectiveNickSearchScreen({navigation}) {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
         //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-        fetch('https://api.pedigreeall.com/StallionPage/GetLastSeasonRegisteredStallions' , {
+        fetch('https://api.pedigreeall.com/StallionPage/GetLastSeasonRegisteredStallions?p_iRaceId=' + 1, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             'Authorization': "Basic " + token,
           },
+          
         })
           .then((response) => response.json())
           .then((json) => {
@@ -682,13 +678,17 @@ function EffectiveNickSearchScreen({navigation}) {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
         //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-        fetch('https://api.pedigreeall.com/Horse/GetByName?p_sName=' + searchValue, {
-          method: 'GET',
+        fetch('https://api.pedigreeall.com/Horse/GetByName', {
+          method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             'Authorization': "Basic " + token,
           },
+          body: JSON.stringify({
+            ID: 1,
+            NAME: searchValue,
+          })
         })
           .then((response) => response.json())
           .then((json) => {
@@ -709,7 +709,7 @@ function EffectiveNickSearchScreen({navigation}) {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' +2, {
+        fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' + 2, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -738,7 +738,7 @@ function EffectiveNickSearchScreen({navigation}) {
     readRegisteredStallions();
     readHorseData();
   }, [])
-  return(
+  return (
     <View>
       <RBSheet
         ref={OpenFullBottomSheet}
@@ -763,128 +763,125 @@ function EffectiveNickSearchScreen({navigation}) {
           <Icon name="times" size={20} color="#adb5bd" />
         </TouchableOpacity>
         <View>
-           {
-           getBottomSheetText === "Sire" &&
-           <>
-           <SearchBar
-            placeholder={searchValue}
-            lightTheme
-            platform="ios"
-            cancelButtonTitle=""
-            inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
-            containerStyle={{ backgroundColor: 'transparent', }}
-            inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
-            rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-            leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-            value={searchValue}
-            onChangeText={setSearchValue}
-            onSubmitEditing={() => {
-              readHorseData();
-              setLoader(true);
-            }}
-            showLoading={true}
-          />
-           {getSearchHorseData !== undefined ?
-            <ScrollView style={{ marginBottom: 30 }}>
-              {getSearchHorseData.m_cData.filter((x) => x.HORSE_NAME).map(
-                (item, i) => (
-                  <ListItem
-                    key={i}
-                    bottomDivider
-                    button
-                    onPress={() => {
-                      OpenFullBottomSheet.current.close();
-                        setSireName(item.HORSE_NAME);
-                        setSecondHorseID(item.HORSE_ID);
-                        setSireData(item);
-                        readGetAsNameIdForStallion(item.HORSE_ID);
-                        
-                    }} >
-                    <Image
-                      style={{ width: 70, height: 70, borderRadius: 50 }}
-                      source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
-                    />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
-                      <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
-                      <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem>
-                ))}
-            </ScrollView>
-            :
-            <View style={styles.ErrorMessageContainer}>
-              <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-              <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-              <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
-              <View style={styles.ErrorMessageButtonContainer}>
-              </View>
-            </View>
-          }
-          {getSearchHorseData !== undefined &&
+          {
+            getBottomSheetText === "Sire" &&
             <>
-              {getSearchHorseData.m_cDetail !== undefined &&
+              <SearchBar
+                placeholder={searchValue}
+                lightTheme
+                platform="ios"
+                cancelButtonTitle=""
+                inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+                containerStyle={{ backgroundColor: 'transparent', }}
+                inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+                rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                value={searchValue}
+                onChangeText={setSearchValue}
+                onSubmitEditing={() => {
+                  setLoader(true);
+                  readHorseData();
+                }}
+                showLoading={true}
+              />
+              {getSearchHorseData !== undefined &&
                 <>
-                  {getSearchHorseData.m_cDetail.m_eProcessState < 0 &&
-                    <>
-                      {loader === false &&
-                        <View style={styles.ErrorMessageContainer}>
-                          <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                          <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                          <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                          <Text style={styles.ErrorMessageText}>You can search again.</Text>
-                          <View style={styles.ErrorMessageButtonContainer}>
-                          </View>
-                        </View>
-                      }
-                    </>
+                  {getSearchHorseData.m_cData !== undefined &&
 
+                    <ScrollView style={{ marginBottom: 30 }}>
+                      {getSearchHorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+                        (item, i) => (
+                          <ListItem
+                            key={i}
+                            bottomDivider
+                            button
+                            onPress={() => {
+                              OpenFullBottomSheet.current.close();
+                              setSireName(item.HORSE_NAME);
+                              setSecondHorseID(item.HORSE_ID);
+                              setSireData(item);
+                              readGetAsNameIdForStallion(item.HORSE_ID);
+
+                            }} >
+                            <Image
+                              style={{ width: 70, height: 70, borderRadius: 50 }}
+                              source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                            />
+                            <ListItem.Content>
+                              <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                              <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                              <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                            </ListItem.Content>
+                            <ListItem.Chevron />
+                          </ListItem>
+                        ))}
+                    </ScrollView>
                   }
                 </>
               }
+              {getSearchHorseData !== undefined &&
+                <>
+                  {getSearchHorseData.m_cDetail !== undefined &&
+                    <>
+                      {getSearchHorseData.m_cDetail.m_eProcessState < 0 &&
+                        <>
+                          {loader === false &&
+                            <View style={styles.ErrorMessageContainer}>
+                              <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                              <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                              <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                              <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                              <View style={styles.ErrorMessageButtonContainer}>
+                              </View>
+                            </View>
+                          }
+                        </>
 
-            </>}
-           </>
-           ||
-           getBottomSheetText === "RegisteredStallions" &&
-           <>
-           {getRegisteredStallions !== undefined ?
-            <ScrollView style={{ marginBottom: 30 }}>
-              {getRegisteredStallions.filter((x) => x.HORSE_NAME).map(
-                (item, i) => (
-                  <ListItem
-                    key={i}
-                    bottomDivider
-                    button
-                    onPress={() => {
-                      OpenFullBottomSheet.current.close();
-                        setRegisteredStallionsName(item.HORSE_NAME);
-                        setRegisteredStallionsItemData(item);
-                        setFirstHorseID(item.HORSE_ID);
-                    }} >
-                    <Image
-                      style={{ width: 70, height: 70, borderRadius: 50 }}
-                      source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
-                    />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem>
-                ))}
-            </ScrollView>
-            :
-            <View style={styles.ErrorMessageContainer}>
-              <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-              <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-              <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
-              <View style={styles.ErrorMessageButtonContainer}>
-              </View>
-            </View>
+                      }
+                    </>
+                  }
+
+                </>}
+            </>
+            ||
+            getBottomSheetText === "RegisteredStallions" &&
+            <>
+              {getRegisteredStallions !== undefined ?
+                <ScrollView style={{ marginBottom: 30 }}>
+                  {getRegisteredStallions.filter((x) => x.HORSE_NAME).map(
+                    (item, i) => (
+                      <ListItem
+                        key={i}
+                        bottomDivider
+                        button
+                        onPress={() => {
+                          OpenFullBottomSheet.current.close();
+                          setRegisteredStallionsName(item.HORSE_NAME);
+                          setRegisteredStallionsItemData(item);
+                          setFirstHorseID(item.HORSE_ID);
+                        }} >
+                        <Image
+                          style={{ width: 70, height: 70, borderRadius: 50 }}
+                          source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                        />
+                        <ListItem.Content>
+                          <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                      </ListItem>
+                    ))}
+                </ScrollView>
+                :
+                <View style={styles.ErrorMessageContainer}>
+                  <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
+                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  <View style={styles.ErrorMessageButtonContainer}>
+                  </View>
+                </View>
+              }
+            </>
           }
-           </>
-           }
           {loader ?
             <ActivityIndicator
               color="black"
@@ -921,41 +918,41 @@ function EffectiveNickSearchScreen({navigation}) {
         <View>
           <ScrollView style={{ marginBottom: 50 }}>
             {getStallionCodeData !== undefined &&
-            
-            <>
-            {
-              getStallionCodeData.map((item, i) => (
-                <ListItem
-                  key={i}
-                  bottomDivider
-                  onPress={() => {
-                    setState({ checked: [state, item.NAME] });
-                    setChekedItem(item.NAME)
-                    setStallionCode(item.NAME)
-                    setRegistrationID(item.ID)
-                  }}
-                >
-                  <ListItem.CheckBox
-                    checked={state.checked.includes(item.NAME)}
-                    checkedIcon='circle'
-                    uncheckedIcon='circle'
-                    center={true}
-                    checkedColor='#2169ab'
-                    uncheckedColor='rgb(232, 237, 241)'
-                    onPress={() => {
-                      setState({ checked: [state, item.NAME] });
-                      setChekedItem(item.NAME)
-                      setStallionCode(item.NAME)
-                      setRegistrationID(item.ID)
-                    }} />
-                  <ListItem.Content>
-                    <ListItem.Title>{item.NAME}</ListItem.Title>
-                  </ListItem.Content>
 
-                </ListItem>
-              ))
-            }
-            </>
+              <>
+                {
+                  getStallionCodeData.map((item, i) => (
+                    <ListItem
+                      key={i}
+                      bottomDivider
+                      onPress={() => {
+                        setState({ checked: [state, item.NAME] });
+                        setChekedItem(item.NAME)
+                        setStallionCode(item.NAME)
+                        setRegistrationID(item.ID)
+                      }}
+                    >
+                      <ListItem.CheckBox
+                        checked={state.checked.includes(item.NAME)}
+                        checkedIcon='circle'
+                        uncheckedIcon='circle'
+                        center={true}
+                        checkedColor='#2169ab'
+                        uncheckedColor='rgb(232, 237, 241)'
+                        onPress={() => {
+                          setState({ checked: [state, item.NAME] });
+                          setChekedItem(item.NAME)
+                          setStallionCode(item.NAME)
+                          setRegistrationID(item.ID)
+                        }} />
+                      <ListItem.Content>
+                        <ListItem.Title>{item.NAME}</ListItem.Title>
+                      </ListItem.Content>
+
+                    </ListItem>
+                  ))
+                }
+              </>
             }
 
           </ScrollView>
@@ -966,7 +963,7 @@ function EffectiveNickSearchScreen({navigation}) {
       <View style={{ width: '100%', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity
-            onPress={()=>{
+            onPress={() => {
               setBottomSheetText("RegisteredStallions");
               OpenFullBottomSheet.current.open();
             }}
@@ -975,39 +972,39 @@ function EffectiveNickSearchScreen({navigation}) {
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={()=>{
+            onPress={() => {
               setBottomSheetText("Sire");
               OpenFullBottomSheet.current.open();
             }}
             style={styles.SireMareButtonContainer}>
-            <Text>{getSireName.substring(0,10)} ...</Text>
+            <Text>{getSireName.substring(0, 10)} ...</Text>
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={()=>{
+            onPress={() => {
               setBottomSheetText("StallionsCode");
               OpenSmallBottomSheet.current.open();
             }}
             style={styles.GenerationButtonContainer}>
-              <Text>{getStallionCode}</Text>
+            <Text>{getStallionCode}</Text>
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
 
         </View>
         <TouchableOpacity
-          onPress={()=>{
-            if (getFirstHorseID === undefined || getSecondHorseID ===undefined || getRegistrationID === undefined) {
+          onPress={() => {
+            if (getFirstHorseID === undefined || getSecondHorseID === undefined || getRegistrationID === undefined) {
               alert("Choose!!")
             }
-            else{
-              navigation.navigate('EffectivenickSearchReport',{
-              FirstHorseID:getFirstHorseID,
-              SecondHorseID:getSecondHorseID,
-              RegistrationID:getRegistrationID,
-              BackButtonVisible: false
-            });
+            else {
+              navigation.navigate('EffectivenickSearchReport', {
+                FirstHorseID: getFirstHorseID,
+                SecondHorseID: getSecondHorseID,
+                RegistrationID: getRegistrationID,
+                BackButtonVisible: false
+              });
             }
-            
+
           }}
           style={[styles.SearchButtonStyle, { marginVertical: 34 }]}>
           <Text style={styles.SearchButtonText}>Search</Text>
@@ -1344,7 +1341,7 @@ const styles = StyleSheet.create({
     color: '#2169ab',
     fontSize: 14,
   },
-  
+
 });
 
 

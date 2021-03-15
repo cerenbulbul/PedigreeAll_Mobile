@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Modal } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import WebView from 'react-native-webview';
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -46,7 +46,7 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + 2, {
+                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + 2 + '&p_iRaceId=' + 1, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -185,10 +185,19 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                 :
                 null}
 
-
-            {loader ?
-                <ActivityIndicator size="large" color="#000" />
-                :
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={loader}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Please Wait!</Text>
+                        <ActivityIndicator size="large" color="#000" />
+                    </View>
+                </View>
+            </Modal>
+            {getAnalysisCreateReport !== undefined &&
                 <WebView
                     source={{ html: getAnalysisCreateReport.m_cData }}
                     startInLoadingState={true}
@@ -197,9 +206,10 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                     showsHorizontalScrollIndicator={true}
                     scrollEnabled={true}
                     showsVerticalScrollIndicator={true}
-                    renderLoading={() => <ActivityIndicator color='#000' size='large' />}
                 />
             }
+
+
         </View>
     )
 }
@@ -257,13 +267,54 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center'
     },
-    BackButton:{
-        flexDirection:'row',
-        alignSelf:'baseline',
-        padding:10,
-        width:'100%',
-        borderBottomWidth:0.5, 
-        borderColor:'silver',
-        marginBottom:10
-      },
+    BackButton: {
+        flexDirection: 'row',
+        alignSelf: 'baseline',
+        padding: 10,
+        width: '100%',
+        borderBottomWidth: 0.5,
+        borderColor: 'silver',
+        marginBottom: 10
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#6c6c6ca8'
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    }
 })

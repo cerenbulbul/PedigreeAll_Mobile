@@ -35,15 +35,34 @@ import { HorseDetailScreenTJK } from './HorseDetailScreenTJK';
 import WebView from 'react-native-webview';
 const Tab = createMaterialTopTabNavigator();
 
-const REMOTE_IMAGE_PATH ='https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1'
+const REMOTE_IMAGE_PATH = 'https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1'
 
 
 export function HorseDetailScreen({ route, navigation }) {
   const { HorseData, Generation } = route.params;
-  const [SearchHorseData, setSearchHorseData] = useState();
+  const [HorseInformationData, setSearchHorseData] = useState();
   Global.Generation = Generation;
 
-
+  const HEADER_MIN_HEIGHT = 0;
+  const HEADER_MAX_HEIGHT = 350;
+  const [showHeader, setShowHeader] = useState(false)
+  const refBottomSheet = useRef();
+  const [ModalText, setModalText] = useState();
+  const [HorseInfo, setHorseInfo] = React.useState();
+  const [getFoalInfo, setFoalInfo] = React.useState();
+  const [getFoalNum, setFoalNum] = React.useState(1);
+  const [getStatisticInfo, setStatisticInfo] = React.useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [FullScreenVisible, setFullScreenVisible] = useState(false);
+  const [time, setTime] = React.useState(true);
+  const scrollY = new Animated.Value(
+    Platform.OS === 'ios' ? -HEADER_MAX_HEIGHT : 0,
+  )
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
 
   const readUser = async () => {
     try {
@@ -76,35 +95,6 @@ export function HorseDetailScreen({ route, navigation }) {
       console.log(e)
     }
   }
-  React.useEffect(() => {
-    readUser();
-  }, [])
-  return (
-    <TabScreen HorseInformationData={SearchHorseData} />
-  )
-}
-
-function TabScreen(HorseInformationData) {
-  const HEADER_MIN_HEIGHT = 0;
-  const HEADER_MAX_HEIGHT = 350;
-  const [showHeader, setShowHeader] = useState(false)
-  const refBottomSheet = useRef();
-  const [ModalText, setModalText] = useState();
-  const [HorseInfo, setHorseInfo] = React.useState();
-  const [getFoalInfo, setFoalInfo] = React.useState();
-  const [getFoalNum, setFoalNum] = React.useState(1);
-  const [getStatisticInfo, setStatisticInfo] = React.useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [FullScreenVisible, setFullScreenVisible] = useState(false);
-  const [time, setTime] = React.useState(true);
-  const scrollY = new Animated.Value(
-    Platform.OS === 'ios' ? -HEADER_MAX_HEIGHT : 0,
-  )
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-    extrapolate: 'clamp',
-  });
 
   const readHorseInfo = async () => {
     try {
@@ -153,11 +143,11 @@ function TabScreen(HorseInformationData) {
     }
     catch (e) { console.log(e) }
   }
-  const readStatisticInfo = async () => {
+  const readStatisticInfo = async (FoalNum) => {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/HorseInfo/GetFoals?p_iHorseId=' + Global.Horse_ID + "&p_iTypeId=" + getFoalNum, {
+        fetch('https://api.pedigreeall.com/HorseInfo/GetFoals?p_iHorseId=' + Global.Horse_ID + "&p_iTypeId=" + FoalNum, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -179,10 +169,12 @@ function TabScreen(HorseInformationData) {
   }
 
   React.useEffect(() => {
+    readUser();
     readHorseInfo();
     readFoalInfo();
-    readStatisticInfo();
+    readStatisticInfo(1);
   }, [])
+
 
 
   return (
@@ -243,9 +235,11 @@ function TabScreen(HorseInformationData) {
                             key={index}
                             style={styles.StatisticFoalButton}
                             onPress={() => {
-                              setFoalNum(item.ID)
+                              setFoalNum();
+                              setStatisticInfo()
                               setTime(true);
-                              readStatisticInfo();
+                              setFoalNum(item.ID)
+                              readStatisticInfo(item.ID);
                             }}>
                             <Text style={styles.StatisticFoalButtonText}>{item.NAME}</Text>
                           </TouchableOpacity>
@@ -360,8 +354,8 @@ function TabScreen(HorseInformationData) {
 
       <View style={styles.HeaderShortContainer}>
 
-        {HorseInformationData.HorseInformationData !== undefined ?
-          <Text style={styles.HeaderTitle}>{HorseInformationData.HorseInformationData.m_cData.HEADER_OBJECT.ROW1_GENERAL}</Text>
+        {HorseInformationData !== undefined ?
+          <Text style={styles.HeaderTitle}>{HorseInformationData.m_cData.HEADER_OBJECT.ROW1_GENERAL}</Text>
           : null}
         <TouchableOpacity
           style={styles.ShowHeaderButtonContainer}
@@ -374,23 +368,23 @@ function TabScreen(HorseInformationData) {
       </View>
       {showHeader ?
         <View>
-          {HorseInformationData.HorseInformationData !== undefined ?
+          {HorseInformationData !== undefined ?
             <View style={styles.StabilInformationContainer}>
               <View style={styles.StabilInformationItem}>
                 <Icon name="chart-line" size={16} color="#222"></Icon>
-                <Text style={styles.StabilInformationText}>Dr. Roman Miller: {HorseInformationData.HorseInformationData.m_cData.HEADER_OBJECT.ROW2_RM} </Text>
+                <Text style={styles.StabilInformationText}>Dr. Roman Miller: {HorseInformationData.m_cData.HEADER_OBJECT.ROW2_RM} </Text>
               </View>
               <View style={styles.StabilInformationItem}>
                 <Icon name="chart-line" size={16} color="#222"></Icon>
-                <Text style={styles.StabilInformationText}>ANZ: {HorseInformationData.HorseInformationData.m_cData.HEADER_OBJECT.ROW3_ANZ}</Text>
+                <Text style={styles.StabilInformationText}>ANZ: {HorseInformationData.m_cData.HEADER_OBJECT.ROW3_ANZ}</Text>
               </View>
               <View style={styles.StabilInformationItem}>
                 <Icon name="chart-line" size={16} color="#222"></Icon>
-                <Text style={styles.StabilInformationText}>BM-PedigreeAll.com: {HorseInformationData.HorseInformationData.m_cData.HEADER_OBJECT.ROW4_BM_PA}</Text>
+                <Text style={styles.StabilInformationText}>BM-PedigreeAll.com: {HorseInformationData.m_cData.HEADER_OBJECT.ROW4_BM_PA}</Text>
               </View>
               <View style={styles.StabilInformationItem}>
                 <Icon name="chart-line" size={16} color="#222"></Icon>
-                <Text style={styles.StabilInformationText}>PedigreeAll.com: {HorseInformationData.HorseInformationData.m_cData.HEADER_OBJECT.ROW5_PA}</Text>
+                <Text style={styles.StabilInformationText}>PedigreeAll.com: {HorseInformationData.m_cData.HEADER_OBJECT.ROW5_PA}</Text>
               </View>
               <View style={styles.StabilInformationButtonContainer3Value}>
                 <TouchableOpacity
@@ -616,7 +610,6 @@ function TabScreen(HorseInformationData) {
 
     </View>
   )
-
 }
 
 const styles = StyleSheet.create({

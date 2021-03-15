@@ -1354,7 +1354,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Set a Birth Date"}
                                         name={"BirthDate"}
                                         keyboardType="numeric"
-                                        value={getHorseBirthDate}
+                                        value={getHorseBirthDate.toString()}
                                         onChangeText={setHorseBirthDate}
                                     />
                                 </View>
@@ -1440,7 +1440,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"First"}
                                         name={"FirstPlace"}
                                         keyboardType="numeric"
-                                        value={getFirst}
+                                        value={getFirst.toString()}
                                         onChangeText={setFirst}
                                     />
                                 </View>
@@ -1452,7 +1452,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Second"}
                                         name={"SecondPlace"}
                                         keyboardType="numeric"
-                                        value={getSecond}
+                                        value={getSecond.toString()}
                                         onChangeText={setSecond}
                                     />
                                 </View>
@@ -1464,7 +1464,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Third"}
                                         name={"ThirdPlace"}
                                         keyboardType="numeric"
-                                        value={getThird}
+                                        value={getThird.toString()}
                                         onChangeText={setThird}
                                     />
                                 </View>
@@ -1476,7 +1476,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Fourth"}
                                         name={"FourthPlace"}
                                         keyboardType="numeric"
-                                        value={getFourth}
+                                        value={getFourth.toString()}
                                         onChangeText={setFourth}
                                     />
                                 </View>
@@ -1488,7 +1488,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Start Count"}
                                         name={"StartCount"}
                                         keyboardType="numeric"
-                                        value={getStartCount}
+                                        value={getStartCount.toString()}
                                         onChangeText={setStartCount}
                                     />
                                 </View>
@@ -1501,7 +1501,7 @@ export function RequestsEditAHorse() {
                                             placeholder={"Earning"}
                                             keyboardType="numeric"
                                             name={"Earning"}
-                                            value={getEarn}
+                                            value={getEarn.toString()}
                                             onChangeText={setEarn}
                                         />
                                         <TouchableOpacity
@@ -1529,7 +1529,7 @@ export function RequestsEditAHorse() {
                                             placeholder={"Price"}
                                             keyboardType="numeric"
                                             name={"Price"}
-                                            value={getPrice}
+                                            value={getPrice.toString()}
                                             onChangeText={setPrice}
                                         />
                                         <TouchableOpacity
@@ -1658,7 +1658,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Ref1"}
                                         name={"Ref1"}
                                         keyboardType="numeric"
-                                        value={getRef1}
+                                        value={getRef1.toString()}
                                         onChangeText={setRef1}
                                     />
                                 </View>
@@ -1670,7 +1670,7 @@ export function RequestsEditAHorse() {
                                         placeholder={"Ref2"}
                                         name={"Ref2"}
                                         keyboardType="numeric"
-                                        value={getRef2}
+                                        value={getRef2.toString()}
                                         onChangeText={setRef2}
                                     />
                                 </View>

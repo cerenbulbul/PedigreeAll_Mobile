@@ -4,7 +4,7 @@ import Data from './Data';
 
 export class Global {
   static IsLogin = false;
-  static Token = "";
+  static Token = "Y2VyZW5idWxidWwyN0BnbWFpbC5jb206UjBteTNyc2c=";
   static Horse_ID = 1673471;
   static Horse_ID_Second = -1;
   static Horse_Second_ID_Female_Family = -1;
