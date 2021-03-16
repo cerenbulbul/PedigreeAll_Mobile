@@ -196,6 +196,7 @@ export default function App() {
           name="Basket"
           component={BasketStackScreen}
           options={{
+            
             tabBarBadge: Global.TabBarBasketNotification ,
             tabBarIcon: ({ color }) => (
               <Icon name="shopping-basket" size={18} color={color} />
