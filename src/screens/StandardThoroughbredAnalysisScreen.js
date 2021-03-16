@@ -953,7 +953,7 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                                     "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
                                     "COST_USD": getProduct.FEE,
                                     "INFO": "(" + getSireName + "," + getSireID + ") (" + getMareName + "," + getMareID + ")",
-                                    "ORDER_DETAIL_ID": 0,
+                                    "ORDER_DETAIL_ID": Math.floor(Math.random() * Math.floor(100)),
                                     "ORDER_ID": -1,
                                     "PRODUCT": getProduct
                                 }
@@ -966,7 +966,7 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                                         "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
                                         "COST_USD": getProduct.FEE,
                                         "INFO": "(" + getHorseName + "," + getHorseID + ")",
-                                        "ORDER_DETAIL_ID": 0,
+                                        "ORDER_DETAIL_ID": Math.floor(Math.random() * Math.floor(100)),
                                         "ORDER_ID": -1,
                                         "PRODUCT": getProduct
                                     }

@@ -39,14 +39,21 @@ export function BasketScreen({ navigation }) {
 
     const removeData = async (item) => {
         try {
-            Basket = [];
+            const Basket = [];
             const userKey = await AsyncStorage.getItem('SEPETIM')
             if (userKey !== null) {
                 for (let i = 0; i < (JSON.parse(userKey).length); i++) {
-                    Basket.push(JSON.parse(userKey)[i])
+                    if (item.ORDER_DETAIL_ID !== JSON.parse(userKey)[i].ORDER_DETAIL_ID) {
+                        Basket.push(JSON.parse(userKey)[i])
+                    }
+                    
                 }
             }
             await AsyncStorage.removeItem("SEPETIM")
+            await AsyncStorage.setItem("SEPETIM", JSON.stringify(Basket))
+            alertDialog("Successfully", "You deleted successfully")
+            setLoader(true)
+            getItemFromSepetim();
             console.log('Data successfully removed')
         } catch (e) {
             console.log('Failed to save the data to the storage')
@@ -126,7 +133,11 @@ export function BasketScreen({ navigation }) {
                                         </DataTable.Cell>
                                         <DataTable.Cell style={styles.DataTableCellText}>{item.COST_USD}</DataTable.Cell>
                                         <DataTable.Cell style={styles.DataTableCellText}>{item.COST_TL}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableCellText}>
+                                        <DataTable.Cell 
+                                            onPress={()=>{
+                                                removeData(item)
+                                            }}
+                                            style={styles.DataTableCellText}>
                                             <Icon name="times-circle" size={20} color="red" />
                                         </DataTable.Cell>
                                     </DataTable.Row>
