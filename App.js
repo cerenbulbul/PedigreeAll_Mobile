@@ -128,6 +128,11 @@ export default function App() {
   const [searchValue, setSearchValue] = React.useState()
   const refRBSheet = useRef();
 
+  const [getBottomNavigationMainName, setBottomNavigationMainName] = React.useState();
+  const [getBottomNavigationProfileName, setBottomNavigationProfileName] = React.useState()
+  const [getBottomNavigationBasketName, setBottomNavigationBasketName] = React.useState()
+  const [getBottomNavigationSearchName, setBottomNavigationSearchName] = React.useState()
+
   const readData = async () => {
     try {
       const userKey = await AsyncStorage.getItem('USER')
@@ -158,9 +163,17 @@ export default function App() {
     console.log(deviceLanguage)
     if (deviceLanguage === "tr_TR") {
       Global.Language="TR"
+      setBottomNavigationMainName("Anasayfa")
+      setBottomNavigationProfileName("Profil")
+      setBottomNavigationBasketName("Sepet")
+      setBottomNavigationSearchName("Arama")
     }
     else{
       Global.Language="EN"
+      setBottomNavigationMainName("Main")
+      setBottomNavigationProfileName("Profile")
+      setBottomNavigationBasketName("Basket")
+      setBottomNavigationSearchName("Search")
     }
     setTimeout(() => {
       setIsLoading(false);
@@ -185,7 +198,7 @@ export default function App() {
       >
 
         <Tab.Screen
-          name="Main"
+          name={getBottomNavigationMainName}
           component={AuthStackScreen}
           options={{
             tabBarIcon: ({ color }) => (
@@ -196,7 +209,7 @@ export default function App() {
 
 
         <Tab.Screen
-          name="Profile"
+          name={getBottomNavigationProfileName}
           component={ProfileStackScreen}
           options={{
             tabBarIcon: ({ color }) => (
@@ -206,7 +219,7 @@ export default function App() {
         />
 
         <Tab.Screen
-          name="Basket"
+          name= {getBottomNavigationBasketName}
           component={BasketStackScreen}
           options={{
             tabBarBadge: Global.TabBarBasketNotification ,
@@ -217,7 +230,7 @@ export default function App() {
         />
 
         <Tab.Screen
-          name="Search"
+          name={getBottomNavigationSearchName}
           component={SearchStackScreen}
           options={{
             tabBarIcon: ({ color }) => (

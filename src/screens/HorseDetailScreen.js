@@ -449,7 +449,7 @@ export function HorseDetailScreen({ route, navigation }) {
           }
         </View>
         : null}
-
+ 
       <Tab.Navigator
         initialRouteName="SearchScreen"
         removeClippedSubviews={true}

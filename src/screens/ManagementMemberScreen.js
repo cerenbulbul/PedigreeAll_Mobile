@@ -17,6 +17,7 @@ import { DataTable } from 'react-native-paper';
 import { BlueButton } from '../components/BlueButton';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ListItem, SearchBar } from "react-native-elements";
+import { Global } from "../Global";
 
 
 export function ManagementMemberScreen() {
@@ -43,7 +44,7 @@ export function ManagementMemberScreen() {
     const [getCountryText, setCountryText] = React.useState("")
 
 
-    const [getSystemUserID, setSystemUserID] = React.useState()
+    const [getSystemUserID, setSystemUserID] = React.useState("")
     const [getSystemUserTypeID, setSystemUserTypeID] = React.useState("")
     const [getPersonTypeID, setPersonTypeID] = React.useState("")
     const [getName, setName] = React.useState("")
@@ -93,6 +94,8 @@ export function ManagementMemberScreen() {
     const [getCoachIDForAdding, setCoachIDForAdding] = React.useState("")
     const [getJockeyIDForAdding, setJockeyIDForAdding] = React.useState("")
     const [getIBANForAdding, setIBANForAdding] = React.useState("")
+
+    const [getViewName, setViewName] = React.useState()
 
 
     const pressUserType = item => {
@@ -393,10 +396,18 @@ export function ManagementMemberScreen() {
     }
 
     React.useEffect(() => {
+        if (Global.Language === "TR") {
+            setViewName("Görüntüle")
+        }
+        else {
+            setViewName("View")
+        }
+
         readPersonTypeList();
         readSystemUserTypeList();
         readBoolList()
         readCountryGet()
+
     }, [])
 
     const alertDialog = (messageTitle, message) =>
@@ -415,7 +426,12 @@ export function ManagementMemberScreen() {
 
     return (
         <View style={styles.Container}>
-            <Title text="Member" />
+            {Global.Language === "TR" ?
+                <Title text="Üyeler" />
+                :
+                <Title text="Member" />
+            }
+
             <RBSheet
                 ref={BottomSheetSmall}
                 closeOnDragDown={true}
@@ -925,7 +941,11 @@ export function ManagementMemberScreen() {
                         }}
                         style={styles.SortTypeButton}>
                         <Icon name="plus-circle" size={16} color="#fff" style={{ alignSelf: 'center', marginRight: 5 }} />
-                        <Text style={styles.SortTypeButtonText}>Add A New Member</Text>
+                        {Global.Language === "TR" ?
+                            <Text style={styles.SortTypeButtonText}>Yeni uye ekle</Text>
+                            :
+                            <Text style={styles.SortTypeButtonText}>Add A New Member</Text>
+                        }
                     </TouchableOpacity>
                 </View>
                 {openAddNewMemberForm ?
@@ -951,7 +971,12 @@ export function ManagementMemberScreen() {
                                 }}
                                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                                 <Icon name="chevron-left" size={24} color="silver" />
-                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                {Global.Language === "TR" ?
+                                    <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                    :
+                                    <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                }
+
                             </TouchableOpacity>
                         </View>
 
@@ -964,7 +989,14 @@ export function ManagementMemberScreen() {
                                 style={styles.OneValueInLineButton}>
                                 <Icon name="user" size={20} color="#2169ab" />
                                 {checkStateMultiUserTypeFormString.checkedString.length === 0 ?
+                                    <>
+                                    {Global.Language === "TR" ?
+                                    <Text style={styles.InformationText}>Kullanıcı Tipi</Text>
+                                    :
                                     <Text style={styles.InformationText}>User Type</Text>
+                                    }
+                                    </>
+                                    
                                     :
                                     <Text style={styles.InformationText}>{checkStateMultiUserTypeFormString.checkedString}</Text>
                                 }
@@ -975,30 +1007,42 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>İsim: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Name: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Name"}
                                 value={getNameForAdding}
                                 onChangeText={setNameForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR"?
+                            <Text style={styles.TextInputHeader}>Soyisim: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Surname: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Surname"}
                                 value={getSurnameForAdding}
                                 onChangeText={setSurnameForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>E-Posta: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>E-mail: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"E-mail"}
                                 value={getEmailForAdding}
                                 onChangeText={setEmailForAdding}
                             />
@@ -1018,22 +1062,30 @@ export function ManagementMemberScreen() {
 
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Şifre: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Password: </Text>
+                            }
+                            
                             <TextInput
                                 secureTextEntry
                                 style={styles.HalfInputStyle}
-                                placeholder={"Password"}
                                 value={getPasswordForAdding}
                                 onChangeText={setPasswordForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR"?
+                            <Text style={styles.TextInputHeader}>Şifre Tekrar: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Password Again: </Text>
+                            }
+                            
                             <TextInput
                                 secureTextEntry
                                 style={styles.HalfInputStyle}
-                                placeholder={"Password Again"}
                                 value={getPasswordAgainForAdding}
                                 onChangeText={setPasswordAgainForAdding}
                             />
@@ -1048,7 +1100,14 @@ export function ManagementMemberScreen() {
                                 style={styles.OneValueInLineButton}>
                                 <Icon name="user" size={20} color="#2169ab" />
                                 {checkStateMultiPersonTypeFormString.checkedString.length === 0 ?
-                                    <Text style={styles.InformationText}>Member Type</Text>
+                                <>
+                                {Global.Language === "TR"?
+                                <Text style={styles.InformationText}>Üye Tipi</Text>
+                                :
+                                <Text style={styles.InformationText}>Member Type</Text>
+                                }
+                                </>
+                                    
                                     :
                                     <Text style={styles.InformationText}>{checkStateMultiPersonTypeFormString.checkedString}</Text>
                                 }
@@ -1060,30 +1119,42 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Ünvan: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Title: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Title"}
                                 value={getTitleForAdding}
                                 onChangeText={setTitleForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Kimlik/Pasaport/Vergi No: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>ID/Passport/Tax No: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"ID/Passport/Tax No"}
                                 value={getIDForAdding}
                                 onChangeText={setIDForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Vergi Dairesi: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Tax Office: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Tax Office"}
                                 value={getTaxOfficeForAdding}
                                 onChangeText={setTaxOfficeForAdding}
                             />
@@ -1098,7 +1169,14 @@ export function ManagementMemberScreen() {
                                 style={styles.OneValueInLineButton}>
                                 <Icon name="flag" size={20} color="#2169ab" />
                                 {getCountryText === "" ?
-                                    <Text style={styles.InformationText}>Country</Text>
+                                    <>
+                                        {Global.Language === "TR" ?
+                                        <Text style={styles.InformationText}>Ülke</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Country</Text>
+                                        }
+                                    </>
+                                    
                                     :
                                     <Text style={styles.InformationText}>{getCountryText}</Text>
                                 }
@@ -1110,10 +1188,14 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Adres: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Address: </Text>
+                            }
+                            
                             <TextInput
                                 style={[styles.HalfInputStyle]}
-                                placeholder={"Address"}
                                 multiline={true}
                                 value={getAddressForAdding}
                                 onChangeText={setAddressForAdding}
@@ -1121,40 +1203,56 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR"? 
+                            <Text style={styles.TextInputHeader}>Telefon: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Phone: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Phone"}
                                 value={getCellPhoneForAdding}
                                 onChangeText={setCellPhoneForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Antrenör Id: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Coach Id: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"CoachID"}
                                 value={getCoachIDForAdding}
                                 onChangeText={setCoachIDForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR" ?
+                            <Text style={styles.TextInputHeader}>Yetiştirici Id: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Grower Id: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"GrowerID"}
                                 value={getBreederIDForAdding}
                                 onChangeText={setBreederIDForAdding}
                             />
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
+                            {Global.Language === "TR"?
+                            <Text style={styles.TextInputHeader}>Sahip  Id: </Text>
+                            :
                             <Text style={styles.TextInputHeader}>Owner Id: </Text>
+                            }
+                            
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"OwnerID"}
                                 value={getOwnerIDForAdding}
                                 onChangeText={setOwnerIDForAdding}
                             />
@@ -1189,7 +1287,12 @@ export function ManagementMemberScreen() {
                                         }}
                                         style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                                         <Icon name="chevron-left" size={24} color="silver" />
-                                        <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                        {Global.Language === "TR" ?
+                                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                            :
+                                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                        }
+
                                     </TouchableOpacity>
                                 </View>
 
@@ -1221,24 +1324,54 @@ export function ManagementMemberScreen() {
 
                                                                 <DataTable>
                                                                     <DataTable.Header>
-                                                                        <DataTable.Title >ID</DataTable.Title>
-                                                                        <DataTable.Title >User Type</DataTable.Title>
-                                                                        <DataTable.Title >Member Type</DataTable.Title>
-                                                                        <DataTable.Title >Name</DataTable.Title>
-                                                                        <DataTable.Title >Surname</DataTable.Title>
-                                                                        <DataTable.Title >E-mail</DataTable.Title>
-                                                                        <DataTable.Title >ID/Passport/Tax</DataTable.Title>
-                                                                        <DataTable.Title >Title</DataTable.Title>
-                                                                        <DataTable.Title >Tax Office</DataTable.Title>
-                                                                        <DataTable.Title >Address</DataTable.Title>
-                                                                        <DataTable.Title >Active</DataTable.Title>
-                                                                        <DataTable.Title >Approved</DataTable.Title>
+                                                                        <DataTable.Title style={{ width: 100 }} >ID</DataTable.Title>
+                                                                        {Global.Language === "TR" ?
+                                                                            <>
+                                                                                <DataTable.Title style={{ width: 100 }} >Kullanıcı Tipi</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Üye Tipi</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >İsim</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Soyisim</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >E-Posta</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Kimlik/Pasaport/Vergi No</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }}>Ünvan</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Vergi Dairesi</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Adres</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Aktif</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Onay</DataTable.Title>
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                <DataTable.Title style={{ width: 100 }} >User Type</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Member Type</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Name</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Surname</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >E-mail</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }}>ID/Passport/Tax</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Title</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Tax Office</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Address</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Active</DataTable.Title>
+                                                                                <DataTable.Title style={{ width: 100 }} >Approved</DataTable.Title>
+                                                                            </>
+                                                                        }
+
                                                                     </DataTable.Header>
                                                                     {getSystemUserData.map((item, i) => (
                                                                         <DataTable.Row key={i}>
                                                                             <DataTable.Cell style={{ width: 50 }}>{item.SYSTEM_USER_ID}</DataTable.Cell>
-                                                                            <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.SYSTEM_USER_TYPE_OBJECT.SYSTEM_USER_TYPE_EN}</DataTable.Cell>
-                                                                            <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.PERSON_TYPE_OBJECT.PERSON_TYPE_EN}</DataTable.Cell>
+                                                                            {Global.Language === "TR" ?
+                                                                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.SYSTEM_USER_TYPE_OBJECT.SYSTEM_USER_TYPE_TR}</DataTable.Cell>
+                                                                                :
+                                                                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.SYSTEM_USER_TYPE_OBJECT.SYSTEM_USER_TYPE_EN}</DataTable.Cell>
+                                                                            }
+
+                                                                            {Global.Language === "TR" ?
+                                                                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.PERSON_TYPE_OBJECT.PERSON_TYPE_TR}</DataTable.Cell>
+                                                                                :
+                                                                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.PERSON_TYPE_OBJECT.PERSON_TYPE_EN}</DataTable.Cell>
+                                                                            }
+
+
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.NAME}</DataTable.Cell>
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.SURNAME}</DataTable.Cell>
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.EMAIL}</DataTable.Cell>
@@ -1246,8 +1379,18 @@ export function ManagementMemberScreen() {
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.TITLE}</DataTable.Cell>
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.TAX_OFFICE}</DataTable.Cell>
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.ADDRESS}</DataTable.Cell>
-                                                                            <DataTable.Cell style={{ width: 100 }}>{item.ACTIVE_OBJECT.BOOL_EN}</DataTable.Cell>
-                                                                            <DataTable.Cell style={{ width: 100, }}>{item.APPROVED_OBJECT.BOOL_EN}</DataTable.Cell>
+                                                                            {Global.Language === "TR" ?
+                                                                                <>
+                                                                                    <DataTable.Cell style={{ width: 100 }}>{item.ACTIVE_OBJECT.BOOL_TR}</DataTable.Cell>
+                                                                                    <DataTable.Cell style={{ width: 100, }}>{item.APPROVED_OBJECT.BOOL_TR}</DataTable.Cell>
+                                                                                </>
+                                                                                :
+                                                                                <>
+                                                                                    <DataTable.Cell style={{ width: 100 }}>{item.ACTIVE_OBJECT.BOOL_EN}</DataTable.Cell>
+                                                                                    <DataTable.Cell style={{ width: 100, }}>{item.APPROVED_OBJECT.BOOL_EN}</DataTable.Cell>
+                                                                                </>
+                                                                            }
+
                                                                         </DataTable.Row>
                                                                     )
                                                                     )}
@@ -1279,7 +1422,6 @@ export function ManagementMemberScreen() {
                                     <TextInput
                                         style={styles.HalfInputStyle}
                                         placeholder={"ID"}
-                                        keyboardType="numeric"
                                         value={getSystemUserID}
                                         onChangeText={setSystemUserID}
                                     />
@@ -1295,7 +1437,14 @@ export function ManagementMemberScreen() {
                                         style={styles.OneValueInLineButton}>
                                         <Icon name="user" size={20} color="#2169ab" />
                                         {checkStateMultiUserTypeString.checkedString.length === 0 ?
-                                            <Text style={styles.InformationText}>User Type</Text>
+                                            <>
+                                                {Global.Language === "TR" ?
+                                                    <Text style={styles.InformationText}>Kullanici Tipi</Text>
+                                                    :
+                                                    <Text style={styles.InformationText}>User Type</Text>
+                                                }
+                                            </>
+
                                             :
                                             <Text style={styles.InformationText}>{checkStateMultiUserTypeString.checkedString}</Text>
                                         }
@@ -1315,7 +1464,14 @@ export function ManagementMemberScreen() {
                                         style={styles.OneValueInLineButton}>
                                         <Icon name="user" size={20} color="#2169ab" />
                                         {checkStateMultiPersonTypeString.checkedString.length === 0 ?
-                                            <Text style={styles.InformationText}>Member Type</Text>
+                                            <>
+                                                {Global.Language === "TR" ?
+                                                    <Text style={styles.InformationText}>Üye Tipi</Text>
+                                                    :
+                                                    <Text style={styles.InformationText}>Member Type</Text>
+                                                }
+                                            </>
+
                                             :
                                             <Text style={styles.InformationText}>{checkStateMultiPersonTypeString.checkedString}</Text>}
 
@@ -1326,30 +1482,42 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                                    <Text style={styles.TextInputHeader}>Name: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>İsim: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Name: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Name"}
                                         value={getName}
                                         onChangeText={setName}
                                     />
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>Surname: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>Soyisim: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Surname: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Surname"}
                                         value={getSurname}
                                         onChangeText={setSurname}
                                     />
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>E-mail: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>E-Posta: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>E-mail: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"E-mail"}
                                         keyboardType="email-address"
                                         value={getEmail}
                                         onChangeText={setEmail}
@@ -1357,40 +1525,56 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>ID/Passport/tax No: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>Kimlik/Pasaport/Vergi No: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>ID/Passport/tax No: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"ID/Passport/tax No"}
                                         value={getID}
                                         onChangeText={setID}
                                     />
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>Title: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>Ünvan: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Title: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Title"}
                                         value={getTitle}
                                         onChangeText={setTitle}
                                     />
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>Tax Office: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>Vergi Dairesi: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Tax Office: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"TaxOffice"}
                                         value={getTaxOffice}
                                         onChangeText={setTaxOffice}
                                     />
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>Cell Phone: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>Cep Telefonu: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Cell Phone: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"CellPhone"}
                                         keyboardType="phone-pad"
                                         value={getCellPhone.toString()}
                                         onChangeText={setCellPhone}
@@ -1398,10 +1582,14 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    <Text style={styles.TextInputHeader}>Address: </Text>
+                                    {Global.Language === "TR" ?
+                                        <Text style={styles.TextInputHeader}>Adres: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Address: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Address"}
                                         value={getAddress}
                                         onChangeText={setAddress}
                                     />
@@ -1416,7 +1604,14 @@ export function ManagementMemberScreen() {
                                         style={styles.OneValueInLineButton}>
                                         <Icon name="circle" size={20} color="#2169ab" />
                                         {checkStateMultiActiveString.checkedString.length === 0 ?
-                                            <Text style={styles.InformationText}>Active</Text>
+                                            <>
+                                                {Global.Language === "TR" ?
+                                                    <Text style={styles.InformationText}>Aktif</Text>
+                                                    :
+                                                    <Text style={styles.InformationText}>Active</Text>
+                                                }
+                                            </>
+
                                             :
                                             <Text style={styles.InformationText}>{checkStateMultiActiveString.checkedString}</Text>
                                         }
@@ -1437,7 +1632,14 @@ export function ManagementMemberScreen() {
                                         style={styles.OneValueInLineButton}>
                                         <Icon name="circle" size={20} color="#2169ab" />
                                         {checkStateMultiApprovedString.checkedString.length === 0 ?
-                                            <Text style={styles.InformationText}>Approved</Text>
+                                            <>
+                                                {Global.Language === "TR" ?
+                                                    <Text style={styles.InformationText}>Onay</Text>
+                                                    :
+                                                    <Text style={styles.InformationText}>Approved</Text>
+                                                }
+                                            </>
+
                                             :
                                             <Text style={styles.InformationText}>{checkStateMultiApprovedString.checkedString}</Text>
                                         }
@@ -1450,15 +1652,18 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={styles.ButtonContainer}>
-                                    <BlueButton
-                                        title="View"
-                                        style={{ width: '95%' }}
-                                        onPress={() => {
-                                            setLoadingForTable(true)
-                                            readGetSystemUser()
-                                            setShowReport(true)
-                                        }}
-                                    />
+                                    {getViewName !== undefined &&
+                                        <BlueButton
+                                            title= "View"
+                                            style={{ width: '95%' }}
+                                            onPress={() => {
+                                                setLoadingForTable(true)
+                                                readGetSystemUser()
+                                                setShowReport(true)
+                                            }}
+                                        />
+                                    }
+
                                 </View>
 
 

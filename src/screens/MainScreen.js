@@ -40,27 +40,27 @@ if (
 const GenerationData = [
   {
     id: "4",
-    title: "Generation 4",
+    title: "Gen 4",
   },
   {
     id: "5",
-    title: "Generation 5",
+    title: "Gen 5",
   },
   {
     id: "6",
-    title: "Generation 6",
+    title: "Gen 6",
   },
   {
     id: "7",
-    title: "Generation 7",
+    title: "Gen 7",
   },
   {
     id: "8",
-    title: "Generation 8",
+    title: "Gen 8",
   },
   {
     id: "9",
-    title: "Generation 9",
+    title: "Gen 9",
   },
 ];
 
@@ -99,6 +99,8 @@ function SearchScreen({ navigation }) {
   const [HorseData, setHorseData] = useState([]);
   const [loader, setLoader] = useState(false)
 
+  const [getSearchTitle, setSearchTitle]= React.useState();
+
   const readUser = async () => {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
@@ -134,6 +136,12 @@ function SearchScreen({ navigation }) {
   React.useEffect(() => {
     readUser();
     setState({ checked: [state, 4] })
+    if (Global.Language === "TR") {
+      setSearchTitle("Lütfen bir isim yazıp gönder tuşuna basınız")
+    }
+    else{
+      setSearchTitle("Please type name and press enter..")
+    }
   }, [])
 
   return (
@@ -323,7 +331,7 @@ function SearchScreen({ navigation }) {
       <View style={{ width: '100%', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <SearchBar
-            placeholder="Please type name and press enter .. "
+            placeholder= {getSearchTitle}
             lightTheme
             platform="ios"
             cancelButtonTitle=""
@@ -1096,333 +1104,351 @@ function EffectiveNickSearchScreen({ navigation }) {
 const Tab = createMaterialTopTabNavigator();
 
 function MyTabs() {
-  
-  return (
-    <>
-      <View>
-        <Image
-          style={{ resizeMode: 'cover', height: 200, }}
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1450052590821-8bf91254a353?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80',
+
+  const [getSearchName, setSearchName] = React.useState()
+  const [getHypotheticalName, setHypotheticalName] = React.useState()
+  const [getEffectiveNickName, setEffectiveNickName] = React.useState()
+
+  React.useEffect(() => {
+
+    if (Global.Language === "TR") {
+      setSearchName("Arama")
+      setHypotheticalName("Varsayımsal Eşleştirme")
+      setEffectiveNickName("EffectiveNick")
+    }
+    else{
+      setSearchName("Search")
+      setHypotheticalName("Hypothetical")
+      setEffectiveNickName('EffectiveNick')
+    }
+
+    });
+    return (
+      <>
+        <View>
+          <Image
+            style={{ resizeMode: 'cover', height: 200, }}
+            source={{
+              uri:
+                'https://images.unsplash.com/photo-1450052590821-8bf91254a353?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80',
+            }}
+          />
+        </View>
+
+        <Tab.Navigator
+          initialRouteName="SearchScreen"
+          removeClippedSubviews={true}
+          sceneContainerStyle={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'white',
           }}
-        />
-      </View>
+          tabBarOptions={{
+            activeTintColor: '#000',
+            inactiveTintColor: '#b5b5b5',
+            indicatorStyle: {
+              backgroundColor: '#2169ab'
+            },
+            labelStyle: {
+              fontSize: 12,
+            },
+            style: {
+              backgroundColor: 'white', //e8edf1
+              height: (Platform.OS === 'ios') ? 48 : 50,
+              overflow: "hidden"
+            },
+          }}
+        >
+          <Tab.Screen
+            name="SearchScreen"
+            component={SearchScreen}
+            options={{ tabBarLabel: getSearchName }}
+          />
+          <Tab.Screen
+            name="HypotheticalScreen"
+            component={HypotheticalScreen}
+            options={{ tabBarLabel: getHypotheticalName }}
+          />
+          <Tab.Screen
+            name="EffectiveNickScreen"
+            component={EffectiveNickSearchScreen}
+            options={{ tabBarLabel: getEffectiveNickName }}
+          />
+        </Tab.Navigator>
 
-      <Tab.Navigator
-        initialRouteName="SearchScreen"
-        removeClippedSubviews={true}
-        sceneContainerStyle={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-        }}
-        tabBarOptions={{
-          activeTintColor: '#000',
-          inactiveTintColor: '#b5b5b5',
-          indicatorStyle: {
-            backgroundColor: '#2169ab'
-          },
-          labelStyle: {
-            fontSize: 12,
-          },
-          style: {
-            backgroundColor: 'white', //e8edf1
-            height: (Platform.OS === 'ios') ? 48 : 50,
-            overflow: "hidden"
-          },
-        }}
-      >
-        <Tab.Screen
-          name="SearchScreen"
-          component={SearchScreen}
-          options={{ tabBarLabel: 'Search' }}
-        />
-        <Tab.Screen
-          name="HypotheticalScreen"
-          component={HypotheticalScreen}
-          options={{ tabBarLabel: 'Hypothetical' }}
-        />
-        <Tab.Screen
-          name="EffectiveNickScreen"
-          component={EffectiveNickSearchScreen}
-          options={{ tabBarLabel: 'EffectiveNick' }}
-        />
-      </Tab.Navigator>
-
-    </>
-  );
-}
+      </>
+    );
+  }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#fff",
-  },
-  ScreensContainer: {
-    width: '100%',
-    height: '100%',
-    //backgroundColor:'white'
-  },
-  SeacrhScreenContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 20,
-    alignItems: 'center',
-  },
-  SearchButtonStyle: {
-    width: '92%',
-    padding: 15,
-    marginVertical: 20,
-    borderColor: '#2e3f6e',
-    borderRadius: 8,
-    elevation: 8,
-    shadowColor: 'silver',
-    shadowOpacity: 0.4,
-    shadowOffset: { height: 10, width: 0 },
-    shadowRadius: 20,
-    backgroundColor: "#2169ab"
+    container: {
+      marginTop: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#fff",
+    },
+    ScreensContainer: {
+      width: '100%',
+      height: '100%',
+      //backgroundColor:'white'
+    },
+    SeacrhScreenContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 20,
+      alignItems: 'center',
+    },
+    SearchButtonStyle: {
+      width: '92%',
+      padding: 15,
+      marginVertical: 20,
+      borderColor: '#2e3f6e',
+      borderRadius: 8,
+      elevation: 8,
+      shadowColor: 'silver',
+      shadowOpacity: 0.4,
+      shadowOffset: { height: 10, width: 0 },
+      shadowRadius: 20,
+      backgroundColor: "#2169ab"
 
-  },
-  SearchButtonText: {
-    alignSelf: "center",
-    textTransform: "uppercase",
-    fontSize: 16,
-    color: "#fff",
-    fontWeight: '500'
-  },
-  SireMareButtonContainer: {
-    backgroundColor: "#e8edf1",
-    padding: 9,
-    borderRadius: 8,
-    height: 36,
-    width: '33%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12,
-    marginRight: 7
-  },
-  GenerationButtonContainer: {
-    backgroundColor: "#e8edf1",
-    padding: 9,
-    borderRadius: 8,
-    height: 36,
-    width: '25%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12,
-    marginRight: 7
-  },
-  buttonContainer: {
-    flex: 1,
-  },
-  TabBarContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  Title: {
-    paddingTop: 40,
-    fontSize: 24,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    textDecorationLine: 'underline'
-  },
-  Subtitle: {
-    paddingTop: 20,
-    fontSize: 18,
-    fontWeight: '200',
-    textAlign: 'center'
-  },
-  LatestViewItem: {
-    width: '100%',
-    flex: 1,
-    flexDirection: 'row',
-  },
-  LatestCardTitle: {
-    marginLeft: 5,
-    fontWeight: '500',
-    fontSize: 18
-  },
-  LatestCardItemTitle: {
-    fontSize: 14,
-    fontWeight: '500'
-  },
-  swipeContainer: {
-    width: "100%",
-  },
-  SwipeablePanelContainer: {
-    padding: 20,
-  },
-  SwipeablePanelItem: {
-    marginVertical: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  SwipeablePanelText: {
-    fontSize: 18,
-  },
-  FlagContainer: {
-    flexDirection: 'row',
-  },
-  SearchButtonContainer: {
-    marginTop: 20,
-    padding: 10,
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-around'
-  },
-  SearchButtons: {
-    width: '45%',
-    padding: 15,
-    borderWidth: 0.5,
-    borderColor: '#2e3f6e',
-    borderRadius: 10,
-    elevation: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    shadowColor: 'silver',
-    shadowOpacity: 0.4,
-    shadowOffset: { height: 10, width: 0 },
-    shadowRadius: 20,
-    backgroundColor: "#2169ab"
-  },
-  SearchButtonsText: {
-    alignSelf: "center",
-    textTransform: "uppercase",
-    fontSize: 16,
-    color: "#fff",
-    fontWeight: '500'
-  },
-  SeacrhContainer: {
-    width: '100%',
-    paddingBottom: 10,
-    padding: 10
-  },
-  SearchButton: {
-    width: '100%',
-    padding: 10,
-    borderRadius: 10,
-    elevation: 8,
-    backgroundColor: '#2169ab',
-    alignItems: 'center'
-  },
-  GenerationContainer: {
-    flexDirection: 'row',
-    padding: 20,
-    justifyContent: 'space-between'
-  },
-  GenerationView: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  HypotheticalTitlesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
-  },
-  HypotheticalTitles: {
-    flexDirection: 'row',
-    width: '50%',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
-  HypotheticalTitlesText: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: 'silver'
-  },
-  FlatListItemView: {
-    paddingTop: 15,
-    borderBottomWidth: 0.2
-  },
-  scrollContainer: {
-    height: 300,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  card: {
-    flex: 1,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    borderRadius: 5,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  textContainer: {
-    backgroundColor: "rgba(0,0,0, 0.7)",
-    paddingHorizontal: 24,
-    paddingVertical: 8,
-    borderRadius: 5
-  },
-  infoText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold"
-  },
-  normalDot: {
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: "silver",
-    marginHorizontal: 4
-  },
-  indicatorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  SwipableCloseIcon: {
-    width: '100%',
-    flexDirection: 'row-reverse',
-    marginRight: -25
-  },
-  ActivityIndicatorStyle: {
-    zIndex: 1,
-    width: '100%',
-    height: '60%',
-    alignContent: 'center'
-  },
-  ErrorMessageContainer: {
-    width: '100%',
-    height: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-  },
-  ErrorMessageTitle: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#222'
-  },
-  ErrorMessageText: {
-    fontSize: 16,
-    color: '#c7c1c1',
-    textAlign: 'center',
-    marginTop: 5
-  },
-  ErrorMessageButtonContainer: {
-    width: '80%',
-    marginTop: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  ErrorMessageButton: {
-    backgroundColor: 'rgb(232, 237, 241)',
-    width: '40%',
-    padding: 10,
-    borderRadius: 8
-  },
-  ErrorMessageButtonText: {
-    textAlign: 'center',
-    color: '#2169ab',
-    fontSize: 14,
-  },
+    },
+    SearchButtonText: {
+      alignSelf: "center",
+      textTransform: "uppercase",
+      fontSize: 16,
+      color: "#fff",
+      fontWeight: '500'
+    },
+    SireMareButtonContainer: {
+      backgroundColor: "#e8edf1",
+      padding: 9,
+      borderRadius: 8,
+      height: 36,
+      width: '33%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 12,
+      marginRight: 7
+    },
+    GenerationButtonContainer: {
+      backgroundColor: "#e8edf1",
+      padding: 9,
+      borderRadius: 8,
+      height: 36,
+      width: '25%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 12,
+      marginRight: 7
+    },
+    buttonContainer: {
+      flex: 1,
+    },
+    TabBarContainer: {
+      flex: 1,
+      flexDirection: 'row',
+    },
+    Title: {
+      paddingTop: 40,
+      fontSize: 24,
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      textAlign: 'center',
+      textDecorationLine: 'underline'
+    },
+    Subtitle: {
+      paddingTop: 20,
+      fontSize: 18,
+      fontWeight: '200',
+      textAlign: 'center'
+    },
+    LatestViewItem: {
+      width: '100%',
+      flex: 1,
+      flexDirection: 'row',
+    },
+    LatestCardTitle: {
+      marginLeft: 5,
+      fontWeight: '500',
+      fontSize: 18
+    },
+    LatestCardItemTitle: {
+      fontSize: 14,
+      fontWeight: '500'
+    },
+    swipeContainer: {
+      width: "100%",
+    },
+    SwipeablePanelContainer: {
+      padding: 20,
+    },
+    SwipeablePanelItem: {
+      marginVertical: 15,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    SwipeablePanelText: {
+      fontSize: 18,
+    },
+    FlagContainer: {
+      flexDirection: 'row',
+    },
+    SearchButtonContainer: {
+      marginTop: 20,
+      padding: 10,
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-around'
+    },
+    SearchButtons: {
+      width: '45%',
+      padding: 15,
+      borderWidth: 0.5,
+      borderColor: '#2e3f6e',
+      borderRadius: 10,
+      elevation: 8,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      shadowColor: 'silver',
+      shadowOpacity: 0.4,
+      shadowOffset: { height: 10, width: 0 },
+      shadowRadius: 20,
+      backgroundColor: "#2169ab"
+    },
+    SearchButtonsText: {
+      alignSelf: "center",
+      textTransform: "uppercase",
+      fontSize: 16,
+      color: "#fff",
+      fontWeight: '500'
+    },
+    SeacrhContainer: {
+      width: '100%',
+      paddingBottom: 10,
+      padding: 10
+    },
+    SearchButton: {
+      width: '100%',
+      padding: 10,
+      borderRadius: 10,
+      elevation: 8,
+      backgroundColor: '#2169ab',
+      alignItems: 'center'
+    },
+    GenerationContainer: {
+      flexDirection: 'row',
+      padding: 20,
+      justifyContent: 'space-between'
+    },
+    GenerationView: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    HypotheticalTitlesContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start'
+    },
+    HypotheticalTitles: {
+      flexDirection: 'row',
+      width: '50%',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+    },
+    HypotheticalTitlesText: {
+      marginLeft: 10,
+      fontSize: 16,
+      color: 'silver'
+    },
+    FlatListItemView: {
+      paddingTop: 15,
+      borderBottomWidth: 0.2
+    },
+    scrollContainer: {
+      height: 300,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    card: {
+      flex: 1,
+      marginVertical: 4,
+      marginHorizontal: 16,
+      borderRadius: 5,
+      overflow: "hidden",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    textContainer: {
+      backgroundColor: "rgba(0,0,0, 0.7)",
+      paddingHorizontal: 24,
+      paddingVertical: 8,
+      borderRadius: 5
+    },
+    infoText: {
+      color: "white",
+      fontSize: 16,
+      fontWeight: "bold"
+    },
+    normalDot: {
+      height: 8,
+      width: 8,
+      borderRadius: 4,
+      backgroundColor: "silver",
+      marginHorizontal: 4
+    },
+    indicatorContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    SwipableCloseIcon: {
+      width: '100%',
+      flexDirection: 'row-reverse',
+      marginRight: -25
+    },
+    ActivityIndicatorStyle: {
+      zIndex: 1,
+      width: '100%',
+      height: '60%',
+      alignContent: 'center'
+    },
+    ErrorMessageContainer: {
+      width: '100%',
+      height: '50%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 10,
+    },
+    ErrorMessageTitle: {
+      textAlign: 'center',
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: '#222'
+    },
+    ErrorMessageText: {
+      fontSize: 16,
+      color: '#c7c1c1',
+      textAlign: 'center',
+      marginTop: 5
+    },
+    ErrorMessageButtonContainer: {
+      width: '80%',
+      marginTop: 40,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    ErrorMessageButton: {
+      backgroundColor: 'rgb(232, 237, 241)',
+      width: '40%',
+      padding: 10,
+      borderRadius: 8
+    },
+    ErrorMessageButtonText: {
+      textAlign: 'center',
+      color: '#2169ab',
+      fontSize: 14,
+    },
 
-});
+  });
 
 
 

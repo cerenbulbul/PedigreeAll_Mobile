@@ -78,20 +78,6 @@ export function HorseDetailScreenPedigree() {
   return (
     <View style={{ width: '100%', height: '100%' }}>
 
-
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={time}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Please Wait!</Text>
-              <ActivityIndicator size="large" color="#000" />
-            </View>
-          </View>
-        </Modal>
-
         {getPedigreeReport !== undefined &&
           <>
             <WebView

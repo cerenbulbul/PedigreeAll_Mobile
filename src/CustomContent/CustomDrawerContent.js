@@ -174,7 +174,12 @@ export default function CustomDrawerContent(props, navigation) {
                   onPress={() => { setSubSubPage(false) }}
                   style={styles.SideBarTopBackIcon}>
                   <Icon name="chevron-left" size={20} color="#222" />
+                  {Global.Language === "TR" ?
+                  <Text style={styles.SideBarBackText}>Geri</Text>
+                  :
                   <Text style={styles.SideBarBackText}>Back</Text>
+                  }
+                  
                 </TouchableOpacity>
 
               </View>
@@ -251,7 +256,12 @@ export default function CustomDrawerContent(props, navigation) {
                         props.navigation.navigate('MainStack')
                     }
                   }}>
-                  <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
+                    {Global.Language === "TR" ?
+                     <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
+                    :
+                    <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
+                    }
+                 
                   <Icon name="angle-right" size={16} color="#7b7373" style={styles.SideBarMenuIcon} />
                 </TouchableOpacity>
 
@@ -264,7 +274,11 @@ export default function CustomDrawerContent(props, navigation) {
                     onPress={() => { setSubPage(false) }}
                     style={styles.SideBarTopBackIcon}>
                     <Icon name="chevron-left" size={20} color="#222" />
-                    <Text style={styles.SideBarBackText}>Back</Text>
+                    {Global.Language === "TR" ?
+                  <Text style={styles.SideBarBackText}>Geri</Text>
+                  :
+                  <Text style={styles.SideBarBackText}>Back</Text>
+                  }
                   </TouchableOpacity>
 
                 </View>
@@ -415,7 +429,12 @@ export default function CustomDrawerContent(props, navigation) {
                         }
                       }
                     }}>
-                    <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
+                      {Global.Language === "TR" ?
+                      <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
+                      :
+                      <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
+                      }
+                    
                     <Icon name="angle-right" size={16} color="#7b7373" style={styles.SideBarMenuIcon} />
                   </TouchableOpacity>
 
@@ -436,7 +455,12 @@ export default function CustomDrawerContent(props, navigation) {
                             setSubPageTitle(item.SUB_PAGE)
                           }
                         }}>
-                        <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
+                          {Global.Language === "TR" ?
+                          <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
+                          :
+                          <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
+                          }
+                        
                         <Icon name="angle-right" size={16} color="#7b7373" style={styles.SideBarMenuIcon} />
                       </TouchableOpacity>
 
@@ -454,7 +478,12 @@ export default function CustomDrawerContent(props, navigation) {
                       onPress={() => {
                         props.navigation.navigate('Contact')
                       }}>
-                      <Text style={styles.SideBarMenuText}>Contact</Text>
+                        {Global.Language === "TR"?
+                        <Text style={styles.SideBarMenuText}>İletişim</Text>
+                        :
+                        <Text style={styles.SideBarMenuText}>Contact</Text>
+                        }
+                      
                     </TouchableOpacity>
 
                   </ScrollView>) : null}
@@ -475,7 +504,12 @@ export default function CustomDrawerContent(props, navigation) {
                   readData();
                   Global.IsLogin = false
                 }}>
-                <Text style={[styles.MyButtonText, { color: "#fff" }]}>Logout</Text>
+                  {Global.Language === "TR"?
+                  <Text style={[styles.MyButtonText, { color: "#fff" }]}>Çıkış</Text>
+                  :
+                  <Text style={[styles.MyButtonText, { color: "#fff" }]}>Logout</Text>
+                  }
+                
               </TouchableOpacity>
             </View>
 
@@ -488,7 +522,12 @@ export default function CustomDrawerContent(props, navigation) {
                   onPress={() => {
                     props.navigation.navigate('LoginScreen');
                   }}>
-                  <Text style={styles.MyButtonText}>Login</Text>
+                    {Global.Language === "TR"?
+                    <Text style={styles.MyButtonText}>Giriş Yap</Text>
+                    :
+                    <Text style={styles.MyButtonText}>Login</Text>
+                    }
+                  
                 </TouchableOpacity>
               </View>
 
@@ -504,7 +543,12 @@ export default function CustomDrawerContent(props, navigation) {
                       countryIcon: "flag",
                     });
                   }}>
-                  <Text style={styles.MyButtonText}>Register</Text>
+                     {Global.Language === "TR"?
+                    <Text style={styles.MyButtonText}>Üye Ol</Text>
+                    :
+                    <Text style={styles.MyButtonText}>Register</Text>
+                    }
+                  
                 </TouchableOpacity>
               </View>
             </View>
