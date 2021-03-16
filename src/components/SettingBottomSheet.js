@@ -1,11 +1,22 @@
 import React, {useState, useRef} from 'react'
-import { View, Text,StyleSheet,TouchableOpacity,Switch } from 'react-native'
+import { View, Text,StyleSheet,TouchableOpacity,Switch,RefreshControl } from 'react-native'
 import RBSheet from "react-native-raw-bottom-sheet";
 import Flag from "react-native-flags";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { Global } from '../Global';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export function SettingBottomSheet(props,refRBSheet) {
     const [isEnabled, setIsEnabled] = useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const wait = (timeout) => {
+      return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      wait(500).then(() => setRefreshing(false));
+    }, []);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     //const refRBSheet = useRef();
     return (
@@ -28,9 +39,15 @@ export function SettingBottomSheet(props,refRBSheet) {
           style={styles.SwipableCloseIcon}>
           <Icon name="times" size={20} color="#adb5bd" />
         </TouchableOpacity>
-        <View style={styles.SwipeablePanelContainer}>
+        <ScrollView 
+          style={styles.SwipeablePanelContainer}>
           <View style={styles.SwipeablePanelItem}>
+            {Global.Language === "TR" ?
+            <Text style={styles.SwipeablePanelText}>Bildirimler:</Text>
+            :
             <Text style={styles.SwipeablePanelText}>Notifications:</Text>
+            }
+            
             <Switch
               trackColor={{ false: "#a3a3a3", true: "#2f406f" }}
               thumbColor={isEnabled ? "#fff" : "#fff"}
@@ -40,21 +57,30 @@ export function SettingBottomSheet(props,refRBSheet) {
             />
           </View>
 
+          
+
           <View style={styles.SwipeablePanelItem}>
+            {Global.Language === "TR" ?
+            <Text style={styles.SwipeablePanelText}>Diller:</Text>
+            :
             <Text style={styles.SwipeablePanelText}>Languages:</Text>
+            }
+            
             
             <View style={styles.FlagContainer}>
-              <TouchableOpacity style={{marginRight:5}}>
+              <TouchableOpacity 
+                style={{marginRight:5}}>
                 <Flag code='US' size={24} />
               </TouchableOpacity>
-              <TouchableOpacity style={{marginRight:5}} >
+              <TouchableOpacity 
+                style={{marginRight:5}} >
                 <Flag code='TR' size={24} />
               </TouchableOpacity>
             </View>
 
           </View>
           
-        </View>
+        </ScrollView>
       </RBSheet>
     )
 }

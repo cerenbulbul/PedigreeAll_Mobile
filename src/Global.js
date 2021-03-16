@@ -22,6 +22,7 @@ export class Global {
   static laodingForBlog = true;
   static Sepetim=[];
   static TabBarBasketNotification = 0;
+  static Language;
 
   static getToken = async () => {
     try {
@@ -55,8 +56,8 @@ export class Global {
       if (userKey !== null) {
         this.Sepetim.push(JSON.parse(userKey)[0]) 
         this.TabBarBasketNotification = JSON.parse(userKey).length;
-        console.log(JSON.parse(userKey).length)
-        console.log(this.Sepetim)
+        //console.log(JSON.parse(userKey).length)
+        //console.log(this.Sepetim)
         console.log("getBasket kaydedildi")
       }
     } catch (e) {

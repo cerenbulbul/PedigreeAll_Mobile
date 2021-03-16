@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -146,9 +146,22 @@ export default function App() {
     }
   }
 
+  const deviceLanguage =
+          Platform.OS === 'ios'
+            ? NativeModules.SettingsManager.settings.AppleLocale ||
+              NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+            : Platform.OS === 'android' && NativeModules.I18nManager.localeIdentifier
+
 
   React.useEffect(() => {
     Global.getBasket();
+    console.log(deviceLanguage)
+    if (deviceLanguage === "tr_TR") {
+      Global.Language="TR"
+    }
+    else{
+      Global.Language="EN"
+    }
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -196,7 +209,6 @@ export default function App() {
           name="Basket"
           component={BasketStackScreen}
           options={{
-            
             tabBarBadge: Global.TabBarBasketNotification ,
             tabBarIcon: ({ color }) => (
               <Icon name="shopping-basket" size={18} color={color} />

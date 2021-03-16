@@ -74,13 +74,13 @@ export function MainScreen({ navigation }) {
 
     const unsubscribe = navigation.addListener('focus', () => {
       Global.getBasket();
-        
+
     });
 
     return () => {
-        unsubscribe;
+      unsubscribe;
     };
-}, [navigation]);
+  }, [navigation]);
 
   return (
     <MyTabs />
@@ -283,9 +283,20 @@ function SearchScreen({ navigation }) {
                   {loader === false &&
                     <View style={styles.ErrorMessageContainer}>
                       <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                      <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                      <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                      <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                      {Global.Language === "TR" ?
+                        <>
+                          <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                          <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                          <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                        </>
+                        :
+                        <>
+                          <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                          <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                          <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                        </>
+                      }
+
                       <View style={styles.ErrorMessageButtonContainer}>
                       </View>
                     </View>
@@ -338,7 +349,11 @@ function SearchScreen({ navigation }) {
             readUser();
             setLoader(true)
           }}>
-          <Text style={styles.SearchButtonText}>Search</Text>
+          {Global.Language === "TR" ?
+            <Text style={styles.SearchButtonText}>Arama Yap</Text>
+            :
+            <Text style={styles.SearchButtonText}>Search</Text>
+          }
         </TouchableOpacity>
       </View>
     </View>
@@ -552,9 +567,19 @@ function HypotheticalScreen({ navigation }) {
                       {loader === false &&
                         <View style={styles.ErrorMessageContainer}>
                           <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                          <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                          <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                          <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                          {Global.Language === "TR" ?
+                            <>
+                              <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                              <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                              <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                            </>
+                            :
+                            <>
+                              <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                              <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                              <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                            </>
+                          }
                           <View style={styles.ErrorMessageButtonContainer}>
                           </View>
                         </View>
@@ -639,7 +664,12 @@ function HypotheticalScreen({ navigation }) {
 
 
           }}>
-          <Text style={styles.SearchButtonText}>Search</Text>
+          {Global.Language === "TR" ?
+            <Text style={styles.SearchButtonText}>Arama Yap</Text>
+            :
+            <Text style={styles.SearchButtonText}>Search</Text>
+          }
+
         </TouchableOpacity>
       </View>
     </View>
@@ -852,9 +882,19 @@ function EffectiveNickSearchScreen({ navigation }) {
                           {loader === false &&
                             <View style={styles.ErrorMessageContainer}>
                               <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                              <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                              <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                              <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                              {Global.Language === "TR" ?
+                                <>
+                                  <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                  <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                  <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                </>
+                                :
+                                <>
+                                  <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                  <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                  <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                </>
+                              }
                               <View style={styles.ErrorMessageButtonContainer}>
                               </View>
                             </View>
@@ -1042,7 +1082,11 @@ function EffectiveNickSearchScreen({ navigation }) {
 
           }}
           style={[styles.SearchButtonStyle, { marginVertical: 34 }]}>
-          <Text style={styles.SearchButtonText}>Search</Text>
+          {Global.Language === "TR" ?
+            <Text style={styles.SearchButtonText}>Arama Yap</Text>
+            :
+            <Text style={styles.SearchButtonText}>Search</Text>
+          }
         </TouchableOpacity>
       </View>
     </View>
@@ -1052,6 +1096,7 @@ function EffectiveNickSearchScreen({ navigation }) {
 const Tab = createMaterialTopTabNavigator();
 
 function MyTabs() {
+  
   return (
     <>
       <View>
