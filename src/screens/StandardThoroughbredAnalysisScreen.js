@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Modal, TouchableOpacity, Dimensions, ActivityIndicator, Platform } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, Modal, TouchableOpacity, Dimensions, ActivityIndicator, Platform, Alert } from 'react-native'
 import { PricingCard, Card, ListItem, SearchBar } from 'react-native-elements';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import AsyncStorage from '@react-native-community/async-storage'
@@ -599,6 +599,10 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
     const [getSireName, setSireName] = React.useState();
     const [getMareName, setMareName] = React.useState();
 
+    const [getHorseID, setHorseID] = React.useState();
+    const [getSireID, setSireID] = React.useState();
+    const [getMareID, setMareID] = React.useState();
+
     const [getHorseList, setHorseList] = React.useState();
 
     const [getProductType, setProductType] = React.useState();
@@ -721,12 +725,39 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
         try {
           const userKey = await AsyncStorage.getItem('SEPETIM')
           if (userKey !== null) {
-            Basket.push(JSON.parse(userKey)[0])
+            for(let i = 0 ; i < (JSON.parse(userKey).length); i++){
+                Basket.push(JSON.parse(userKey)[i])
+            }
             saveData(Basket);
-            
+            Global.getBasket();
+            Alert.alert(
+                "Successfully",
+                "Product has been added to your basket successfully",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                ],
+                { cancelable: false }
+              );
         }
         else {
             saveData(Basket);
+            Global.getBasket();
+            Alert.alert(
+                "Successfully",
+                "Product has been added to your basket successfully",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                ],
+                { cancelable: false }
+              );
         }
         } catch (e) {
           console.log("User Error")
@@ -806,12 +837,15 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                                     onPress={() => {
                                         if (getBottomSheetText === "HorseName") {
                                             setHorseName(item.HORSE_NAME)
+                                            setHorseID(item.HORSE_ID)
                                         }
                                         else if (getBottomSheetText === "SireName") {
                                             setSireName(item.HORSE_NAME)
+                                            setSireID(item.HORSE_ID)
                                         }
                                         else if (getBottomSheetText === "MareName") {
                                             setMareName(item.HORSE_NAME)
+                                            setMareID(item.HORSE_ID)
                                         }
 
                                         BottomSheetLong.current.close();
@@ -913,17 +947,33 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
 
                         console.log(getProduct)
                         if (getProduct !== undefined) {
-                            const Basket = [
+                            if (ScreenName === "Hypothetical") {
+                                 const Basket = [
                                 {
                                     "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
                                     "COST_USD": getProduct.FEE,
-                                    "INFO": getHorseName,
+                                    "INFO": "(" + getSireName + "," + getSireID + ") (" + getMareName + "," + getMareID + ")",
                                     "ORDER_DETAIL_ID": 0,
                                     "ORDER_ID": -1,
                                     "PRODUCT": getProduct
                                 }
                             ]
                             checkSepet(Basket)
+                            }
+                            else if (ScreenName === "Thoroughbred") {
+                                const Basket = [
+                                    {
+                                        "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
+                                        "COST_USD": getProduct.FEE,
+                                        "INFO": "(" + getHorseName + "," + getHorseID + ")",
+                                        "ORDER_DETAIL_ID": 0,
+                                        "ORDER_ID": -1,
+                                        "PRODUCT": getProduct
+                                    }
+                                ]
+                                checkSepet(Basket)
+                            }
+                           
                             
                         }
 

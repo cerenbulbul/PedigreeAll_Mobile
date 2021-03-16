@@ -70,6 +70,18 @@ export function MainScreen({ navigation }) {
     Global.getToken();
   }, [])
 
+  React.useEffect(() => {
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      Global.getBasket();
+        
+    });
+
+    return () => {
+        unsubscribe;
+    };
+}, [navigation]);
+
   return (
     <MyTabs />
   );

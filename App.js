@@ -145,6 +145,8 @@ export default function App() {
       console.log('Failed')
     }
   }
+
+
   React.useEffect(() => {
     Global.getBasket();
     setTimeout(() => {
