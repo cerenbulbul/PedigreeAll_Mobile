@@ -35,6 +35,8 @@ import { HorseDetailBroodMareSireScreen } from "./HorseDetailBroodMareSireScreen
 import { HorseDetailLinebreedingScreen } from './HorseDetailLinebreedingScreen'
 import { HorseDetailScreenFemaleFamily } from './HorseDetailScreenFemaleFamily';
 import { HorseDetailScreenTJK } from './HorseDetailScreenTJK';
+import { HorseDetailScreenNick } from './HorseDetailScreenNick'
+
 import WebView from 'react-native-webview';
 const Tab = createMaterialTopTabNavigator();
 
@@ -162,6 +164,11 @@ export function HorseDetailScreen({ route, navigation }) {
   const [gettJKColor, setTJKColor] = React.useState("#000");
   const [getTJKFontWeight, setTJKFontWeight] = React.useState("500")
   const [getTJKFontSize, setTJKFontSize] = React.useState(16)
+
+  const [getNickLineColor, setNickLineColor] = React.useState("#fff");
+  const [getNickColor, setNickColor] = React.useState("#000");
+  const [getNickFontWeight, setNickFontWeight] = React.useState("500")
+  const [getNickFontSize, setNickFontSize] = React.useState(16)
 
   const refRBSheetGeneration = useRef();
   const BottomSheetSearchNavigation = useRef();
@@ -515,7 +522,7 @@ export function HorseDetailScreen({ route, navigation }) {
                       setTJKFontSize(16)
 
                       setScreenName("Pedigree")
-                      
+
                       console.log(getGenerationData)
                       scrollRef.current?.scrollTo({
                         y: 0,
@@ -880,6 +887,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setPedigreeFontWeight("700")
               setPedigreeFontSize(18)
 
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setProfileLineColor("#fff")
               setProfileColor("#222")
               setProfileFontWeight("500")
@@ -945,6 +957,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setPedigreeFontWeight("500")
               setPedigreeFontSize(16)
 
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setProfileLineColor("#2169ab")
               setProfileColor("#2169ab")
               setProfileFontWeight("700")
@@ -1009,6 +1026,12 @@ export function HorseDetailScreen({ route, navigation }) {
               setProgencyFontWeight("700")
               setProgencyFontSize(18)
 
+
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setPedigreeLineColor("#fff")
               setPedigreeColor("#222")
               setPedigreeFontWeight("500")
@@ -1065,6 +1088,77 @@ export function HorseDetailScreen({ route, navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity
+            style={[styles.TabNavigationItem, { borderColor: getNickLineColor }]}
+            onPress={() => {
+              setScreenName("Nick")
+
+              setNickLineColor("#2169ab")
+              setNickColor("#2169ab")
+              setNickFontWeight("700")
+              setNickFontSize(18)
+
+              setProgencyLineColor("#fff")
+              setProgencyColor("#222")
+              setProgencyFontWeight("500")
+              setProgencyFontSize(16)
+
+              setPedigreeLineColor("#fff")
+              setPedigreeColor("#222")
+              setPedigreeFontWeight("500")
+              setPedigreeFontSize(16)
+
+              setProfileLineColor("#fff")
+              setProfileColor("#222")
+              setProfileFontWeight("500")
+              setProfileFontSize(16)
+
+              setSiblingsMareLineColor("#fff")
+              setSiblingsMareColor("#222")
+              setSiblingsMareFontWeight("500")
+              setSiblingsMareFontSize(16)
+
+              setSiblingsSireLineColor("#fff")
+              setSiblingsSireColor("#222")
+              setSiblingsSireFontWeight("500")
+              setSiblingsSireFontSize(16)
+
+              setSiblingsBroodmareSireLineColor("#fff")
+              setSiblingsBroodmareSireColor("#222")
+              setSiblingsBroodmareSireFontWeight("500")
+              setSiblingsBroodmareSireFontSize(16)
+
+              setTailFemaleLineColor("#fff")
+              setTailFemaleColor("#222")
+              setTailFemaleFontWeight("500")
+              setTailFemaleFontSize(16)
+
+              setBroodmareSireLineColor("#fff")
+              setBroodmareSireColor("#222")
+              setBroodmareSireFontWeight("500")
+              setBroodmareSireFontSize(16)
+
+              setLinebreedingLineColor("#fff")
+              setLinebreedingColor("#222")
+              setLinebreedingFontWeight("500")
+              setLinebreedingFontSize(16)
+
+              setFemaleFamilyLineColor("#fff")
+              setFemaleFamilyColor("#222")
+              setFemaleFamilyFontWeight("500")
+              setFemaleFamilyFontSize(16)
+
+              setTJKLineColor("#fff")
+              setTJKColor("#222")
+              setTJKFontWeight("500")
+              setTJKFontSize(16)
+
+            }}>
+            <Icon name="cloudsmith" size={16} color={getNickColor} style={{ alignSelf: 'center' }} />
+            <Text style={[styles.TabNavigationItemText, { color: getNickColor, fontWeight: getNickFontWeight, fontSize: getNickFontSize }]}>Nick</Text>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity
             style={[styles.TabNavigationItem, { borderColor: getSiblingsMareLineColor }]}
             onPress={() => {
               setScreenName("SiblingMare")
@@ -1073,6 +1167,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setSiblingsMareColor("#2169ab")
               setSiblingsMareFontWeight("700")
               setSiblingsMareFontSize(18)
+
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
 
               setProgencyLineColor("#fff")
               setProgencyColor("#222")
@@ -1138,6 +1237,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setSiblingsSireFontWeight("700")
               setSiblingsSireFontSize(18)
 
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setSiblingsMareLineColor("#fff")
               setSiblingsMareColor("#222")
               setSiblingsMareFontWeight("500")
@@ -1202,6 +1306,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setSiblingsBroodmareSireColor("#2169ab")
               setSiblingsBroodmareSireFontWeight("700")
               setSiblingsBroodmareSireFontSize(18)
+
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
 
               setSiblingsSireLineColor("#fff")
               setSiblingsSireColor("#222")
@@ -1273,6 +1382,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setSiblingsBroodmareSireFontWeight("500")
               setSiblingsBroodmareSireFontSize(16)
 
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setSiblingsSireLineColor("#fff")
               setSiblingsSireColor("#222")
               setSiblingsSireFontWeight("500")
@@ -1337,6 +1451,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setSiblingsBroodmareSireFontWeight("500")
               setSiblingsBroodmareSireFontSize(16)
 
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setSiblingsSireLineColor("#fff")
               setSiblingsSireColor("#222")
               setSiblingsSireFontWeight("500")
@@ -1400,6 +1519,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setBroodmareSireColor("#222")
               setBroodmareSireFontWeight("500")
               setBroodmareSireFontSize(16)
+
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
 
               setSiblingsBroodmareSireLineColor("#fff")
               setSiblingsBroodmareSireColor("#222")
@@ -1466,6 +1590,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setLinebreedingFontWeight("500")
               setLinebreedingFontSize(16)
 
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
+
               setBroodmareSireLineColor("#fff")
               setBroodmareSireColor("#222")
               setBroodmareSireFontWeight("500")
@@ -1530,6 +1659,11 @@ export function HorseDetailScreen({ route, navigation }) {
               setFemaleFamilyColor("#222")
               setFemaleFamilyFontWeight("500")
               setFemaleFamilyFontSize(16)
+
+              setNickLineColor("#fff")
+              setNickColor("#222")
+              setNickFontWeight("500")
+              setNickFontSize(16)
 
               setLinebreedingLineColor("#fff")
               setLinebreedingColor("#222")
@@ -1613,6 +1747,8 @@ export function HorseDetailScreen({ route, navigation }) {
           <HorseDetailScreenFemaleFamily BackButton={false} navigation={navigation} />
           || getScreenName === "TJK" &&
           <HorseDetailScreenTJK />
+          || getScreenName === "Nick" &&
+          <HorseDetailScreenNick />
         }
       </View>
 
