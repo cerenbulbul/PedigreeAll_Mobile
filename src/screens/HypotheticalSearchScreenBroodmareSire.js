@@ -10,7 +10,7 @@ export function HypotheticalSearchScreenBroodmareSire() {
     const readSiblingBroodmareSire = async () => {
         try {
             if (Global.Token !== null) {
-                fetch('https://api.pedigreeall.com/Sibling/GetSiblingFromBroodmareSire?p_iHorseId=' + Global.Horse_Second_ID , {
+                fetch('https://api.pedigreeall.com/HorseInfo/GetSiblingsFromBroodmareSireByMotherId?p_iMotherId=' + Global.Horse_Second_ID , {
                 method: 'GET',
                   headers: {
                     Accept: 'application/json',
@@ -101,7 +101,7 @@ export function HypotheticalSearchScreenBroodmareSire() {
                 <DataTable.Title style={{marginLeft:10}}>Update D.</DataTable.Title>
                 </DataTable.Header>
 
-                {getSiblingBroodmareSire.HORSE_INFO_LIST.map((item,index)=>(
+                {getSiblingBroodmareSire.map((item,index)=>(
 
                 <DataTable.Row centered={true} key={index}>
                 <DataTable.Cell onPress={() => { alertDialog("Name", item.HORSE_NAME) }} style={{width:100, height:'auto'}}>{item.HORSE_NAME}</DataTable.Cell>

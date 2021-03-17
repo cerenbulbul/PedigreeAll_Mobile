@@ -67,9 +67,6 @@ const GenerationData = [
   },
 ];
 
-function refreshPage() {
-  window.location.reload(false);
-}
 
 export function HorseDetailScreen({ route, navigation }) {
   const { HorseData, Generation } = route.params;

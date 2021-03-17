@@ -552,11 +552,13 @@ function HypotheticalScreen({ navigation }) {
                             setSireText(item.HORSE_NAME);
                             setSireData(item);
                             setSelectedSire(item.HORSE_ID);
+                            Global.Horse_First_ID = item.HORSE_ID
                           }
                           else if (SireMareHorseName === 'Mare') {
                             setMareText(item.HORSE_NAME);
                             setMareData(item);
                             setSelectedMare(item.HORSE_ID);
+                            Global.Horse_Second_ID = item.HORSE_ID
                           }
                         }} >
                         <Image
