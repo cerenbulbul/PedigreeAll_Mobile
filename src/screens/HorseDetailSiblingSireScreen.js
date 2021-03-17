@@ -5,8 +5,7 @@ import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-export function HorseDetailSiblingSireScreen({ route, navigation }) {
-  const { BackButton } = route.params;
+export function HorseDetailSiblingSireScreen({ BackButton, navigation }) {
   const [time, setTime] = React.useState(true);
   const [getSiblingSire, setSiblingSire] = React.useState();
 

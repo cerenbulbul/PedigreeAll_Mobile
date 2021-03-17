@@ -6,8 +6,7 @@ import { DataTable } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-export function HorseDetailSiblingMareScreen({ route, navigation }) {
-  const { BackButton } = route.params;
+export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
   const [time, setTime] = React.useState(true);
   const [getSiblingMare, setSiblingMare] = React.useState();
   const readSiblingMare = async () => {

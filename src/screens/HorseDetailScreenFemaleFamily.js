@@ -5,9 +5,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Flag from "react-native-flags";
 
 
-export function HorseDetailScreenFemaleFamily({ route, navigation }) {
+export function HorseDetailScreenFemaleFamily({ BackButton, navigation }) {
 
-    const { BackButton } = route.params;
 
     const [time, setTime] = React.useState(true)
     const [getFemaleFamilyReport, setFemaleFamilyReport] = React.useState();

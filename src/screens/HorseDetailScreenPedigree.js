@@ -14,14 +14,15 @@ const PedigreeHTML =
 
 
 // <Text>{Global.HorseDetail.m_cData.PEDIGREE_CELL_LIST[1][0].HORSE_NAME}</Text>
-export function HorseDetailScreenPedigree() {
+export function HorseDetailScreenPedigree({Generation, navigation}) {
   const [time, setTime] = React.useState(true);
   const [getPedigreeReport, setPedigreeReport] = React.useState();
-
+  
   const readPedigreeReport = async () => {
+    console.log(Generation)
     try {
       if (Global.Token !== null) {
-        fetch('https://api.pedigreeall.com/Pedigree/GetPedigreeReport?p_iGenerationCount=' + Global.Generation + "&p_iFirstId=" + Global.Horse_ID + "&p_iSecondId=" + -1, {
+        fetch('https://api.pedigreeall.com/Pedigree/GetPedigreeReport?p_iGenerationCount=' + Generation + "&p_iFirstId=" + Global.Horse_ID + "&p_iSecondId=" + -1, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -33,7 +34,7 @@ export function HorseDetailScreenPedigree() {
             //setHorsePedigree(json)
             if (json !== null) {
               setPedigreeReport(json)
-
+              setTime(false)
             }
           })
           .catch((error) => {
@@ -65,8 +66,19 @@ export function HorseDetailScreenPedigree() {
   }
 
   React.useEffect(() => {
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      readPedigreeReport()
+        
+    });
+
+    return () => {
+        unsubscribe;
+    };
+}, [navigation]);
+
+  React.useEffect(() => {
     readPedigreeReport();
-    asyncCall();
 
   }, [])
 
@@ -78,28 +90,36 @@ export function HorseDetailScreenPedigree() {
   return (
     <View style={{ width: '100%', height: '100%' }}>
 
-        {getPedigreeReport !== undefined &&
-          <>
-            <WebView
-              source={{ html: getPedigreeReport[2] + PedigreeHTML }}
-              startInLoadingState={true}
-              style={{ width: '100%', height: '100%' }}
-              javaScriptEnabledAndroid={true}
-              showsHorizontalScrollIndicator={true}
-              scrollEnabled={true}
-              showsVerticalScrollIndicator={true}
-              injectedJavaScript="
+      {time ?
+        <ActivityIndicator size="large" color="#000" />
+        :
+        <>
+          {getPedigreeReport !== undefined &&
+            <>
+              <WebView
+                source={{ html: getPedigreeReport[2] + PedigreeHTML }}
+                startInLoadingState={true}
+                style={{ width: '100%', height: '100%' }}
+                javaScriptEnabledAndroid={true}
+                showsHorizontalScrollIndicator={true}
+                scrollEnabled={true}
+                showsVerticalScrollIndicator={true}
+                injectedJavaScript="
             setTimeout(function() { 
                 window.ReactNativeWebView.postMessage(document.getElementsByClassName('HorseName'));
                 }, 500);
                 true;
             "
-            />
+              />
 
-            <Text style={styles.FamilyText}>{getPedigreeReport[3]}</Text>
-          </>
+              <Text style={styles.FamilyText}>{getPedigreeReport[3]}</Text>
+            </>
 
-        }
+          }
+
+        </>}
+
+
 
     </View>
 

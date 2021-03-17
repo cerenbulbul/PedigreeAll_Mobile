@@ -5,8 +5,7 @@ import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-export function HorseDetailTailFemaleScreen({ route, navigation }) {
-  const { BackButton } = route.params;
+export function HorseDetailTailFemaleScreen({ BackButton, navigation }) {
   const [time, setTime] = React.useState(true);
   const [getTailFemale, setTailFemale] = React.useState();
   const readTailFemale = async () => {

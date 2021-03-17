@@ -7,8 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 
-export function HorseDetailProgencyScreen({ route, navigation }) {
-  const { BackButton } = route.params;
+export function HorseDetailProgencyScreen({ BackButton, navigation }) {
 
   const [time, setTime] = React.useState(true);
   const [getProgency, setProgency] = React.useState();

@@ -7,10 +7,9 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import NumberFormat from 'react-number-format';
 import HTML from "react-native-render-html";
 import WebView from 'react-native-webview';
+ 
+export function HorseDetailPRofileScreen({ BackButton, navigation }) {
 
-export function HorseDetailPRofileScreen({ route, navigation }) {
-
-    const { BackButton } = route.params;
     const [ImageInfo, setImageInfo] = React.useState();
     const [getHorseInfoByID, setHorseInfoByID] = React.useState();
     const [ReadMore, setReadMore] = React.useState(false);

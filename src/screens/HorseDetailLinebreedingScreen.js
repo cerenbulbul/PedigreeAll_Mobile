@@ -5,9 +5,8 @@ import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-export function HorseDetailLinebreedingScreen({ route, navigation }) {
+export function HorseDetailLinebreedingScreen({ BackButton, navigation }) {
 
-    const { BackButton } = route.params;
 
     const [LinebreedingHorse, setLinebreedingHorse] = React.useState();
     const [loader, setLoader] = useState(true)
