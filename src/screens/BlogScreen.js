@@ -202,7 +202,7 @@ export function BlogScreen({ navigation }) {
                               <Card containerStyle={{ borderRadius: 10 }}>
                                 <Card.Title> {i.HEADER_EN}</Card.Title>
                                 <Card.Image
-                                  style={{ borderRadius: 3 }}
+                                  style={{ borderRadius: 3, }}
                                   source={{ uri: 'https://www.pedigreeall.com/blog/' + i.IMAGE }} />
 
                                 <Text
@@ -243,7 +243,7 @@ export function BlogScreen({ navigation }) {
                           <Card containerStyle={{ borderRadius: 10 }}>
                             <Card.Title> {i.HEADER_EN}</Card.Title>
                             <Card.Image
-                              style={{ borderRadius: 3 }}
+                              style={{ borderRadius: 3, resizeMode:"contain" }}
                               source={{ uri: 'https://www.pedigreeall.com/blog/' + i.IMAGE }} />
                             <View style={[styles.IconsContainer, { marginTop: 10 }]}>
                               <Icon name="tags" size={15} color="#000" />

@@ -710,7 +710,7 @@ function EffectiveNickSearchScreen({ navigation }) {
   const [getSearchHorseData, setSearchHorseData] = React.useState();
   const [getSireName, setSireName] = React.useState("Sire Name");
   const [getStallionCodeData, setStallionCodeData] = React.useState();
-  const [getStallionCode, setStallionCode] = React.useState("Standart");
+  const [getStallionCode, setStallionCode] = React.useState("-");
   const [getBottomSheetText, setBottomSheetText] = React.useState();
   const [searchValue, setSearchValue] = React.useState()
   const [getSelectedHorseID, setSelectedHorseID] = React.useState();
@@ -874,7 +874,7 @@ function EffectiveNickSearchScreen({ navigation }) {
                               setSireName(item.HORSE_NAME);
                               setSecondHorseID(item.HORSE_ID);
                               setSireData(item);
-                              readGetAsNameIdForStallion(item.HORSE_ID);
+                              
 
                             }} >
                             <Image
@@ -943,6 +943,7 @@ function EffectiveNickSearchScreen({ navigation }) {
                           setRegisteredStallionsName(item.HORSE_NAME);
                           setRegisteredStallionsItemData(item);
                           setFirstHorseID(item.HORSE_ID);
+                          readGetAsNameIdForStallion(item.HORSE_ID);
                         }} >
                         <Image
                           style={{ width: 70, height: 70, justifyContent:'center', resizeMode:'contain' }}

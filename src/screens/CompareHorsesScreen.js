@@ -185,7 +185,7 @@ export function CompareHorsesScreen() {
                                                         pressHorse(item)
                                                     }} />
                                                 <Image
-                                                    style={{ width: 70, height: 70, borderRadius: 50 }}
+                                                    style={{ width: 70, height: 70, justifyContent:'center', resizeMode:'contain' }}
                                                     source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                                                 />
                                                 <ListItem.Content>

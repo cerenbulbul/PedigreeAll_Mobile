@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableOpacity, Alert , Modal} from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableOpacity, Alert, Modal } from 'react-native'
 import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -9,6 +9,7 @@ export function HorseDetailScreenNick() {
     const [getNickSuccessData, setNickSuccessData] = React.useState()
     const [getLoader, setLoader] = React.useState(true)
     const [getMoreInfo, setMoreInfo] = React.useState(false)
+    const [getSelectedItem, setSelectedItem] = React.useState()
 
     const readNickSuccessGetHorseID = async () => {
         try {
@@ -42,19 +43,18 @@ export function HorseDetailScreenNick() {
     };
 
     const alertDialog = (messageTitle, message) =>
-    Alert.alert(
-        messageTitle,
-        message,
-        [
-            {
-                text: "OK",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-            },
-        ],
-        { cancelable: false }
-    );
-
+        Alert.alert(
+            messageTitle,
+            message,
+            [
+                {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+            ],
+            { cancelable: false }
+        );
 
     React.useEffect(() => {
         readNickSuccessGetHorseID();
@@ -62,6 +62,136 @@ export function HorseDetailScreenNick() {
 
     return (
         <View style={styles.Container}>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={getMoreInfo}>
+                <View style={styles.centeredView}>
+                    <View style={[styles.FullScreenContainer]}>
+                        <View style={{ width: '100%', justifyContent: 'flex-end' }}>
+                            <TouchableOpacity
+                                style={{ padding: 10 }}
+                                onPress={() => {
+                                    setMoreInfo(false);
+                                }}>
+                                <Icon name="times" size={26} color="silver" />
+                            </TouchableOpacity>
+                        </View>
+
+                        {getSelectedItem !== undefined &&
+
+                            <ScrollView horizontal={true}>
+
+
+                                <DataTable>
+                                    <DataTable.Header removeClippedSubviews={true}>
+                                        <DataTable.Title style={styles.DataTableTitle}>Name</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Dam</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Birth. Date</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>1. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>2.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>2. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>3.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>3. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>4.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>4. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Prize</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Owner</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Breeder</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Coach</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
+                                    </DataTable.Header>
+
+                                    {getSelectedItem.HORSE_INFO.map((item, index) => (
+
+                                        <DataTable.Row centered={true} key={index}>
+                                            <DataTable.Cell 
+                                                onPress={()=>{
+                                                    alertDialog("Name",item.HORSE_NAME )
+                                                }}
+                                                style={styles.DataTableText}>{item.HORSE_NAME.substring(0,8)}...
+                                            </DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.EARN} {item.EARN_ICON}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FAMILY_TEXT}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.COLOR_TEXT}</DataTable.Cell>
+                                            <DataTable.Cell 
+                                                onPress={()=>{
+                                                    alertDialog("Dam", item.MOTHER_NAME)
+                                                }}
+                                                style={styles.DataTableText}>
+                                                    {item.MOTHER_NAME.substring(0,10)}...
+                                            </DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.START_COUNT}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FIRST}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FIRST_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.SECOND}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.SECOND_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.THIRD}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.THIRD_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FOURTH}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.PRICE} {item.PRICE_ICON}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.RM}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.ANZ}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.PA}</DataTable.Cell>
+                                            <DataTable.Cell 
+                                                onPress={()=>{
+                                                    alertDialog("Owner", item.OWNER)
+                                                }}
+                                                style={styles.DataTableText}>
+                                                    {item.OWNER.substring(0,8)}...
+                                            </DataTable.Cell>
+                                            <DataTable.Cell 
+                                                onPress={()=>{
+                                                    alertDialog("Breeder", item.BREEDER)
+                                                }}
+                                                style={styles.DataTableText}>
+                                                    {item.BREEDER.substring(0,8)}...
+                                            </DataTable.Cell>
+                                            <DataTable.Cell 
+                                                onPress={()=>{
+                                                    alertDialog("Coach", item.COACH)
+                                                }}
+                                                style={styles.DataTableText}>
+                                                    {item.COACH.substring(0,8)}...
+                                            </DataTable.Cell>
+                                            {item.IS_DEAD ?
+                                            <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
+                                            :
+                                            <DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell>
+                                            }
+                                            <DataTable.Cell style={styles.DataTableText}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
+                                        </DataTable.Row>
+
+
+
+                                    ))}
+
+                                </DataTable>
+
+
+                            </ScrollView>
+
+
+                        }
+
+                    </View>
+                </View>
+            </Modal>
 
             {getLoader ?
                 <ActivityIndicator color="black" size="large" />
@@ -74,7 +204,7 @@ export function HorseDetailScreenNick() {
 
                             <DataTable>
                                 <DataTable.Header removeClippedSubviews={true}>
-                                    <DataTable.Title style={{width:50}}> </DataTable.Title>
+                                    <DataTable.Title style={{ width: 50 }}> </DataTable.Title>
                                     <DataTable.Title style={styles.DataTableTitle}>B. Sire</DataTable.Title>
                                     <DataTable.Title style={styles.DataTableTitle}>Foals</DataTable.Title>
                                     <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
@@ -94,20 +224,21 @@ export function HorseDetailScreenNick() {
                                 {getNickSuccessData.map((item, index) => (
 
                                     <DataTable.Row centered={true} key={index}>
-                                        <DataTable.Cell 
-                                            onPress={()=>{
+                                        <DataTable.Cell
+                                            onPress={() => {
+                                                setSelectedItem(item)
                                                 setMoreInfo(true)
                                             }}
-                                            style={{width:50}}>
-                                                <Icon name="info" color="#222" size={16} />
-                                            
+                                            style={{ width: 50 }}>
+                                            <Icon name="info" color="#222" size={16} />
+
                                         </DataTable.Cell>
-                                        <DataTable.Cell 
-                                            onPress={()=>{
+                                        <DataTable.Cell
+                                            onPress={() => {
                                                 alertDialog("Broodmare Sire", item.BM_SIRE_NAME)
                                             }}
                                             style={styles.DataTableText}>
-                                            {item.BM_SIRE_NAME.substring(0,8)}...
+                                            {item.BM_SIRE_NAME.substring(0, 8)}...
                                         </DataTable.Cell>
                                         <DataTable.Cell style={styles.DataTableText}>{item.COUNTER}</DataTable.Cell>
                                         <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
@@ -147,10 +278,39 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#fff'
     },
-    DataTableTitle:{
-        width:100
+    DataTableTitle: {
+        width: 100
     },
-    DataTableText:{
-        width:100
-    }
+    DataTableText: {
+        width: 100
+    },
+    modalText: {
+        marginBottom: 15,
+    },
+    ModalItemContainer: {
+        width: '100%',
+        height: '100%',
+
+    },
+    ModalContainer: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        padding: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    FullScreenContainer: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#fff',
+        shadowColor: "#000",
+    },
 })
