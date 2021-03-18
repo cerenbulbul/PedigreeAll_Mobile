@@ -222,6 +222,7 @@ export function HypotheticalSearchScreen({ route, navigation }) {
     readFoalInfo();
     readStatisticInfo(1);
     readHorseGetByName();
+    setGenerationTitle("Gen " + Global.Generation_Hypothetical)
   }, [])
 
   return (
@@ -380,7 +381,7 @@ export function HypotheticalSearchScreen({ route, navigation }) {
 
           {loader ?
             <ActivityIndicator
-              color="black"
+              color="#000"
               size="large"
               style={styles.ActivityIndicatorStyle}
             />

@@ -58,7 +58,6 @@ export class Global {
         this.TabBarBasketNotification = JSON.parse(userKey).length;
         //console.log(JSON.parse(userKey).length)
         //console.log(this.Sepetim)
-        console.log("getBasket kaydedildi")
       }
     } catch (e) {
       console.log("User Error")

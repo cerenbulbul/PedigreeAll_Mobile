@@ -54,7 +54,6 @@ export function BasketScreen({ navigation }) {
             alertDialog("Successfully", "You deleted successfully")
             setLoader(true)
             getItemFromSepetim();
-            console.log('Data successfully removed')
         } catch (e) {
             console.log('Failed to save the data to the storage')
         }
@@ -85,7 +84,6 @@ export function BasketScreen({ navigation }) {
             [
                 {
                     text: "OK",
-                    onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
             ],

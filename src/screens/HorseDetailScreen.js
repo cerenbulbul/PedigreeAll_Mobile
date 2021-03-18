@@ -328,6 +328,7 @@ export function HorseDetailScreen({ route, navigation }) {
     readStatisticInfo(1);
     readHorseGetByName()
     setState({ checked: [state, 4] })
+    setGenerationTitle("Gen " + Global.Generation)
   }, [])
 
 
@@ -550,7 +551,7 @@ export function HorseDetailScreen({ route, navigation }) {
 
           {loader ?
             <ActivityIndicator
-              color="black"
+              color="#000"
               size="large"
               style={styles.ActivityIndicatorStyle}
             />
@@ -862,7 +863,7 @@ export function HorseDetailScreen({ route, navigation }) {
               </View>
               :
               <ActivityIndicator
-                color="black"
+                color="#000"
                 size="large"
                 style={styles.ActivityIndicatorStyle}
               />

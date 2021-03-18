@@ -1167,7 +1167,7 @@ function MyTabs() {
     <>
       <View>
         <Image
-          style={{ resizeMode: 'cover', height: 200, }}
+          style={{ resizeMode: 'stretch', height: 200, }}
           source={{
             uri:
               'https://images.unsplash.com/photo-1450052590821-8bf91254a353?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80',

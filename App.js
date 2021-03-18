@@ -137,7 +137,7 @@ export default function App() {
     try {
       const userKey = await AsyncStorage.getItem('USER')
       if (userKey !== null) {
-        console.log('User Var')
+        //console.log('User Var')
         //document.getElementById('vvlogin').hidden=true;
         setUser(userKey)
         //{console.log(JSON.parse(userKey['0']))}
@@ -160,7 +160,7 @@ export default function App() {
 
   React.useEffect(() => {
     Global.getBasket();
-    console.log(deviceLanguage)
+    //console.log(deviceLanguage)
     if (deviceLanguage === "tr_TR") {
       Global.Language="TR"
       setBottomNavigationMainName("Anasayfa")

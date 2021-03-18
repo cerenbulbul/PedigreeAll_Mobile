@@ -1,5 +1,17 @@
 import React, { useRef } from 'react'
-import { View, StyleSheet, Text, ScrollView, ImageBackground, Animated, Dimensions, useWindowDimensions, TouchableOpacity, ActivityIndicator } from 'react-native'
+import {
+    View,
+    StyleSheet,
+    Text,
+    ScrollView,
+    ImageBackground,
+    Animated,
+    Dimensions,
+    useWindowDimensions,
+    TouchableOpacity,
+    ActivityIndicator,
+    Modal
+} from 'react-native'
 import { Global } from '../Global'
 import AsyncStorage from '@react-native-community/async-storage'
 import Flag from "react-native-flags";
@@ -7,7 +19,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import NumberFormat from 'react-number-format';
 import HTML from "react-native-render-html";
 import WebView from 'react-native-webview';
- 
+
 export function HorseDetailPRofileScreen({ BackButton, navigation }) {
 
     const [ImageInfo, setImageInfo] = React.useState();
@@ -88,6 +100,8 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
 
     const scrollX = useRef(new Animated.Value(0)).current;
     const { width: windowWidth } = useWindowDimensions();
+    const [getOpenModal, setOpenModal] = React.useState(false)
+    const [getSelectedItem, setSelectedItem] = React.useState();
     const [webViewHeight, setWebViewHeight] = React.useState(null);
     const onMessage = (event) => {
         setWebViewHeight(parseInt(event.nativeEvent.data));
@@ -99,6 +113,61 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
             contentContainerStyle={{
                 flexGrow: 1,
             }}>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={getOpenModal}>
+                <View style={styles.centeredView}>
+                    <View style={[styles.FullScreenContainer]}>
+                        <View style={{ width: '100%', justifyContent: 'flex-end' }}>
+                            <TouchableOpacity
+                                style={{ padding: 10 }}
+                                onPress={() => {
+                                    setOpenModal(false);
+                                }}>
+                                <Icon name="times" size={26} color="silver" />
+                            </TouchableOpacity>
+                        </View>
+                        <>
+                            {ImageInfo !== undefined &&
+
+                                <>
+                                    {ImageInfo[0] !== undefined &&
+
+                                        <View style={{ width: '100%', height: '100%', marginBottom: 30 }}>
+                                            <WebView
+                                                source={{ html: "<body class='scrollHeight'>" + ImageInfo[0].INFO + "</body>" }}
+                                                startInLoadingState={true}
+                                                bounces={true}
+                                                style={{ width: '100%', height: 100 }}
+                                                automaticallyAdjustContentInsets={true}
+                                                javaScriptEnabledAndroid={true}
+                                                scrollEnabled={false}
+                                                injectedJavaScript="
+                                        setTimeout(function() { 
+                                            window.ReactNativeWebView.postMessage(1050);
+                                        }, 500);
+                                        true;
+                                        "
+                                                onMessage={onMessage}
+                                                renderLoading={() => (
+                                                    <ActivityIndicator
+                                                        color='black'
+                                                        size='large'
+                                                    />)}
+                                            />
+                                        </View>
+
+
+                                    }
+                                </>
+                            }
+                        </>
+
+                    </View>
+                </View>
+            </Modal>
 
             {BackButton ?
                 <View>
@@ -188,11 +257,6 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
                                                 <Flag code="TR" size={24} />
                                                 <Text style={styles.ItemNameText}>{getHorseInfoByID[0].HORSE_NAME}</Text>
                                             </View>
-                                            <View style={styles.ItemIconContainer}>
-                                                <Icon name="user" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                <Icon name="exclamation-circle" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                <Icon name="image" size={14} color="#000" style={{ marginRight: 5 }} />
-                                            </View>
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
@@ -201,16 +265,6 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
                                             <View style={styles.ItemFlagNameContainer}>
                                                 <Flag code="TR" size={24} />
                                                 <Text style={styles.ItemNameText}>{getHorseInfoByID[0].FATHER_NAME}</Text>
-                                            </View>
-                                            <View style={styles.ItemIconContainer}>
-                                                <Icon name="user" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                <Icon name="male" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                {getHorseInfoByID[0].FATHER_HAS_INFO ?
-                                                    <Icon name="exclamation-circle" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                    : null}
-                                                {getHorseInfoByID[0].FATHER_IMAGE !== undefined &&
-                                                    <Icon name="image" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                }
                                             </View>
                                         </View>
                                     </View>
@@ -221,16 +275,6 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
                                                 <Flag code="TR" size={24} />
                                                 <Text style={styles.ItemNameText}>{getHorseInfoByID[0].MOTHER_NAME}</Text>
                                             </View>
-                                            <View style={styles.ItemIconContainer}>
-                                                <Icon name="user" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                <Icon name="female" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                {getHorseInfoByID.MOTHER_HAS_INFO ?
-                                                    <Icon name="exclamation-circle" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                    : null}
-                                                {getHorseInfoByID.MOTHER_IMAGE !== undefined &&
-                                                    <Icon name="image" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                }
-                                            </View>
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
@@ -239,16 +283,6 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
                                             <View style={styles.ItemFlagNameContainer}>
                                                 <Flag code="TR" size={24} />
                                                 <Text style={styles.ItemNameText}>{getHorseInfoByID[0].BM_SIRE_NAME}</Text>
-                                            </View>
-                                            <View style={styles.ItemIconContainer}>
-                                                <Icon name="user" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                <Icon name="male" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                {getHorseInfoByID.BM_SIRE_HAS_INFO ?
-                                                    <Icon name="exclamation-circle" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                    : null}
-                                                {getHorseInfoByID.BM_SIRE_IMAGE !== undefined &&
-                                                    <Icon name="image" size={14} color="#000" style={{ marginRight: 5 }} />
-                                                }
                                             </View>
                                         </View>
                                     </View>
@@ -397,49 +431,11 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
 
             <TouchableOpacity
                 style={styles.ReadMoreButtonContainer}
-                onPress={() => { setReadMore(!ReadMore) }}>
-                {ReadMore ?
-                    <Text style={styles.ReadMoreText}>Read Less</Text> :
-                    <Text style={styles.ReadMoreText}>Read More</Text>}
+                onPress={() => { setOpenModal(true) }}>
+                <Text style={styles.ReadMoreText}>Read More</Text>
+
             </TouchableOpacity>
 
-            {ReadMore ?
-
-                <>
-                    {ImageInfo !== undefined &&
-
-                        <>
-                            {ImageInfo[0] !== undefined &&
-
-                                <WebView
-                                    source={{ html: "<body class='scrollHeight'>" + ImageInfo[0].INFO + "</body>" }}
-                                    startInLoadingState={true}
-                                    bounces={true}
-                                    style={{ width: '100%', height: webViewHeight }}
-                                    automaticallyAdjustContentInsets={true}
-                                    javaScriptEnabledAndroid={true}
-                                    scrollEnabled={false}
-                                    injectedJavaScript="
-                                        setTimeout(function() { 
-                                            window.ReactNativeWebView.postMessage(1050);
-                                        }, 500);
-                                        true;
-                                        "
-                                    onMessage={onMessage}
-                                    renderLoading={() => (
-                                        <ActivityIndicator
-                                            color='black'
-                                            size='large'
-                                        />)}
-                                />
-
-
-                            }
-                        </>
-                    }
-                </>
-
-                : null}
 
 
 
@@ -504,7 +500,7 @@ const styles = StyleSheet.create({
     ItemFlagNameContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        width: '75%'
+        width: '100%'
     },
     ItemNameText: {
         marginLeft: 10,
@@ -542,5 +538,43 @@ const styles = StyleSheet.create({
         borderColor: 'silver',
         marginBottom: 10
     },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    ModalItemContainer: {
+        width: '100%',
+        height: '95%',
 
+    },
+    ModalContainer: {
+        width: '95%',
+        height: '95%',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 20,
+        padding: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    FullScreenContainer: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        shadowColor: "#000",
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 0,
+        backgroundColor: '#6c6c6ca8'
+    },
 })
