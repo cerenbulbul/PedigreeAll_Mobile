@@ -72,7 +72,7 @@ const RomanMillerData = [
     },
 ]
 
-export function ThoroughbredStallionsSearchScreen() {
+export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
     const BottomSheetSmall = React.useRef();
     const BottomSheetFiltering = React.useRef();
@@ -471,14 +471,13 @@ export function ThoroughbredStallionsSearchScreen() {
                         "SORT_TYPE_ID": getSortTypeID,
                         "PAGE_NO": 1,
                         "PAGE_COUNT": 15,
-                        "RACE_ID" : 1
+                        "RACE_ID": 1
                     })
                 })
                     .then((response) => response.json())
                     .then((json) => {
                         setHorseGetFilter(json.m_cData)
                         setTime(false)
-                        console.log(json.m_cData)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -507,7 +506,6 @@ export function ThoroughbredStallionsSearchScreen() {
                     .then((response) => response.json())
                     .then((json) => {
                         setSortTypeData(json.m_cData);
-                        console.log(json.m_cData)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -535,7 +533,6 @@ export function ThoroughbredStallionsSearchScreen() {
                     .then((response) => response.json())
                     .then((json) => {
                         setYearData(json.m_cData);
-                        console.log(json.m_cData)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -562,7 +559,7 @@ export function ThoroughbredStallionsSearchScreen() {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -1597,7 +1594,6 @@ export function ThoroughbredStallionsSearchScreen() {
                 <TouchableOpacity
                     onPress={() => {
                         BottomSheetLong.current.close();
-                        console.log(checkStateMultiSireName.checked)
 
                         let FatherIDString
                         if (checkStateMultiSireName.checked.length > 0) {
@@ -1653,7 +1649,6 @@ export function ThoroughbredStallionsSearchScreen() {
                             }
                         }
 
-                        console.log(CountryString)
                         setCountryID(CountryString);
 
                         let SexString
@@ -2770,7 +2765,11 @@ export function ThoroughbredStallionsSearchScreen() {
                                     {getHorseGetFilter.map((item, index) => (
                                         <TouchableOpacity
                                             onPress={() => {
-                                                Linking.openURL("https://" + item.LINK + ".pedigreeall.com")
+                                                //Linking.openURL("https://" + item.LINK + ".pedigreeall.com")
+                                                Global.Link = item.LINK;
+                                                navigation.navigate("StallionsSearchLink",{
+                                                    Link: item.LINK
+                                                });
                                             }}
                                             key={index}>
                                             <Card>
@@ -2802,15 +2801,21 @@ export function ThoroughbredStallionsSearchScreen() {
                                                         <Text style={[styles.CardInformationText, { fontWeight: '700' }]}>{item.COUNT}</Text>
                                                         <Text style={styles.CardInformationText}>Breeding</Text>
                                                     </View>
-                                                    <TouchableOpacity
-                                                        onPress={() => {
-                                                            Linking.openURL("https://www.tjk.org/TR/YarisSever/Query/ConnectedPage/AtKosuBilgileri?1=1&QueryParameter_AtId=" + item.REF1)
-                                                        }}>
-                                                        <Image
-                                                            style={{ width: 30, height: 30, alignSelf: 'center' }}
-                                                            source={{ uri: "https://medya-cdn.tjk.org/medyaftp/site_img/logo-tjk.png" }}
-                                                        />
-                                                    </TouchableOpacity>
+                                                    {item.REF1 > 0 ?
+                                                        <TouchableOpacity
+                                                            onPress={() => {
+                                                                Linking.openURL("https://www.tjk.org/TR/YarisSever/Query/ConnectedPage/AtKosuBilgileri?1=1&QueryParameter_AtId=" + item.REF1)
+                                                            }}>
+
+                                                            <Image
+                                                                style={{ width: 40, height: 30, alignSelf: 'center' }}
+                                                                source={{ uri: "https://www.pedigreeall.com//images/head2.jpg" }}
+                                                            />
+                                                        </TouchableOpacity>
+                                                        :
+
+                                                        null}
+
                                                 </View>
                                             </Card>
                                         </TouchableOpacity>
@@ -3022,7 +3027,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        marginVertical:30
+        marginVertical: 30
     },
     ErrorMessageTitle: {
         textAlign: 'center',

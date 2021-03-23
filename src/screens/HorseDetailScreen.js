@@ -184,6 +184,8 @@ export function HorseDetailScreen({ route, navigation }) {
   const [getOnScroll, setOnScroll] = React.useState(false)
   const scrollRef = useRef(ScrollView);
 
+  const [isTJK, setIsTJK] = React.useState(false);
+
   const readUser = async () => {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
@@ -201,7 +203,12 @@ export function HorseDetailScreen({ route, navigation }) {
             .then((response) => response.json())
             .then((json) => {
               setSearchHorseData(json)
-              Global.HorseDetail = json;
+              if (json.m_cData.HEADER_OBJECT.REF1 > 0) {
+                setIsTJK(true)
+              }
+              else {
+                setIsTJK(false)
+              }
             })
             .catch((error) => {
               console.error(error);
@@ -522,6 +529,11 @@ export function HorseDetailScreen({ route, navigation }) {
                       setTJKFontWeight("500")
                       setTJKFontSize(16)
 
+                      setNickLineColor("#fff")
+                      setNickColor("#222")
+                      setNickFontWeight("500")
+                      setNickFontSize(16)
+
                       setScreenName("Pedigree")
 
                       console.log(getGenerationData)
@@ -736,1025 +748,1032 @@ export function HorseDetailScreen({ route, navigation }) {
         </View>
       </Modal>
 
-
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <SearchBar
-          placeholder={getSearchTitle}
-          lightTheme
-          platform="ios"
-          cancelButtonTitle=""
-          inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
-          containerStyle={{ backgroundColor: 'transparent', width: '60%' }}
-          inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
-          rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-          leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-          value={searchValue}
-          onChangeText={setSearchValue}
-        />
-        <TouchableOpacity
-          onPress={() => { refRBSheetGeneration.current.open() }}
-          style={styles.GenerationButtonContainer}>
-          <Text>{GenerationTitle}</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.SearchButtonStyle}
-          onPress={() => {
-            readHorseGetByName();
-            setLoader(true)
-            setScreenName("NoScreen")
-            BottomSheetSearchNavigation.current.open();
-          }}>
-          <Icon name="search" size={16} color="#fff" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.HeaderShortContainer}>
+      <ScrollView style={{ width: '100%', height: '100%' }}>
 
 
-
-        {HorseInformationData !== undefined ?
-          <Text style={styles.HeaderTitle}>{HorseInformationData.m_cData.HEADER_OBJECT.ROW1_GENERAL}</Text>
-          : null}
-        <TouchableOpacity
-          style={styles.ShowHeaderButtonContainer}
-          onPress={() => { setShowHeader(!showHeader) }}>
-          {showHeader ?
-            <Icon name="minus" size={14} color="#fff" />
-            : <Icon name="plus" size={14} color="#fff" />}
-
-        </TouchableOpacity>
-      </View>
-      {
-        showHeader ?
-          <View>
-            {HorseInformationData !== undefined ?
-              <View style={styles.StabilInformationContainer}>
-                <View style={styles.StabilInformationItem}>
-                  <Icon name="chart-line" size={16} color="#222"></Icon>
-                  <Text style={styles.StabilInformationText}>Dr. Roman Miller: {HorseInformationData.m_cData.HEADER_OBJECT.ROW2_RM} </Text>
-                </View>
-                <View style={styles.StabilInformationItem}>
-                  <Icon name="chart-line" size={16} color="#222"></Icon>
-                  <Text style={styles.StabilInformationText}>ANZ: {HorseInformationData.m_cData.HEADER_OBJECT.ROW3_ANZ}</Text>
-                </View>
-                <View style={styles.StabilInformationItem}>
-                  <Icon name="chart-line" size={16} color="#222"></Icon>
-                  <Text style={styles.StabilInformationText}>BM-PedigreeAll.com: {HorseInformationData.m_cData.HEADER_OBJECT.ROW4_BM_PA}</Text>
-                </View>
-                <View style={styles.StabilInformationItem}>
-                  <Icon name="chart-line" size={16} color="#222"></Icon>
-                  <Text style={styles.StabilInformationText}>PedigreeAll.com: {HorseInformationData.m_cData.HEADER_OBJECT.ROW5_PA}</Text>
-                </View>
-                <View style={styles.StabilInformationButtonContainer3Value}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalText("Information");
-                      setModalVisible(true);
-                    }}
-                    style={styles.StabilInformationButton}>
-                    <Icon name="exclamation-circle" size={16} color="#fff"></Icon>
-                    <Text style={styles.StabilInformationButtonText}>Information</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalText("Statistics")
-                      setModalVisible(true);
-                    }}
-                    style={styles.StabilInformationButton}>
-                    <Icon name="chart-line" size={16} color="#fff"></Icon>
-                    <Text style={styles.StabilInformationButtonText}>Statistics</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalText("Image");
-                      setModalVisible(true);
-                    }}
-                    style={styles.StabilInformationButton}>
-                    <Icon name="image" size={16} color="#fff"></Icon>
-                    <Text style={styles.StabilInformationButtonText}>Images</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.StabilInformationButtonContainer2Value}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      const supported = Linking.canOpenURL('https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1');
-                      if (supported) {
-                        Linking.openURL('https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1');
-                      } else {
-                        Alert.alert(`Don't know how to open this URL: ${'https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1'}`);
-                      }
-                    }}
-                    style={styles.StabilInformationButton}>
-                    <Icon name="file-pdf" size={16} color="#fff"></Icon>
-                    <Text style={styles.StabilInformationButtonText}>Download</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      //checkPermission();
-                    }}
-                    style={styles.StabilInformationButton}>
-                    <Icon name="image" size={16} color="#fff"></Icon>
-                    <Text style={styles.StabilInformationButtonText}>Download</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.Line} />
-              </View>
-              :
-              <ActivityIndicator
-                color="#000"
-                size="large"
-                style={styles.ActivityIndicatorStyle}
-              />
-            }
-          </View>
-          : null
-      }
-
-      <ScrollView
-        ref={scrollRef}
-        style={{ height: 10 }}
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}>
-
-        <View style={styles.TabNavigationContainer}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <SearchBar
+            placeholder={getSearchTitle}
+            lightTheme
+            platform="ios"
+            cancelButtonTitle=""
+            inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+            containerStyle={{ backgroundColor: 'transparent', width: '60%' }}
+            inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+            rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+            leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+            value={searchValue}
+            onChangeText={setSearchValue}
+          />
           <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getPedigreeLineColor }]}
-            onPress={() => {
-              setScreenName("Pedigree")
-              setPedigreeLineColor("#2169ab")
-              setPedigreeColor("#2169ab")
-              setPedigreeFontWeight("700")
-              setPedigreeFontSize(18)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-            }}>
-            <Icon name="network-wired" size={16} color={getPedigreeColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getPedigreeColor, fontWeight: getPedigreeFontWeight, fontSize: getPedigreeFontSize }]}>Pedigree</Text>
-
+            onPress={() => { refRBSheetGeneration.current.open() }}
+            style={styles.GenerationButtonContainer}>
+            <Text>{GenerationTitle}</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getProfileLineColor }]}
+            style={styles.SearchButtonStyle}
             onPress={() => {
-              setScreenName("Profile")
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setProfileLineColor("#2169ab")
-              setProfileColor("#2169ab")
-              setProfileFontWeight("700")
-              setProfileFontSize(18)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
+              readHorseGetByName();
+              setLoader(true)
+              setScreenName("NoScreen")
+              BottomSheetSearchNavigation.current.open();
             }}>
-            <Icon name="id-card" size={16} color={getProfileColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getProfileColor, fontWeight: getProfileFontWeight, fontSize: getProfileFontSize }]}>Profile</Text>
+            <Icon name="search" size={16} color="#fff" />
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getProgencyLineColor }]}
-            onPress={() => {
-              setScreenName("Progency")
-
-              setProgencyLineColor("#2169ab")
-              setProgencyColor("#2169ab")
-              setProgencyFontWeight("700")
-              setProgencyFontSize(18)
-
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-
-            }}>
-            <Icon name="cloudsmith" size={16} color={getProgencyColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Progency</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getNickLineColor }]}
-            onPress={() => {
-              setScreenName("Nick")
-
-              setNickLineColor("#2169ab")
-              setNickColor("#2169ab")
-              setNickFontWeight("700")
-              setNickFontSize(18)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-
-            }}>
-            <Icon name="cloudsmith" size={16} color={getNickColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getNickColor, fontWeight: getNickFontWeight, fontSize: getNickFontSize }]}>Nick</Text>
-          </TouchableOpacity>
-
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getSiblingsMareLineColor }]}
-            onPress={() => {
-              setScreenName("SiblingMare")
-
-              setSiblingsMareLineColor("#2169ab")
-              setSiblingsMareColor("#2169ab")
-              setSiblingsMareFontWeight("700")
-              setSiblingsMareFontSize(18)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-            }}>
-            <Icon name="cloudsmith" size={16} color={getSiblingsMareColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getSiblingsMareColor, fontWeight: getSiblingsMareFontWeight, fontSize: getSiblingsMareFontSize }]}>Siblings (Mare)</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getSiblingsSireLineColor }]}
-            onPress={() => {
-              setScreenName("SiblingSire")
-
-              setSiblingsSireLineColor("#2169ab")
-              setSiblingsSireColor("#2169ab")
-              setSiblingsSireFontWeight("700")
-              setSiblingsSireFontSize(18)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-
-            }}>
-            <Icon name="cloudsmith" size={16} color={getSiblingsSireColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getSiblingsSireColor, fontWeight: getSiblingsSireFontWeight, fontSize: getSiblingsSireFontSize }]}>Siblings (Sire)</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getSiblingsBroodmareSireLineColor }]}
-            onPress={() => {
-              setScreenName("SiblingBroodmareSire")
-
-              setSiblingsBroodmareSireLineColor("#2169ab")
-              setSiblingsBroodmareSireColor("#2169ab")
-              setSiblingsBroodmareSireFontWeight("700")
-              setSiblingsBroodmareSireFontSize(18)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-
-            }}>
-            <Icon name="cloudsmith" size={16} color={getSiblingsBroodmareSireColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getSiblingsBroodmareSireColor, fontWeight: getSiblingsBroodmareSireFontWeight, fontSize: getSiblingsBroodmareSireFontSize }]}>Siblings (Broodmare Sire)</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getTailFemaleLineColor }]}
-            onPress={() => {
-              setScreenName("TailFemale")
-
-              setTailFemaleLineColor("#2169ab")
-              setTailFemaleColor("#2169ab")
-              setTailFemaleFontWeight("700")
-              setTailFemaleFontSize(18)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-            }}>
-            <Icon name="cloudsmith" size={16} color={getTailFemaleColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Tail Female</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getBroodmareSireLineColor }]}
-            onPress={() => {
-              setScreenName("BroodmareSire")
-
-              setBroodmareSireLineColor("#2169ab")
-              setBroodmareSireColor("#2169ab")
-              setBroodmareSireFontWeight("700")
-              setBroodmareSireFontSize(18)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-            }}>
-            <Icon name="cloudsmith" size={16} color={getBroodmareSireColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getLinebreedingLineColor }]}
-            onPress={() => {
-              setScreenName("Linebreeding")
-
-              setLinebreedingLineColor("#2169ab")
-              setLinebreedingColor("#2169ab")
-              setLinebreedingFontWeight("700")
-              setLinebreedingFontSize(18)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-
-            }}>
-            <Icon name="cloudsmith" size={16} color={getLinebreedingColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Linebreeding</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getFemaleFamilyLineColor }]}
-            onPress={() => {
-              setScreenName("FemaleFamily")
-
-              setFemaleFamilyLineColor("#2169ab")
-              setFemaleFamilyColor("#2169ab")
-              setFemaleFamilyFontWeight("700")
-              setFemaleFamilyFontSize(18)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-              setTJKLineColor("#fff")
-              setTJKColor("#222")
-              setTJKFontWeight("500")
-              setTJKFontSize(16)
-
-            }}>
-            <Icon name="cloudsmith" size={16} color={getFemaleFamilyColor} style={{ alignSelf: 'center' }} />
-            <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Female Family</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.TabNavigationItem, { borderColor: getTJKLineColor }]}
-            onPress={() => {
-              setScreenName("TJK")
-
-              setTJKLineColor("#2169ab")
-              setTJKColor("#2169ab")
-              setTJKFontWeight("700")
-              setTJKFontSize(18)
-
-              setFemaleFamilyLineColor("#fff")
-              setFemaleFamilyColor("#222")
-              setFemaleFamilyFontWeight("500")
-              setFemaleFamilyFontSize(16)
-
-              setNickLineColor("#fff")
-              setNickColor("#222")
-              setNickFontWeight("500")
-              setNickFontSize(16)
-
-              setLinebreedingLineColor("#fff")
-              setLinebreedingColor("#222")
-              setLinebreedingFontWeight("500")
-              setLinebreedingFontSize(16)
-
-              setBroodmareSireLineColor("#fff")
-              setBroodmareSireColor("#222")
-              setBroodmareSireFontWeight("500")
-              setBroodmareSireFontSize(16)
-
-              setSiblingsBroodmareSireLineColor("#fff")
-              setSiblingsBroodmareSireColor("#222")
-              setSiblingsBroodmareSireFontWeight("500")
-              setSiblingsBroodmareSireFontSize(16)
-
-              setSiblingsSireLineColor("#fff")
-              setSiblingsSireColor("#222")
-              setSiblingsSireFontWeight("500")
-              setSiblingsSireFontSize(16)
-
-              setSiblingsMareLineColor("#fff")
-              setSiblingsMareColor("#222")
-              setSiblingsMareFontWeight("500")
-              setSiblingsMareFontSize(16)
-
-              setProgencyLineColor("#fff")
-              setProgencyColor("#222")
-              setProgencyFontWeight("500")
-              setProgencyFontSize(16)
-
-              setPedigreeLineColor("#fff")
-              setPedigreeColor("#222")
-              setPedigreeFontWeight("500")
-              setPedigreeFontSize(16)
-
-              setProfileLineColor("#fff")
-              setProfileColor("#222")
-              setProfileFontWeight("500")
-              setProfileFontSize(16)
-
-              setTailFemaleLineColor("#fff")
-              setTailFemaleColor("#222")
-              setTailFemaleFontWeight("500")
-              setTailFemaleFontSize(16)
-
-            }}>
-            <Image
-              style={{ width: 25, height: 25, alignSelf: 'center' }}
-              source={{ uri: 'https://medya-cdn.tjk.org/medyaftp/site_img/logo-tjk.png' }}
-            />
-            <Text style={[styles.TabNavigationItemText, { color: gettJKColor, fontWeight: getTJKFontWeight, fontSize: getTJKFontSize }]}>TJK</Text>
-          </TouchableOpacity>
-
         </View>
 
-      </ScrollView>
+        <View style={styles.MainHeaderContainer}>
+          <View style={styles.HeaderShortContainer}>
+            {HorseInformationData !== undefined ?
+              <Text style={styles.HeaderTitle}>{HorseInformationData.m_cData.HEADER_OBJECT.ROW1_GENERAL}</Text>
+              : null}
+            <TouchableOpacity
+              style={styles.ShowHeaderButtonContainer}
+              onPress={() => { setShowHeader(!showHeader) }}>
+              {showHeader ?
+                <Icon name="minus" size={14} color="#fff" />
+                : <Icon name="plus" size={14} color="#fff" />}
+
+            </TouchableOpacity>
+          </View>
 
 
-      <View
-        style={{ height: '70%' }}>
-        {getScreenName === "Pedigree" &&
-          <HorseDetailScreenPedigree Generation={getGenerationData} navigation={navigation} />
-          || getScreenName === "Profile" &&
-          <HorseDetailPRofileScreen BackButton={false} navigation={navigation} />
-          || getScreenName === "Progency" &&
-          <HorseDetailProgencyScreen BackButton={false} navigation={navigation} />
-          || getScreenName === "SiblingMare" &&
-          <HorseDetailSiblingMareScreen BackButton={false} navigation={navigation} />
-          || getScreenName === "SiblingSire" &&
-          <HorseDetailSiblingSireScreen BackButton={false} navigation={navigation} />
-          || getScreenName === "SiblingBroodmareSire" &&
-          <HorseDetailSiblingBroodmareSireScreen />
-          || getScreenName === "TailFemale" &&
-          <HorseDetailTailFemaleScreen BackButton={false} navigation={navigation} />
-          || getScreenName === "BroodmareSire" &&
-          <HorseDetailBroodMareSireScreen />
-          || getScreenName === "Linebreeding" &&
-          <HorseDetailLinebreedingScreen BackButton={false} navigation={navigation} />
-          || getScreenName === "FemaleFamily" &&
-          <HorseDetailScreenFemaleFamily BackButton={false} navigation={navigation} />
-          || getScreenName === "TJK" &&
-          <HorseDetailScreenTJK />
-          || getScreenName === "Nick" &&
-          <HorseDetailScreenNick />
+          <View style={styles.StabilInformationButtonContainer3Value}>
+            <TouchableOpacity
+              onPress={() => {
+                setModalText("Information");
+                setModalVisible(true);
+              }}
+              style={styles.StabilInformationButton}>
+              <Icon name="exclamation-circle" size={16} color="#fff"></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalText("Statistics")
+                setModalVisible(true);
+              }}
+              style={styles.StabilInformationButton}>
+              <Icon name="chart-line" size={16} color="#fff"></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalText("Image");
+                setModalVisible(true);
+              }}
+              style={styles.StabilInformationButton}>
+              <Icon name="image" size={16} color="#fff"></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                const supported = Linking.canOpenURL('https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1');
+                if (supported) {
+                  Linking.openURL('https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1');
+                } else {
+                  Alert.alert(`Don't know how to open this URL: ${'https://www.pedigreeall.com//pdf/Pedigree.ashx?FIRST_ID=' + Global.Horse_ID + '&SECOND_ID=-1'}`);
+                }
+              }}
+              style={styles.StabilInformationButton}>
+              <Icon name="file-pdf" size={16} color="#fff"></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                //checkPermission();
+              }}
+              style={styles.StabilInformationButton}>
+              <Icon name="image" size={16} color="#fff"></Icon>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+        {
+          showHeader ?
+            <View>
+              {HorseInformationData !== undefined ?
+                <View style={styles.StabilInformationContainer}>
+                  <View style={styles.StabilInformationItem}>
+                    <Icon name="chart-line" size={16} color="#222"></Icon>
+                    <Text style={styles.StabilInformationText}>Dr. Roman Miller: {HorseInformationData.m_cData.HEADER_OBJECT.ROW2_RM} </Text>
+                  </View>
+                  <View style={styles.StabilInformationItem}>
+                    <Icon name="chart-line" size={16} color="#222"></Icon>
+                    <Text style={styles.StabilInformationText}>ANZ: {HorseInformationData.m_cData.HEADER_OBJECT.ROW3_ANZ}</Text>
+                  </View>
+                  <View style={styles.StabilInformationItem}>
+                    <Icon name="chart-line" size={16} color="#222"></Icon>
+                    <Text style={styles.StabilInformationText}>BM-PedigreeAll.com: {HorseInformationData.m_cData.HEADER_OBJECT.ROW4_BM_PA}</Text>
+                  </View>
+                  <View style={styles.StabilInformationItem}>
+                    <Icon name="chart-line" size={16} color="#222"></Icon>
+                    <Text style={styles.StabilInformationText}>PedigreeAll.com: {HorseInformationData.m_cData.HEADER_OBJECT.ROW5_PA}</Text>
+                  </View>
+
+                  <View style={styles.Line} />
+                </View>
+                :
+                <ActivityIndicator
+                  color="#000"
+                  size="large"
+                  style={styles.ActivityIndicatorStyle}
+                />
+              }
+            </View>
+            : null
         }
-      </View>
+
+        <ScrollView
+          ref={scrollRef}
+          style={{ height: 30 }}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}>
+
+          <View style={styles.TabNavigationContainer}>
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getPedigreeLineColor }]}
+              onPress={() => {
+                setScreenName("Pedigree")
+                setPedigreeLineColor("#2169ab")
+                setPedigreeColor("#2169ab")
+                setPedigreeFontWeight("700")
+                setPedigreeFontSize(18)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+              }}>
+              <Icon name="network-wired" size={16} color={getPedigreeColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getPedigreeColor, fontWeight: getPedigreeFontWeight, fontSize: getPedigreeFontSize }]}>Pedigree</Text>
+
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getProfileLineColor }]}
+              onPress={() => {
+                setScreenName("Profile")
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setProfileLineColor("#2169ab")
+                setProfileColor("#2169ab")
+                setProfileFontWeight("700")
+                setProfileFontSize(18)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+              }}>
+              <Icon name="id-card" size={16} color={getProfileColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getProfileColor, fontWeight: getProfileFontWeight, fontSize: getProfileFontSize }]}>Profile</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getProgencyLineColor }]}
+              onPress={() => {
+                setScreenName("Progency")
+
+                setProgencyLineColor("#2169ab")
+                setProgencyColor("#2169ab")
+                setProgencyFontWeight("700")
+                setProgencyFontSize(18)
+
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+
+              }}>
+              <Icon name="cloudsmith" size={16} color={getProgencyColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Progency</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getNickLineColor }]}
+              onPress={() => {
+                setScreenName("Nick")
+
+                setNickLineColor("#2169ab")
+                setNickColor("#2169ab")
+                setNickFontWeight("700")
+                setNickFontSize(18)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+
+              }}>
+              <Icon name="cloudsmith" size={16} color={getNickColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getNickColor, fontWeight: getNickFontWeight, fontSize: getNickFontSize }]}>Nick</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getSiblingsMareLineColor }]}
+              onPress={() => {
+                setScreenName("SiblingMare")
+
+                setSiblingsMareLineColor("#2169ab")
+                setSiblingsMareColor("#2169ab")
+                setSiblingsMareFontWeight("700")
+                setSiblingsMareFontSize(18)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+              }}>
+              <Icon name="cloudsmith" size={16} color={getSiblingsMareColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getSiblingsMareColor, fontWeight: getSiblingsMareFontWeight, fontSize: getSiblingsMareFontSize }]}>Siblings (Mare)</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getSiblingsSireLineColor }]}
+              onPress={() => {
+                setScreenName("SiblingSire")
+
+                setSiblingsSireLineColor("#2169ab")
+                setSiblingsSireColor("#2169ab")
+                setSiblingsSireFontWeight("700")
+                setSiblingsSireFontSize(18)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+
+              }}>
+              <Icon name="cloudsmith" size={16} color={getSiblingsSireColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getSiblingsSireColor, fontWeight: getSiblingsSireFontWeight, fontSize: getSiblingsSireFontSize }]}>Siblings (Sire)</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getSiblingsBroodmareSireLineColor }]}
+              onPress={() => {
+                setScreenName("SiblingBroodmareSire")
+
+                setSiblingsBroodmareSireLineColor("#2169ab")
+                setSiblingsBroodmareSireColor("#2169ab")
+                setSiblingsBroodmareSireFontWeight("700")
+                setSiblingsBroodmareSireFontSize(18)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+
+              }}>
+              <Icon name="cloudsmith" size={16} color={getSiblingsBroodmareSireColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getSiblingsBroodmareSireColor, fontWeight: getSiblingsBroodmareSireFontWeight, fontSize: getSiblingsBroodmareSireFontSize }]}>Siblings (Broodmare Sire)</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getTailFemaleLineColor }]}
+              onPress={() => {
+                setScreenName("TailFemale")
+
+                setTailFemaleLineColor("#2169ab")
+                setTailFemaleColor("#2169ab")
+                setTailFemaleFontWeight("700")
+                setTailFemaleFontSize(18)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+              }}>
+              <Icon name="cloudsmith" size={16} color={getTailFemaleColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Tail Female</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getBroodmareSireLineColor }]}
+              onPress={() => {
+                setScreenName("BroodmareSire")
+
+                setBroodmareSireLineColor("#2169ab")
+                setBroodmareSireColor("#2169ab")
+                setBroodmareSireFontWeight("700")
+                setBroodmareSireFontSize(18)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+              }}>
+              <Icon name="cloudsmith" size={16} color={getBroodmareSireColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getLinebreedingLineColor }]}
+              onPress={() => {
+                setScreenName("Linebreeding")
+
+                setLinebreedingLineColor("#2169ab")
+                setLinebreedingColor("#2169ab")
+                setLinebreedingFontWeight("700")
+                setLinebreedingFontSize(18)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setFemaleFamilyLineColor("#fff")
+                setFemaleFamilyColor("#222")
+                setFemaleFamilyFontWeight("500")
+                setFemaleFamilyFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+
+              }}>
+              <Icon name="cloudsmith" size={16} color={getLinebreedingColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Linebreeding</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.TabNavigationItem, { borderColor: getFemaleFamilyLineColor }]}
+              onPress={() => {
+                setScreenName("FemaleFamily")
+
+                setFemaleFamilyLineColor("#2169ab")
+                setFemaleFamilyColor("#2169ab")
+                setFemaleFamilyFontWeight("700")
+                setFemaleFamilyFontSize(18)
+
+                setLinebreedingLineColor("#fff")
+                setLinebreedingColor("#222")
+                setLinebreedingFontWeight("500")
+                setLinebreedingFontSize(16)
+
+                setNickLineColor("#fff")
+                setNickColor("#222")
+                setNickFontWeight("500")
+                setNickFontSize(16)
+
+                setBroodmareSireLineColor("#fff")
+                setBroodmareSireColor("#222")
+                setBroodmareSireFontWeight("500")
+                setBroodmareSireFontSize(16)
+
+                setSiblingsBroodmareSireLineColor("#fff")
+                setSiblingsBroodmareSireColor("#222")
+                setSiblingsBroodmareSireFontWeight("500")
+                setSiblingsBroodmareSireFontSize(16)
+
+                setSiblingsSireLineColor("#fff")
+                setSiblingsSireColor("#222")
+                setSiblingsSireFontWeight("500")
+                setSiblingsSireFontSize(16)
+
+                setSiblingsMareLineColor("#fff")
+                setSiblingsMareColor("#222")
+                setSiblingsMareFontWeight("500")
+                setSiblingsMareFontSize(16)
+
+                setProgencyLineColor("#fff")
+                setProgencyColor("#222")
+                setProgencyFontWeight("500")
+                setProgencyFontSize(16)
+
+                setPedigreeLineColor("#fff")
+                setPedigreeColor("#222")
+                setPedigreeFontWeight("500")
+                setPedigreeFontSize(16)
+
+                setProfileLineColor("#fff")
+                setProfileColor("#222")
+                setProfileFontWeight("500")
+                setProfileFontSize(16)
+
+                setTailFemaleLineColor("#fff")
+                setTailFemaleColor("#222")
+                setTailFemaleFontWeight("500")
+                setTailFemaleFontSize(16)
+
+                setTJKLineColor("#fff")
+                setTJKColor("#222")
+                setTJKFontWeight("500")
+                setTJKFontSize(16)
+
+              }}>
+              <Icon name="cloudsmith" size={16} color={getFemaleFamilyColor} style={{ alignSelf: 'center' }} />
+              <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Female Family</Text>
+            </TouchableOpacity>
+
+            {isTJK ?
+              <TouchableOpacity
+                style={[styles.TabNavigationItem, { borderColor: getTJKLineColor }]}
+                onPress={() => {
+                  setScreenName("TJK")
+
+                  setTJKLineColor("#2169ab")
+                  setTJKColor("#2169ab")
+                  setTJKFontWeight("700")
+                  setTJKFontSize(18)
+
+                  setFemaleFamilyLineColor("#fff")
+                  setFemaleFamilyColor("#222")
+                  setFemaleFamilyFontWeight("500")
+                  setFemaleFamilyFontSize(16)
+
+                  setNickLineColor("#fff")
+                  setNickColor("#222")
+                  setNickFontWeight("500")
+                  setNickFontSize(16)
+
+                  setLinebreedingLineColor("#fff")
+                  setLinebreedingColor("#222")
+                  setLinebreedingFontWeight("500")
+                  setLinebreedingFontSize(16)
+
+                  setBroodmareSireLineColor("#fff")
+                  setBroodmareSireColor("#222")
+                  setBroodmareSireFontWeight("500")
+                  setBroodmareSireFontSize(16)
+
+                  setSiblingsBroodmareSireLineColor("#fff")
+                  setSiblingsBroodmareSireColor("#222")
+                  setSiblingsBroodmareSireFontWeight("500")
+                  setSiblingsBroodmareSireFontSize(16)
+
+                  setSiblingsSireLineColor("#fff")
+                  setSiblingsSireColor("#222")
+                  setSiblingsSireFontWeight("500")
+                  setSiblingsSireFontSize(16)
+
+                  setSiblingsMareLineColor("#fff")
+                  setSiblingsMareColor("#222")
+                  setSiblingsMareFontWeight("500")
+                  setSiblingsMareFontSize(16)
+
+                  setProgencyLineColor("#fff")
+                  setProgencyColor("#222")
+                  setProgencyFontWeight("500")
+                  setProgencyFontSize(16)
+
+                  setPedigreeLineColor("#fff")
+                  setPedigreeColor("#222")
+                  setPedigreeFontWeight("500")
+                  setPedigreeFontSize(16)
+
+                  setProfileLineColor("#fff")
+                  setProfileColor("#222")
+                  setProfileFontWeight("500")
+                  setProfileFontSize(16)
+
+                  setTailFemaleLineColor("#fff")
+                  setTailFemaleColor("#222")
+                  setTailFemaleFontWeight("500")
+                  setTailFemaleFontSize(16)
+
+                }}>
+                <Image
+                  style={{ width: 30, height: 25, alignSelf: 'center', alignContent: 'center' }}
+                  source={{ uri: 'https://www.pedigreeall.com//images/head2.jpg' }}
+                />
+                <Text style={[styles.TabNavigationItemText, { color: gettJKColor, fontWeight: getTJKFontWeight, fontSize: getTJKFontSize }]}>TJK</Text>
+              </TouchableOpacity>
+              :
+              null}
+
+
+          </View>
+
+        </ScrollView>
+
+        {getScreenName === "Pedigree" ?
+          <View style={{ marginTop: 20, height: 400 }}>
+            <HorseDetailScreenPedigree Generation={getGenerationData} navigation={navigation} />
+          </View>
+          : null
+        }
+
+
+        <View style={{ marginTop: 20 }}>
+          {getScreenName === "Profile" &&
+            <HorseDetailPRofileScreen BackButton={false} navigation={navigation} />
+            || getScreenName === "Progency" &&
+            <HorseDetailProgencyScreen BackButton={false} navigation={navigation} />
+            || getScreenName === "SiblingMare" &&
+            <HorseDetailSiblingMareScreen BackButton={false} navigation={navigation} />
+            || getScreenName === "SiblingSire" &&
+            <HorseDetailSiblingSireScreen BackButton={false} navigation={navigation} />
+            || getScreenName === "SiblingBroodmareSire" &&
+            <HorseDetailSiblingBroodmareSireScreen />
+            || getScreenName === "TailFemale" &&
+            <HorseDetailTailFemaleScreen BackButton={false} navigation={navigation} />
+            || getScreenName === "BroodmareSire" &&
+            <HorseDetailBroodMareSireScreen />
+            || getScreenName === "Linebreeding" &&
+            <HorseDetailLinebreedingScreen BackButton={false} navigation={navigation} />
+            || getScreenName === "FemaleFamily" &&
+            <HorseDetailScreenFemaleFamily BackButton={false} navigation={navigation} />
+            || getScreenName === "TJK" &&
+            <HorseDetailScreenTJK />
+            || getScreenName === "Nick" &&
+            <HorseDetailScreenNick />
+          }
+        </View>
 
 
 
+
+      </ScrollView>
 
 
 
@@ -1767,8 +1786,6 @@ export function HorseDetailScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   Container: {
-    width: '100%',
-    height: '100%',
     backgroundColor: '#fff'
   },
   StabilInformationContainer: {
@@ -1788,22 +1805,16 @@ const styles = StyleSheet.create({
   },
   StabilInformationButtonContainer3Value: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    marginLeft: 10,
-    marginRight: 10
-  },
-  StabilInformationButtonContainer2Value: {
-    flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginTop: 20,
+    marginTop: 10,
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
+    marginBottom: 10
   },
   StabilInformationButton: {
     flexDirection: 'row',
     backgroundColor: '#2169ab',
-    padding: 7,
+    padding: 12,
     borderRadius: 10,
     alignItems: 'center'
   },
@@ -1942,7 +1953,7 @@ const styles = StyleSheet.create({
   TabNavigationContainer: {
     padding: 5,
     justifyContent: 'space-between',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   TabNavigationItem: {
     marginLeft: 10,
@@ -1976,6 +1987,9 @@ const styles = StyleSheet.create({
     height: 36,
     marginTop: 12,
     marginRight: 7
+  },
+  MainHeaderContainer: {
+    marginBottom: 20
   }
 })
 

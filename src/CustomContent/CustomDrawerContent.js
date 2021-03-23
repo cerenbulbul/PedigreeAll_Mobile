@@ -151,11 +151,18 @@ export default function CustomDrawerContent(props, navigation) {
       <MyStatusBar backgroundColor={StatusBarColor} barStyle="light-content" />
       <View style={styles.ProfileContainer}>
 
-
+      <TouchableOpacity
+        style={{width:'80%', height:40}}
+        onPress={()=>{
+          props.navigation.navigate('SearchScreen')
+        }}>
         <Image
           resizeMode={'contain'}
-          style={{ width: "65%", height: "90%", marginTop: 30 }}
-          source={require('../../assets/logo.png')}></Image>
+          style={{ width: "100%", height: "100%", marginTop: 20 }}
+          source={require('../../assets/logo.png')}>
+        </Image>
+      </TouchableOpacity>
+        
         <TouchableOpacity
           style={{ marginTop: 30 }}
           onPress={() => {

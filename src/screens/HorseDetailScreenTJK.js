@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import WebView from 'react-native-webview';
 
 
-export function HorseDetailScreenTJK({navigation}) {
+export function HorseDetailScreenTJK({ navigation }) {
   const [getTJKReport, setTJKReport] = React.useState();
   const [time, setTime] = React.useState(true);
   const [moreDetail, setMoreDetail] = React.useState(false);
@@ -69,7 +69,7 @@ export function HorseDetailScreenTJK({navigation}) {
 
 
   return (
-    <View>
+    <ScrollView>
       <Modal
         animationType="fade"
         transparent={true}
@@ -95,22 +95,72 @@ export function HorseDetailScreenTJK({navigation}) {
         </View>
       </Modal>
 
-      <>
-        {moreDetail ?
-          <>
-            <TouchableOpacity
-              onPress={() => {
-                setMoreDetail(false);
-              }}
-              style={styles.BackButton}>
-              <Icon name="chevron-left" size={24} color="silver" style={{ alignSelf: 'center' }} />
-              <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
-            </TouchableOpacity>
+     
+            <Image style={styles.TJKImage} source={{ uri: 'https://www.pedigreeall.com//images/head2.jpg' }} />
 
-            <ScrollView>
-              {getTJKReport !== undefined &&
+            {time ?
+              <ActivityIndicator size="large" color="#000" />
 
-                <ScrollView horizontal>
+              :
+              <ScrollView>
+                {getTJKReport !== undefined &&
+
+                  <ScrollView horizontal>
+
+                    <View style={styles.rowView}>
+
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}> </Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableTitle}>{item.BASLIK}</Text>
+                        ))}
+                      </View>
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}>K.</Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableText}>{item.K}</Text>
+                        ))}
+                      </View>
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}>1st</Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableText}>{item.BIRINCILIK}</Text>
+                        ))}
+                      </View>
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}>2nd</Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableText}>{item.IKINCILIK}</Text>
+                        ))}
+                      </View>
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}>3rd</Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableText}>{item.UCUNCULUK}</Text>
+                        ))}
+                      </View>
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}>4th</Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableText}>{item.DORDUNCULUK}</Text>
+                        ))}
+                      </View>
+                      <View style={styles.columnView}>
+                        <Text style={styles.TableTitle}>Earn</Text>
+                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                          <Text key={index} style={styles.TableText}>{item.KAZANC}</Text>
+                        ))}
+                      </View>
+                    </View>
+
+                  </ScrollView>
+
+                }
+
+
+                <ScrollView 
+                  style={{marginTop:40}}
+                  horizontal>
                   <DataTable>
                     <DataTable.Header>
                       <DataTable.Title>Video</DataTable.Title>
@@ -188,92 +238,13 @@ export function HorseDetailScreenTJK({navigation}) {
                 </ScrollView>
 
 
-
-              }
-            </ScrollView>
-
-
-
-          </>
-          :
-
-          <>
-            <Image style={styles.TJKImage} source={{ uri: 'https://medya-cdn.tjk.org/medyaftp/site_img/logo-tjk.png' }} />
-
-            {time ?
-              <ActivityIndicator size="large" color="#000" />
-
-              :
-              <ScrollView>
-                {getTJKReport !== undefined &&
-
-                  <ScrollView horizontal>
-
-                    <View style={styles.rowView}>
-
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}> </Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableTitle}>{item.BASLIK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>K.</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.K}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>1st</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.BIRINCILIK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>2nd</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.IKINCILIK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>3rd</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.UCUNCULUK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>4th</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.DORDUNCULUK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>Earn</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.KAZANC}</Text>
-                        ))}
-                      </View>
-                    </View>
-
-                  </ScrollView>
-
-                }
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setMoreDetail(true);
-                  }}
-                  style={styles.MoreDetailButton}>
-                  <Text style={styles.MoreDetailButtonText}>More Detail ...</Text>
-                </TouchableOpacity>
               </ScrollView>
+
             }
-          </>
-        }
-      </>
+      
 
 
-    </View >
+    </ScrollView >
   )
 }
 
@@ -297,7 +268,7 @@ const styles = StyleSheet.create({
     margin: 12
   },
   TJKImage: {
-    width: 150,
+    width: 300,
     height: 150,
     alignSelf: 'center'
   },

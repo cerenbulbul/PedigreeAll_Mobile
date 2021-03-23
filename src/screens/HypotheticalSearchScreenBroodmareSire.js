@@ -72,67 +72,91 @@ export function HypotheticalSearchScreenBroodmareSire() {
        
                 <DataTable>
                 <DataTable.Header removeClippedSubviews={true}>
-                <DataTable.Title>Name</DataTable.Title>
-                <DataTable.Title style={{marginLeft:90}}>Class</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Point</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Earning</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Fam</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Color</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Sire</DataTable.Title>
-                <DataTable.Title style={{marginLeft:70}}>Dam</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Birth D.</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Start</DataTable.Title>
-                <DataTable.Title style={{marginLeft:40}}>1st</DataTable.Title>
-                <DataTable.Title style={{marginLeft:40}}>1st %</DataTable.Title>
-                <DataTable.Title style={{marginLeft:40}}>2nd</DataTable.Title>
-                <DataTable.Title style={{marginLeft:40}}>2nd %</DataTable.Title>
-                <DataTable.Title style={{marginLeft:40}}>3rd</DataTable.Title>
-                <DataTable.Title style={{marginLeft:60}}>3rd %</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>4th</DataTable.Title>
-                <DataTable.Title style={{marginLeft:50}}>4th %</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Price</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Dr. RM</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>ANZ</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>PedigreeAll</DataTable.Title>
-                <DataTable.Title style={{marginLeft:30}}>Owner</DataTable.Title>
-                <DataTable.Title style={{marginLeft:50}}>Breeder</DataTable.Title>
-                <DataTable.Title style={{marginLeft:80}}>Coach</DataTable.Title>
-                <DataTable.Title style={{marginLeft:50}}>Dead</DataTable.Title>
-                <DataTable.Title style={{marginLeft:10}}>Update D.</DataTable.Title>
+                <DataTable.Title style={{width:350}}>Name</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Class</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Point</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Earning</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Fam</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Color</DataTable.Title>
+                <DataTable.Title style={{width:400}}>Sire</DataTable.Title>
+                <DataTable.Title style={{width:400}}>Dam</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Birth D.</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Start</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>1st</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>1st %</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>2nd</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>2nd %</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>3rd</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>3rd %</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>4th</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>4th %</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Price</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Dr. RM</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>ANZ</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>PedigreeAll</DataTable.Title>
+                <DataTable.Title style={{width:150}}>Owner</DataTable.Title>
+                <DataTable.Title style={{width:150}}>Breeder</DataTable.Title>
+                <DataTable.Title style={{width:150}}>Coach</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Dead</DataTable.Title>
+                <DataTable.Title style={styles.DataTableText}>Update D.</DataTable.Title>
                 </DataTable.Header>
 
                 {getSiblingBroodmareSire.map((item,index)=>(
 
                 <DataTable.Row centered={true} key={index}>
-                <DataTable.Cell onPress={() => { alertDialog("Name", item.HORSE_NAME) }} style={{width:100, height:'auto'}}>{item.HORSE_NAME}</DataTable.Cell>
-                <DataTable.Cell style={{marginLeft:15, width:80, justifyContent:'center'}}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.POINT}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80,justifyContent:'center'}} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:70, justifyContent:'center'}} >{item.FAMILY_TEXT}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80,justifyContent:'center'}}>{item.COLOR_TEXT}</DataTable.Cell>
-                <DataTable.Cell onPress={() => { alertDialog("Sire", item.FATHER_NAME) }}  style={{width:100, height:'auto',marginLeft:20}}>{item.FATHER_NAME}</DataTable.Cell>
-                <DataTable.Cell onPress={() => { alertDialog("Dam", item.MOTHER_NAME) }}  style={{width:100, height:'auto',marginLeft:20}}>{item.MOTHER_NAME}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:15, width:80, justifyContent:'center'}}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.START_COUNT}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.FIRST}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.FIRST_PERCENTAGE} %</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.SECOND}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.SECOND_PERCENTAGE} %</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.THIRD}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.THIRD_PERCENTAGE} %</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.FOURTH}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.FOURTH_PERCENTAGE} %</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}} >{item.PRICE} {item.PRICE_ICON}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.RM}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.ANZ}</DataTable.Cell>
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.PA}</DataTable.Cell>
-                <DataTable.Cell onPress={() => { alertDialog("Owner", item.OWNER) }} style={{width:100, height:'auto',marginLeft:20}}>{item.OWNER}</DataTable.Cell>
-                <DataTable.Cell onPress={() => { alertDialog("Breeder", item.BREEDER) }}  style={{width:100, height:'auto',marginLeft:20}}>{item.BREEDER}</DataTable.Cell>
-                <DataTable.Cell onPress={() => { alertDialog("Coach", item.COACH) }}  style={{width:100, height:'auto',marginLeft:20}}>{item.COACH}</DataTable.Cell>
+                <DataTable.Cell 
+                  onPress={() => { alertDialog("Name", item.HORSE_NAME) }} 
+                  style={{width:350}}>
+                    {item.HORSE_NAME}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.POINT}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.FAMILY_TEXT}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.COLOR_TEXT}</DataTable.Cell>
+                <DataTable.Cell 
+                  onPress={() => { alertDialog("Sire", item.FATHER_NAME) }}  
+                  style={{width:400}}>
+                    {item.FATHER_NAME}
+                </DataTable.Cell>
+                <DataTable.Cell 
+                  onPress={() => { alertDialog("Dam", item.MOTHER_NAME) }}  
+                  style={{width:400}}>
+                    {item.MOTHER_NAME}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.START_COUNT}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.FIRST}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.FIRST_PERCENTAGE} %</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.SECOND}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.SECOND_PERCENTAGE} %</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.THIRD}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText} >{item.THIRD_PERCENTAGE} %</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.FOURTH}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.FOURTH_PERCENTAGE} %</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.PRICE} {item.PRICE_ICON}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.RM}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.ANZ}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>{item.PA}</DataTable.Cell>
+                <DataTable.Cell 
+                  onPress={() => { alertDialog("Owner", item.OWNER) }} 
+                  style={{width:150}}>
+                    {item.OWNER}
+                </DataTable.Cell>
+                <DataTable.Cell 
+                  onPress={() => { alertDialog("Breeder", item.BREEDER) }}  
+                  style={{width:150}}>
+                    {item.BREEDER}
+                </DataTable.Cell>
+                <DataTable.Cell 
+                  onPress={() => { alertDialog("Coach", item.COACH) }}  
+                  style={{width:150}}>
+                    {item.COACH}
+                </DataTable.Cell>
                 {item.IS_DEAD ?
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>DEAD</DataTable.Cell>
-                :<DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>ALIVE</DataTable.Cell> }
-                <DataTable.Cell style ={{marginLeft:0, width:80, justifyContent:'center'}}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
+                <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
+                :<DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell> }
+                <DataTable.Cell style={styles.DataTableText}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                 </DataTable.Row>
 
                
@@ -154,5 +178,7 @@ export function HypotheticalSearchScreenBroodmareSire() {
 }
 
 const styles = StyleSheet.create({
-
+  DataTableText:{
+    width:100
+  }
 })

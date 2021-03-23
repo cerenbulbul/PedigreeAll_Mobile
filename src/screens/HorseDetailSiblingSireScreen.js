@@ -87,67 +87,91 @@ export function HorseDetailSiblingSireScreen({ BackButton, navigation }) {
 
               <DataTable>
                 <DataTable.Header removeClippedSubviews={true}>
-                  <DataTable.Title>Name</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 90 }}>Class</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Point</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Earning</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Fam</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Color</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Dam</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 70 }}>Broodmare Sire</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Birth D.</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Start</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 40 }}>1st</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 40 }}>1st %</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 40 }}>2nd</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 40 }}>2nd %</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 40 }}>3rd</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 60 }}>3rd %</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>4th</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 50 }}>4th %</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Price</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Dr. RM</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>ANZ</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>PedigreeAll</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 30 }}>Owner</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 50 }}>Breeder</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 80 }}>Coach</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 50 }}>Dead</DataTable.Title>
-                  <DataTable.Title style={{ marginLeft: 10 }}>Update D.</DataTable.Title>
+                  <DataTable.Title style={{width:350}}>Name</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
+                  <DataTable.Title style={{ width: 400 }}>Dam</DataTable.Title>
+                  <DataTable.Title style={{ width:400 }}>Broodmare Sire</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Birth D.</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>2nd</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Price</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Owner</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Breeder</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Coach</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
+                  <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
                 </DataTable.Header>
 
                 {getSiblingSire.HORSE_INFO_LIST.map((item, index) => (
 
                   <DataTable.Row centered={true} key={index}>
-                    <DataTable.Cell onPress={() => { alertDialog("Name", item.HORSE_NAME) }} style={{ width: 100, height: 'auto' }}>{item.HORSE_NAME}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 15, width: 80, justifyContent: 'center' }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.POINT}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 70, justifyContent: 'center' }} >{item.FAMILY_TEXT}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.COLOR_TEXT}</DataTable.Cell>
-                    <DataTable.Cell onPress={() => { alertDialog("Dam", item.MOTHER_NAME) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.MOTHER_NAME}</DataTable.Cell>
-                    <DataTable.Cell onPress={() => { alertDialog("Broodmare Sire", item.BM_SIRE_NAME) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.BM_SIRE_NAME}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 15, width: 80, justifyContent: 'center' }}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.START_COUNT}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.FIRST}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.FIRST_PERCENTAGE} %</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.SECOND}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.SECOND_PERCENTAGE} %</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.THIRD}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.THIRD_PERCENTAGE} %</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.FOURTH}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.FOURTH_PERCENTAGE} %</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.PRICE} {item.PRICE_ICON}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.RM}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.ANZ}</DataTable.Cell>
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.PA}</DataTable.Cell>
-                    <DataTable.Cell onPress={() => { alertDialog("Owner", item.OWNER) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.OWNER}</DataTable.Cell>
-                    <DataTable.Cell onPress={() => { alertDialog("Breeder", item.BREEDER) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.BREEDER}</DataTable.Cell>
-                    <DataTable.Cell onPress={() => { alertDialog("Coach", item.COACH) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.COACH}</DataTable.Cell>
+                    <DataTable.Cell 
+                      onPress={() => { alertDialog("Name", item.HORSE_NAME) }} 
+                      style={{ width: 350 }}>
+                        {item.HORSE_NAME}
+                    </DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.POINT}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.FAMILY_TEXT}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.COLOR_TEXT}</DataTable.Cell>
+                    <DataTable.Cell 
+                      onPress={() => { alertDialog("Dam", item.MOTHER_NAME) }} 
+                      style={{ width: 400}}>
+                        {item.MOTHER_NAME}
+                    </DataTable.Cell>
+                    <DataTable.Cell 
+                      onPress={() => { alertDialog("Broodmare Sire", item.BM_SIRE_NAME) }} 
+                      style={{ width: 400 }}>
+                        {item.BM_SIRE_NAME}
+                    </DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.START_COUNT}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.FIRST}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.FIRST_PERCENTAGE} %</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.SECOND}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.SECOND_PERCENTAGE} %</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.THIRD}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.THIRD_PERCENTAGE} %</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.FOURTH}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.FOURTH_PERCENTAGE} %</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell} >{item.PRICE} {item.PRICE_ICON}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.RM}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.ANZ}</DataTable.Cell>
+                    <DataTable.Cell style={styles.DataTableCell}>{item.PA}</DataTable.Cell>
+                    <DataTable.Cell 
+                      onPress={() => { alertDialog("Owner", item.OWNER) }} 
+                      style={{ width: 150 }}>
+                        {item.OWNER}
+                    </DataTable.Cell>
+                    <DataTable.Cell 
+                      onPress={() => { alertDialog("Breeder", item.BREEDER) }} 
+                      style={{ width: 150 }}>
+                        {item.BREEDER}
+                    </DataTable.Cell>
+                    <DataTable.Cell 
+                      onPress={() => { alertDialog("Coach", item.COACH) }} 
+                      style={{ width: 150 }}>
+                        {item.COACH}
+                    </DataTable.Cell>
                     {item.IS_DEAD ?
-                      <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>DEAD</DataTable.Cell>
-                      : <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>ALIVE</DataTable.Cell>}
-                    <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
+                      <DataTable.Cell style={styles.DataTableCell}>DEAD</DataTable.Cell>
+                      : <DataTable.Cell style={styles.DataTableCell}>ALIVE</DataTable.Cell>}
+                    <DataTable.Cell style={styles.DataTableCell}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                   </DataTable.Row>
 
 
@@ -177,5 +201,11 @@ const styles = StyleSheet.create({
     borderColor:'silver',
     marginBottom:10
   },
+  DataTableTitle:{
+    width:100
+  },
+  DataTableCell:{
+    width:100
+  }
 
 })

@@ -18,79 +18,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import Flag from "react-native-flags";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import NumberFormat from 'react-number-format';
-import HTML from "react-native-render-html";
-import WebView from 'react-native-webview';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import {HorseDetailProfileScreenInformation} from './HorseDetailProfileScreenInformation'
-
-const Tab = createMaterialTopTabNavigator();
-
-export function HorseDetailPRofileScreen({ BackButton, navigation }) {
-
-
-
-    return (
-
-        <ScrollView>
-            {BackButton ?
-                <View>
-                    <TouchableOpacity
-                        style={styles.BackButton}
-                        onPress={() => {
-                            navigation.navigate('Breeders', {
-                                ScreenName: "TableReportScreen",
-                            })
-                        }}>
-                        <Icon name="chevron-left" size={24} color="silver" style={{ alignSelf: 'center' }} />
-                        <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
-                    </TouchableOpacity>
-
-                </View>
-                :
-                null}
-
-            <Tab.Navigator
-                initialRouteName="SearchScreen"
-                removeClippedSubviews={true}
-                sceneContainerStyle={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'white',
-                }}
-                tabBarOptions={{
-                    activeTintColor: '#000',
-                    inactiveTintColor: '#b5b5b5',
-                    indicatorStyle: {
-                        backgroundColor: '#2169ab'
-                    },
-                    labelStyle: {
-                        fontSize: 12,
-                    },
-                    style: {
-                        backgroundColor: 'white', //e8edf1
-                        height: (Platform.OS === 'ios') ? 48 : 50,
-                        overflow: "hidden"
-                    },
-                }}
-            >
-                <Tab.Screen
-                    name="Information"
-                    component={HorseDetailProfileScreenInformation}
-                />
-                <Tab.Screen
-                    name="More Information"
-                    component={MoreInformationScreen}
-                />
-            </Tab.Navigator>
-
-
-        </ScrollView>
-
-    )
-}
-
-function InformationScreen() {
+export function HorseDetailProfileScreenInformation() {
     const [ImageInfo, setImageInfo] = React.useState();
     const [getHorseInfoByID, setHorseInfoByID] = React.useState();
     const [ReadMore, setReadMore] = React.useState(false);
@@ -457,74 +386,6 @@ function InformationScreen() {
 
     )
 }
-
-function MoreInformationScreen() {
-    const [ImageInfo, setImageInfo] = React.useState();
-    const readImageInfo = async () => {
-        try {
-            const token = await AsyncStorage.getItem('TOKEN')
-            if (token !== null) {
-                fetch('https://api.pedigreeall.com/ImageInfo/GetById?p_iHorseId=' + Global.Horse_ID, {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': "Basic " + token,
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        //console.log(json)
-                        setImageInfo(json.m_cData);
-                        //setHorsePedigree(json)
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    })
-            }
-            else {
-                console.log("Basarisiz")
-            }
-        }
-        catch (e) {
-            console.log(e)
-        }
-
-    }
-    React.useEffect(() => {
-        readImageInfo();
-    }, [])
-
-    return (
-            <View style={{width:'100%', height:'100%'}}>
-                {ImageInfo !== undefined &&
-
-                    <>
-                        {ImageInfo[0] !== undefined &&
-
-                                <WebView
-                                    source={{ html: "<body class='scrollHeight'>" + ImageInfo[0].INFO + "</body>" }}
-                                    startInLoadingState={true}
-                                    bounces={true}
-                                    style={{ width: '100%', height: "100%" }}
-                                    automaticallyAdjustContentInsets={true}
-                                    javaScriptEnabledAndroid={true}
-                                    scrollEnabled={false}
-                                    renderLoading={() => (
-                                        <ActivityIndicator
-                                            color='black'
-                                            size='large'
-                                        />)}
-                                />
-
-
-                        }
-                    </>
-                }
-            </View>
-    )
-}
-
-
 
 const styles = StyleSheet.create({
     Container: {

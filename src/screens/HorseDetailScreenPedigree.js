@@ -99,7 +99,6 @@ export function HorseDetailScreenPedigree({Generation, navigation}) {
               <WebView
                 source={{ html: getPedigreeReport[2] + PedigreeHTML }}
                 startInLoadingState={true}
-                style={{ width: '100%', height: '100%' }}
                 javaScriptEnabledAndroid={true}
                 showsHorizontalScrollIndicator={true}
                 scrollEnabled={true}

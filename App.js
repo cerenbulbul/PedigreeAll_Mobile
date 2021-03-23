@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -57,6 +57,7 @@ import { ManagementReportScreen } from './src/screens/ManagementReportScreen'
 import { MareAnalysisReportScreen } from './src/screens/MareAnalysisReportScreen'
 import { BreedersScreen } from './src/screens/BreedersScreen'
 import { BasketScreen } from './src/screens/BasketScreen'
+import {StallionsSearchLinkScreen} from './src/screens/StallionsSearchLinkScreen'
 
 import { HorseDetailSiblingMareScreen } from './src/screens/HorseDetailSiblingMareScreen'
 import { HorseDetailSiblingSireScreen } from './src/screens/HorseDetailSiblingSireScreen'
@@ -108,6 +109,7 @@ const HorseDetailPRofileStack = createStackNavigator();
 const HorseDetailLinebreedingStack = createStackNavigator();
 const HorseDetailScreenFemaleFamilyStack = createStackNavigator();
 const BreedingFoalsAsBroodMareSireStack = createStackNavigator();
+const StallionsSearchLinkStack = createStackNavigator();
 const BreedersStack = createStackNavigator();
 const RegisterStack = createStackNavigator();
 const ForgotPasswordStack = createStackNavigator();
@@ -444,23 +446,10 @@ export default function App() {
 
           headerTitle: () => (
 
-            <SearchBar
-              placeholder="Please type name .. "
-              lightTheme
-              platform="ios"
-              cancelButtonTitle=""
-              inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
-              containerStyle={{ backgroundColor: 'transparent', width: '96%' }}
-              inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
-              rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-              leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-              // disabled={true}
-              onChangeText={setSearchValue}
-              value={searchValue}
-              onSubmitEditing={() => {
-                navigation.navigate("Profile");
-              }}
-            />
+            <Image
+              style={{ width: "95%", height: 30, resizeMode:"contain" }}
+              source={require('./assets/logo.png')}>
+            </Image>
 
 
           ),
@@ -1164,6 +1153,22 @@ export default function App() {
           },
         })} />
 
+<StallionsSearchLinkStack.Screen
+        name={"StallionsSearchLink"}
+        component={StallionsSearchLinkScreen}
+        options={({ navigation }) => ({
+          headerTitle: "PedigreeAll",
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: '#2e3f6e',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: '500',
+            fontSize: 24
+          },
+        })} />
+
     </AuthStack.Navigator>
   );
 
@@ -1243,3 +1248,27 @@ const styles = StyleSheet.create({
   }
 
  */
+
+
+
+  /*
+  
+  <SearchBar
+              placeholder="Please type name .. "
+              lightTheme
+              platform="ios"
+              cancelButtonTitle=""
+              inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+              containerStyle={{ backgroundColor: 'transparent', width: '96%' }}
+              inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+              rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+              leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+              // disabled={true}
+              onChangeText={setSearchValue}
+              value={searchValue}
+              onSubmitEditing={() => {
+                navigation.navigate("Profile");
+              }}
+            />
+  
+  */

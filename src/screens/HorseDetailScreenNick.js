@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableOpacity, Alert, Modal } from 'react-native'
 import { Global } from '../Global'
-import { DataTable } from 'react-native-paper';
+import { DataTable, List } from 'react-native-paper';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 export function HorseDetailScreenNick() {
@@ -10,6 +10,10 @@ export function HorseDetailScreenNick() {
     const [getLoader, setLoader] = React.useState(true)
     const [getMoreInfo, setMoreInfo] = React.useState(false)
     const [getSelectedItem, setSelectedItem] = React.useState()
+
+    const [expanded, setExpanded] = React.useState(false);
+
+    const handlePress = () => setExpanded(!expanded);
 
     const readNickSuccessGetHorseID = async () => {
         try {
@@ -61,7 +65,7 @@ export function HorseDetailScreenNick() {
     }, [])
 
     return (
-        <View style={styles.Container}>
+        <ScrollView style={styles.Container}>
 
             <Modal
                 animationType="fade"
@@ -86,13 +90,13 @@ export function HorseDetailScreenNick() {
 
                                 <DataTable>
                                     <DataTable.Header removeClippedSubviews={true}>
-                                        <DataTable.Title style={styles.DataTableTitle}>Name</DataTable.Title>
+                                        <DataTable.Title style={{width:300}}>Name</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Dam</DataTable.Title>
+                                        <DataTable.Title style={{width:300}}>Dam</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Birth. Date</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
@@ -107,9 +111,9 @@ export function HorseDetailScreenNick() {
                                         <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Owner</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Breeder</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Coach</DataTable.Title>
+                                        <DataTable.Title style={{width:150}}>Owner</DataTable.Title>
+                                        <DataTable.Title style={{width:150}}>Breeder</DataTable.Title>
+                                        <DataTable.Title style={{width:150}}>Coach</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
                                         <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
                                     </DataTable.Header>
@@ -117,23 +121,23 @@ export function HorseDetailScreenNick() {
                                     {getSelectedItem.HORSE_INFO.map((item, index) => (
 
                                         <DataTable.Row centered={true} key={index}>
-                                            <DataTable.Cell 
-                                                onPress={()=>{
-                                                    alertDialog("Name",item.HORSE_NAME )
+                                            <DataTable.Cell
+                                                onPress={() => {
+                                                    alertDialog("Name", item.HORSE_NAME)
                                                 }}
-                                                style={styles.DataTableText}>{item.HORSE_NAME.substring(0,8)}...
+                                                style={{width:300}}>{item.HORSE_NAME}
                                             </DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.EARN} {item.EARN_ICON}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.FAMILY_TEXT}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.COLOR_TEXT}</DataTable.Cell>
-                                            <DataTable.Cell 
-                                                onPress={()=>{
+                                            <DataTable.Cell
+                                                onPress={() => {
                                                     alertDialog("Dam", item.MOTHER_NAME)
                                                 }}
-                                                style={styles.DataTableText}>
-                                                    {item.MOTHER_NAME.substring(0,10)}...
+                                                style={{width:300}}>
+                                                {item.MOTHER_NAME}
                                             </DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.START_COUNT}</DataTable.Cell>
@@ -148,31 +152,31 @@ export function HorseDetailScreenNick() {
                                             <DataTable.Cell style={styles.DataTableText}>{item.RM}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.ANZ}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.PA}</DataTable.Cell>
-                                            <DataTable.Cell 
-                                                onPress={()=>{
+                                            <DataTable.Cell
+                                                onPress={() => {
                                                     alertDialog("Owner", item.OWNER)
                                                 }}
-                                                style={styles.DataTableText}>
-                                                    {item.OWNER.substring(0,8)}...
+                                                style={{width:150}}>
+                                                {item.OWNER}
                                             </DataTable.Cell>
-                                            <DataTable.Cell 
-                                                onPress={()=>{
+                                            <DataTable.Cell
+                                                onPress={() => {
                                                     alertDialog("Breeder", item.BREEDER)
                                                 }}
-                                                style={styles.DataTableText}>
-                                                    {item.BREEDER.substring(0,8)}...
+                                                style={{width:150}}>
+                                                {item.BREEDER}
                                             </DataTable.Cell>
-                                            <DataTable.Cell 
-                                                onPress={()=>{
+                                            <DataTable.Cell
+                                                onPress={() => {
                                                     alertDialog("Coach", item.COACH)
                                                 }}
-                                                style={styles.DataTableText}>
-                                                    {item.COACH.substring(0,8)}...
+                                                style={{width:150}}>
+                                                {item.COACH}
                                             </DataTable.Cell>
                                             {item.IS_DEAD ?
-                                            <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
-                                            :
-                                            <DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell>
+                                                <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
+                                                :
+                                                <DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell>
                                             }
                                             <DataTable.Cell style={styles.DataTableText}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                                         </DataTable.Row>
@@ -204,8 +208,8 @@ export function HorseDetailScreenNick() {
 
                             <DataTable>
                                 <DataTable.Header removeClippedSubviews={true}>
-                                    <DataTable.Title style={{ width: 50 }}> </DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>B. Sire</DataTable.Title>
+                                    <DataTable.Title style={{ width: 50, justifyContent: 'center' }}> </DataTable.Title>
+                                    <DataTable.Title style={{ width: 400 }}>B. Sire</DataTable.Title>
                                     <DataTable.Title style={styles.DataTableTitle}>Foals</DataTable.Title>
                                     <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
                                     <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
@@ -222,44 +226,46 @@ export function HorseDetailScreenNick() {
                                 </DataTable.Header>
 
                                 {getNickSuccessData.map((item, index) => (
+                                    <View key={index}>
+                                        <DataTable.Row centered={true} key={index}>
+                                            <DataTable.Cell
+                                                onPress={() => {
+                                                    setSelectedItem(item)
+                                                    setMoreInfo(true)
+                                                }}
+                                                style={{ width: 50, justifyContent: 'center' }}>
+                                                <Icon name="info" color="#222" size={16} />
 
-                                    <DataTable.Row centered={true} key={index}>
-                                        <DataTable.Cell
-                                            onPress={() => {
-                                                setSelectedItem(item)
-                                                setMoreInfo(true)
-                                            }}
-                                            style={{ width: 50 }}>
-                                            <Icon name="info" color="#222" size={16} />
+                                            </DataTable.Cell>
+                                            <DataTable.Cell
+                                                onPress={() => {
+                                                    alertDialog("Broodmare Sire", item.BM_SIRE_NAME)
+                                                }}
+                                                style={{ width: 400 }}>
+                                                {item.BM_SIRE_NAME}
+                                            </DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.COUNTER}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.START}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.TOP4}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.TOP4_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FOURTH}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FOURTH_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.THIRD}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.THIRD_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.SECOND}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.SECOND_PERCENTAGE}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FIRST}</DataTable.Cell>
+                                            <DataTable.Cell style={styles.DataTableText}>{item.FIRST_PERCENTAGE}</DataTable.Cell>
 
-                                        </DataTable.Cell>
-                                        <DataTable.Cell
-                                            onPress={() => {
-                                                alertDialog("Broodmare Sire", item.BM_SIRE_NAME)
-                                            }}
-                                            style={styles.DataTableText}>
-                                            {item.BM_SIRE_NAME.substring(0, 8)}...
-                                        </DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.COUNTER}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.START}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.TOP4}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.TOP4_PERCENTAGE}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.FOURTH}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.FOURTH_PERCENTAGE}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.THIRD}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.THIRD_PERCENTAGE}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.SECOND}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.SECOND_PERCENTAGE}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.FIRST}</DataTable.Cell>
-                                        <DataTable.Cell style={styles.DataTableText}>{item.FIRST_PERCENTAGE}</DataTable.Cell>
-                                    </DataTable.Row>
+                                        </DataTable.Row>
 
-
-
+                                    </View>
                                 ))}
 
                             </DataTable>
+
+
 
 
                         </ScrollView>
@@ -268,14 +274,12 @@ export function HorseDetailScreenNick() {
                     }
                 </>
             }
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     Container: {
-        width: '100%',
-        height: '100%',
         backgroundColor: '#fff'
     },
     DataTableTitle: {

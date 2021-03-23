@@ -23,6 +23,7 @@ export class Global {
   static Sepetim=[];
   static TabBarBasketNotification = 0;
   static Language;
+  static Link;
 
   static getToken = async () => {
     try {
