@@ -33,7 +33,7 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
     return (
 
         <ScrollView>
-            {BackButton ?
+            {Global.BackButton ?
                 <View>
                     <TouchableOpacity
                         style={styles.BackButton}

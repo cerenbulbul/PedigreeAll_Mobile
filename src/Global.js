@@ -24,6 +24,7 @@ export class Global {
   static TabBarBasketNotification = 0;
   static Language;
   static Link;
+  static BackButton = false;
 
   static getToken = async () => {
     try {

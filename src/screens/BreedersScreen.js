@@ -21,6 +21,16 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Title from '../components/Title'
 
 import { HorseDetailSiblingMareScreen } from './HorseDetailSiblingMareScreen';
+import { HorseDetailScreenPedigree } from './HorseDetailScreenPedigree'
+import { HorseDetailPRofileScreen } from './HorseDetailPRofileScreen';
+import { HorseDetailProgencyScreen } from './HorseDetailProgencyScreen';
+import { HorseDetailSiblingSireScreen } from './HorseDetailSiblingSireScreen';
+import { HorseDetailSiblingBroodmareSireScreen } from './HorseDetailSiblingBroodmareSireScreen';
+import { HorseDetailTailFemaleScreen } from "./HorseDetailTailFemaleScreen";
+import { HorseDetailBroodMareSireScreen } from "./HorseDetailBroodMareSireScreen";
+import { HorseDetailLinebreedingScreen } from './HorseDetailLinebreedingScreen'
+import { HorseDetailScreenFemaleFamily } from './HorseDetailScreenFemaleFamily';
+import { BreedingFoalsAsBroodMareSireScreen } from './BreedingFoalsAsBroodMareSireScreen'
 
 const Tab = createMaterialTopTabNavigator();
 const GenerationData = [
@@ -113,7 +123,7 @@ export function BreedersScreen({ route, navigation }) {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -139,7 +149,6 @@ export function BreedersScreen({ route, navigation }) {
     return (
         <View style={styles.Container}>
             <View style={{ width: '100%', alignItems: 'center', marginTop: 30 }}>
-                <Title text={Global.BreedingContentScreenName} />
 
                 <RBSheet
                     ref={refRBSheetGeneration}
@@ -174,19 +183,10 @@ export function BreedersScreen({ route, navigation }) {
                                         onPress={() => {
                                             setState({ checked: [state, item.id] });
                                             setChekedItem(item.id)
+                                            setGenerationTitle("Gen " + item.id);
+                                            refRBSheetGeneration.current.close();
                                         }}
                                     >
-                                        <ListItem.CheckBox
-                                            checked={state.checked.includes(item.id)}
-                                            checkedIcon='circle'
-                                            uncheckedIcon='circle'
-                                            center={true}
-                                            checkedColor='#2169ab'
-                                            uncheckedColor='rgb(232, 237, 241)'
-                                            onPress={() => {
-                                                setState({ checked: [state, item.id] });
-                                                setChekedItem(item.id)
-                                            }} />
                                         <ListItem.Content>
                                             <ListItem.Title>{item.title}</ListItem.Title>
                                         </ListItem.Content>
@@ -250,9 +250,11 @@ export function BreedersScreen({ route, navigation }) {
                                             button
                                             onPress={() => {
                                                 BottomSheetSearchNavigation.current.close();
+                                                Global.BackButton = true;
                                                 if (ScreenName === "TableReportScreen") {
                                                     Global.Horse_ID = item.HORSE_ID
                                                     setText(item.HORSE_NAME)
+
                                                 }
                                                 if (SireMareHorseName === 'Sire') {
                                                     setSireText(item.HORSE_NAME);
@@ -266,7 +268,7 @@ export function BreedersScreen({ route, navigation }) {
                                                 }
                                             }} >
                                             <Image
-                                                style={{ width: 70, height: 70, justifyContent:'center', resizeMode:'contain'  }}
+                                                style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
                                                 source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                                             />
                                             <ListItem.Content>
@@ -520,7 +522,6 @@ export function BreedersScreen({ route, navigation }) {
                             }
 
                             else if (Global.BreedingContentScreenName === "Foals  As Brood Mare Sire") {
-                                {console.log("denem")}
                                 navigation.navigate('BreedingFoalsAsBroodMareSire', {
                                     BackButton: true,
                                 })
@@ -529,10 +530,34 @@ export function BreedersScreen({ route, navigation }) {
 
 
                         }}>
-                        <Text style={styles.SearchButtonText}>Search</Text>
+                        <Text style={styles.SearchButtonText}>Search {Global.BreedingContentScreenName}</Text>
                     </TouchableOpacity>
 
                 }
+
+                
+
+                <View style={{ marginTop: 20 }}>
+                    {Global.BreedingContentScreenName === "Profile" &&
+                        <HorseDetailPRofileScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "Progency" &&
+                        <HorseDetailProgencyScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "Siblings (Mare)" &&
+                        <HorseDetailSiblingMareScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "Siblings (Sire)" &&
+                        <HorseDetailSiblingSireScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "Siblings (Broodmare Sire)" &&
+                        <HorseDetailSiblingBroodmareSireScreen />
+                        || Global.BreedingContentScreenName === "Tail Female" &&
+                        <HorseDetailTailFemaleScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "Foals  As Brood Mare Sire" &&
+                        <BreedingFoalsAsBroodMareSireScreen />
+                        || Global.BreedingContentScreenName === "Linebreeding" &&
+                        <HorseDetailLinebreedingScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "FemaleFamily" &&
+                        <HorseDetailScreenFemaleFamily BackButton={false} navigation={navigation} />
+                    }
+                </View>
 
             </View>
         </View >
@@ -548,7 +573,7 @@ function SearchScreen({ route, navigation }) {
     const [getBottomSheetText, setBottomSheetText] = React.useState();
     const [GenerationTitle, setGenerationTitle] = React.useState("Gen 5");
     const [CrossLineTitle, setCrossTitle] = React.useState("x2");
-    const [state, setState] = React.useState({ checked: [] }); 
+    const [state, setState] = React.useState({ checked: [] });
     const [chekedItem, setChekedItem] = React.useState(5)
     const [stateCrossLine, setStateCrossLine] = React.useState({ checkedCrossLine: [] });
     const [chekedItemCrossLine, setChekedItemCrossLine] = React.useState(2)
@@ -580,7 +605,7 @@ function SearchScreen({ route, navigation }) {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -624,7 +649,7 @@ function SearchScreen({ route, navigation }) {
                 <TouchableOpacity
                     onPress={() => {
                         refRBSheetGeneration.current.close();
-                        
+
                         setGenerationTitle("Gen " + chekedItem);
                         setCrossTitle("x" + chekedItemCrossLine)
                     }}
@@ -1057,4 +1082,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         marginRight: -25
     },
+    BreedersScreenTitle: {
+        textAlign: 'center',
+        fontSize: 20,
+        marginBottom: 5
+    }
 })

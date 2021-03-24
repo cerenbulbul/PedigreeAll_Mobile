@@ -443,7 +443,6 @@ export default function App() {
         component={TabScreen}
         options={{
           headerShown: true,
-
           headerTitle: () => (
 
             <Image
@@ -981,7 +980,7 @@ export default function App() {
         name={"Breeders"}
         component={BreedersScreen}
         options={({ navigation }) => ({
-          headerTitle: "PedigreeAll",
+          headerTitle: "deneme",
           headerShown: false,
           headerStyle: {
             backgroundColor: '#2e3f6e',

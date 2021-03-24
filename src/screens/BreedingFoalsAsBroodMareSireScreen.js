@@ -12,9 +12,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable } from 'react-native-paper';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-export function BreedingFoalsAsBroodMareSireScreen({ route, navigation }) {
+export function BreedingFoalsAsBroodMareSireScreen({ navigation }) {
 
-    const { BackButton } = route.params;
 
     const [getBmSireData, setBMSireData] = React.useState();
     const [getLoader, setLoader] = React.useState(true);

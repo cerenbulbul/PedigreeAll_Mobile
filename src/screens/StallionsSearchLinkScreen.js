@@ -6,10 +6,15 @@ import {
     TouchableOpacity,
     ScrollView,
     Platform,
-    Dimensions
+    Dimensions,
+    Box,
+    ActivityIndicator,
+    Modal,
+    Image
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable, List } from 'react-native-paper';
+import { Button, SearchBar, ListItem } from 'react-native-elements';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import WebView from 'react-native-webview';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -35,6 +40,9 @@ import { HorseDetailScreenFemaleFamily } from './HorseDetailScreenFemaleFamily';
 import { HorseDetailScreenTJK } from './HorseDetailScreenTJK';
 import { HorseDetailScreenNick } from './HorseDetailScreenNick'
 import { HorseDetailProfileScreenInformation } from './HorseDetailProfileScreenInformation'
+import { diffClamp } from 'react-native-reanimated';
+import RBSheet from "react-native-raw-bottom-sheet";
+
 
 export function StallionsSearchLinkScreen({ route, navigation }) {
 
@@ -113,6 +121,18 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
     const [getNickFontWeight, setNickFontWeight] = React.useState("500")
     const [getNickFontSize, setNickFontSize] = React.useState(16)
 
+    const [activeTab, setActiveTab] = useState('')
+    const [scrollEnable, setScrollEnable] = React.useState(false)
+
+    const BottomSheetHypotheticalSearch = useRef();
+    const OpenSmallBottomSheet = useRef();
+    const [searchValue, setSearchValue] = React.useState("")
+    const [getBottomSheetText, setBottomSheetText] = useState("");
+    const [HorseData, setHorseData] = useState([]);
+    const [loader, setLoader] = useState(false)
+    const [getStallionCodeData, setStallionCodeData] = React.useState();
+    const [getStallionCode, setStallionCode] = React.useState("Standard");
+    const [getRegistrationID, setRegistrationID] = React.useState(1);
 
     const readGetStallionPageByLink = async () => {
         try {
@@ -149,16 +169,371 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
         }
     }
 
+    const readHorse = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
+                fetch('https://api.pedigreeall.com/Horse/GetByName', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                    body: JSON.stringify({
+                        ID: 1,
+                        NAME: searchValue,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        setHorseData(json)
+                        setLoader(false)
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+        }
+    }
+    const readGetAsNameIdForStallion = async (ID) => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' + 2, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Basic " + token,
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        setStallionCodeData(json.m_cData)
+                        setLoader(false);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            }
+            else {
+                console.log("Basarisiz")
+            }
+        } catch (e) {
+        }
+    }
+
     React.useEffect(() => {
         readGetStallionPageByLink();
+        readHorse();
     }, [])
 
     return (
         <View style={styles.Container}>
 
+            <RBSheet
+                ref={OpenSmallBottomSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={true}
+                height={350}
+                animationType='fade'
+                customStyles={{
+                    container: {
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000"
+                    }
+                }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        OpenSmallBottomSheet.current.close();
+                    }}
+                    style={styles.SwipableCloseIcon}>
+                    <Icon name="times" size={20} color="#adb5bd" />
+                </TouchableOpacity>
+                <View>
+                    <ScrollView style={{ marginBottom: 50 }}>
+                        {getStallionCodeData !== undefined &&
+
+                            <>
+                                {
+                                    getStallionCodeData.map((item, i) => (
+                                        <ListItem
+                                            key={i}
+                                            bottomDivider
+                                            onPress={() => {
+                                                setStallionCode(item.NAME)
+                                                setRegistrationID(item.ID)
+                                                setStallionCode(item.NAME);
+                                                OpenSmallBottomSheet.current.close();
+
+                                            }}
+                                        >
+                                            <ListItem.Content>
+                                                <ListItem.Title>{item.NAME}</ListItem.Title>
+                                            </ListItem.Content>
+
+                                        </ListItem>
+                                    ))
+                                }
+                            </>
+                        }
+
+                    </ScrollView>
+
+                </View>
+            </RBSheet>
+
+            <RBSheet
+                ref={BottomSheetHypotheticalSearch}
+                closeOnDragDown={true}
+                closeOnPressMask={true}
+                height={Dimensions.get('window').height - 50}
+                animationType='fade'
+                customStyles={{
+                    container: {
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000"
+                    }
+                }}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        BottomSheetHypotheticalSearch.current.close();
+                    }}
+                    style={styles.SwipableCloseIcon}>
+                    <Icon name="times" size={20} color="#adb5bd" />
+                </TouchableOpacity>
+                {getBottomSheetText === "Hypothetical" &&
+
+                    <View>
+
+                        <SearchBar
+                            placeholder={searchValue}
+                            lightTheme
+                            platform="ios"
+                            cancelButtonTitle=""
+                            inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+                            containerStyle={{ backgroundColor: 'transparent', }}
+                            inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+                            rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                            leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                            value={searchValue}
+                            onChangeText={setSearchValue}
+                            onSubmitEditing={() => {
+                                setLoader(true);
+                                readHorse();
+                            }}
+                            showLoading={true}
+                        />
+                        {HorseData.m_cData !== undefined &&
+                            <ScrollView style={{ marginBottom: 30 }}>
+                                {HorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+                                    (item, i) => (
+                                        <ListItem
+                                            key={i}
+                                            bottomDivider
+                                            button
+                                            onPress={() => {
+                                                BottomSheetHypotheticalSearch.current.close();
+                                                if (item.HORSE_ID !== undefined) {
+                                                    Global.Horse_First_ID = Global.Horse_ID;
+                                                    Global.Horse_Second_ID = item.HORSE_ID;
+                                                    Global.Generation = 5;
+                                                    navigation.navigate('HypotheticalSearch', {
+                                                        SireHorseData: getStallionByLinkData,
+                                                        MareHorseData: item,
+                                                        Generation: 5
+                                                    });
+                                                }
+
+                                            }} >
+                                            <Image
+                                                style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
+                                                source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                                            />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                                                <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron />
+                                        </ListItem>
+                                    ))}
+                            </ScrollView>
+                        }
+                        {HorseData.m_cDetail !== undefined &&
+                            <>
+                                {HorseData.m_cDetail.m_eProcessState < 0 &&
+                                    <>
+                                        {loader === false &&
+                                            <View style={styles.ErrorMessageContainer}>
+                                                <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                                                {Global.Language === "TR" ?
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                        <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                    </>
+                                                }
+
+                                                <View style={styles.ErrorMessageButtonContainer}>
+                                                </View>
+                                            </View>
+                                        }
+                                    </>
+
+                                }
+                            </>}
+
+
+                        {loader ?
+                            <ActivityIndicator
+                                color="black"
+                                size="large"
+                                style={styles.ActivityIndicatorStyle}
+                            />
+
+                            : null}
+
+
+
+                    </View>
+
+                    || getBottomSheetText === "EffectiveNick" &&
+
+                    <View>
+
+                        <View style={{flexDirection:'row', justifyContent:'space-between', alignSelf:'center'}}>
+                            <SearchBar
+                                placeholder={searchValue}
+                                lightTheme
+                                platform="ios"
+                                cancelButtonTitle=""
+                                inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+                                containerStyle={{ backgroundColor: 'transparent', width: '70%' }}
+                                inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+                                rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                                leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+                                value={searchValue}
+                                onChangeText={setSearchValue}
+                                onSubmitEditing={() => {
+                                    setLoader(true);
+                                    readHorse();
+                                }}
+                                showLoading={true}
+                            />
+                            <TouchableOpacity
+                                onPress={() => {
+                                    OpenSmallBottomSheet.current.open();
+                                }}
+                                style={styles.GenerationButtonContainer}>
+                                <Text>{getStallionCode}</Text>
+                                <Icon name="chevron-down" size={16} color="#5f6368" />
+                            </TouchableOpacity>
+                        </View>
+                        {HorseData.m_cData !== undefined &&
+                            <ScrollView style={{ marginBottom: 30 }}>
+                                {HorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+                                    (item, i) => (
+                                        <ListItem
+                                            key={i}
+                                            bottomDivider
+                                            button
+                                            onPress={() => {
+                                                BottomSheetHypotheticalSearch.current.close();
+                                                if (item.HORSE_ID !== undefined) {
+                                                    Global.Horse_First_ID = Global.Horse_ID;
+                                                    Global.Horse_Second_ID = item.HORSE_ID;
+                                                    navigation.navigate('EffectivenickSearchReport', {
+                                                        FirstHorseID: Global.Horse_ID,
+                                                        SecondHorseID: item.HORSE_ID,
+                                                        RegistrationID: getRegistrationID,
+                                                        BackButtonVisible: false
+                                                    });
+                                                }
+
+                                            }} >
+                                            <Image
+                                                style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
+                                                source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                                            />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                                                <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron />
+                                        </ListItem>
+                                    ))}
+                            </ScrollView>
+                        }
+                        {HorseData.m_cDetail !== undefined &&
+                            <>
+                                {HorseData.m_cDetail.m_eProcessState < 0 &&
+                                    <>
+                                        {loader === false &&
+                                            <View style={styles.ErrorMessageContainer}>
+                                                <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                                                {Global.Language === "TR" ?
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                        <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                    </>
+                                                }
+
+                                                <View style={styles.ErrorMessageButtonContainer}>
+                                                </View>
+                                            </View>
+                                        }
+                                    </>
+
+                                }
+                            </>}
+
+
+                        {loader ?
+                            <ActivityIndicator
+                                color="black"
+                                size="large"
+                                style={styles.ActivityIndicatorStyle}
+                            />
+
+                            : null}
+
+
+
+                    </View>
+
+
+                }
+            </RBSheet>
+
             <ScrollView>
-
-
 
                 <View style={styles.HeaderContainer}>
                     <View style={styles.HeaderShortContainer}>
@@ -174,6 +549,98 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                         </TouchableOpacity>
                     </View>
+                    {showHeader ?
+                        <View>
+                            {getStallionByLinkData !== undefined &&
+                                <View style={styles.ShowHeaderTrueContainer}>
+                                    <View style={styles.ShowHeaderTrueInformationContainer}>
+                                        <Icon name="map-marker-alt" size={14} color="#000" style={{ alignSelf: 'center' }} />
+                                        <Text style={styles.ShowHeaderTrueTextContainer}>{getStallionByLinkData.PLACE}</Text>
+                                    </View>
+
+                                    <View style={styles.ShowHeaderTrueInformationContainer}>
+                                        <Icon name="phone" size={14} color="#000" style={{ alignSelf: 'center' }} />
+                                        <Text style={styles.ShowHeaderTrueTextContainer}>{getStallionByLinkData.CELL_PHONE}</Text>
+                                    </View>
+
+                                    <View style={styles.ShowHeaderTrueInformationContainer}>
+                                        <Icon name="envelope" size={14} color="#000" style={{ alignSelf: 'center' }} />
+                                        <Text style={styles.ShowHeaderTrueTextContainer}>{getStallionByLinkData.EMAIL}</Text>
+                                    </View>
+
+                                    <View style={styles.ShowHeaderTrueButtonContainer}>
+
+                                        <Button
+                                            title="Hypothetical Search"
+                                            onPress={() => {
+                                                setBottomSheetText("Hypothetical")
+                                                BottomSheetHypotheticalSearch.current.open();
+                                            }}
+                                        />
+
+                                        <Button
+                                            title="EffectiveNick Search"
+                                            onPress={() => {
+                                                readGetAsNameIdForStallion(Global.Horse_ID);
+                                                setBottomSheetText("EffectiveNick")
+                                                BottomSheetHypotheticalSearch.current.open();
+                                            }}
+                                        />
+
+                                    </View>
+
+                                    <View style={styles.Line} />
+
+                                    <View style={[styles.ShowHeaderTrueButtonContainer, { justifyContent: 'space-between' }]}>
+                                        <Text style={{ width: '33%', textAlign: 'center', alignSelf: 'center' }}>{getStallionByLinkData.FEE_TEXT}</Text>
+                                        <View style={[styles.ShowHeaderTrueInformationContainer, { width: '30%' }]}>
+                                            <Icon name="user-circle" size={16} color="#000" style={{ alignSelf: 'center' }} />
+                                            <Text style={styles.ShowHeaderTrueTextContainer} >{getStallionByLinkData.NAME}</Text>
+                                        </View>
+                                        <View style={[{ width: "30%", height: 40 }, styles.BreedingContainer]}>
+                                            <Text style={{ textAlign: 'center', color: '#fff' }}>{getStallionByLinkData.COUNT} Breeding</Text>
+                                        </View>
+
+                                    </View>
+
+                                    <View style={styles.Line} />
+
+                                    <View style={styles.HeaderNumbersContainer}>
+                                        <View style={styles.HeaderNumbersContainerItem}>
+                                            <Text style={styles.HeaderNumberText}>{getStallionByLinkData.FOAL}</Text>
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Foals</Text>
+                                        </View>
+
+                                        <View style={styles.HeaderNumbersContainerItem}>
+                                            <Text style={styles.HeaderNumberText}>{getStallionByLinkData.RACE_FOAL}</Text>
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Runner</Text>
+                                        </View>
+
+                                        <View style={styles.HeaderNumbersContainerItem}>
+                                            <Text style={styles.HeaderNumberText}>{getStallionByLinkData.WINNER_FOAL}</Text>
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Winner</Text>
+                                        </View>
+
+                                        <View style={styles.HeaderNumbersContainerItem}>
+                                            <Text style={styles.HeaderNumberText}>{getStallionByLinkData.G_WINNER_FOAL}</Text>
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Group Winner</Text>
+                                        </View>
+
+                                        <View style={styles.HeaderNumbersContainerItem}>
+                                            <Text style={styles.HeaderNumberText}>{getStallionByLinkData.EARN} {getStallionByLinkData.EARN_CURRENCY_OBJECT.ICON}</Text>
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Earning</Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.Line} />
+
+                                </View>
+                            }
+
+
+
+                        </View>
+                        : null}
                 </View>
 
                 <ScrollView
@@ -187,7 +654,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getMainLineColor }]}
                             onPress={() => {
                                 setScreenName("Main")
-
+                                setScrollEnable(false)
                                 setMainLineColor("#2169ab")
                                 setMainColor("#2169ab")
                                 setMainFontWeight("700")
@@ -258,11 +725,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                         </TouchableOpacity>
 
-
                         <TouchableOpacity
                             style={[styles.TabNavigationItem, { borderColor: getPedigreeLineColor }]}
                             onPress={() => {
                                 setScreenName("Pedigree")
+                                setScrollEnable(true)
+
                                 setPedigreeLineColor("#2169ab")
                                 setPedigreeColor("#2169ab")
                                 setPedigreeFontWeight("700")
@@ -337,6 +805,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getProgencyLineColor }]}
                             onPress={() => {
                                 setScreenName("Progency")
+                                setScrollEnable(true)
 
                                 setProgencyLineColor("#2169ab")
                                 setProgencyColor("#2169ab")
@@ -413,6 +882,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getNickLineColor }]}
                             onPress={() => {
                                 setScreenName("Nick")
+                                setScrollEnable(true)
 
                                 setNickLineColor("#2169ab")
                                 setNickColor("#2169ab")
@@ -488,6 +958,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getSiblingsMareLineColor }]}
                             onPress={() => {
                                 setScreenName("SiblingMare")
+                                setScrollEnable(true)
 
                                 setSiblingsMareLineColor("#2169ab")
                                 setSiblingsMareColor("#2169ab")
@@ -562,6 +1033,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getTailFemaleLineColor }]}
                             onPress={() => {
                                 setScreenName("TailFemale")
+                                setScrollEnable(true)
 
                                 setTailFemaleLineColor("#2169ab")
                                 setTailFemaleColor("#2169ab")
@@ -636,6 +1108,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getBroodmareSireLineColor }]}
                             onPress={() => {
                                 setScreenName("BroodmareSire")
+                                setScrollEnable(true)
 
                                 setBroodmareSireLineColor("#2169ab")
                                 setBroodmareSireColor("#2169ab")
@@ -710,6 +1183,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getLinebreedingLineColor }]}
                             onPress={() => {
                                 setScreenName("Linebreeding")
+                                setScrollEnable(true)
 
                                 setLinebreedingLineColor("#2169ab")
                                 setLinebreedingColor("#2169ab")
@@ -785,6 +1259,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             style={[styles.TabNavigationItem, { borderColor: getFemaleFamilyLineColor }]}
                             onPress={() => {
                                 setScreenName("FemaleFamily")
+                                setScrollEnable(true)
 
                                 setFemaleFamilyLineColor("#2169ab")
                                 setFemaleFamilyColor("#2169ab")
@@ -861,6 +1336,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 style={[styles.TabNavigationItem, { borderColor: getTJKLineColor }]}
                                 onPress={() => {
                                     setScreenName("TJK")
+                                    setScrollEnable(true)
 
                                     setTJKLineColor("#2169ab")
                                     setTJKColor("#2169ab")
@@ -947,6 +1423,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                         <Tab.Navigator
                             initialRouteName="Statistics"
                             removeClippedSubviews={true}
+
                             sceneContainerStyle={{
                                 width: '100%',
                                 height: '100%',
@@ -971,10 +1448,6 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             <Tab.Screen
                                 name="Statistics"
                                 component={StatisticsScreen}
-                            />
-                            <Tab.Screen
-                                name="About"
-                                component={AboutScreen}
                             />
                             <Tab.Screen
                                 name="Profile"
@@ -1023,61 +1496,6 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 }
 
 
-function AboutScreen() {
-    const [getStallionByLinkData, setStallionByLinkData] = React.useState();
-
-    const readGetStallionPageByLink = async () => {
-        try {
-            const token = await AsyncStorage.getItem('TOKEN')
-            if (token !== null) {
-                fetch('https://api.pedigreeall.com/StallionPage/GetByLink?p_sLink=' + Global.Link, {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': "Basic " + token,
-                    },
-                })
-                    .then((response) => response.json())
-                    .then((json) => {
-                        setStallionByLinkData(json.m_cData[0]);
-
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    })
-            }
-            else {
-                console.log("Basarisiz")
-            }
-        } catch (e) {
-        }
-    }
-
-    React.useEffect(() => {
-        readGetStallionPageByLink();
-    }, [])
-
-
-    return (
-        <View style={{ width: '100%', height: '100%', marginTop: 20, padding: 10 }}>
-            {getStallionByLinkData !== undefined &&
-
-                <WebView
-                    source={{ html: getStallionByLinkData.INFO }}
-                    startInLoadingState={true}
-                    javaScriptEnabledAndroid={true}
-                    showsHorizontalScrollIndicator={true}
-                    scrollEnabled={true}
-                    style={{ width: '100%', height: '100%' }}
-                    showsVerticalScrollIndicator={true}
-                />
-            }
-
-        </View>
-    )
-}
-
 function StatisticsScreen() {
 
     const [getStallionByLinkData, setStallionByLinkData] = React.useState();
@@ -1100,6 +1518,9 @@ function StatisticsScreen() {
 
     const [getLastStatData, setLastStatData] = React.useState([]);
     const [getLastProgressData, setLastProgressData] = React.useState([]);
+    const [getOpenModel, setOpenModel] = React.useState(false)
+    const [FullScreenVisible, setFullScreenVisible] = React.useState(false)
+
 
 
 
@@ -1246,7 +1667,49 @@ function StatisticsScreen() {
 
     return (
         <View>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={FullScreenVisible}>
+                <View style={styles.centeredView}>
+                    <View style={[styles.FullScreenContainer]}>
+                        <View style={{ width: '100%', justifyContent: 'flex-end' }}>
+                            <TouchableOpacity
+                                style={{ padding: 10 }}
+                                onPress={() => {
+                                    setFullScreenVisible(false);
+                                }}>
+                                <Icon name="times" size={26} color="silver" />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ width: '100%', height: Dimensions.get('window').height, marginTop: 20, padding: 10 }}>
+                            {getStallionByLinkData !== undefined &&
+
+                                <WebView
+                                    source={{ html: getStallionByLinkData.INFO }}
+                                    startInLoadingState={true}
+                                    javaScriptEnabledAndroid={true}
+                                    showsHorizontalScrollIndicator={true}
+                                    style={{ width: '100%', height: '100%' }}
+                                    showsVerticalScrollIndicator={true}
+                                    scrollEnabled={true}
+                                    onScroll={true}
+                                    renderLoading={() => <ActivityIndicator
+                                        color="#000"
+                                        size="large"
+                                    />}
+                                />
+                            }
+
+                        </View>
+
+                    </View>
+                </View>
+            </Modal>
+
             {getStallionByLinkData !== undefined &&
+
+
 
                 <View style={styles.StatisticContainer}>
                     <View>
@@ -1433,17 +1896,28 @@ function StatisticsScreen() {
                         />
                     </View>
 
+                    <View style={{ width: '40%', marginLeft: 5 }}>
+                        <Button
+                            title="About"
+                            onPress={() => {
+                                setFullScreenVisible(true)
+                            }}
+                        />
+                    </View>
+
                     <List.AccordionGroup>
+
                         <List.Accordion
                             id="2"
                             title="Statics"
+                            style={{ marginTop: 20 }}
                             theme={{ colors: { primary: '#2169ab' } }}
                             left={props => <Icon name="chart-line" size={20} color="#000"  {...props} />}>
                             <View>
                                 <Text style={styles.ProgressBarTitle}>Race Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartRaceFoals}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1464,7 +1938,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Winner Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartWinnerFoals}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1485,7 +1959,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Group Winner Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartGroupWinnerFoals}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1506,7 +1980,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Black Type Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartBlackTypeFoals}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1527,7 +2001,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Winner Foal / Race Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartWinnerFoalRaceFoal}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1548,7 +2022,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Group Winner Foal / Race Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartGroupWinnerFoalRaceFoal}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1569,7 +2043,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Black Type / Race Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartBlackTypeRaceFoal}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1590,7 +2064,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Group Winner / Race Winner</Text>
                                 <ProgressChart
                                     data={getProgressChartGroupWinnerRaceWinner}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1611,7 +2085,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Black Type / Race Winner</Text>
                                 <ProgressChart
                                     data={getProgressChartBlackTypeRaceWinner}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1632,7 +2106,7 @@ function StatisticsScreen() {
                                 <Text style={styles.ProgressBarTitle}>Black Type / Group Winner</Text>
                                 <ProgressChart
                                     data={getProgressChartBlackTypeGroupRaceWinner}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1676,7 +2150,7 @@ function StatisticsScreen() {
                                         {
                                             backgroundGradientFrom: '#Ffffff',
                                             backgroundGradientTo: '#ffffff',
-                                            barPercentage: 0.5,
+                                            barPercentage: 1,
                                             decimalPlaces: 0, // optional, defaults to 2dp
                                             color: (opacity = 1) => "#333",
                                             labelColor: (opacity = 1) => `rgba(0, 0, 0, 1)`,
@@ -1694,7 +2168,7 @@ function StatisticsScreen() {
                                             },
                                             propsForLabels: {
                                                 fontFamily: 'Bogle-Regular',
-                                                fontSize: 7,
+                                                fontSize: 10,
 
                                             },
                                         }
@@ -1702,10 +2176,11 @@ function StatisticsScreen() {
                                     fromZero={true}
                                     labelStyle={{ height: 500, window: 10 }}
 
+
                                 />
                                 <ProgressChart
                                     data={[0.0]}
-                                    width={Dimensions.get('window').width - 20}
+                                    width={Dimensions.get('window').width}
                                     height={200}
                                     chartConfig={{
                                         backgroundColor: '#1cc910',
@@ -1726,7 +2201,10 @@ function StatisticsScreen() {
                             </View>
 
                         </List.Accordion>
+
                     </List.AccordionGroup>
+
+
 
                 </View>
 
@@ -1798,7 +2276,153 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 18,
         fontWeight: '700',
-        marginRight: 30,
         color: "#2169ab"
-    }
+    },
+    AboutButtonContainer: {
+        padding: 10,
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        flexDirection: 'row',
+    },
+    AboutContainerText: {
+        marginLeft: 5,
+        fontSize: 17,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 0,
+        backgroundColor: '#6c6c6ca8'
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    ModalItemContainer: {
+        width: '100%',
+        height: '95%',
+
+    },
+    ModalContainer: {
+        width: '95%',
+        height: '95%',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 20,
+        padding: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    FullScreenContainer: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        shadowColor: "#000",
+    },
+
+    ShowHeaderTrueContainer: {
+        padding: 10,
+
+    },
+
+    ShowHeaderTrueInformationContainer: {
+        flexDirection: 'row',
+        marginBottom: 5
+    },
+    ShowHeaderTrueTextContainer: {
+        marginLeft: 10
+    },
+    ShowHeaderTrueButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10
+    },
+    Line: {
+        borderBottomColor: 'silver',
+        borderBottomWidth: 0.5,
+        marginTop: 15
+    },
+    BreedingContainer: {
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: "#2089dc",
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+    HeaderNumbersContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10
+    },
+    HeaderNumbersContainerItem: {
+        width: '19%',
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+    HeaderNumberText: {
+        fontSize: 16,
+        fontWeight: '700',
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
+    SwipableCloseIcon: {
+        width: '100%',
+        flexDirection: 'row-reverse',
+        marginRight: -25
+    },
+    ErrorMessageContainer: {
+        width: '100%',
+        height: '50%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+    },
+    ErrorMessageTitle: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#222'
+    },
+    ErrorMessageText: {
+        fontSize: 16,
+        color: '#c7c1c1',
+        textAlign: 'center',
+        marginTop: 5
+    },
+    ErrorMessageButtonContainer: {
+        width: '80%',
+        marginTop: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    ErrorMessageButton: {
+        backgroundColor: 'rgb(232, 237, 241)',
+        width: '40%',
+        padding: 10,
+        borderRadius: 8
+    },
+    ErrorMessageButtonText: {
+        textAlign: 'center',
+        color: '#2169ab',
+        fontSize: 14,
+    },
+    GenerationButtonContainer: {
+        backgroundColor: "#e8edf1",
+        padding: 9,
+        borderRadius: 8,
+        height: 35,
+        width: '25%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 12,
+        marginRight: 7,
+    },
 })

@@ -63,7 +63,7 @@ export function HorseDetailSiblingBroodmareSireScreen({ BackButton, navigation }
 
       {console.log("Broodmare Sire Screen")}
 
-      {BackButton ?
+      {Global.BackButton ?
         <View>
           <TouchableOpacity
             style={styles.BackButton}
