@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, ActivityIndicator , TouchableOpacity , Alert} from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert,RefreshControl } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from "react-native-vector-icons/FontAwesome5";
+
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
   const [time, setTime] = React.useState(true);
@@ -39,33 +43,57 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
     }
   };
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  
   React.useEffect(() => {
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log(Global.Horse_ID)
+      readSiblingMare();
+        
+    });
+
+    return () => {
+        unsubscribe;
+    };
+}, [navigation]);
+
+  React.useEffect(() => {
+    console.log(Global.Horse_ID)
     readSiblingMare();
   }, [])
 
   const alertDialog = (messageTitle, message) =>
-  Alert.alert(
+    Alert.alert(
       messageTitle,
       message,
       [
-          {
-              text: "OK",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel"
-          },
+        {
+          text: "OK",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
       ],
       { cancelable: false }
-  );
+    );
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff' }} showsVerticalScrollIndicator={true}>
+    <ScrollView
+      style={{ backgroundColor: '#fff' }}
+      showsVerticalScrollIndicator={true}>
 
-      {Global.BackButton ?
+      {BackButton ?
         <View>
           <TouchableOpacity
             style={styles.BackButton}
             onPress={() => {
-              navigation.navigate('Breeders',{
+              navigation.navigate('Breeders', {
                 ScreenName: "TableReportScreen",
               })
             }}>
@@ -88,13 +116,13 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
 
               <DataTable>
                 <DataTable.Header removeClippedSubviews={true}>
-                  <DataTable.Title style={{width:350}}>Name</DataTable.Title>
+                  <DataTable.Title style={{ width: 350 }}>Name</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
-                  <DataTable.Title style={{width:400}}>Sire</DataTable.Title>
+                  <DataTable.Title style={{ width: 400 }}>Sire</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Birth D.</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
@@ -109,9 +137,9 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
                   <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
-                  <DataTable.Title style={{width:150}}>Owner</DataTable.Title>
-                  <DataTable.Title style={{width:150}}>Breeder</DataTable.Title>
-                  <DataTable.Title style={{width:150}}>Coach</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Owner</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Breeder</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Coach</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
                   <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
                 </DataTable.Header>
@@ -119,20 +147,20 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
                 {getSiblingMare.HORSE_INFO_LIST.map((item, index) => (
 
                   <DataTable.Row centered={true} key={index}>
-                    <DataTable.Cell 
-                      onPress={() => { alertDialog("Name", item.HORSE_NAME) }} 
-                      style={{width:350}}>
-                        {item.HORSE_NAME}
+                    <DataTable.Cell
+                      onPress={() => { alertDialog("Name", item.HORSE_NAME) }}
+                      style={{ width: 350 }}>
+                      {item.HORSE_NAME}
                     </DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell} >{item.POINT}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell} >{item.FAMILY_TEXT}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell}>{item.COLOR_TEXT}</DataTable.Cell>
-                    <DataTable.Cell 
-                      onPress={() => { alertDialog("Sire", item.FATHER_NAME) }} 
-                      style={{width:400}}>
-                        {item.FATHER_NAME}
+                    <DataTable.Cell
+                      onPress={() => { alertDialog("Sire", item.FATHER_NAME) }}
+                      style={{ width: 400 }}>
+                      {item.FATHER_NAME}
                     </DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell} >{item.START_COUNT}</DataTable.Cell>
@@ -148,20 +176,20 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
                     <DataTable.Cell style={styles.DataTableCell}>{item.RM}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell}>{item.ANZ}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell}>{item.PA}</DataTable.Cell>
-                    <DataTable.Cell 
-                      onPress={() => { alertDialog("Owner", item.OWNER) }} 
-                      style={{ width: 150}}>
-                        {item.OWNER}
-                    </DataTable.Cell>
-                    <DataTable.Cell 
-                      onPress={() => { alertDialog("Breeder", item.BREEDER) }} 
+                    <DataTable.Cell
+                      onPress={() => { alertDialog("Owner", item.OWNER) }}
                       style={{ width: 150 }}>
-                        {item.BREEDER}
+                      {item.OWNER}
                     </DataTable.Cell>
-                    <DataTable.Cell 
-                      onPress={() => { alertDialog("Coach", item.COACH) }} 
-                      style={{ width: 150}}>
-                        {item.COACH}
+                    <DataTable.Cell
+                      onPress={() => { alertDialog("Breeder", item.BREEDER) }}
+                      style={{ width: 150 }}>
+                      {item.BREEDER}
+                    </DataTable.Cell>
+                    <DataTable.Cell
+                      onPress={() => { alertDialog("Coach", item.COACH) }}
+                      style={{ width: 150 }}>
+                      {item.COACH}
                     </DataTable.Cell>
                     {item.IS_DEAD ?
                       <DataTable.Cell style={styles.DataTableCell}>DEAD</DataTable.Cell>
@@ -194,19 +222,19 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff'
   },
-  BackButton:{
-    flexDirection:'row',
-    alignSelf:'baseline',
-    padding:10,
-    width:'100%',
-    borderBottomWidth:0.5, 
-    borderColor:'silver',
-    marginBottom:10
+  BackButton: {
+    flexDirection: 'row',
+    alignSelf: 'baseline',
+    padding: 10,
+    width: '100%',
+    borderBottomWidth: 0.5,
+    borderColor: 'silver',
+    marginBottom: 10
   },
-  DataTableTitle:{
-    width:100
+  DataTableTitle: {
+    width: 100
   },
-  DataTableCell:{
-    width:100
+  DataTableCell: {
+    width: 100
   }
 })

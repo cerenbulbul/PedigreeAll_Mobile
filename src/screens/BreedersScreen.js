@@ -10,7 +10,8 @@ import {
     ScrollView,
     UIManager,
     ActivityIndicator,
-    Alert
+    Alert,
+    RefreshControl
 } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Global } from '../Global';
@@ -31,6 +32,9 @@ import { HorseDetailBroodMareSireScreen } from "./HorseDetailBroodMareSireScreen
 import { HorseDetailLinebreedingScreen } from './HorseDetailLinebreedingScreen'
 import { HorseDetailScreenFemaleFamily } from './HorseDetailScreenFemaleFamily';
 import { BreedingFoalsAsBroodMareSireScreen } from './BreedingFoalsAsBroodMareSireScreen'
+import { HorseDetailProfileScreenInformation } from './HorseDetailProfileScreenInformation'
+
+import { HypotheticalSearchScreen } from './HypotheticalSearchScreen'
 
 const Tab = createMaterialTopTabNavigator();
 const GenerationData = [
@@ -87,6 +91,11 @@ const CrossLineData = [
     },
 ];
 
+
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 export function BreedersScreen({ route, navigation }) {
     const { ScreenName } = route.params;
 
@@ -107,6 +116,10 @@ export function BreedersScreen({ route, navigation }) {
 
     const [getSelectedSire, setSelectedSire] = React.useState();
     const [getSelectedMare, setSelectedMare] = React.useState();
+
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [openHypoMating, setOpenHypoMating] = React.useState(false)
+
 
     const readUser = async () => {
         try {
@@ -140,10 +153,12 @@ export function BreedersScreen({ route, navigation }) {
         } catch (e) {
         }
     }
+
+
     React.useEffect(() => {
-        readUser();
-        setText("");
+        Global.Horse_ID = 0
         setSearchValue("")
+        setRefreshing(false)
     }, [])
 
     return (
@@ -250,21 +265,25 @@ export function BreedersScreen({ route, navigation }) {
                                             button
                                             onPress={() => {
                                                 BottomSheetSearchNavigation.current.close();
-                                                Global.BackButton = true;
+                                                { console.log(ScreenName) }
                                                 if (ScreenName === "TableReportScreen") {
                                                     Global.Horse_ID = item.HORSE_ID
                                                     setText(item.HORSE_NAME)
+                                                    setRefreshing(true)
+                                                    setSearchValue("")
 
                                                 }
                                                 if (SireMareHorseName === 'Sire') {
                                                     setSireText(item.HORSE_NAME);
                                                     setSireData(item);
                                                     setSelectedSire(item.HORSE_ID);
+                                                    setSearchValue("")
                                                 }
                                                 else if (SireMareHorseName === 'Mare') {
                                                     setMareText(item.HORSE_NAME);
                                                     setMareData(item);
                                                     setSelectedMare(item.HORSE_ID);
+                                                    setSearchValue("")
                                                 }
                                             }} >
                                             <Image
@@ -333,28 +352,68 @@ export function BreedersScreen({ route, navigation }) {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <TouchableOpacity
                             onPress={() => {
+                                setOpenHypoMating(false)
+                                setRefreshing(false)
                                 BottomSheetSearchNavigation.current.open();
                                 setSireMareHorseName('Sire');
                                 setLoader(true);
                             }}
-                            style={styles.SireMareButtonContainer}>
+                            style={[styles.SireMareButtonContainer, { width: '30%' }]}>
                             <Text>{SireText.substring(0, 6)}...</Text>
                             <Icon name="chevron-down" size={16} color="#5f6368" />
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
+                                setRefreshing(false)
+                                setOpenHypoMating(false)
                                 BottomSheetSearchNavigation.current.open();
                                 setSireMareHorseName('Mare');
                             }}
-                            style={styles.SireMareButtonContainer}>
+                            style={[styles.SireMareButtonContainer, { width: '30%' }]}>
                             <Text>{MareText.substring(0, 6)}...</Text>
                             <Icon name="chevron-down" size={16} color="#5f6368" />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => { refRBSheetGeneration.current.open() }}
-                            style={styles.GenerationButtonContainer}>
+                            onPress={() => {
+                                setOpenHypoMating(false)
+                                refRBSheetGeneration.current.open()
+                            }}
+                            style={[styles.GenerationButtonContainer, { width: '20%' }]}>
                             <Text>{GenerationTitle}</Text>
                             <Icon name="chevron-down" size={16} color="#5f6368" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[styles.SearchButtonStyle]}
+                            onPress={() => {
+                                if (Global.BreedingContentScreenName === "Hypo Mating") {
+                                    if (getSelectedSire === undefined || getSelectedMare === undefined) {
+                                        Alert.alert(
+                                            "Searching Error",
+                                            "You have to fill spaces.",
+                                            [
+                                                {
+                                                    text: "OK",
+                                                    onPress: () => console.log("Cancel Pressed"),
+                                                    style: "cancel"
+                                                },
+                                            ],
+                                            { cancelable: false }
+                                        );
+                                    }
+                                    else {
+                                        Global.Generation_Hypothetical = chekedItem;
+                                        Global.Horse_First_ID = SireData.HORSE_ID;
+                                        Global.Horse_Second_ID = MareData.HORSE_ID;
+                                        // navigation.navigate('HypotheticalSearch');
+                                        Global.Hypothetical_Search_View = false;
+                                        setOpenHypoMating(true)
+                                    }
+                                }
+
+
+                            }}>
+                            <Icon name="search" size={16} color="#fff" />
                         </TouchableOpacity>
 
                     </View>
@@ -364,10 +423,16 @@ export function BreedersScreen({ route, navigation }) {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <TouchableOpacity
                             onPress={() => {
+                                setRefreshing(false)
+                                setOpenHypoMating(false)
+                                setSearchValue("")
+                                Global.Horse_ID = 0;
                                 BottomSheetSearchNavigation.current.open();
                                 setLoader(true);
                             }}
-                            style={[styles.SireMareButtonContainer, { width: '91%', }]}>
+                            style={[styles.SireMareButtonContainer, { width: '91%', height: 40, alignItems: 'center' }]}>
+                            <Icon name="search" size={16} color="#5f6368" />
+
                             {getText === "" ?
                                 <>
                                     {Global.BreedingContentScreenName === "Siblings (Mare)" &&
@@ -454,110 +519,36 @@ export function BreedersScreen({ route, navigation }) {
 
                 }
 
-                {ScreenName !== "TreeViewScreen" &&
-                    <TouchableOpacity
-                        style={[styles.SearchButtonStyle, { marginVertical: 34 }]}
-                        onPress={() => {
-                            if (Global.BreedingContentScreenName === "Hypo Mating") {
-                                if (getSelectedSire === undefined || getSelectedMare === undefined) {
-                                    Alert.alert(
-                                        "Searching Error",
-                                        "You have to fill spaces.",
-                                        [
-                                            {
-                                                text: "OK",
-                                                onPress: () => console.log("Cancel Pressed"),
-                                                style: "cancel"
-                                            },
-                                        ],
-                                        { cancelable: false }
-                                    );
-                                }
-                                else {
-                                    Global.Generation_Hypothetical = chekedItem;
-                                    Global.Horse_First_ID = SireData.HORSE_ID;
-                                    Global.Horse_Second_ID = MareData.HORSE_ID;
-                                    navigation.navigate('HypotheticalSearch', {
-                                        SireHorseData: SireData,
-                                        MareHorseData: MareData,
-                                        Generation: chekedItem
-                                    });
-                                }
-                            }
-                            else if (Global.BreedingContentScreenName === "Siblings (Mare)") {
-                                navigation.navigate('HorseDetailSiblingMare', {
-                                    BackButton: true
-                                })
+                {openHypoMating ?
+                    <View style={{marginBottom:20, width:Dimensions.get('screen').width}}>
+                       { ScreenName === "HypoMatingScreen" &&
+                            <HypotheticalSearchScreen />}
+                    </View>
+                    :
+                    null}
 
-                            }
-                            else if (Global.BreedingContentScreenName === "Siblings (Sire)") {
-                                navigation.navigate('HorseDetailSiblingSire', {
-                                    BackButton: true
-                                })
+                {refreshing ?
+                    <View>
+                        {console.log(Global.BreedingContentScreenName)}
+                        {Global.BreedingContentScreenName === "Profile" &&
+                            <HorseDetailProfileScreenInformation BackButton={false} navigation={navigation} />
+                            || Global.BreedingContentScreenName === "Progeny" &&
+                            <HorseDetailProgencyScreen BackButton={false} navigation={navigation} />
+                            || Global.BreedingContentScreenName === "Siblings (Mare)" &&
+                            <HorseDetailSiblingMareScreen BackButton={false} navigation={navigation} />
+                            || Global.BreedingContentScreenName === "Siblings (Sire)" &&
+                            <HorseDetailSiblingSireScreen BackButton={false} navigation={navigation} />
+                            || Global.BreedingContentScreenName === "Siblings (Broodmare Sire)" &&
+                            <HorseDetailSiblingBroodmareSireScreen />
+                            || Global.BreedingContentScreenName === "Tail Female" &&
+                            <HorseDetailTailFemaleScreen BackButton={false} navigation={navigation} />
+                            || Global.BreedingContentScreenName === "Foals  As Brood Mare Sire" &&
+                            <BreedingFoalsAsBroodMareSireScreen />
+                        }
+                    </View>
+                    :
+                    null}
 
-                            }
-                            else if (Global.BreedingContentScreenName === "Tail Female") {
-                                navigation.navigate('HorseDetailTailFemale', {
-                                    BackButton: true
-                                })
-
-                            }
-                            else if (Global.BreedingContentScreenName === "Progeny") {
-                                navigation.navigate('HorseDetailProgency', {
-                                    BackButton: true
-                                })
-
-                            }
-                            else if (Global.BreedingContentScreenName === "Profile") {
-                                navigation.navigate('HorseDetailPRofile', {
-                                    BackButton: true
-                                })
-
-                            }
-                            else if (Global.BreedingContentScreenName === "Siblings (Broodmare Sire)") {
-                                navigation.navigate('HorseDetailSiblingBroodmareSire', {
-                                    BackButton: true
-                                })
-
-                            }
-
-                            else if (Global.BreedingContentScreenName === "Foals  As Brood Mare Sire") {
-                                navigation.navigate('BreedingFoalsAsBroodMareSire', {
-                                    BackButton: true,
-                                })
-
-                            }
-
-
-                        }}>
-                        <Text style={styles.SearchButtonText}>Search {Global.BreedingContentScreenName}</Text>
-                    </TouchableOpacity>
-
-                }
-
-                
-
-                <View style={{ marginTop: 20 }}>
-                    {Global.BreedingContentScreenName === "Profile" &&
-                        <HorseDetailPRofileScreen BackButton={false} navigation={navigation} />
-                        || Global.BreedingContentScreenName === "Progency" &&
-                        <HorseDetailProgencyScreen BackButton={false} navigation={navigation} />
-                        || Global.BreedingContentScreenName === "Siblings (Mare)" &&
-                        <HorseDetailSiblingMareScreen BackButton={false} navigation={navigation} />
-                        || Global.BreedingContentScreenName === "Siblings (Sire)" &&
-                        <HorseDetailSiblingSireScreen BackButton={false} navigation={navigation} />
-                        || Global.BreedingContentScreenName === "Siblings (Broodmare Sire)" &&
-                        <HorseDetailSiblingBroodmareSireScreen />
-                        || Global.BreedingContentScreenName === "Tail Female" &&
-                        <HorseDetailTailFemaleScreen BackButton={false} navigation={navigation} />
-                        || Global.BreedingContentScreenName === "Foals  As Brood Mare Sire" &&
-                        <BreedingFoalsAsBroodMareSireScreen />
-                        || Global.BreedingContentScreenName === "Linebreeding" &&
-                        <HorseDetailLinebreedingScreen BackButton={false} navigation={navigation} />
-                        || Global.BreedingContentScreenName === "FemaleFamily" &&
-                        <HorseDetailScreenFemaleFamily BackButton={false} navigation={navigation} />
-                    }
-                </View>
 
             </View>
         </View >
@@ -589,6 +580,8 @@ function SearchScreen({ route, navigation }) {
 
     const [getSelectedSire, setSelectedSire] = React.useState();
     const [getSelectedMare, setSelectedMare] = React.useState();
+
+    const [refreshing, setRefreshing] = React.useState(false);
 
     const readUser = async () => {
         try {
@@ -626,6 +619,7 @@ function SearchScreen({ route, navigation }) {
         readUser();
         setText("");
         setSearchValue("")
+        setRefreshing(false)
     }, [])
 
     return (
@@ -667,23 +661,14 @@ function SearchScreen({ route, navigation }) {
                                             key={i}
                                             bottomDivider
                                             onPress={() => {
+                                                setRefreshing(false)
                                                 setState({ checked: [state, item.id] });
                                                 setChekedItem(item.id)
                                                 Global.Generation = item.id;
+                                                refRBSheetGeneration.current.close();
+                                                setGenerationTitle("Gen " + item.id);
                                             }}
                                         >
-                                            <ListItem.CheckBox
-                                                checked={state.checked.includes(item.id)}
-                                                checkedIcon='circle'
-                                                uncheckedIcon='circle'
-                                                center={true}
-                                                checkedColor='#2169ab'
-                                                uncheckedColor='rgb(232, 237, 241)'
-                                                onPress={() => {
-                                                    setState({ checked: [state, item.id] });
-                                                    setChekedItem(item.id)
-                                                    Global.Generation = item.id;
-                                                }} />
                                             <ListItem.Content>
                                                 <ListItem.Title>{item.title}</ListItem.Title>
                                             </ListItem.Content>
@@ -702,8 +687,11 @@ function SearchScreen({ route, navigation }) {
                                             key={i}
                                             bottomDivider
                                             onPress={() => {
+                                                setRefreshing(false)
+                                                refRBSheetGeneration.current.close();
                                                 setStateCrossLine({ checkedCrossLine: [stateCrossLine, item.id] });
                                                 setChekedItemCrossLine(item.id)
+                                                setCrossTitle("x" + item.id)
                                                 if (Global.BreedingContentScreenName === "Linebreeding") {
                                                     Global.MinCross = item.id;
                                                 }
@@ -713,23 +701,6 @@ function SearchScreen({ route, navigation }) {
 
                                             }}
                                         >
-                                            <ListItem.CheckBox
-                                                checked={stateCrossLine.checkedCrossLine.includes(item.id)}
-                                                checkedIcon='circle'
-                                                uncheckedIcon='circle'
-                                                center={true}
-                                                checkedColor='#2169ab'
-                                                uncheckedColor='rgb(232, 237, 241)'
-                                                onPress={() => {
-                                                    setStateCrossLine({ checkedCrossLine: [stateCrossLine, item.id] });
-                                                    setChekedItemCrossLine(item.id)
-                                                    if (Global.BreedingContentScreenName === "Linebreeding") {
-                                                        Global.MinCross = item.id;
-                                                    }
-                                                    else if (Global.BreedingContentScreenName === "Female Family") {
-                                                        Global.MinCross_Fename_Family = item.id
-                                                    }
-                                                }} />
                                             <ListItem.Content>
                                                 <ListItem.Title>{item.title}</ListItem.Title>
                                             </ListItem.Content>
@@ -796,6 +767,7 @@ function SearchScreen({ route, navigation }) {
                                         button
                                         onPress={() => {
                                             BottomSheetSearchNavigation.current.close();
+                                            setRefreshing(false)
                                             if (SireMareHorseName === 'Sire') {
                                                 setSireText(item.HORSE_NAME);
                                                 setSireData(item);
@@ -876,38 +848,49 @@ function SearchScreen({ route, navigation }) {
             </RBSheet>
 
             {TabScreenName === "Search" &&
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            BottomSheetSearchNavigation.current.open();
-                            setSireMareHorseName('Sire');
-                            setLoader(true);
-                        }}
-                        style={styles.SireMareButtonContainer}>
-                        <Text>{SireText.substring(0, 8)}...</Text>
-                        <Icon name="chevron-down" size={16} color="#5f6368" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setBottomSheetText("Generation")
-                            refRBSheetGeneration.current.open()
-                        }}
-                        style={styles.GenerationButtonContainer}>
-                        <Text>{GenerationTitle}</Text>
-                        <Icon name="chevron-down" size={16} color="#5f6368" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setBottomSheetText("CrossLine")
-                            refRBSheetGeneration.current.open()
-                        }}
-                        style={styles.GenerationButtonContainer}>
-                        <Text>{CrossLineTitle}</Text>
-                        <Icon name="chevron-down" size={16} color="#5f6368" />
-                    </TouchableOpacity>
+                <View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                BottomSheetSearchNavigation.current.open();
+                                setSireMareHorseName('Sire');
+                                setLoader(true);
+                            }}
+                            style={styles.SireMareButtonContainer}>
+                            <Text>{SireText.substring(0, 8)}...</Text>
+                            <Icon name="chevron-down" size={16} color="#5f6368" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setBottomSheetText("Generation")
+                                refRBSheetGeneration.current.open()
+                            }}
+                            style={styles.GenerationButtonContainer}>
+                            <Text>{GenerationTitle}</Text>
+                            <Icon name="chevron-down" size={16} color="#5f6368" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setBottomSheetText("CrossLine")
+                                refRBSheetGeneration.current.open()
+                            }}
+                            style={styles.GenerationButtonContainer}>
+                            <Text>{CrossLineTitle}</Text>
+                            <Icon name="chevron-down" size={16} color="#5f6368" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.SearchButtonStyle]}
+                            onPress={() => {
+                                setRefreshing(true)
+                            }}
+                        >
+                            <Icon name="search" size={16} color="#fff" />
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
+
+
 
 
                 || TabScreenName === "Hypothetical" &&
@@ -953,29 +936,31 @@ function SearchScreen({ route, navigation }) {
                             <Text>{CrossLineTitle}</Text>
                             <Icon name="chevron-down" size={16} color="#5f6368" />
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.SearchButtonStyle]}
+                            onPress={() => {
+                                setRefreshing(true)
+
+                            }}
+                        >
+                            <Icon name="search" size={16} color="#fff" />
+                        </TouchableOpacity>
                     </View>
                 </>
 
             }
 
-            <TouchableOpacity
-                style={[styles.SearchButtonStyle, { marginVertical: 34 }]}
-                onPress={() => {
-                    if (Global.BreedingContentScreenName === "Linebreeding") {
-                        navigation.navigate('HorseDetailLinebreeding', {
-                            BackButton: true
-                        })
-                    }
-                    if (Global.BreedingContentScreenName === "Female Family") {
-                        navigation.navigate('HorseDetailScreenFemaleFamily', {
-                            BackButton: true
-                        })
-                    }
 
-                }}
-            >
-                <Text style={styles.SearchButtonText}>Search</Text>
-            </TouchableOpacity>
+            {refreshing ?
+                <View>
+                    {
+                        Global.BreedingContentScreenName === "Linebreeding" &&
+                        <HorseDetailLinebreedingScreen BackButton={false} navigation={navigation} />
+                        || Global.BreedingContentScreenName === "Female Family" &&
+                        <HorseDetailScreenFemaleFamily BackButton={false} navigation={navigation} />}
+                </View>
+                : null}
+
 
         </View>
     )
@@ -997,19 +982,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 20,
         alignItems: 'center',
+        alignSelf: 'center'
     },
     SearchButtonStyle: {
-        width: '92%',
         padding: 15,
-        marginVertical: 20,
         borderColor: '#2e3f6e',
-        borderRadius: 8,
+        borderRadius: 50,
         elevation: 8,
         shadowColor: 'silver',
         shadowOpacity: 0.4,
         shadowOffset: { height: 10, width: 0 },
         shadowRadius: 20,
-        backgroundColor: "#2169ab"
+        backgroundColor: "#2169ab",
+        alignItems: 'center',
+        justifyContent: 'center'
 
     },
     SearchButtonText: {

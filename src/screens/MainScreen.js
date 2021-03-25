@@ -426,6 +426,7 @@ function HypotheticalScreen({ navigation }) {
   }
   React.useEffect(() => {
     readUser();
+    Global.Hypothetical_Search_View = true;
   }, [])
 
   return (
@@ -675,11 +676,7 @@ function HypotheticalScreen({ navigation }) {
               Global.Generation_Hypothetical = chekedItem;
               Global.Horse_First_ID = SireData.HORSE_ID;
               Global.Horse_Second_ID = MareData.HORSE_ID;
-              navigation.navigate('HypotheticalSearch', {
-                SireHorseData: SireData,
-                MareHorseData: MareData,
-                Generation: chekedItem
-              });
+              navigation.navigate('HypotheticalSearch');
             }
 
 

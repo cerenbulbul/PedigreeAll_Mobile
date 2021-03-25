@@ -19,7 +19,7 @@ import Flag from "react-native-flags";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import NumberFormat from 'react-number-format';
 
-export function HorseDetailProfileScreenInformation() {
+export function HorseDetailProfileScreenInformation({navigation}) {
     const [ImageInfo, setImageInfo] = React.useState();
     const [getHorseInfoByID, setHorseInfoByID] = React.useState();
     const [ReadMore, setReadMore] = React.useState(false);
@@ -59,6 +59,7 @@ export function HorseDetailProfileScreenInformation() {
             console.log("GetHorseInfoByID Error")
         }
     };
+
 
     const readImageInfo = async () => {
         try {

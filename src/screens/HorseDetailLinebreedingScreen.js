@@ -59,7 +59,7 @@ export function HorseDetailLinebreedingScreen({ BackButton, navigation }) {
     return (
         <ScrollView style={{backgroundColor:'#fff'}} showsVerticalScrollIndicator={true}>
 
-            {Global.BackButton ?
+            {BackButton ?
                 <View>
                     <TouchableOpacity
                         style={styles.BackButton}

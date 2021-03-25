@@ -50,7 +50,7 @@ export function HorseDetailScreenFemaleFamily({ BackButton, navigation }) {
     return (
         <View style={styles.Container}>
 
-            {Global.BackButton ?
+            {BackButton?
                 <View>
                     <TouchableOpacity
                         style={styles.BackButton}

@@ -5,7 +5,7 @@ import Data from './Data';
 export class Global {
   static IsLogin = false;
   static Token = "Y2VyZW5idWxidWwyN0BnbWFpbC5jb206UjBteTNyc2c=";
-  static Horse_ID = 1673471;
+  static Horse_ID = 0;
   static Horse_ID_Second = -1;
   static Horse_Second_ID_Female_Family = -1;
   static Generation = 5;
@@ -25,6 +25,7 @@ export class Global {
   static Language;
   static Link;
   static BackButton = false;
+  static Hypothetical_Search_View = true;
 
   static getToken = async () => {
     try {

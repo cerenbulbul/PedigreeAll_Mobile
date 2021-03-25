@@ -27,28 +27,9 @@ import {HorseDetailProfileScreenInformation} from './HorseDetailProfileScreenInf
 const Tab = createMaterialTopTabNavigator();
 
 export function HorseDetailPRofileScreen({ BackButton, navigation }) {
-
-
-
     return (
 
         <ScrollView>
-            {Global.BackButton ?
-                <View>
-                    <TouchableOpacity
-                        style={styles.BackButton}
-                        onPress={() => {
-                            navigation.navigate('Breeders', {
-                                ScreenName: "TableReportScreen",
-                            })
-                        }}>
-                        <Icon name="chevron-left" size={24} color="silver" style={{ alignSelf: 'center' }} />
-                        <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
-                    </TouchableOpacity>
-
-                </View>
-                :
-                null}
 
             <Tab.Navigator
                 initialRouteName="SearchScreen"

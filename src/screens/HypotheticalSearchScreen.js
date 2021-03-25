@@ -44,7 +44,6 @@ const GenerationData = [
 ];
 
 export function HypotheticalSearchScreen({ route, navigation }) {
-  const { SireHorseData, MareHorseData, Generation } = route.params;
   const [getHorseData, setHorseData] = React.useState();
   const [time, setTime] = React.useState(true);
   const [statisticTime, setStatisticTime] = React.useState(true);
@@ -106,7 +105,7 @@ export function HypotheticalSearchScreen({ route, navigation }) {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
         //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-        fetch('https://api.pedigreeall.com/Pedigree/GetPedigree?p_iGenerationCount=' + Global.Generation_Hypothetical + "&p_iFirstId=" + Global.Horse_First_ID+ "&p_iSecondId=" + Global.Horse_Second_ID, {
+        fetch('https://api.pedigreeall.com/Pedigree/GetPedigree?p_iGenerationCount=' + Global.Generation_Hypothetical + "&p_iFirstId=" + Global.Horse_First_ID + "&p_iSecondId=" + Global.Horse_Second_ID, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -510,53 +509,57 @@ export function HypotheticalSearchScreen({ route, navigation }) {
         </View>
       </Modal>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
-        <TouchableOpacity
-          onPress={() => {
-            BottomSheetSearchNavigation.current.open();
-            setSireMareHorseName('Sire');
-            setLoader(true);
-          }}
-          style={styles.SireMareButtonContainer}>
-          <Text>{SireText.substring(0, 6)}...</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            BottomSheetSearchNavigation.current.open();
-            setSireMareHorseName('Mare');
-          }}
-          style={styles.SireMareButtonContainer}>
-          <Text>{MareText.substring(0, 6)}...</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => { refRBSheetGeneration.current.open() }}
-          style={styles.GenerationButtonContainer}>
-          <Text>{GenerationTitle}</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
+      {Global.Hypothetical_Search_View ?
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
+          <TouchableOpacity
+            onPress={() => {
+              BottomSheetSearchNavigation.current.open();
+              setSireMareHorseName('Sire');
+              setLoader(true);
+            }}
+            style={styles.SireMareButtonContainer}>
+            <Text>{SireText.substring(0, 6)}...</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              BottomSheetSearchNavigation.current.open();
+              setSireMareHorseName('Mare');
+            }}
+            style={styles.SireMareButtonContainer}>
+            <Text>{MareText.substring(0, 6)}...</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { refRBSheetGeneration.current.open() }}
+            style={styles.GenerationButtonContainer}>
+            <Text>{GenerationTitle}</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.SearchButtonStyle}
-          onPress={() => {
-            setScreenName("NoScreen")
-            setLoader(true)
-            setTime(true)
-            readUser();
-            readFoalInfo();
-            readStatisticInfo(1);
-            readHorseGetByName();
+          <TouchableOpacity
+            style={styles.SearchButtonStyle}
+            onPress={() => {
+              setScreenName("NoScreen")
+              setLoader(true)
+              setTime(true)
+              readUser();
+              readFoalInfo();
+              readStatisticInfo(1);
+              readHorseGetByName();
 
-            setScreenName("Pedigree")
+              setScreenName("Pedigree")
 
 
 
-          }}>
-          <Icon name="search" size={16} color="#fff" />
-        </TouchableOpacity>
+            }}>
+            <Icon name="search" size={16} color="#fff" />
+          </TouchableOpacity>
 
-      </View>
+        </View>
+        :
+        null}
+
 
       {time ?
         <ActivityIndicator size="large" color="#000" />
@@ -778,11 +781,11 @@ export function HypotheticalSearchScreen({ route, navigation }) {
           <View
             style={{ height: '60%' }}>
             {getScreenName === "Pedigree" &&
-              <HypotheticalSearchScreenPedigree  />
+              <HypotheticalSearchScreenPedigree />
               || getScreenName === "SiblingMare" &&
               <HypotheticalSearchScreenMareSiblings />
               || getScreenName === "SiblingSire" &&
-              <HypotheticalSearchScreenSireSiblings/>
+              <HypotheticalSearchScreenSireSiblings />
               || getScreenName === "SiblingBroodmareSire" &&
               <HypotheticalSearchScreenBroodmareSire />
               || getScreenName === "TailFemale" &&
