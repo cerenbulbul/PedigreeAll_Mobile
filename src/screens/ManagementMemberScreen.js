@@ -396,7 +396,7 @@ export function ManagementMemberScreen() {
     }
 
     React.useEffect(() => {
-        if (Global.Language === "TR") {
+        if (Global.Language === 1) {
             setViewName("Görüntüle")
         }
         else {
@@ -426,7 +426,7 @@ export function ManagementMemberScreen() {
 
     return (
         <View style={styles.Container}>
-            {Global.Language === "TR" ?
+            {Global.Language === 1 ?
                 <Title text="Üyeler" />
                 :
                 <Title text="Member" />
@@ -941,7 +941,7 @@ export function ManagementMemberScreen() {
                         }}
                         style={styles.SortTypeButton}>
                         <Icon name="plus-circle" size={16} color="#fff" style={{ alignSelf: 'center', marginRight: 5 }} />
-                        {Global.Language === "TR" ?
+                        {Global.Language ===1 ?
                             <Text style={styles.SortTypeButtonText}>Yeni uye ekle</Text>
                             :
                             <Text style={styles.SortTypeButtonText}>Add A New Member</Text>
@@ -971,7 +971,7 @@ export function ManagementMemberScreen() {
                                 }}
                                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                                 <Icon name="chevron-left" size={24} color="silver" />
-                                {Global.Language === "TR" ?
+                                {Global.Language ===1?
                                     <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
                                     :
                                     <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
@@ -990,7 +990,7 @@ export function ManagementMemberScreen() {
                                 <Icon name="user" size={20} color="#2169ab" />
                                 {checkStateMultiUserTypeFormString.checkedString.length === 0 ?
                                     <>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                     <Text style={styles.InformationText}>Kullanıcı Tipi</Text>
                                     :
                                     <Text style={styles.InformationText}>User Type</Text>
@@ -1007,7 +1007,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>İsim: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Name: </Text>
@@ -1021,7 +1021,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR"?
+                            {Global.Language === 1?
                             <Text style={styles.TextInputHeader}>Soyisim: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Surname: </Text>
@@ -1035,7 +1035,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>E-Posta: </Text>
                             :
                             <Text style={styles.TextInputHeader}>E-mail: </Text>
@@ -1062,7 +1062,7 @@ export function ManagementMemberScreen() {
 
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Şifre: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Password: </Text>
@@ -1077,7 +1077,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR"?
+                            {Global.Language === 1?
                             <Text style={styles.TextInputHeader}>Şifre Tekrar: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Password Again: </Text>
@@ -1101,7 +1101,7 @@ export function ManagementMemberScreen() {
                                 <Icon name="user" size={20} color="#2169ab" />
                                 {checkStateMultiPersonTypeFormString.checkedString.length === 0 ?
                                 <>
-                                {Global.Language === "TR"?
+                                {Global.Language === 1?
                                 <Text style={styles.InformationText}>Üye Tipi</Text>
                                 :
                                 <Text style={styles.InformationText}>Member Type</Text>
@@ -1119,7 +1119,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Ünvan: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Title: </Text>
@@ -1133,7 +1133,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Kimlik/Pasaport/Vergi No: </Text>
                             :
                             <Text style={styles.TextInputHeader}>ID/Passport/Tax No: </Text>
@@ -1147,7 +1147,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Vergi Dairesi: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Tax Office: </Text>
@@ -1170,7 +1170,7 @@ export function ManagementMemberScreen() {
                                 <Icon name="flag" size={20} color="#2169ab" />
                                 {getCountryText === "" ?
                                     <>
-                                        {Global.Language === "TR" ?
+                                        {Global.Language === 1 ?
                                         <Text style={styles.InformationText}>Ülke</Text>
                                         :
                                         <Text style={styles.InformationText}>Country</Text>
@@ -1188,7 +1188,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Adres: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Address: </Text>
@@ -1203,7 +1203,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR"? 
+                            {Global.Language === 1? 
                             <Text style={styles.TextInputHeader}>Telefon: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Phone: </Text>
@@ -1217,7 +1217,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Antrenör Id: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Coach Id: </Text>
@@ -1231,7 +1231,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR" ?
+                            {Global.Language === 1 ?
                             <Text style={styles.TextInputHeader}>Yetiştirici Id: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Grower Id: </Text>
@@ -1245,7 +1245,7 @@ export function ManagementMemberScreen() {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            {Global.Language === "TR"?
+                            {Global.Language === 1?
                             <Text style={styles.TextInputHeader}>Sahip  Id: </Text>
                             :
                             <Text style={styles.TextInputHeader}>Owner Id: </Text>
@@ -1287,7 +1287,7 @@ export function ManagementMemberScreen() {
                                         }}
                                         style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                                         <Icon name="chevron-left" size={24} color="silver" />
-                                        {Global.Language === "TR" ?
+                                        {Global.Language === 1 ?
                                             <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
                                             :
                                             <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
@@ -1325,7 +1325,7 @@ export function ManagementMemberScreen() {
                                                                 <DataTable>
                                                                     <DataTable.Header>
                                                                         <DataTable.Title style={{ width: 100 }} >ID</DataTable.Title>
-                                                                        {Global.Language === "TR" ?
+                                                                        {Global.Language === 1 ?
                                                                             <>
                                                                                 <DataTable.Title style={{ width: 100 }} >Kullanıcı Tipi</DataTable.Title>
                                                                                 <DataTable.Title style={{ width: 100 }} >Üye Tipi</DataTable.Title>
@@ -1359,13 +1359,13 @@ export function ManagementMemberScreen() {
                                                                     {getSystemUserData.map((item, i) => (
                                                                         <DataTable.Row key={i}>
                                                                             <DataTable.Cell style={{ width: 50 }}>{item.SYSTEM_USER_ID}</DataTable.Cell>
-                                                                            {Global.Language === "TR" ?
+                                                                            {Global.Language === 1 ?
                                                                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.SYSTEM_USER_TYPE_OBJECT.SYSTEM_USER_TYPE_TR}</DataTable.Cell>
                                                                                 :
                                                                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.SYSTEM_USER_TYPE_OBJECT.SYSTEM_USER_TYPE_EN}</DataTable.Cell>
                                                                             }
 
-                                                                            {Global.Language === "TR" ?
+                                                                            {Global.Language === 1 ?
                                                                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.PERSON_TYPE_OBJECT.PERSON_TYPE_TR}</DataTable.Cell>
                                                                                 :
                                                                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.PERSON_TYPE_OBJECT.PERSON_TYPE_EN}</DataTable.Cell>
@@ -1379,7 +1379,7 @@ export function ManagementMemberScreen() {
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.TITLE}</DataTable.Cell>
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.TAX_OFFICE}</DataTable.Cell>
                                                                             <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.ADDRESS}</DataTable.Cell>
-                                                                            {Global.Language === "TR" ?
+                                                                            {Global.Language === 1 ?
                                                                                 <>
                                                                                     <DataTable.Cell style={{ width: 100 }}>{item.ACTIVE_OBJECT.BOOL_TR}</DataTable.Cell>
                                                                                     <DataTable.Cell style={{ width: 100, }}>{item.APPROVED_OBJECT.BOOL_TR}</DataTable.Cell>
@@ -1438,7 +1438,7 @@ export function ManagementMemberScreen() {
                                         <Icon name="user" size={20} color="#2169ab" />
                                         {checkStateMultiUserTypeString.checkedString.length === 0 ?
                                             <>
-                                                {Global.Language === "TR" ?
+                                                {Global.Language === 1 ?
                                                     <Text style={styles.InformationText}>Kullanici Tipi</Text>
                                                     :
                                                     <Text style={styles.InformationText}>User Type</Text>
@@ -1465,7 +1465,7 @@ export function ManagementMemberScreen() {
                                         <Icon name="user" size={20} color="#2169ab" />
                                         {checkStateMultiPersonTypeString.checkedString.length === 0 ?
                                             <>
-                                                {Global.Language === "TR" ?
+                                                {Global.Language === 1 ?
                                                     <Text style={styles.InformationText}>Üye Tipi</Text>
                                                     :
                                                     <Text style={styles.InformationText}>Member Type</Text>
@@ -1482,7 +1482,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>İsim: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>Name: </Text>
@@ -1496,7 +1496,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>Soyisim: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>Surname: </Text>
@@ -1510,7 +1510,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>E-Posta: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>E-mail: </Text>
@@ -1525,7 +1525,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>Kimlik/Pasaport/Vergi No: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>ID/Passport/tax No: </Text>
@@ -1539,7 +1539,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>Ünvan: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>Title: </Text>
@@ -1553,7 +1553,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>Vergi Dairesi: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>Tax Office: </Text>
@@ -1567,7 +1567,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>Cep Telefonu: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>Cell Phone: </Text>
@@ -1582,7 +1582,7 @@ export function ManagementMemberScreen() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
-                                    {Global.Language === "TR" ?
+                                    {Global.Language === 1 ?
                                         <Text style={styles.TextInputHeader}>Adres: </Text>
                                         :
                                         <Text style={styles.TextInputHeader}>Address: </Text>
@@ -1605,7 +1605,7 @@ export function ManagementMemberScreen() {
                                         <Icon name="circle" size={20} color="#2169ab" />
                                         {checkStateMultiActiveString.checkedString.length === 0 ?
                                             <>
-                                                {Global.Language === "TR" ?
+                                                {Global.Language === 1 ?
                                                     <Text style={styles.InformationText}>Aktif</Text>
                                                     :
                                                     <Text style={styles.InformationText}>Active</Text>
@@ -1633,7 +1633,7 @@ export function ManagementMemberScreen() {
                                         <Icon name="circle" size={20} color="#2169ab" />
                                         {checkStateMultiApprovedString.checkedString.length === 0 ?
                                             <>
-                                                {Global.Language === "TR" ?
+                                                {Global.Language === 1 ?
                                                     <Text style={styles.InformationText}>Onay</Text>
                                                     :
                                                     <Text style={styles.InformationText}>Approved</Text>

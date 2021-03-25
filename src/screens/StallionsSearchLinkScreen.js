@@ -380,7 +380,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                         {loader === false &&
                                             <View style={styles.ErrorMessageContainer}>
                                                 <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                                {Global.Language === "TR" ?
+                                                {Global.Language === 1 ?
                                                     <>
                                                         <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
                                                         <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
@@ -492,7 +492,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                         {loader === false &&
                                             <View style={styles.ErrorMessageContainer}>
                                                 <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                                {Global.Language === "TR" ?
+                                                {Global.Language === 1 ?
                                                     <>
                                                         <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
                                                         <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>

@@ -136,7 +136,7 @@ function SearchScreen({ navigation }) {
   React.useEffect(() => {
     readUser();
     setState({ checked: [state, 4] })
-    if (Global.Language === "TR") {
+    if (Global.Language === 1) {
       setSearchTitle("Lütfen bir isim yazıp gönder tuşuna basınız")
     }
     else {
@@ -186,20 +186,6 @@ function SearchScreen({ navigation }) {
 
                   }}
                 >
-                  <ListItem.CheckBox
-                    checked={state.checked.includes(item.id)}
-                    checkedIcon='circle'
-                    uncheckedIcon='circle'
-                    center={true}
-                    checkedColor='#2169ab'
-                    uncheckedColor='rgb(232, 237, 241)'
-                    onPress={() => {
-                      setState({ checked: [state, item.id] });
-                      setChekedItem(item.id)
-                      setGenerationTitle("Gen " + item.id)
-                      refRBSheetGeneration.current.close();
-                    }} >
-                  </ListItem.CheckBox>
                   <ListItem.Content>
                     <ListItem.Title>{item.title}</ListItem.Title>
                   </ListItem.Content>
@@ -296,7 +282,7 @@ function SearchScreen({ navigation }) {
                   {loader === false &&
                     <View style={styles.ErrorMessageContainer}>
                       <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                      {Global.Language === "TR" ?
+                      {Global.Language === 1 ?
                         <>
                           <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
                           <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
@@ -362,7 +348,7 @@ function SearchScreen({ navigation }) {
             readUser();
             setLoader(true)
           }}>
-          {Global.Language === "TR" ?
+          {Global.Language === 1 ?
             <Text style={styles.SearchButtonText}>Arama Yap</Text>
             :
             <Text style={styles.SearchButtonText}>Search</Text>
@@ -427,6 +413,14 @@ function HypotheticalScreen({ navigation }) {
   React.useEffect(() => {
     readUser();
     Global.Hypothetical_Search_View = true;
+    if (Global.Language === 1) {
+      setSireText("Aygır Adı")
+      setMareText("Kısrak Adı")
+    }
+    else{
+      setSireText("Sire Name")
+      setMareText("Mare Name")
+    }
   }, [])
 
   return (
@@ -469,19 +463,6 @@ function HypotheticalScreen({ navigation }) {
 
                   }}
                 >
-                  <ListItem.CheckBox
-                    checked={state.checked.includes(item.id)}
-                    checkedIcon='circle'
-                    uncheckedIcon='circle'
-                    center={true}
-                    checkedColor='#2169ab'
-                    uncheckedColor='rgb(232, 237, 241)'
-                    onPress={() => {
-                      setState({ checked: [state, item.id] });
-                      setChekedItem(item.id)
-                      setGenerationTitle("Gen " + item.id);
-                      refRBSheetGeneration.current.close();
-                    }} />
                   <ListItem.Content>
                     <ListItem.Title>{item.title}</ListItem.Title>
                   </ListItem.Content>
@@ -588,7 +569,7 @@ function HypotheticalScreen({ navigation }) {
                       {loader === false &&
                         <View style={styles.ErrorMessageContainer}>
                           <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                          {Global.Language === "TR" ?
+                          {Global.Language === 1 ?
                             <>
                               <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
                               <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
@@ -681,7 +662,7 @@ function HypotheticalScreen({ navigation }) {
 
 
           }}>
-          {Global.Language === "TR" ?
+          {Global.Language === 1 ?
             <Text style={styles.SearchButtonText}>Arama Yap</Text>
             :
             <Text style={styles.SearchButtonText}>Search</Text>
@@ -780,7 +761,7 @@ function EffectiveNickSearchScreen({ navigation }) {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' + 2, {
+        fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' + Global.Language, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -808,6 +789,14 @@ function EffectiveNickSearchScreen({ navigation }) {
   React.useEffect(() => {
     readRegisteredStallions();
     readHorseData();
+    if (Global.Language === 1) {
+      setRegisteredStallionsName("Aygır Adı")
+      setSireName("Kısrak")
+    }
+    else{
+      setRegisteredStallionsName("Stallions")
+      setSireName("Sire")
+    }
   }, [])
   return (
     <View>
@@ -899,7 +888,7 @@ function EffectiveNickSearchScreen({ navigation }) {
                           {loader === false &&
                             <View style={styles.ErrorMessageContainer}>
                               <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                              {Global.Language === "TR" ?
+                              {Global.Language === 1 ?
                                 <>
                                   <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
                                   <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
@@ -1039,21 +1028,6 @@ function EffectiveNickSearchScreen({ navigation }) {
 
                       }}
                     >
-                      <ListItem.CheckBox
-                        checked={state.checked.includes(item.NAME)}
-                        checkedIcon='circle'
-                        uncheckedIcon='circle'
-                        center={true}
-                        checkedColor='#2169ab'
-                        uncheckedColor='rgb(232, 237, 241)'
-                        onPress={() => {
-                          setState({ checked: [state, item.NAME] });
-                          setChekedItem(item.NAME)
-                          setStallionCode(item.NAME)
-                          setRegistrationID(item.ID)
-                          setStallionCode(item.NAME);
-                          OpenSmallBottomSheet.current.close();
-                        }} />
                       <ListItem.Content>
                         <ListItem.Title>{item.NAME}</ListItem.Title>
                       </ListItem.Content>
@@ -1127,7 +1101,7 @@ function EffectiveNickSearchScreen({ navigation }) {
 
           }}
           style={[styles.SearchButtonStyle, { marginVertical: 34 }]}>
-          {Global.Language === "TR" ?
+          {Global.Language === 1 ?
             <Text style={styles.SearchButtonText}>Arama Yap</Text>
             :
             <Text style={styles.SearchButtonText}>Search</Text>
@@ -1148,7 +1122,7 @@ function MyTabs() {
 
   React.useEffect(() => {
 
-    if (Global.Language === "TR") {
+    if (Global.Language === 1) {
       setSearchName("Arama")
       setHypotheticalName("Varsayımsal Eşleştirme")
       setEffectiveNickName("EffectiveNick")

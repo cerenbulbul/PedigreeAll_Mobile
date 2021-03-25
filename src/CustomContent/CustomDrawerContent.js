@@ -181,7 +181,7 @@ export default function CustomDrawerContent(props, navigation) {
                   onPress={() => { setSubSubPage(false) }}
                   style={styles.SideBarTopBackIcon}>
                   <Icon name="chevron-left" size={20} color="#222" />
-                  {Global.Language === "TR" ?
+                  {Global.Language === 1 ?
                   <Text style={styles.SideBarBackText}>Geri</Text>
                   :
                   <Text style={styles.SideBarBackText}>Back</Text>
@@ -263,7 +263,7 @@ export default function CustomDrawerContent(props, navigation) {
                         props.navigation.navigate('MainStack')
                     }
                   }}>
-                    {Global.Language === "TR" ?
+                    {Global.Language === 1 ?
                      <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
                     :
                     <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
@@ -281,7 +281,7 @@ export default function CustomDrawerContent(props, navigation) {
                     onPress={() => { setSubPage(false) }}
                     style={styles.SideBarTopBackIcon}>
                     <Icon name="chevron-left" size={20} color="#222" />
-                    {Global.Language === "TR" ?
+                    {Global.Language === 1 ?
                   <Text style={styles.SideBarBackText}>Geri</Text>
                   :
                   <Text style={styles.SideBarBackText}>Back</Text>
@@ -436,7 +436,7 @@ export default function CustomDrawerContent(props, navigation) {
                         }
                       }
                     }}>
-                      {Global.Language === "TR" ?
+                      {Global.Language === 1 ?
                       <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
                       :
                       <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
@@ -462,7 +462,7 @@ export default function CustomDrawerContent(props, navigation) {
                             setSubPageTitle(item.SUB_PAGE)
                           }
                         }}>
-                          {Global.Language === "TR" ?
+                          {Global.Language === 1 ?
                           <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
                           :
                           <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
@@ -485,7 +485,7 @@ export default function CustomDrawerContent(props, navigation) {
                       onPress={() => {
                         props.navigation.navigate('Contact')
                       }}>
-                        {Global.Language === "TR"?
+                        {Global.Language === 1?
                         <Text style={styles.SideBarMenuText}>İletişim</Text>
                         :
                         <Text style={styles.SideBarMenuText}>Contact</Text>
@@ -511,7 +511,7 @@ export default function CustomDrawerContent(props, navigation) {
                   readData();
                   Global.IsLogin = false
                 }}>
-                  {Global.Language === "TR"?
+                  {Global.Language === 1?
                   <Text style={[styles.MyButtonText, { color: "#fff" }]}>Çıkış</Text>
                   :
                   <Text style={[styles.MyButtonText, { color: "#fff" }]}>Logout</Text>
@@ -529,7 +529,7 @@ export default function CustomDrawerContent(props, navigation) {
                   onPress={() => {
                     props.navigation.navigate('LoginScreen');
                   }}>
-                    {Global.Language === "TR"?
+                    {Global.Language === 1?
                     <Text style={styles.MyButtonText}>Giriş Yap</Text>
                     :
                     <Text style={styles.MyButtonText}>Login</Text>
@@ -550,7 +550,7 @@ export default function CustomDrawerContent(props, navigation) {
                       countryIcon: "flag",
                     });
                   }}>
-                     {Global.Language === "TR"?
+                     {Global.Language === 1?
                     <Text style={styles.MyButtonText}>Üye Ol</Text>
                     :
                     <Text style={styles.MyButtonText}>Register</Text>

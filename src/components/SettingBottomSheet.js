@@ -42,7 +42,7 @@ export function SettingBottomSheet(props,refRBSheet) {
         <ScrollView 
           style={styles.SwipeablePanelContainer}>
           <View style={styles.SwipeablePanelItem}>
-            {Global.Language === "TR" ?
+            {Global.Language === 1 ?
             <Text style={styles.SwipeablePanelText}>Bildirimler:</Text>
             :
             <Text style={styles.SwipeablePanelText}>Notifications:</Text>
@@ -60,7 +60,7 @@ export function SettingBottomSheet(props,refRBSheet) {
           
 
           <View style={styles.SwipeablePanelItem}>
-            {Global.Language === "TR" ?
+            {Global.Language === 1 ?
             <Text style={styles.SwipeablePanelText}>Diller:</Text>
             :
             <Text style={styles.SwipeablePanelText}>Languages:</Text>
