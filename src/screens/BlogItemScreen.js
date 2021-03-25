@@ -60,13 +60,14 @@ export function BlogItemScreen({ route, navigation }) {
 
 
                 <WebView
-                  source={{ html: selectedBlog.BLOG_EN }}
+                  source={{baseUrl: '', html: selectedBlog.BLOG_EN + '<meta name="viewport" content="width=device-width, initial-scale=1">' }}
+                  originWhitelist={['*']}
                   automaticallyAdjustContentInsets={true}
                   javaScriptEnabledAndroid={true}
-                  scrollEnabled={false}
+                  scrollEnabled={true}
                   startInLoadingState={true}
                   bounces={true}
-                  style={{width:'100%',height:300, marginTop:10}}
+                  style={{width:'100%',height:250}}
                   renderLoading={() => <ActivityIndicator color='#000' size='large' />}
                 />
 
