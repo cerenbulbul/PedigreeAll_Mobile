@@ -19,7 +19,7 @@ import Flag from "react-native-flags";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import NumberFormat from 'react-number-format';
 
-export function HorseDetailProfileScreenInformation({navigation}) {
+export function HorseDetailProfileScreenInformation({ navigation }) {
     const [ImageInfo, setImageInfo] = React.useState();
     const [getHorseInfoByID, setHorseInfoByID] = React.useState();
     const [ReadMore, setReadMore] = React.useState(false);
@@ -203,7 +203,12 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                     </View>
 
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Name:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>İsim:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Name:</Text>
+                                        }
+
                                         <View style={styles.ItemFlexRowContainer}>
                                             <View style={styles.ItemFlagNameContainer}>
                                                 <Flag code="TR" size={24} />
@@ -212,7 +217,11 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Sire:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Aygır:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Sire:</Text>
+                                        }
                                         <View style={styles.ItemFlexRowContainer}>
                                             <View style={styles.ItemFlagNameContainer}>
                                                 <Flag code="TR" size={24} />
@@ -221,7 +230,11 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Dam:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Kısrak:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Dam:</Text>
+                                        }
                                         <View style={styles.ItemFlexRowContainer}>
                                             <View style={styles.ItemFlagNameContainer}>
                                                 <Flag code="TR" size={24} />
@@ -230,7 +243,11 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Broodmare Sire:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Kısrak Babası:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>BroodMare Sire:</Text>
+                                        }
                                         <View style={styles.ItemFlexRowContainer}>
                                             <View style={styles.ItemFlagNameContainer}>
                                                 <Flag code="TR" size={24} />
@@ -239,15 +256,27 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Class:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Sınıf:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Class:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Sex:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Cinsiyet:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Sex:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].SEX_OBJECT.SEX_EN}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Earning:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Kazanç:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Earning:</Text>
+                                        }
                                         <View style={styles.ItemFlagNameContainer}>
                                             <NumberFormat
                                                 value={getHorseInfoByID[0].EARN}
@@ -259,63 +288,115 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Family:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Familya:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Family:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].FAMILY_TEXT}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Color:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Renk:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Color:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].COLOR_TEXT}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Birth Date:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Doğum Tarihi:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Birth Date:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].HORSE_BIRTH_DATE_TEXT}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Start:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Koşu:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Start:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].START_COUNT}</Text>
                                     </View>
                                     <View style={styles.ItemContainerForRanking}>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>1st:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>1. :</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>1st :</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].FIRST}</Text>
                                         </View>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>1st %:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>1. %:</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>1st %:</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].FIRST_PERCENTAGE}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainerForRanking}>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>2nd:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>2. :</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>2st :</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].SECOND}</Text>
                                         </View>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>2nd %:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>2. %:</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>2nd %:</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].SECOND_PERCENTAGE}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainerForRanking}>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>3rd:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>3. :</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>3rd :</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].THIRD}</Text>
                                         </View>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>3rd %:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>3. %:</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>3rd %:</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].THIRD_PERCENTAGE}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainerForRanking}>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>4th:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>4. :</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>4th :</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].FOURTH}</Text>
                                         </View>
                                         <View style={styles.ItemRankingContainer}>
-                                            <Text style={styles.ItemTitleText}>4th %:</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.ItemTitleText}>4. :</Text>
+                                                :
+                                                <Text style={styles.ItemTitleText}>4th %:</Text>
+                                            }
                                             <Text style={styles.ItemNameText}>{getHorseInfoByID[0].FOURTH_PERCENTAGE}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Price:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Fiyat:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Price:</Text>
+                                        }
                                         <View style={styles.ItemFlagNameContainer}>
                                             <NumberFormat
                                                 value={getHorseInfoByID[0].PRICE}
@@ -339,32 +420,72 @@ export function HorseDetailProfileScreenInformation({navigation}) {
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].PA}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Owner:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Sahip:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Owner:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].OWNER}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Breeder:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Yetiştirici:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Breeder:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].BREEDER}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Coach:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Antrenör:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Coach:</Text>
+                                        }
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].COACH}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Dead:</Text>
-                                        {getHorseInfoByID.IS_DEAD ?
-                                            <Text style={styles.ItemNameText}>Dead</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Ölü:</Text>
                                             :
-                                            <Text style={styles.ItemNameText}>Alive</Text>
+                                            <Text style={styles.ItemTitleText}>Dead:</Text>
+                                        }
+                                        {getHorseInfoByID.IS_DEAD ?
+                                            <>
+                                                {Global.Language === 1 ?
+                                                    <Text style={styles.ItemNameText}>Ölü</Text>
+                                                    :
+                                                    <Text style={styles.ItemNameText}>Dead</Text>
+                                                }
+
+                                            </>
+
+                                            :
+                                            <>
+                                                {Global.Language === 1 ?
+                                                    <Text style={styles.ItemNameText}>Sağ</Text>
+                                                    :
+                                                    <Text style={styles.ItemNameText}>Alive</Text>
+                                                }
+                                            </>
                                         }
 
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Point:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Puan:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Point:</Text>
+                                        }
+
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].POINT}</Text>
                                     </View>
                                     <View style={styles.ItemContainer}>
-                                        <Text style={styles.ItemTitleText}>Update Date:</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ItemTitleText}>Güncellenme Tarihi:</Text>
+                                            :
+                                            <Text style={styles.ItemTitleText}>Update Date:</Text>
+                                        }
+                                        
                                         <Text style={styles.ItemNameText}>{getHorseInfoByID[0].EDIT_DATE_TEXT}</Text>
                                     </View>
 

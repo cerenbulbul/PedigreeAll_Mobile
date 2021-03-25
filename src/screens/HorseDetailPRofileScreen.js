@@ -27,6 +27,21 @@ import {HorseDetailProfileScreenInformation} from './HorseDetailProfileScreenInf
 const Tab = createMaterialTopTabNavigator();
 
 export function HorseDetailPRofileScreen({ BackButton, navigation }) {
+    const [getProfileInformationScreenName, setProfileInformationScreenName] = React.useState("Information");
+    const [getProfileMoreInformationScreenName, setProfileMoreInformationScreenName] = React.useState("More Information");
+
+    React.useEffect(() => {
+        if (Global.Language === 1) {
+            setProfileInformationScreenName("Profil Bilgisi")
+            setProfileMoreInformationScreenName("Daha fazla profil bilgisi")
+        }
+        else{
+            etProfileInformationScreenName("Information")
+            setProfileMoreInformationScreenName("More Information")
+        }
+    
+      }, [])
+
     return (
 
         <ScrollView>
@@ -56,11 +71,11 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
                 }}
             >
                 <Tab.Screen
-                    name="Information"
+                    name={getProfileInformationScreenName}
                     component={HorseDetailProfileScreenInformation}
                 />
                 <Tab.Screen
-                    name="More Information"
+                    name={getProfileMoreInformationScreenName}
                     component={MoreInformationScreen}
                 />
             </Tab.Navigator>
@@ -483,7 +498,7 @@ function MoreInformationScreen() {
                         {ImageInfo[0] !== undefined &&
 
                                 <WebView
-                                    source={{ html: "<body class='scrollHeight'>" + ImageInfo[0].INFO + "</body>" }}
+                                    source={{ html:  ImageInfo[0].INFO }}
                                     startInLoadingState={true}
                                     bounces={true}
                                     style={{ width: '100%', height: "100%" }}

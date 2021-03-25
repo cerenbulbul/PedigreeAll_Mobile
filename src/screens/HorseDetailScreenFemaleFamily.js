@@ -60,7 +60,12 @@ export function HorseDetailScreenFemaleFamily({ BackButton, navigation }) {
                             })
                         }}>
                         <Icon name="chevron-left" size={24} color="silver" style={{ alignSelf: 'center' }} />
+                        {Global.Language===1?
+                        <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                        :
                         <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                        }
+                        
                     </TouchableOpacity>
 
                 </View>

@@ -95,153 +95,204 @@ export function HorseDetailScreenTJK({ navigation }) {
         </View>
       </Modal>
 
-     
-            <Image style={styles.TJKImage} source={{ uri: 'https://www.pedigreeall.com//images/head2.jpg' }} />
 
-            {time ?
-              <ActivityIndicator size="large" color="#000" />
+      <Image style={styles.TJKImage} source={{ uri: 'https://www.pedigreeall.com//images/head2.jpg' }} />
 
-              :
-              <ScrollView>
-                {getTJKReport !== undefined &&
+      {time ?
+        <ActivityIndicator size="large" color="#000" />
 
-                  <ScrollView horizontal>
+        :
+        <ScrollView>
+          {getTJKReport !== undefined &&
 
-                    <View style={styles.rowView}>
+            <ScrollView horizontal>
 
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}> </Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableTitle}>{item.BASLIK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>K.</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.K}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>1st</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.BIRINCILIK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>2nd</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.IKINCILIK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>3rd</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.UCUNCULUK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>4th</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.DORDUNCULUK}</Text>
-                        ))}
-                      </View>
-                      <View style={styles.columnView}>
-                        <Text style={styles.TableTitle}>Earn</Text>
-                        {getTJKReport[0].HORSE_HEADER.map((item, index) => (
-                          <Text key={index} style={styles.TableText}>{item.KAZANC}</Text>
-                        ))}
-                      </View>
-                    </View>
+              <View style={styles.rowView}>
 
-                  </ScrollView>
+                <View style={styles.columnView}>
+                  <Text style={styles.TableTitle}> </Text>
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableTitle}>{item.BASLIK}</Text>
+                  ))}
+                </View>
+                <View style={styles.columnView}>
+                  <Text style={styles.TableTitle}>K.</Text>
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableText}>{item.K}</Text>
+                  ))}
+                </View>
+                <View style={styles.columnView}>
+                  {Global.Language===1?
+                  <Text style={styles.TableTitle}>1.</Text>
+                  :
+                  <Text style={styles.TableTitle}>1st</Text>
+                  }
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableText}>{item.BIRINCILIK}</Text>
+                  ))}
+                </View>
+                <View style={styles.columnView}>
+                  {Global.Language===1?
+                  <Text style={styles.TableTitle}>2.</Text>
+                  :
+                  <Text style={styles.TableTitle}>2nd</Text>
+                  }
+                  
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableText}>{item.IKINCILIK}</Text>
+                  ))}
+                </View>
+                <View style={styles.columnView}>
+                  {Global.Language===1?
+                  <Text style={styles.TableTitle}>3.</Text>
+                  :
+                  <Text style={styles.TableTitle}>3rd</Text>
+                  }
+                  
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableText}>{item.UCUNCULUK}</Text>
+                  ))}
+                </View>
+                <View style={styles.columnView}>
+                  {Global.Language===1?
+                  <Text style={styles.TableTitle}>4</Text>
+                  :
+                  <Text style={styles.TableTitle}>4th</Text>
+                  }
+                  
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableText}>{item.DORDUNCULUK}</Text>
+                  ))}
+                </View>
+                <View style={styles.columnView}>
+                  {Global.Language===1?
+                  <Text style={styles.TableTitle}>Kazanç</Text>
+                  :
+                  <Text style={styles.TableTitle}>Earning</Text>
+                  }
+                  
+                  {getTJKReport[0].HORSE_HEADER.map((item, index) => (
+                    <Text key={index} style={styles.TableText}>{item.KAZANC}</Text>
+                  ))}
+                </View>
+              </View>
 
-                }
+            </ScrollView>
 
-
-                <ScrollView 
-                  style={{marginTop:40}}
-                  horizontal>
-                  <DataTable>
-                    <DataTable.Header>
-                      <DataTable.Title>Video</DataTable.Title>
-                      <DataTable.Title>Image</DataTable.Title>
-                      <DataTable.Title>Date</DataTable.Title>
-                      <DataTable.Title>City</DataTable.Title>
-                      <DataTable.Title>Distance</DataTable.Title>
-                      <DataTable.Title>Runway</DataTable.Title>
-                      <DataTable.Title>S</DataTable.Title>
-                      <DataTable.Title>Degree</DataTable.Title>
-                      <DataTable.Title>Kg</DataTable.Title>
-                      <DataTable.Title>Taki</DataTable.Title>
-                      <DataTable.Title>Jockey</DataTable.Title>
-                      <DataTable.Title>St</DataTable.Title>
-                      <DataTable.Title>Gny</DataTable.Title>
-                      <DataTable.Title>Group</DataTable.Title>
-                      <DataTable.Title>K.No-K.Adı</DataTable.Title>
-                      <DataTable.Title>K. Cinsi</DataTable.Title>
-                      <DataTable.Title>Coach</DataTable.Title>
-                      <DataTable.Title>Owner</DataTable.Title>
-                      <DataTable.Title>	HP</DataTable.Title>
-                      <DataTable.Title>Bonus</DataTable.Title>
-                      <DataTable.Title>S20</DataTable.Title>
-                    </DataTable.Header>
-
-                    {getTJKReport[0].HORSE_TABLE.map((item, index) => (
-                      <DataTable.Row key={index}>
-                        <DataTable.Cell
-                          style={styles.TableCellStyle}
-                          onPress={() => {
-                            const supported = Linking.canOpenURL(item.VIDEO.replace('amp;', ''));
-                            if (supported) {
-                              Linking.openURL(item.VIDEO.replace('amp;', ''));
-                            } else {
-                              Alert.alert(`Don't know how to open this URL: ${item.VIDEO.replace('amp;', '')}`);
-                            }
-                          }}>
-                          <Icon name="video" size={20} color="#000" />
-
-                        </DataTable.Cell>
-                        <DataTable.Cell
-                          onPress={() => {
-                            setImageURL(item.FOTO)
-                            setShowImage(true);
-                          }}
-                          style={styles.TableCellStyle}>
-                          <Icon name="image" size={20} color="#000" />
-                        </DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.TARIH}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.SEHIR}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.MESAFE}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.PIST}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.S}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.DERECE}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.KG}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.TAKI}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.JOKEY}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.ST}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.GNY}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.GRUP}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.K_NO_K_ADI}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.K_CINS}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.ANTRENOR}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.SAHIP}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.HP}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.IKRAMIYE}</DataTable.Cell>
-                        <DataTable.Cell style={styles.TableCellStyle}>{item.S_20}</DataTable.Cell>
-                      </DataTable.Row>
-                    ))}
+          }
 
 
+          <ScrollView
+            style={{ marginTop: 40 }}
+            horizontal>
+            <DataTable>
+              {Global.Language === 1 ?
+                <DataTable.Header>
+                  <DataTable.Title>Video</DataTable.Title>
+                  <DataTable.Title>Resim</DataTable.Title>
+                  <DataTable.Title>Tarih</DataTable.Title>
+                  <DataTable.Title>Şehir</DataTable.Title>
+                  <DataTable.Title>Mesafe</DataTable.Title>
+                  <DataTable.Title>Pist</DataTable.Title>
+                  <DataTable.Title>S</DataTable.Title>
+                  <DataTable.Title>Derece</DataTable.Title>
+                  <DataTable.Title>Kg</DataTable.Title>
+                  <DataTable.Title>Takı</DataTable.Title>
+                  <DataTable.Title>Jokey</DataTable.Title>
+                  <DataTable.Title>St</DataTable.Title>
+                  <DataTable.Title>Gny</DataTable.Title>
+                  <DataTable.Title>Grup</DataTable.Title>
+                  <DataTable.Title>K.No-K.Adı</DataTable.Title>
+                  <DataTable.Title>K. Cinsi</DataTable.Title>
+                  <DataTable.Title>Antrenör</DataTable.Title>
+                  <DataTable.Title>Sahip</DataTable.Title>
+                  <DataTable.Title>	HP</DataTable.Title>
+                  <DataTable.Title>İkramiye</DataTable.Title>
+                  <DataTable.Title>S20</DataTable.Title>
+                </DataTable.Header>
+                :
+                <DataTable.Header>
+                  <DataTable.Title>Video</DataTable.Title>
+                  <DataTable.Title>Image</DataTable.Title>
+                  <DataTable.Title>Date</DataTable.Title>
+                  <DataTable.Title>City</DataTable.Title>
+                  <DataTable.Title>Distance</DataTable.Title>
+                  <DataTable.Title>Runway</DataTable.Title>
+                  <DataTable.Title>S</DataTable.Title>
+                  <DataTable.Title>Degree</DataTable.Title>
+                  <DataTable.Title>Kg</DataTable.Title>
+                  <DataTable.Title>Taki</DataTable.Title>
+                  <DataTable.Title>Jockey</DataTable.Title>
+                  <DataTable.Title>St</DataTable.Title>
+                  <DataTable.Title>Gny</DataTable.Title>
+                  <DataTable.Title>Group</DataTable.Title>
+                  <DataTable.Title>K.No-K.Adı</DataTable.Title>
+                  <DataTable.Title>K. Cinsi</DataTable.Title>
+                  <DataTable.Title>Coach</DataTable.Title>
+                  <DataTable.Title>Owner</DataTable.Title>
+                  <DataTable.Title>	HP</DataTable.Title>
+                  <DataTable.Title>Bonus</DataTable.Title>
+                  <DataTable.Title>S20</DataTable.Title>
+                </DataTable.Header>
+              }
 
-                  </DataTable>
 
-                </ScrollView>
+              {getTJKReport[0].HORSE_TABLE.map((item, index) => (
+                <DataTable.Row key={index}>
+                  <DataTable.Cell
+                    style={styles.TableCellStyle}
+                    onPress={() => {
+                      const supported = Linking.canOpenURL(item.VIDEO.replace('amp;', ''));
+                      if (supported) {
+                        Linking.openURL(item.VIDEO.replace('amp;', ''));
+                      } else {
+                        Alert.alert(`Don't know how to open this URL: ${item.VIDEO.replace('amp;', '')}`);
+                      }
+                    }}>
+                    <Icon name="video" size={20} color="#000" />
+
+                  </DataTable.Cell>
+                  <DataTable.Cell
+                    onPress={() => {
+                      setImageURL(item.FOTO)
+                      setShowImage(true);
+                    }}
+                    style={styles.TableCellStyle}>
+                    <Icon name="image" size={20} color="#000" />
+                  </DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.TARIH}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.SEHIR}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.MESAFE}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.PIST}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.S}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.DERECE}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.KG}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.TAKI}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.JOKEY}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.ST}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.GNY}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.GRUP}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.K_NO_K_ADI}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.K_CINS}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.ANTRENOR}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.SAHIP}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.HP}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.IKRAMIYE}</DataTable.Cell>
+                  <DataTable.Cell style={styles.TableCellStyle}>{item.S_20}</DataTable.Cell>
+                </DataTable.Row>
+              ))}
 
 
-              </ScrollView>
 
-            }
-      
+            </DataTable>
+
+          </ScrollView>
+
+
+        </ScrollView>
+
+      }
+
 
 
     </ScrollView >

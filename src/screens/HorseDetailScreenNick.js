@@ -89,34 +89,66 @@ export function HorseDetailScreenNick() {
 
 
                                 <DataTable>
-                                    <DataTable.Header removeClippedSubviews={true}>
-                                        <DataTable.Title style={{width:300}}>Name</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
-                                        <DataTable.Title style={{width:300}}>Dam</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Birth. Date</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>1. %</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>2.</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>2. %</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>3.</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>3. %</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>4.</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>4. %</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Prize</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
-                                        <DataTable.Title style={{width:150}}>Owner</DataTable.Title>
-                                        <DataTable.Title style={{width:150}}>Breeder</DataTable.Title>
-                                        <DataTable.Title style={{width:150}}>Coach</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
-                                        <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
-                                    </DataTable.Header>
+                                    {Global.Language === 1 ?
+                                        <DataTable.Header removeClippedSubviews={true}>
+                                            <DataTable.Title style={{ width: 300 }}>İsim</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Sınıf</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Puan</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Kazanç</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Renk</DataTable.Title>
+                                            <DataTable.Title style={{ width: 300 }}>Kısrak</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Doğum Tarihi</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Koşu</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>1. %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>2.</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>2. %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>3.</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>3. %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>4.</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>4. %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Fiyat</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Sahip</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Yetiştirici</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Antrenör</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Ölü</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Güncellenme T.</DataTable.Title>
+                                        </DataTable.Header>
+                                        :
+                                        <DataTable.Header removeClippedSubviews={true}>
+                                            <DataTable.Title style={{ width: 300 }}>Name</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
+                                            <DataTable.Title style={{ width: 300 }}>Dam</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Birth. Date</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>2nd</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Prize</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Owner</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Breeder</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Coach</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
+                                            <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
+                                        </DataTable.Header>
+                                    }
+
 
                                     {getSelectedItem.HORSE_INFO.map((item, index) => (
 
@@ -125,9 +157,14 @@ export function HorseDetailScreenNick() {
                                                 onPress={() => {
                                                     alertDialog("Name", item.HORSE_NAME)
                                                 }}
-                                                style={{width:300}}>{item.HORSE_NAME}
+                                                style={{ width: 300 }}>{item.HORSE_NAME}
                                             </DataTable.Cell>
-                                            <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                                            {Global.Language === 1 ?
+                                                <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_TR}</DataTable.Cell>
+                                                :
+                                                <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                                            }
+
                                             <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.EARN} {item.EARN_ICON}</DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.FAMILY_TEXT}</DataTable.Cell>
@@ -136,7 +173,7 @@ export function HorseDetailScreenNick() {
                                                 onPress={() => {
                                                     alertDialog("Dam", item.MOTHER_NAME)
                                                 }}
-                                                style={{width:300}}>
+                                                style={{ width: 300 }}>
                                                 {item.MOTHER_NAME}
                                             </DataTable.Cell>
                                             <DataTable.Cell style={styles.DataTableText}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
@@ -156,27 +193,43 @@ export function HorseDetailScreenNick() {
                                                 onPress={() => {
                                                     alertDialog("Owner", item.OWNER)
                                                 }}
-                                                style={{width:150}}>
+                                                style={{ width: 150 }}>
                                                 {item.OWNER}
                                             </DataTable.Cell>
                                             <DataTable.Cell
                                                 onPress={() => {
                                                     alertDialog("Breeder", item.BREEDER)
                                                 }}
-                                                style={{width:150}}>
+                                                style={{ width: 150 }}>
                                                 {item.BREEDER}
                                             </DataTable.Cell>
                                             <DataTable.Cell
                                                 onPress={() => {
                                                     alertDialog("Coach", item.COACH)
                                                 }}
-                                                style={{width:150}}>
+                                                style={{ width: 150 }}>
                                                 {item.COACH}
                                             </DataTable.Cell>
                                             {item.IS_DEAD ?
+                                                <>
+                                                {Global.Language===1?
+                                                <DataTable.Cell style={styles.DataTableText}>Ölü</DataTable.Cell>
+                                                :
                                                 <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
+                                                }
+                                                    
+                                                </>
+
+                                                :
+                                                <>
+                                                {Global.Language===1?
+                                                <DataTable.Cell style={styles.DataTableText}>Sağ</DataTable.Cell>
                                                 :
                                                 <DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell>
+                                                }
+                                                    
+                                                </>
+
                                             }
                                             <DataTable.Cell style={styles.DataTableText}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                                         </DataTable.Row>
@@ -207,23 +260,44 @@ export function HorseDetailScreenNick() {
 
 
                             <DataTable>
-                                <DataTable.Header removeClippedSubviews={true}>
-                                    <DataTable.Title style={{ width: 50, justifyContent: 'center' }}> </DataTable.Title>
-                                    <DataTable.Title style={{ width: 400 }}>B. Sire</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>Foals</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>Top 4</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>Top 4%</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>1. %</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle} >2.</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>2. %</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>3.</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>3. %</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>4.</DataTable.Title>
-                                    <DataTable.Title style={styles.DataTableTitle}>4. %</DataTable.Title>
-                                </DataTable.Header>
+                                {Global.Language === 1 ?
+                                    <DataTable.Header removeClippedSubviews={true}>
+                                        <DataTable.Title style={{ width: 50, justifyContent: 'center' }}> </DataTable.Title>
+                                        <DataTable.Title style={{ width: 400 }}>Kısrak Babası</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Taylar</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Puan</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Koşu</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Tabela</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Tabela %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>1. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle} >2.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>2. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>3.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>3. %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>4.</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>4. %</DataTable.Title>
+                                    </DataTable.Header>
+                                    :
+                                    <DataTable.Header removeClippedSubviews={true}>
+                                        <DataTable.Title style={{ width: 50, justifyContent: 'center' }}> </DataTable.Title>
+                                        <DataTable.Title style={{ width: 400 }}>B. Sire</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Foals</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Top 4</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>Top 4%</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle} >2nd</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
+                                        <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
+                                    </DataTable.Header>
+                                }
+
 
                                 {getNickSuccessData.map((item, index) => (
                                     <View key={index}>

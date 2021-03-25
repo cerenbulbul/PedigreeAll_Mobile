@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert,RefreshControl } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, RefreshControl } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Global } from '../Global'
 import { DataTable } from 'react-native-paper';
@@ -50,19 +50,19 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  
+
   React.useEffect(() => {
 
     const unsubscribe = navigation.addListener('focus', () => {
       console.log(Global.Horse_ID)
       readSiblingMare();
-        
+
     });
 
     return () => {
-        unsubscribe;
+      unsubscribe;
     };
-}, [navigation]);
+  }, [navigation]);
 
   React.useEffect(() => {
     console.log(Global.Horse_ID)
@@ -115,34 +115,66 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
 
 
               <DataTable>
-                <DataTable.Header removeClippedSubviews={true}>
-                  <DataTable.Title style={{ width: 350 }}>Name</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
-                  <DataTable.Title style={{ width: 400 }}>Sire</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Birth D.</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>2nd</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Price</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
-                  <DataTable.Title style={{ width: 150 }}>Owner</DataTable.Title>
-                  <DataTable.Title style={{ width: 150 }}>Breeder</DataTable.Title>
-                  <DataTable.Title style={{ width: 150 }}>Coach</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
-                  <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
-                </DataTable.Header>
+                {Global.Language === 1 ?
+                  <DataTable.Header removeClippedSubviews={true}>
+                    <DataTable.Title style={{ width: 350 }}>İsim</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Sınıf</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Puan</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Kazanç</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Renk</DataTable.Title>
+                    <DataTable.Title style={{ width: 400 }}>Aygır</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Doğum T.</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Koşu</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>1.</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>1. %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>2.</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>2. %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>3.</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>3. %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>4.</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>4. %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Price</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
+                    <DataTable.Title style={{ width: 150 }}>Sahip</DataTable.Title>
+                    <DataTable.Title style={{ width: 150 }}>Yetiştirici</DataTable.Title>
+                    <DataTable.Title style={{ width: 150 }}>Antrenör</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Ölü</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Güncellenme T.</DataTable.Title>
+                  </DataTable.Header>
+                  :
+                  <DataTable.Header removeClippedSubviews={true}>
+                    <DataTable.Title style={{ width: 350 }}>Name</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Class</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Point</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Fam</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Color</DataTable.Title>
+                    <DataTable.Title style={{ width: 400 }}>Sire</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Birth D.</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>2nd</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Price</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Dr. RM</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>ANZ</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>PedigreeAll</DataTable.Title>
+                    <DataTable.Title style={{ width: 150 }}>Owner</DataTable.Title>
+                    <DataTable.Title style={{ width: 150 }}>Breeder</DataTable.Title>
+                    <DataTable.Title style={{ width: 150 }}>Coach</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Dead</DataTable.Title>
+                    <DataTable.Title style={styles.DataTableTitle}>Update D.</DataTable.Title>
+                  </DataTable.Header>
+                }
+
 
                 {getSiblingMare.HORSE_INFO_LIST.map((item, index) => (
 
@@ -152,7 +184,12 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
                       style={{ width: 350 }}>
                       {item.HORSE_NAME}
                     </DataTable.Cell>
-                    <DataTable.Cell style={styles.DataTableCell}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                    {Global.Language === 1 ?
+                      <DataTable.Cell style={styles.DataTableCell}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_TR}</DataTable.Cell>
+                      :
+                      <DataTable.Cell style={styles.DataTableCell}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                    }
+
                     <DataTable.Cell style={styles.DataTableCell} >{item.POINT}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
                     <DataTable.Cell style={styles.DataTableCell} >{item.FAMILY_TEXT}</DataTable.Cell>
@@ -192,8 +229,21 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
                       {item.COACH}
                     </DataTable.Cell>
                     {item.IS_DEAD ?
-                      <DataTable.Cell style={styles.DataTableCell}>DEAD</DataTable.Cell>
-                      : <DataTable.Cell style={styles.DataTableCell}>ALIVE</DataTable.Cell>}
+                      <>
+                        {Global.Language === 1 ?
+                          <DataTable.Cell style={styles.DataTableCell}>Ölü</DataTable.Cell>
+                          :
+                          <DataTable.Cell style={styles.DataTableCell}>DEAD</DataTable.Cell>}
+                      </>
+
+                      :
+                      <>
+                        {Global.Language === 1 ?
+                          <DataTable.Cell style={styles.DataTableCell}>Sağ</DataTable.Cell>
+                          :
+                          <DataTable.Cell style={styles.DataTableCell}>ALIVE</DataTable.Cell>}
+                      </>
+                    }
                     <DataTable.Cell style={styles.DataTableCell}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                   </DataTable.Row>
 
@@ -206,11 +256,6 @@ export function HorseDetailSiblingMareScreen({ BackButton, navigation }) {
           }
         </>
       }
-
-
-
-
-
 
     </ScrollView>
   )
