@@ -169,18 +169,25 @@ export default function App({navigation}) {
     if (Global.getLanguageClicking=== false) {
         if (deviceLanguage === "tr_TR") {
             Global.Language=1
-            setBottomNavigationMainName("Anasayfa")
-            setBottomNavigationProfileName("Profil")
-            setBottomNavigationBasketName("Sepet")
-            setBottomNavigationSearchName("Arama")
+            
           }
           else{
             Global.Language=2
-            setBottomNavigationMainName("Main")
-            setBottomNavigationProfileName("Profile")
-            setBottomNavigationBasketName("Basket")
-            setBottomNavigationSearchName("Search")
+            
           }
+    }
+
+    if (Global.Language===1) {
+        setBottomNavigationMainName("Anasayfa")
+        setBottomNavigationProfileName("Profil")
+        setBottomNavigationBasketName("Sepet")
+        setBottomNavigationSearchName("Arama")
+    }
+    else{
+      setBottomNavigationMainName("Main")
+      setBottomNavigationProfileName("Profile")
+      setBottomNavigationBasketName("Basket")
+      setBottomNavigationSearchName("Search")
     }
   
     setTimeout(() => {

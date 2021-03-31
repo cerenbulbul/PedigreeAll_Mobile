@@ -3098,6 +3098,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                             onPress={() => {
                                                 //Linking.openURL("https://" + item.LINK + ".pedigreeall.com")
                                                 Global.Link = item.LINK;
+                                                Global.Horse_ID = item.HORSE_ID;
                                                 navigation.navigate("StallionsSearchLink", {
                                                     Link: item.LINK
                                                 });

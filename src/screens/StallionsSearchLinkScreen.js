@@ -630,50 +630,50 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                     <View style={styles.HeaderNumbersContainer}>
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.FOAL}</Text>
-                                            {Global.Language===1?
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Tay</Text>
-                                            :
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Foals</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Tay</Text>
+                                                :
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Foals</Text>
                                             }
-                                            
+
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.RACE_FOAL}</Text>
-                                            {Global.Language===1?
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Koşan</Text>
-                                            :
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Runner</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Koşan</Text>
+                                                :
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Runner</Text>
                                             }
-                                            
+
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.WINNER_FOAL}</Text>
-                                            {Global.Language===1?
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Kazanan</Text>
-                                            :
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Winner</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Kazanan</Text>
+                                                :
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Winner</Text>
                                             }
-                                            
+
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.G_WINNER_FOAL}</Text>
-                                            {Global.Language===1?
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Grup Kazanan</Text>
-                                            :
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Group Winner</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Grup Kazanan</Text>
+                                                :
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Group Winner</Text>
                                             }
-                                            
+
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.EARN} {getStallionByLinkData.EARN_CURRENCY_OBJECT.ICON}</Text>
-                                            {Global.Language===1?
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Kazanç</Text>
-                                            :
-                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Earning</Text>
+                                            {Global.Language === 1 ?
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Kazanç</Text>
+                                                :
+                                                <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Earning</Text>
                                             }
                                         </View>
                                     </View>
@@ -1186,12 +1186,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 setTJKFontSize(16)
                             }}>
                             <Icon name="cloudsmith" size={16} color={getTailFemaleColor} style={{ alignSelf: 'center' }} />
-                            {Global.Language===1?
-                            <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Dişi Soy</Text>
-                            :
-                            <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Tail Female</Text>
+                            {Global.Language === 1 ?
+                                <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Dişi Soy</Text>
+                                :
+                                <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Tail Female</Text>
                             }
-                            
+
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1266,12 +1266,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 setTJKFontSize(16)
                             }}>
                             <Icon name="cloudsmith" size={16} color={getBroodmareSireColor} style={{ alignSelf: 'center' }} />
-                            {Global.Language===1?
-                            <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Annenin Babası</Text>
-                            :
-                            <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
+                            {Global.Language === 1 ?
+                                <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Annenin Babası</Text>
+                                :
+                                <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
                             }
-                            
+
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1347,12 +1347,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                             }}>
                             <Icon name="cloudsmith" size={16} color={getLinebreedingColor} style={{ alignSelf: 'center' }} />
-                            {Global.Language===1?
-                            <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Eşsoyluluk</Text>
-                            :
-                            <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Linebreeding</Text>
+                            {Global.Language === 1 ?
+                                <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Eşsoyluluk</Text>
+                                :
+                                <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Linebreeding</Text>
                             }
-                            
+
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1428,12 +1428,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                             }}>
                             <Icon name="cloudsmith" size={16} color={getFemaleFamilyColor} style={{ alignSelf: 'center' }} />
-                            {Global.Language===1?
-                            <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Kapsamlı Dişi Soy</Text>
-                            :
-                            <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Female Family</Text>
+                            {Global.Language === 1 ?
+                                <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Kapsamlı Dişi Soy</Text>
+                                :
+                                <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Female Family</Text>
                             }
-                            
+
                         </TouchableOpacity>
 
                         {isTJK ?
@@ -1633,7 +1633,8 @@ function StatisticsScreen() {
     const [getOpenModel, setOpenModel] = React.useState(false)
     const [FullScreenVisible, setFullScreenVisible] = React.useState(false)
 
-
+    const [getAboutName, setAboutName] = React.useState("")
+    const [getStaticsName, setStataticsName] = React.useState("")
 
 
     const readGetStallionPageByLink = async () => {
@@ -1653,7 +1654,7 @@ function StatisticsScreen() {
 
                         setAccordingTitle(json.m_cData[0].STALLION_SEASON_LIST[0].YEAR + "/" + json.m_cData[0].STALLION_SEASON_LIST[0].FEE + "/" + json.m_cData[0].STALLION_SEASON_LIST[0].PLACE)
                         //setStatistic1Data([json.m_cData[0].START, json.m_cData[0].TOP4, json.m_cData[0].FIRST, json.m_cData[0].SECOND, json.m_cData[0].THIRD, json.m_cData[0].FOURTH])
-                        const statisctic1Data = {
+                        const statisctic1EnglishData = {
                             datasets: [
                                 {
                                     data: [json.m_cData[0].START, json.m_cData[0].TOP4, json.m_cData[0].FIRST, json.m_cData[0].SECOND, json.m_cData[0].THIRD, json.m_cData[0].FOURTH]
@@ -1669,9 +1670,27 @@ function StatisticsScreen() {
                             ],
 
                         };
-                        setStatistic1Data(statisctic1Data)
 
-                        const statisctic2Data = {
+                        const statisctic1TurkishData = {
+                            datasets: [
+                                {
+                                    data: [json.m_cData[0].START, json.m_cData[0].TOP4, json.m_cData[0].FIRST, json.m_cData[0].SECOND, json.m_cData[0].THIRD, json.m_cData[0].FOURTH]
+                                }
+                            ],
+                            labels: [
+                                "Koşu: 100% ",
+                                "Tabela: " + json.m_cData[0].TOP4_PERCENTAGE + "%",
+                                "1.'lik: " + json.m_cData[0].FIRST_PERCENTAGE + "%",
+                                "2.'lik: " + json.m_cData[0].SECOND_PERCENTAGE + "%",
+                                "3.'lük: " + json.m_cData[0].THIRD_PERCENTAGE + "%",
+                                "4.'lük: " + json.m_cData[0].FOURTH_PERCENTAGE + "%"
+                            ],
+
+                        };
+
+
+
+                        const statisctic2EnglishData = {
                             datasets: [
                                 {
                                     data: [json.m_cData[0].FOAL, json.m_cData[0].RACE_FOAL, json.m_cData[0].WINNER_FOAL, json.m_cData[0].G_WINNER_FOAL, json.m_cData[0].B_WINNER_FOAL]
@@ -1686,10 +1705,27 @@ function StatisticsScreen() {
                             ],
 
                         };
-                        setStatistic2Data(statisctic2Data)
+
+                        const statisctic2TurkishData = {
+                            datasets: [
+                                {
+                                    data: [json.m_cData[0].FOAL, json.m_cData[0].RACE_FOAL, json.m_cData[0].WINNER_FOAL, json.m_cData[0].G_WINNER_FOAL, json.m_cData[0].B_WINNER_FOAL]
+                                }
+                            ],
+                            labels: [
+                                "Taylar: 100% ",
+                                "Koşan: " + json.m_cData[0].RACE_FOAL_PERCENTAGE + "%",
+                                "Kazanan: " + json.m_cData[0].WINNER_FOAL_PERCENTAGE + "%",
+                                "G. Kazanan: " + json.m_cData[0].G_WINNER_FOAL_PERCENTAGE + "%",
+                                "B Type: " + json.m_cData[0].B_WINNER_FOAL_PERCENTAGE + "%",
+                            ],
+
+                        };
 
 
-                        const statisctic3Data = {
+
+
+                        const statisctic3EnglishData = {
                             datasets: [
                                 {
                                     data: [(parseInt(json.m_cData[0].EARN / json.m_cData[0].FOAL, 10)), (parseInt(json.m_cData[0].EARN / json.m_cData[0].RACE_FOAL, 10)), (parseInt(json.m_cData[0].EARN / json.m_cData[0].WINNER_FOAL, 10))]
@@ -1702,10 +1738,25 @@ function StatisticsScreen() {
                             ],
 
                         };
-                        setStatistic3Data(statisctic3Data)
+
+                        const statisctic3TurkishData = {
+                            datasets: [
+                                {
+                                    data: [(parseInt(json.m_cData[0].EARN / json.m_cData[0].FOAL, 10)), (parseInt(json.m_cData[0].EARN / json.m_cData[0].RACE_FOAL, 10)), (parseInt(json.m_cData[0].EARN / json.m_cData[0].WINNER_FOAL, 10))]
+                                }
+                            ],
+                            labels: [
+                                "Kazanç/Tay",
+                                "Kazanç/Koşan",
+                                "Kazanç/Kazanan",
+                            ],
+
+                        };
 
 
-                        const statisctic4Data = {
+
+
+                        const statisctic4EnglishData = {
                             datasets: [
                                 {
                                     data: [(json.m_cData[0].TOP4 / json.m_cData[0].FOAL).toString().substring(0, 4), (json.m_cData[0].TOP4 / json.m_cData[0].RACE_FOAL).toString().substring(0, 4), (json.m_cData[0].TOP4 / json.m_cData[0].WINNER_FOAL).toString().substring(0, 4)]
@@ -1718,7 +1769,22 @@ function StatisticsScreen() {
                             ],
 
                         };
-                        setStatistic4Data(statisctic4Data)
+
+                        const statisctic4TurkishData = {
+                            datasets: [
+                                {
+                                    data: [(json.m_cData[0].TOP4 / json.m_cData[0].FOAL).toString().substring(0, 4), (json.m_cData[0].TOP4 / json.m_cData[0].RACE_FOAL).toString().substring(0, 4), (json.m_cData[0].TOP4 / json.m_cData[0].WINNER_FOAL).toString().substring(0, 4)]
+                                }
+                            ],
+                            labels: [
+                                "Tabela/Tay",
+                                "Tabela/Koşan",
+                                "Tabela/Kazanan",
+                            ],
+
+                        };
+
+
 
                         setProgressChartRaceFoals([(parseInt(json.m_cData[0].RACE_FOAL_PERCENTAGE, 10)) / 100])
                         setProgressChartWinnerFoals([(parseInt(json.m_cData[0].WINNER_FOAL_PERCENTAGE, 10)) / 100])
@@ -1732,7 +1798,7 @@ function StatisticsScreen() {
                         setProgressChartBlackTypeGroupRaceWinner([json.m_cData[0].B_WINNER_FOAL / json.m_cData[0].G_WINNER_FOAL])
 
 
-                        const statisctic5Data = {
+                        const statisctic5EnglishData = {
                             datasets: [
                                 {
                                     data:
@@ -1756,7 +1822,46 @@ function StatisticsScreen() {
                             ],
 
                         };
-                        setLastStatData(statisctic5Data)
+
+                        const statisctic5TurkishData = {
+                            datasets: [
+                                {
+                                    data:
+                                        [
+                                            json.m_cData[0].STALLION_SEASON_LIST[0].MARE_COUNT,
+                                            json.m_cData[0].STALLION_SEASON_LIST[0].PREGNANT_COUNT,
+                                            json.m_cData[0].STALLION_SEASON_LIST[0].EMPTY_COUNT,
+                                            json.m_cData[0].STALLION_SEASON_LIST[0].UNCHECKED_COUNT,
+                                            json.m_cData[0].STALLION_SEASON_LIST[0].DEAD_MARE_COUNT,
+                                            json.m_cData[0].STALLION_SEASON_LIST[0].ALIVE_COUNT
+                                        ]
+                                }
+                            ],
+                            labels: [
+                                "Kısrak",
+                                "Gebe",
+                                "Boş",
+                                "K. Edilemeyen",
+                                "Ölen Kısrak",
+                                "Canlı Tay"
+                            ],
+
+                        };
+                        if (Global.Language === 1) {
+                            setStatistic1Data(statisctic1TurkishData)
+                            setStatistic2Data(statisctic2TurkishData)
+                            setStatistic3Data(statisctic3TurkishData)
+                            setStatistic4Data(statisctic4TurkishData)
+                            setLastStatData(statisctic5TurkishData)
+                        }
+                        else {
+                            setStatistic1Data(statisctic1EnglishData)
+                            setStatistic2Data(statisctic2EnglishData)
+                            setStatistic3Data(statisctic3EnglishData)
+                            setStatistic4Data(statisctic4EnglishData)
+                            setLastStatData(statisctic5EnglishData)
+                        }
+
                         setLastProgressData([(parseInt(json.m_cData[0].STALLION_SEASON_LIST[0].MARE_PERCENTAGE, 10)) / 100])
 
                         setStallionByLinkData(json.m_cData[0]);
@@ -1775,6 +1880,15 @@ function StatisticsScreen() {
 
     React.useEffect(() => {
         readGetStallionPageByLink();
+
+        if (Global.Language===1) {
+            setStataticsName("İstatik")
+            setAboutName("Hakkında")
+        }
+        else{
+            setStataticsName("Statics")
+            setAboutName("About")
+        }
     }, [])
 
     return (
@@ -2010,7 +2124,7 @@ function StatisticsScreen() {
 
                     <View style={{ width: '40%', marginLeft: 5 }}>
                         <Button
-                            title="About"
+                            title={getAboutName}
                             onPress={() => {
                                 setFullScreenVisible(true)
                             }}
@@ -2021,12 +2135,17 @@ function StatisticsScreen() {
 
                         <List.Accordion
                             id="2"
-                            title="Statics"
+                            title={getStaticsName}
                             style={{ marginTop: 20 }}
                             theme={{ colors: { primary: '#2169ab' } }}
                             left={props => <Icon name="chart-line" size={20} color="#000"  {...props} />}>
                             <View>
-                                <Text style={styles.ProgressBarTitle}>Race Foal</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Koşan Tay</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Race Foal</Text>
+                                }
+
                                 <ProgressChart
                                     data={getProgressChartRaceFoals}
                                     width={Dimensions.get('window').width}
@@ -2046,8 +2165,12 @@ function StatisticsScreen() {
                                         borderRadius: 16,
                                     }}
                                 />
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Kazanan Tay</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Winner Foal</Text>
+                                }
 
-                                <Text style={styles.ProgressBarTitle}>Winner Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartWinnerFoals}
                                     width={Dimensions.get('window').width}
@@ -2067,8 +2190,12 @@ function StatisticsScreen() {
                                         borderRadius: 16,
                                     }}
                                 />
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Grup Kazanan Tay</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Group Winner Foal</Text>
+                                }
 
-                                <Text style={styles.ProgressBarTitle}>Group Winner Foal</Text>
                                 <ProgressChart
                                     data={getProgressChartGroupWinnerFoals}
                                     width={Dimensions.get('window').width}
@@ -2089,7 +2216,11 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Black Type Foal</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Black Type Tay</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Black Type Foal</Text>
+                                }
                                 <ProgressChart
                                     data={getProgressChartBlackTypeFoals}
                                     width={Dimensions.get('window').width}
@@ -2110,7 +2241,10 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Winner Foal / Race Foal</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Koşan Kazanan / Koşan</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Winner Foal / Race Foal</Text>}
                                 <ProgressChart
                                     data={getProgressChartWinnerFoalRaceFoal}
                                     width={Dimensions.get('window').width}
@@ -2131,7 +2265,10 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Group Winner Foal / Race Foal</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Grup Kazanan / Koşan</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Group Winner Foal / Race Foal</Text>}
                                 <ProgressChart
                                     data={getProgressChartGroupWinnerFoalRaceFoal}
                                     width={Dimensions.get('window').width}
@@ -2152,7 +2289,10 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Black Type / Race Foal</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Black Type / Koşan</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Black Type / Race Foal</Text>}
                                 <ProgressChart
                                     data={getProgressChartBlackTypeRaceFoal}
                                     width={Dimensions.get('window').width}
@@ -2173,7 +2313,10 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Group Winner / Race Winner</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Grup Kazanan / Kazanan</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Group Winner / Race Winner</Text>}
                                 <ProgressChart
                                     data={getProgressChartGroupWinnerRaceWinner}
                                     width={Dimensions.get('window').width}
@@ -2194,7 +2337,10 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Black Type / Race Winner</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Black Type / Kazanan</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Black Type / Race Winner</Text>}
                                 <ProgressChart
                                     data={getProgressChartBlackTypeRaceWinner}
                                     width={Dimensions.get('window').width}
@@ -2215,7 +2361,10 @@ function StatisticsScreen() {
                                     }}
                                 />
 
-                                <Text style={styles.ProgressBarTitle}>Black Type / Group Winner</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.ProgressBarTitle}>Black Type / Grup Kazanan</Text>
+                                    :
+                                    <Text style={styles.ProgressBarTitle}>Black Type / Group Winner</Text>}
                                 <ProgressChart
                                     data={getProgressChartBlackTypeGroupRaceWinner}
                                     width={Dimensions.get('window').width}

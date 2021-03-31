@@ -41,7 +41,7 @@ export function HorseDetailProfileScreenInformation({ navigation }) {
                         if (json !== null) {
                             setHorseInfoByID(json.m_cData);
                             setTime(false);
-                            if (json.m_cData[0].REF1 !== undefined) {
+                            if (json.m_cData[0] !== undefined) {
                                 Global.TJK_ID = json.m_cData[0].REF1
                             }
                         }

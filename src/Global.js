@@ -1,7 +1,7 @@
 import React from "react";
 import AsyncStorage from '@react-native-community/async-storage'
 import Data from './Data';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform, Image, ScrollView } from 'react-native';
 
 export class Global {
   static IsLogin = false;
@@ -21,7 +21,7 @@ export class Global {
   static MinCross_Fename_Family = 2;
   static getBlogListData;
   static laodingForBlog = true;
-  static Sepetim=[];
+  static Sepetim = [];
   static TabBarBasketNotification = 0;
   static Language;
   static Link;
@@ -30,10 +30,10 @@ export class Global {
   static getLanguageClicking = false;
 
   static deviceLanguage =
-  Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale ||
+    Platform.OS === 'ios'
+      ? NativeModules.SettingsManager.settings.AppleLocale ||
       NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-    : Platform.OS === 'android' && NativeModules.I18nManager.localeIdentifier
+      : Platform.OS === 'android' && NativeModules.I18nManager.localeIdentifier
 
   static getToken = async () => {
     try {
@@ -63,13 +63,18 @@ export class Global {
 
   static getBasket = async () => {
     try {
-      const userKey = await AsyncStorage.getItem('SEPETIM')
-      if (userKey !== null) {
-        this.Sepetim.push(JSON.parse(userKey)[0]) 
-        this.TabBarBasketNotification = JSON.parse(userKey).length;
-        //console.log(JSON.parse(userKey).length)
-        //console.log(this.Sepetim)
+      const user = await AsyncStorage.getItem('USER')
+      if (user !== null) {
+        const userKey = await AsyncStorage.getItem('SEPETIM')
+        if (userKey !== null) {
+          this.Sepetim.push(JSON.parse(userKey)[0])
+          this.TabBarBasketNotification = JSON.parse(userKey).length;
+          //console.log(JSON.parse(userKey).length)
+          //console.log(this.Sepetim)
+        }
+
       }
+
     } catch (e) {
       console.log("User Error")
     }
@@ -77,12 +82,12 @@ export class Global {
 
   static getLanguage = async () => {
     if (this.deviceLanguage === "tr_TR") {
-      this.Language=1
-      
+      this.Language = 1
+
     }
-    else{
-      this.Language=2
-      
+    else {
+      this.Language = 2
+
     }
   };
 
