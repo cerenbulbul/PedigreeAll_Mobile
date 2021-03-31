@@ -1,6 +1,7 @@
 import React from "react";
 import AsyncStorage from '@react-native-community/async-storage'
 import Data from './Data';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image, ScrollView} from 'react-native';
 
 export class Global {
   static IsLogin = false;
@@ -26,6 +27,13 @@ export class Global {
   static Link;
   static BackButton = false;
   static Hypothetical_Search_View = true;
+  static getLanguageClicking = false;
+
+  static deviceLanguage =
+  Platform.OS === 'ios'
+    ? NativeModules.SettingsManager.settings.AppleLocale ||
+      NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+    : Platform.OS === 'android' && NativeModules.I18nManager.localeIdentifier
 
   static getToken = async () => {
     try {
@@ -64,6 +72,17 @@ export class Global {
       }
     } catch (e) {
       console.log("User Error")
+    }
+  };
+
+  static getLanguage = async () => {
+    if (this.deviceLanguage === "tr_TR") {
+      this.Language=1
+      
+    }
+    else{
+      this.Language=2
+      
     }
   };
 

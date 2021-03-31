@@ -12,12 +12,27 @@ import { Input } from "../components/Input";
 import { Error } from "../components/Error";
 import { AuthContext } from "../context/AuthContext";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { Global } from '../Global';
  
 export function ForgotPassword({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checked, toggleChecked] = React.useState(false);
   const [focus_email, focus_email_toggle] = React.useState(true);
+
+  const [getEmailPlaceholder, setEmailPlaceholder] = React.useState("")
+  const [getSendPasswordButtonText, setSendPasswordButtonText] = React.useState("")
+
+  React.useEffect(() => {
+    if (Global.Language===1) {
+      setEmailPlaceholder("Eposta adresini gir")
+      setSendPasswordButtonText("Şifre Gönder")
+    }
+    else{
+      setEmailPlaceholder("Enter your email address")
+      setSendPasswordButtonText("Send Password")
+    }
+  }, []);
 
   return (
       <View style={styles.background} >
@@ -42,7 +57,7 @@ export function ForgotPassword({ navigation }) {
             color="#2e3f6e"
           />
           <Input
-            placeholder={"Enter your email address"}
+            placeholder={getEmailPlaceholder}
             keyboardType={"email-address"}
             name={"username"}
             value={email}
@@ -51,7 +66,7 @@ export function ForgotPassword({ navigation }) {
         </View>
         
         <FilledButton
-          title="Send Password"
+          title={getSendPasswordButtonText}
           style = {styles.button}
           onPress={async () => {
             fetch('https://api.pedigreeall.com/systemuser/RemindPassword?p_sEmail='+ email, {

@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { ListItem, SearchBar, CheckBox } from "react-native-elements";
 import Flag from "react-native-flags";
 import { Root, Popup, Toast } from "../components/Popup";
-
+import { Global } from '../Global';
 
 
 function showMessage(data, navigation) {
@@ -53,7 +53,7 @@ export function RegistrationScreen({ route, navigation }) {
   const [error, setError] = React.useState("");
   const [checked_1, toggleChecked_1] = useState(true);
   const [checked_2, toggleChecked_2] = useState(false);
-  const [flagText, setFlagText] = React.useState(countryName);
+  const [flagText, setFlagText] = React.useState("");
   const [countryIconText, setCountryIcon] = React.useState(countryIcon);
   const onSelect = (country) => {
     setFlagText(countryName);
@@ -73,7 +73,40 @@ export function RegistrationScreen({ route, navigation }) {
   })
 
 
+  const [getEmailPlaceholder, setEmailPlaceholder] = React.useState("")
+  const [getPasswordPlaceholder, setPasswordPlaceholder] = React.useState("")
+  const [getPasswordAgainPlaceholder, setPasswordAgainPlaceholder] = React.useState("")
+  const [getNamePlaceholder, setNamePlaceholder] = React.useState("")
+  const [getSurnamePlaceholder, setSurnamePlaceholder] = React.useState("")
+  const [getSelectACountryText, setSelectACountryText] = React.useState("")
+  const [getBireyselText, setBireyselText] = React.useState("")
+  const [getKurumsalText, setKurumsalText] = React.useState("")
+  const [getRegisterButtonText, setRegisterButtonText] = React.useState("")
 
+  React.useEffect(() => {
+    if (Global.Language===1) {
+      setEmailPlaceholder("Eposta")
+      setPasswordPlaceholder("Şifre")
+      setPasswordAgainPlaceholder("Şifre Tekrar")
+      setNamePlaceholder("İsim")
+      setSurnamePlaceholder("Soyisim")
+      setFlagText("Ülke Seçiniz")
+      setBireyselText("Bireysel")
+      setKurumsalText("Kurumsal")
+      setRegisterButtonText("Üye Ol")
+    }
+    else{
+      setEmailPlaceholder("Email")
+      setPasswordPlaceholder("Password")
+      setPasswordAgainPlaceholder("Password Again")
+      setNamePlaceholder("Name")
+      setSurnamePlaceholder("Surname")
+      setFlagText("Select A Country")
+      setBireyselText("Personal")
+      setKurumsalText("Legal Entity")
+      setRegisterButtonText("Register")
+    }
+  }, []);
 
   return (
 
@@ -89,7 +122,7 @@ export function RegistrationScreen({ route, navigation }) {
           <View style={styles.inputView}>
             <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
             <Input
-              placeholder={"Email"}
+              placeholder={getEmailPlaceholder}
               keyboardType={"email-address"}
               name={"username"}
               value={email}
@@ -100,7 +133,7 @@ export function RegistrationScreen({ route, navigation }) {
           <View style={styles.inputView}>
             <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
             <Input
-              placeholder={"Password"}
+              placeholder={getPasswordPlaceholder}
               secureTextEntry
               name={"password"}
               value={password}
@@ -111,7 +144,7 @@ export function RegistrationScreen({ route, navigation }) {
           <View style={styles.inputView}>
             <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
             <Input
-              placeholder={"Password Again"}
+              placeholder={getPasswordAgainPlaceholder}
               secureTextEntry
               name={"password"}
               value={password_again}
@@ -121,13 +154,13 @@ export function RegistrationScreen({ route, navigation }) {
 
           <View style={styles.inputView}>
             <Icon style={styles.icon} name="user" size={20} color="#2e3f6e" />
-            <Input placeholder={"Name"} value={name} onChangeText={setname} />
+            <Input placeholder={getNamePlaceholder} value={name} onChangeText={setname} />
           </View>
 
           <View style={styles.inputView}>
             <Icon style={styles.icon} name="user" size={20} color="#2e3f6e" />
             <Input
-              placeholder={"Surname"}
+              placeholder={getSurnamePlaceholder}
               value={surname}
               onChangeText={setsurname}
             />
@@ -151,7 +184,7 @@ export function RegistrationScreen({ route, navigation }) {
           <View style={styles.CheckboxView}>
             <CheckBox
               center
-              title="Bireysel"
+              title={getBireyselText}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
               style={styles.checkbox}
@@ -166,7 +199,7 @@ export function RegistrationScreen({ route, navigation }) {
 
             <CheckBox
               center
-              title="Kurumsal"
+              title={getKurumsalText}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
               style={styles.checkbox}
@@ -183,7 +216,7 @@ export function RegistrationScreen({ route, navigation }) {
 
 
           <FilledButton
-            title="Register"
+            title={getRegisterButtonText}
             style={styles.registerButton}
             onPress={async (e) => {
 

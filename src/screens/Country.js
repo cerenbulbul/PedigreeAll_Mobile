@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { ListItem, Input, SearchBar } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import Flag from "react-native-flags";
+import { Global } from '../Global';
 
 export function Country({ navigation }) {
   const API_URL = "http://api.pedigreeall.com/";
@@ -20,6 +21,15 @@ export function Country({ navigation }) {
       .finally(() => SetisLoading(false));
   }, []);
 
+  const [getSearchPlaceholderText, setSearchPlaceholderText] = React.useState("")
+  React.useEffect(() => {
+    if (Global.Language === 1) {
+      setSearchPlaceholderText("Buraya Yazınız")
+    }
+    else {
+      setSearchPlaceholderText("Type Here")
+    }
+  }, []);
 
   return (
     <View
@@ -30,10 +40,10 @@ export function Country({ navigation }) {
         height: "100%",
       }}
     >
-     
-     <SearchBar
+
+      <SearchBar
         lightTheme={true}
-        placeholder="Type Here..."
+        placeholder={getSearchPlaceholderText}
         containerStyle={{ backgroundColor: "#fff" }}
         inputContainerStyle={{ backgroundColor: "#fff" }}
         value={searchText}
@@ -43,7 +53,7 @@ export function Country({ navigation }) {
       />
 
       {isLoading && (
-        <View style={{ width: "100%", justifyContent: "center", position:'absolute', zIndex: 1 }}>
+        <View style={{ width: "100%", justifyContent: "center", position: 'absolute', zIndex: 1 }}>
           <ActivityIndicator
             style={{ height: 100, top: 150 }}
             color="#3F51B5"
@@ -53,34 +63,68 @@ export function Country({ navigation }) {
       )}
 
       <ScrollView style={{ top: 0, margin: 0, backgroundColor: "#fff" }}>
-        {Countrylist.filter((x) => x.COUNTRY_EN.includes(searchText)).map(
-          (item, i) => (
-            <ListItem
-              key={i}
-              bottomDivider
-              button
-              onPress={() => {
-                /* 1. Navigate to the Details route with params */
-              navigation.navigate('Register', {
-                countryID: item.COUNTRY_ID,
-                countryCode: item.ABBREVIATION,
-                countryName: item.COUNTRY_EN,
-                countryIcon: item.ICON.toUpperCase(),
-            });
-              }}
-            >
-            
-              <Flag code={item.ICON.toUpperCase()} size={24} />
-              <ListItem.Content>
-                <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
-                <ListItem.Subtitle>{item.COUNTRY_TR}</ListItem.Subtitle>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          )
-        )}
+        {Global.Language === 1 ?
+          <>
+            {Countrylist.filter((x) => x.COUNTRY_TR.includes(searchText)).map(
+              (item, i) => (
+                <ListItem
+                  key={i}
+                  bottomDivider
+                  button
+                  onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                    navigation.navigate('Register', {
+                      countryID: item.COUNTRY_ID,
+                      countryCode: item.ABBREVIATION,
+                      countryName: item.COUNTRY_TR,
+                      countryIcon: item.ICON.toUpperCase(),
+                    });
+                  }}
+                >
+
+                  <Flag code={item.ICON.toUpperCase()} size={24} />
+                  <ListItem.Content>
+                    <ListItem.Title>{item.COUNTRY_TR}</ListItem.Title>
+                    <ListItem.Subtitle>{item.COUNTRY_EN}</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              )
+            )}
+          </>
+          :
+          <>
+            {Countrylist.filter((x) => x.COUNTRY_EN.includes(searchText)).map(
+              (item, i) => (
+                <ListItem
+                  key={i}
+                  bottomDivider
+                  button
+                  onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                    navigation.navigate('Register', {
+                      countryID: item.COUNTRY_ID,
+                      countryCode: item.ABBREVIATION,
+                      countryName: item.COUNTRY_EN,
+                      countryIcon: item.ICON.toUpperCase(),
+                    });
+                  }}
+                >
+
+                  <Flag code={item.ICON.toUpperCase()} size={24} />
+                  <ListItem.Content>
+                    <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+                    <ListItem.Subtitle>{item.COUNTRY_TR}</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              )
+            )}
+          </>
+        }
+
       </ScrollView>
-      
+
     </View>
   );
 }
@@ -119,33 +163,33 @@ const styles = StyleSheet.create({
       */
 
 
-      /*
+/*
 
-        <ScrollView style={{ top: 0, margin: 0, backgroundColor: "#fff" }}>
-        {Countrylist.filter((x) => x.COUNTRY_EN.includes(searchText)).map(
-          (item, i) => (
-            <ListItem
-              key={i}
-              bottomDivider
-              button
-              onPress={() => {
-                navigation.navigate('Register', {
-                  countryID: item.COUNTRY_ID,
-                  countryCode: item.ABBREVIATION,
-                  countryName: item.COUNTRY_EN,
-                  countryIcon: item.ICON.toUpperCase(),
-              });
-                }}
-              >
-                <Flag code={item.ICON.toUpperCase()} size={24} />
-                <ListItem.Content>
-                  <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
-                  <ListItem.Subtitle>{item.COUNTRY_TR}</ListItem.Subtitle>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-            )
-          )}
-        </ScrollView>
+  <ScrollView style={{ top: 0, margin: 0, backgroundColor: "#fff" }}>
+  {Countrylist.filter((x) => x.COUNTRY_EN.includes(searchText)).map(
+    (item, i) => (
+      <ListItem
+        key={i}
+        bottomDivider
+        button
+        onPress={() => {
+          navigation.navigate('Register', {
+            countryID: item.COUNTRY_ID,
+            countryCode: item.ABBREVIATION,
+            countryName: item.COUNTRY_EN,
+            countryIcon: item.ICON.toUpperCase(),
+        });
+          }}
+        >
+          <Flag code={item.ICON.toUpperCase()} size={24} />
+          <ListItem.Content>
+            <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+            <ListItem.Subtitle>{item.COUNTRY_TR}</ListItem.Subtitle>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      )
+    )}
+  </ScrollView>
 
-       */
+ */

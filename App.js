@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image} from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image, ScrollView} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,6 +9,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Flag from "react-native-flags";
 import AsyncStorage from '@react-native-community/async-storage'
 import { SearchBar } from 'react-native-elements';
+import RBSheet from "react-native-raw-bottom-sheet";
 
 import { useAuth } from './src/hooks/useAuth';
 import { SplashScreen } from './src/screens/SplashScreen';
@@ -134,6 +135,9 @@ export default function App({navigation}) {
   const [getBottomNavigationBasketName, setBottomNavigationBasketName] = React.useState()
   const [getBottomNavigationSearchName, setBottomNavigationSearchName] = React.useState()
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   const readData = async () => {
     try {
       const userKey = await AsyncStorage.getItem('USER')
@@ -162,20 +166,23 @@ export default function App({navigation}) {
   React.useEffect(() => {
     Global.getBasket();
     //console.log(deviceLanguage)
-    if (deviceLanguage === "tr_TR") {
-      Global.Language=1
-      setBottomNavigationMainName("Anasayfa")
-      setBottomNavigationProfileName("Profil")
-      setBottomNavigationBasketName("Sepet")
-      setBottomNavigationSearchName("Arama")
+    if (Global.getLanguageClicking=== false) {
+        if (deviceLanguage === "tr_TR") {
+            Global.Language=1
+            setBottomNavigationMainName("Anasayfa")
+            setBottomNavigationProfileName("Profil")
+            setBottomNavigationBasketName("Sepet")
+            setBottomNavigationSearchName("Arama")
+          }
+          else{
+            Global.Language=2
+            setBottomNavigationMainName("Main")
+            setBottomNavigationProfileName("Profile")
+            setBottomNavigationBasketName("Basket")
+            setBottomNavigationSearchName("Search")
+          }
     }
-    else{
-      Global.Language=2
-      setBottomNavigationMainName("Main")
-      setBottomNavigationProfileName("Profile")
-      setBottomNavigationBasketName("Basket")
-      setBottomNavigationSearchName("Search")
-    }
+  
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -1197,7 +1204,83 @@ export default function App({navigation}) {
     <AuthContext.Provider>
       <NavigationContainer>
         <RootStackScreen />
-        <SettingBottomSheet refRBSheet={refRBSheet}></SettingBottomSheet>
+        <RBSheet
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        customStyles={{
+          container:{
+            borderTopLeftRadius:10,
+            borderTopRightRadius:10
+          },
+          draggableIcon: { 
+            backgroundColor: "#000"
+          }
+        }}
+      >
+        <TouchableOpacity 
+          onPress={()=>{refRBSheet.current.close()}}
+          style={styles.SwipableCloseIcon}>
+          <Icon name="times" size={20} color="#adb5bd" />
+        </TouchableOpacity>
+        <ScrollView 
+          style={styles.SwipeablePanelContainer}>
+          <View style={styles.SwipeablePanelItem}>
+            {Global.Language === 1 ?
+            <Text style={styles.SwipeablePanelText}>Bildirimler:</Text>
+            :
+            <Text style={styles.SwipeablePanelText}>Notifications:</Text>
+            }
+            
+            <Switch
+              trackColor={{ false: "#a3a3a3", true: "#2f406f" }}
+              thumbColor={isEnabled ? "#fff" : "#fff"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled} 
+            />
+          </View>
+
+          
+
+          <View style={styles.SwipeablePanelItem}>
+            {Global.Language === 1 ?
+            <Text style={styles.SwipeablePanelText}>Diller:</Text>
+            :
+            <Text style={styles.SwipeablePanelText}>Languages:</Text>
+            }
+            
+            <View style={styles.FlagContainer}>
+              <TouchableOpacity 
+                onPress={()=>{
+                  Global.Language=2;
+                  setBottomNavigationMainName("Main")
+                  setBottomNavigationProfileName("Profile")
+                  setBottomNavigationBasketName("Basket")
+                  setBottomNavigationSearchName("Search")
+                  Global.getLanguageClicking=== true
+                }}
+                style={{marginRight:5}}>
+                <Flag code='US' size={24} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={()=>{
+                  Global.Language=1;
+                  setBottomNavigationMainName("Anasayfa")
+                  setBottomNavigationProfileName("Profil")
+                  setBottomNavigationBasketName("Sepet")
+                  setBottomNavigationSearchName("Arama")
+                  Global.getLanguageClicking=== true
+                }}
+                style={{marginRight:5}} >
+                <Flag code='TR' size={24} />
+              </TouchableOpacity>
+            </View>
+
+          </View>
+          
+        </ScrollView>
+      </RBSheet>
       </NavigationContainer>
     </AuthContext.Provider>
 
@@ -1219,7 +1302,28 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     borderRadius: 8
   },
-
+  swipeContainer: {
+    width: "100%",
+  },
+  SwipeablePanelContainer: {
+    padding: 20,
+  },
+  SwipeablePanelItem:{
+    marginVertical:15,
+    flexDirection:'row',
+    justifyContent:'space-between'
+  },
+  SwipeablePanelText:{
+    fontSize:18,
+  },
+  FlagContainer:{
+    flexDirection:'row',
+  },
+  SwipableCloseIcon:{
+    width:'100%',
+    flexDirection:'row-reverse',
+    marginRight:-25
+  }
 
 });
 

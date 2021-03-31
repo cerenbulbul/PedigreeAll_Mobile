@@ -6,7 +6,8 @@ import {
   ImageBackground,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { FilledButton } from "../components/FilledButton";
 import { Input } from "../components/Input";
@@ -20,37 +21,6 @@ import { Root, Popup, Toast } from "../components/Popup";
 import AsyncStorage from '@react-native-community/async-storage'
 const STORAGE_KEY = 'USER'
 
-function showMessage(data, navigation) {
-
-  let st = false;
-  if (data.m_eProcessState > 0) {
-    Popup.show({
-      type: 'Success',
-      title: 'Sent',
-      button: true,
-      textBody: data.m_lUserMessageList[1],
-      buttonText: 'Ok',
-      callback: () => {
-        navigation.navigate("MainStack")
-      }
-    })
-    st = true
-  }
-  else {
-    Popup.show({
-      type: 'Danger',
-      title: 'Sent',
-      button: true,
-      textBody: data.m_lUserMessageList[1],
-      buttonText: 'Ok',
-      callback: () => Popup.hide()
-    })
-    st = false
-  }
-  return st
-
-}
-
 
 
 export function LoginScreen({ navigation }) {
@@ -60,7 +30,12 @@ export function LoginScreen({ navigation }) {
   const [isOverlay, toggleIsOverlay] = useState(false);
   const [visible, setVisible] = useState(false);
 
-
+  const [getEmailPlaceholder, setEmailPlaceholder] = React.useState("")
+  const [getPasswordPlaceholder, setPasswordPlaceholder] = React.useState("")
+  const [getForgotPasswordText, setFotgotPasswordText] = React.useState("")
+  const [getLoginButtonText, setLoginButtonText] =  React.useState("")
+  const [getNewToPedigreeText, setNewToPedigreeText] = React.useState("")
+  const [getCreateAnAccountText, setCreateAnAccountText] = React.useState("")
 
   const saveData = async (data , email, password) => {
     try {
@@ -73,37 +48,38 @@ export function LoginScreen({ navigation }) {
     }
   }
 
+  const AlertMessage = (Title, Message) =>
+  Alert.alert(
+    Title,
+    Message,
+    [
+      { text: "OK" }
+    ]
+  );
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
 
-  const [panelProps, setPanelProps] = useState({
-    //fullWidth: true,
-    //openLarge: true,
-    showCloseButton: true,
-    onClose: () => closePanel(),
-    onPressCloseButton: () => closePanel(),
-    closeOnTouchOutside: true,
-  });
   const [isPanelActive, setIsPanelActive] = useState(false);
   const openPanel = () => {
     setIsPanelActive(true);
   };
-
-  const closePanel = () => {
-    setIsPanelActive(false);
-  };
-
-  let popupRef = React.createRef();
-  const onShowPopup = () => {
-    popupRef.show();
-  };
-  const onClosePopup = () => {
-    popupRef.close();
-  };
-
-
+  React.useEffect(() => {
+    if (Global.Language===1) {
+      setEmailPlaceholder("Eposta")
+      setPasswordPlaceholder("Şifre")
+      setFotgotPasswordText("Şifremi Unuttum")
+      setLoginButtonText("Giriş Yap")
+      setNewToPedigreeText("PedigreeAll'da Yeni Misin?")
+      setCreateAnAccountText("Üye Ol")
+    }
+    else{
+      setEmailPlaceholder("Email")
+      setPasswordPlaceholder("Password")
+      setFotgotPasswordText("Forgot Password")
+      setLoginButtonText("Login")
+      setNewToPedigreeText("New to PedigreeAll")
+      setCreateAnAccountText("Create an account")
+    }
+  }, []);
 
   return (
 
@@ -112,7 +88,6 @@ export function LoginScreen({ navigation }) {
       source={require("../../assets/background.jpg")}
       style={styles.background}
     >
-      <Root>
         <View style={{ position: "absolute", width: '100%', height: '100%' }}>
           <Image
             resizeMode={"contain"}
@@ -127,7 +102,7 @@ export function LoginScreen({ navigation }) {
             <View style={styles.inputView}>
               <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
               <Input
-                placeholder={"Email"}
+                placeholder={getEmailPlaceholder}
                 keyboardType={"email-address"}
                 name={"username"}
                 value={email}
@@ -138,7 +113,7 @@ export function LoginScreen({ navigation }) {
             <View style={styles.inputView}>
               <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
               <Input
-                placeholder={"Password"}
+                placeholder={getPasswordPlaceholder}
                 secureTextEntry
                 name={"password"}
                 value={password}
@@ -147,19 +122,18 @@ export function LoginScreen({ navigation }) {
             </View>
 
             <View style={styles.checkBoxContainer}>
-
               <Text
                 style={{ fontWeight: "bold", color: "#2e3f6e", paddingRight: 0, marginTop:10, marginBottom:10 }}
                 onPress={() => {
                   navigation.navigate("ForgotPassword");
                 }}
               >
-                Forgot Password{" "}
+                {getForgotPasswordText}
               </Text>
             </View>
 
             <FilledButton
-              title="Login"
+              title={getLoginButtonText}
               onPress={() =>
                 fetch('https://api.pedigreeall.com/systemuser/login', {
                   method: 'POST',
@@ -174,12 +148,27 @@ export function LoginScreen({ navigation }) {
                 })
                   .then((response) => response.json())
                   .then((json) => {
-                    if (showMessage(json.m_cDetail, navigation)) {
+                    if (json.m_cDetail.m_eProcessState > 0) {
                       Global.IsLogin = true;
                       //localStorage.setItem('USER',JSON.stringify(json.m_cData) )
                       saveData(JSON.stringify(json.m_cData), email, password)
+                      if (Global.Language===1) {
+                        AlertMessage("İşlem Başarılı",json.m_cDetail.m_lUserMessageList[0])
+                    }
+                    else{
+                      AlertMessage("Process Successful",json.m_cDetail.m_lUserMessageList[1])
+                    }
                       navigation.navigate("Main")
                     }
+                    else{
+                       if (Global.Language===1) {
+                          AlertMessage("İşlem Başarısız",json.m_cDetail.m_lUserMessageList[0])
+                      }
+                      else{
+                        AlertMessage("Process Unsuccessful",json.m_cDetail.m_lUserMessageList[1])
+                      }
+                    }
+                   
 
 
                   })
@@ -192,7 +181,7 @@ export function LoginScreen({ navigation }) {
 
 
             <View style={styles.TextView}>
-              <Text>New to PedigreeAll? </Text>
+              <Text>{getNewToPedigreeText} </Text>
               <Text
                 style={{ color: "#2e3f6e", fontSize: 18, fontWeight: "bold" }}
                 onPress={() => {
@@ -205,12 +194,11 @@ export function LoginScreen({ navigation }) {
                   });
                 }}
               >
-                Create an account.
+                {getCreateAnAccountText}
           </Text>
             </View>
           </View>
         </View>
-      </Root>
 
     </ImageBackground>
 
