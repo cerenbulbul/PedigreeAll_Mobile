@@ -10,30 +10,36 @@ import RBSheet from "react-native-raw-bottom-sheet";
 const ConfirmationData = [
     {
         id: "1",
-        title: "All",
+        titleEnglish: "All",
+        titleTurkish: "Hepsi"
     },
     {
         id: "2",
-        title: "Approved",
+        titleEnglish: "Approved",
+        titleTurkish: "Onaylı"
     },
     {
         id: "3",
-        title: "Unapproved",
+        titleEnglish: "Unapproved",
+        titleTurkish: "Onaysız"
     },
 ]
 
 const DeadData = [
     {
         id: "1",
-        title: "All",
+        titleEnglish: "All",
+        titleTurkish: "Hepsi"
     },
     {
         id: "2",
-        title: "Dead",
+        titleEnglish: "Dead",
+        titleTurkish: "Ölü"
     },
     {
         id: "3",
-        title: "Alive",
+        titleEnglish: "Alive",
+        titleTurkish: "Sağ"
     },
 ]
 
@@ -99,8 +105,8 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
     const [checkStateMultiCoachString, setcheckStateMultiCoachString] = React.useState({ checkedString: [] });
 
     const [getBMSireName, setBMSireName] = React.useState("BM Sire Name")
-    const [getConfirmation, setConfirmation] = React.useState("Confirmation")
-    const [getDead, setDead] = React.useState("Dead");
+    const [getConfirmation, setConfirmation] = React.useState("")
+    const [getDead, setDead] = React.useState("");
     const [getCountry, setCountry] = React.useState("Country")
     const [getSex, setSex] = React.useState("Sex")
     const [getClass, setClass] = React.useState("Class");
@@ -109,7 +115,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
     const [getCoach, setCoach] = React.useState("Coach")
     const [getRomanMiller, setRomanMiller] = React.useState("Roman Miller")
     const [getANZ, setANZ] = React.useState("ANZ")
-    const [getSortTypeString, setSortTypeString] = React.useState("Recently Added")
+    const [getSortTypeString, setSortTypeString] = React.useState("")
     const [getOwnerBreederName, setOwnerBreederName] = React.useState()
 
     const [getHorseGetFilter, setHorseGetFilter] = React.useState();
@@ -243,10 +249,22 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.COUNTRY_ID)) {
             setcheckStateMultiCountry({ checked: [...checked, item.COUNTRY_ID] });
-            setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_TR] })
+            }
+            else {
+                setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_EN] })
+            }
+
         } else {
             setcheckStateMultiCountry({ checked: checked.filter(a => a !== item.COUNTRY_ID) });
-            setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_TR) });
+            }
+            else {
+                setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_EN) });
+            }
+
         }
     }
 
@@ -256,10 +274,22 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.SEX_ID)) {
             setcheckStateMultiSex({ checked: [...checked, item.SEX_ID] });
-            setcheckStateMultiSexString({ checkedString: [...checkedString, item.SEX_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiSexString({ checkedString: [...checkedString, item.SEX_TR] })
+            }
+            else {
+                setcheckStateMultiSexString({ checkedString: [...checkedString, item.SEX_EN] })
+            }
+
         } else {
             setcheckStateMultiSex({ checked: checked.filter(a => a !== item.SEX_ID) });
-            setcheckStateMultiSexString({ checkedString: checkedString.filter(a => a !== item.SEX_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiSexString({ checkedString: checkedString.filter(a => a !== item.SEX_TR) });
+            }
+            else {
+                setcheckStateMultiSexString({ checkedString: checkedString.filter(a => a !== item.SEX_EN) });
+            }
+
         }
     }
 
@@ -269,10 +299,22 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.WINNER_TYPE_ID)) {
             setcheckStateMultiClass({ checked: [...checked, item.WINNER_TYPE_ID] });
-            setcheckStateMultiClassString({ checkedString: [...checkedString, item.WINNER_TYPE_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiClassString({ checkedString: [...checkedString, item.WINNER_TYPE_TR] })
+            }
+            else {
+                setcheckStateMultiClassString({ checkedString: [...checkedString, item.WINNER_TYPE_EN] })
+            }
+
         } else {
             setcheckStateMultiClass({ checked: checked.filter(a => a !== item.WINNER_TYPE_ID) });
-            setcheckStateMultiClassString({ checkedString: checkedString.filter(a => a !== item.WINNER_TYPE_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiClassString({ checkedString: checkedString.filter(a => a !== item.WINNER_TYPE_TR) });
+            }
+            else {
+                setcheckStateMultiClassString({ checkedString: checkedString.filter(a => a !== item.WINNER_TYPE_EN) });
+            }
+
         }
     }
 
@@ -376,7 +418,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                         "SORT_TYPE_ID": getSortTypeID,
                         "PAGE_NO": 1,
                         "PAGE_COUNT": 16,
-                        "RACE_ID" : 1
+                        "RACE_ID": 1
                     })
                 })
                     .then((response) => response.json())
@@ -396,7 +438,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         }
     }
 
-    const readHorseGetByName = async () => { 
+    const readHorseGetByName = async () => {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
@@ -410,7 +452,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -600,6 +642,24 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         }
     }
 
+    const [getHorseNamePlaceholder, setHorseNamePlaceholder] = React.useState("");
+    const [getMinEarningPlaceholder, setMinEarningPlaceholder] = React.useState("")
+    const [getMaxEarningPlaceholder, setMaxEarningPlaceholder] = React.useState("")
+    const [getMinPricePlaceholder, setMinPricePlaceholder] = React.useState("")
+    const [getMaxPricePlaceholder, setMaxPricePlaceholder] = React.useState("")
+    const [getStartBDatePlaceholder, setStartBDatePlaceholder] = React.useState("")
+    const [getEndBDatePlaceholder, setEndBDatePlaceholder] = React.useState("")
+    const [getMinStartsPlaceholder, setMinStartsPlaceholder] = React.useState("")
+    const [getMaxStartsPlaceholder, setMaxStartsPlaceholder] = React.useState("")
+    const [getMinFirstPlacePlaceholder, setMinFirstPlacePlaceholder] = React.useState("")
+    const [getMaxFirstPlacePlaceholder, setMaxFirstPlacePlaceholder] = React.useState("")
+    const [getMinSecondPlacePlaceholder, setMinSecondPlacePlaceholder] = React.useState("")
+    const [getMaxSecondPlacePlaceholder, setMaxSecondPlacePlaceholder] = React.useState("")
+    const [getMinThirdPlacePlaceholder, setMinThirdPlacePlaceholder] = React.useState("")
+    const [getMaxThirdPlacePlaceholder, setMaxThirdPlacePlaceholder] = React.useState("")
+    const [getMinFourthPlacePlaceholder, setMinFourthPlacePlaceholder] = React.useState("")
+    const [getMaxFourthPlacePlaceholder, setMaxFourthPlacePlaceholder] = React.useState("")
+    const [getTJKSireMarePlaceholder, setTJKSireMarePlaceholder] = React.useState("")
 
     React.useEffect(() => {
         readGetSortType();
@@ -610,6 +670,53 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
         readGetSex();
         readGetWinnerType();
         readGetOwnerBreeder();
+
+        if (Global.Language === 1) {
+            setSortTypeString("Son Eklenenler")
+            setHorseNamePlaceholder("Isim")
+            setConfirmation("Onay")
+            setDead("Ölü")
+            setMinPricePlaceholder("Min Fiyat")
+            setMaxPricePlaceholder("Max Fiyat")
+            setMinEarningPlaceholder("Min Kazanç")
+            setMaxEarningPlaceholder("Max Kazanç")
+            setStartBDatePlaceholder("Başlangıç Doğum Tarihi")
+            setEndBDatePlaceholder("Bitiş Doğum Tarihi")
+            setMinStartsPlaceholder("Min Toplam Yarış Sayısı")
+            setMaxStartsPlaceholder("Max Toplam Yarış Sayısı")
+            setMinFirstPlacePlaceholder("Min 1'incilik")
+            setMaxFirstPlacePlaceholder("Max 1'incilik")
+            setMinSecondPlacePlaceholder("Min 2'ncilik")
+            setMaxSecondPlacePlaceholder("Max 2'ncilik")
+            setMinThirdPlacePlaceholder("Min 3'üncülük")
+            setMaxThirdPlacePlaceholder("Max 3'üncülük")
+            setMinFourthPlacePlaceholder("Min 4'üncülük")
+            setMaxFourthPlacePlaceholder("Max 4'üncülük")
+            setTJKSireMarePlaceholder("TJK ID Aygır/Kısrak")
+        }
+        else {
+            setSortTypeString("Recently Added")
+            setHorseNamePlaceholder("Name")
+            setConfirmation("Confimation")
+            setDead("Dead")
+            setMinPricePlaceholder("Min Price")
+            setMaxPricePlaceholder("Max Price")
+            setMinEarningPlaceholder("Min Earning")
+            setMaxEarningPlaceholder("Max Earning")
+            setStartBDatePlaceholder("Start Birth Date")
+            setEndBDatePlaceholder("End Birth Date")
+            setMinStartsPlaceholder("Min Start Count")
+            setMaxStartsPlaceholder("Max Start Count")
+            setMinFirstPlacePlaceholder("Min 1st place")
+            setMaxFirstPlacePlaceholder("Max 1st place")
+            setMinSecondPlacePlaceholder("Min 2nd place")
+            setMaxSecondPlacePlaceholder("Max 2nd place")
+            setMinThirdPlacePlaceholder("Min 3rd place")
+            setMaxThirdPlacePlaceholder("Max 3rd place")
+            setMinFourthPlacePlaceholder("Min 4th place")
+            setMaxFourthPlacePlaceholder("Max 4th place")
+            setTJKSireMarePlaceholder("TJK ID Sire/Mare")
+        }
     }, [])
 
 
@@ -619,7 +726,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                 ref={BottomSheetFiltering}
                 closeOnDragDown={true}
                 closeOnPressMask={true}
-                height={Dimensions.get('window').height - 50}
+                height={Dimensions.get('window').height}
                 customStyles={{
                     container: {
                         borderTopLeftRadius: 10,
@@ -639,7 +746,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Horse ID"}
+                        placeholder={"ID"}
                         name={"HorseID"}
                         value={getHorseID}
                         onChangeText={setHorseID}
@@ -647,7 +754,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Name"}
+                        placeholder={getHorseNamePlaceholder}
                         name={"HorseName"}
                         value={getHorseName}
                         onChangeText={setHorseName}
@@ -662,7 +769,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
                             {checkStateMultiSireNameString.checkedString.length === 0 ?
-                                <Text style={styles.InformationText}>Sire Name</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Aygır Adı</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Sire Name</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiSireNameString.checkedString}</Text>
                             }
@@ -686,7 +800,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
                             {checkStateMultiMareNameString.checkedString.length === 0 ?
-                                <Text style={styles.InformationText}>Mare Name</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Kısrak Adı</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Mare Name</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiMareNameString.checkedString}</Text>
                             }
@@ -708,7 +829,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
                             {checkStateMultiBMSireName.checked.length === 0 ?
-                                <Text style={styles.InformationText}>BM Sire Name</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Kısrak Babası Adı</Text>
+                                        :
+                                        <Text style={styles.InformationText}>BM Sire Name</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiBMSireNameString.checkedString}</Text>
                             }
@@ -770,7 +898,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="flag" size={20} color="#2169ab" />
                             {checkStateMultiCountry.checked.length === 0 ?
-                                <Text style={styles.InformationText}>Country</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Ülke</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Country</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiCountryString.checkedString}</Text>
                             }
@@ -794,7 +929,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="male" size={20} color="#2169ab" />
                             {checkStateMultiSex.checked.length === 0 ?
-                                <Text style={styles.InformationText}>Sex</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Cinsiyet</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Sex</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiSexString.checkedString}</Text>
                             }
@@ -818,7 +960,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="horse" size={20} color="#2169ab" />
                             {checkStateMultiClass.checked.length === 0 ?
-                                <Text style={styles.InformationText}>Class</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Sınıf</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Class</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiClassString.checkedString}</Text>
                             }
@@ -835,7 +984,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 50 }]}
-                        placeholder={"Min Earning"}
+                        placeholder={getMinEarningPlaceholder}
                         name={"MinEarning"}
                         value={getMinEarning}
                         onChangeText={setMinEarning}
@@ -844,7 +993,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Earning"}
+                        placeholder={getMaxEarningPlaceholder}
                         name={"MaxEarning"}
                         value={getMaxEarning}
                         onChangeText={setMaxEarning}
@@ -853,7 +1002,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Price"}
+                        placeholder={getMinPricePlaceholder}
                         name={"MinPrice"}
                         value={getMinPrice}
                         onChangeText={setMinPrice}
@@ -862,7 +1011,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"max Earning"}
+                        placeholder={getMaxPricePlaceholder}
                         name={"MaxPrice"}
                         value={getMaxPrice}
                         onChangeText={setMaxPrice}
@@ -871,7 +1020,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Start B.Date"}
+                        placeholder={getStartBDatePlaceholder}
                         name={"StartBDate"}
                         value={getStartBirthdate}
                         onChangeText={setStartBirthdate}
@@ -880,7 +1029,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"End B.Date"}
+                        placeholder={getEndBDatePlaceholder}
                         name={"EndBDate"}
                         value={getEndBirthdate}
                         onChangeText={setEndBirthdate}
@@ -895,7 +1044,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             }}
                             style={styles.InputTouchableContainer}>
                             {checkStateMultiOwner.checked.length === 0 ?
-                                <Text style={styles.InformationText}>Owner</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Sahip</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Owner</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiOwnerString.checkedString}</Text>
                             }
@@ -919,7 +1075,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             }}
                             style={styles.InputTouchableContainer}>
                             {checkStateMultiBreeder.checked.length === 0 ?
-                                <Text style={styles.InformationText}>Breeder</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Yetiştirici</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Breeder</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiBreederString.checkedString}</Text>
                             }
@@ -943,7 +1106,14 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                             }}
                             style={styles.InputTouchableContainer}>
                             {checkStateMultiCoach.checked.length === 0 ?
-                                <Text style={styles.InformationText}>Coach</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Antrenör</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Coach</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiCoachString.checkedString}</Text>
                             }
@@ -961,7 +1131,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 50 }]}
-                        placeholder={"Min Starts"}
+                        placeholder={getMinStartsPlaceholder}
                         name={"MinStarts"}
                         value={getMinStartsCount}
                         onChangeText={setMinStartsCount}
@@ -970,7 +1140,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Starts"}
+                        placeholder={getMaxStartsPlaceholder}
                         name={"MaxStarts"}
                         value={getMaxStartsCount}
                         onChangeText={setMaxStartsCount}
@@ -979,7 +1149,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 1st Place"}
+                        placeholder={getMinFirstPlacePlaceholder}
                         name={"Min1stPlace"}
                         value={getMinFirst}
                         onChangeText={setMinFirst}
@@ -988,7 +1158,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 1st Place"}
+                        placeholder={getMaxFirstPlacePlaceholder}
                         name={"Max1stPlace"}
                         value={getMaxFirst}
                         onChangeText={setMaxFirst}
@@ -997,7 +1167,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 2nd Place"}
+                        placeholder={getMinSecondPlacePlaceholder}
                         name={"Min2ndPlace"}
                         value={getMinSecond}
                         onChangeText={setMinSecond}
@@ -1006,7 +1176,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 2nd Place"}
+                        placeholder={getMaxSecondPlacePlaceholder}
                         name={"Max2ndPlace"}
                         value={getMaxSecond}
                         onChangeText={setMaxSecond}
@@ -1015,7 +1185,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 3rd Place"}
+                        placeholder={getMinThirdPlacePlaceholder}
                         name={"Min3rdPlace"}
                         value={getMinThird}
                         onChangeText={setMinThird}
@@ -1024,7 +1194,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 3rd Place"}
+                        placeholder={getMaxThirdPlacePlaceholder}
                         name={"Max3rdPlace"}
                         value={getMaxThird}
                         onChangeText={setMaxThird}
@@ -1033,7 +1203,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 4th Place"}
+                        placeholder={getMinFourthPlacePlaceholder}
                         name={"Min4thPlace"}
                         value={getMinFourth}
                         onChangeText={setMinFourth}
@@ -1042,7 +1212,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 4th Place"}
+                        placeholder={getMaxFourthPlacePlaceholder}
                         name={"Max4thPlace"}
                         value={getMaxFourth}
                         onChangeText={setMaxFourth}
@@ -1060,7 +1230,7 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"TJK ID Sire/Mare ID"}
+                        placeholder={getTJKSireMarePlaceholder}
                         name={"TJKIDSire/Mare"}
                         value={getReference2}
                         onChangeText={setReference2}
@@ -1124,13 +1294,18 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                     </View>
 
                     <TouchableOpacity
-                        style={styles.SearchButtonStyle}
+                        style={[styles.SearchButtonStyle, { marginBottom: 50 }]}
                         onPress={() => {
                             setTime(true)
                             readHorseGetFilter();
                             BottomSheetFiltering.current.close()
                         }}>
-                        <Text style={styles.SearchButtonText}>Search</Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.SearchButtonText}>Arama</Text>
+                            :
+                            <Text style={styles.SearchButtonText}>Search</Text>
+                        }
+
                     </TouchableOpacity>
                 </ScrollView>
             </RBSheet>
@@ -1535,34 +1710,71 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                 </View>
                             )}
                             <ScrollView style={styles.ScrollViewContainer}>
-                                {getCountryData.filter((x) => x.COUNTRY_EN.includes(searchValue)).map((item, i) => (
-                                    <ListItem
-                                        key={i}
-                                        bottomDivider
-                                        button
-                                        onPress={() => {
-                                            pressCountry(item)
-                                        }}
-                                    >
-                                        <ListItem.CheckBox
-                                            checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
-                                            checkedIcon='circle'
-                                            uncheckedIcon='circle'
-                                            center={true}
-                                            checkedColor='#2169ab'
-                                            uncheckedColor='rgb(232, 237, 241)'
-                                            onPress={() => {
-                                                pressCountry(item)
-                                            }} />
+                                {Global.Language === 1 ?
+                                    <>
+                                        {getCountryData.filter((x) => x.COUNTRY_TR.includes(searchValue)).map((item, i) => (
+                                            <ListItem
+                                                key={i}
+                                                bottomDivider
+                                                button
+                                                onPress={() => {
+                                                    pressCountry(item)
+                                                }}
+                                            >
+                                                <ListItem.CheckBox
+                                                    checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
+                                                    checkedIcon='circle'
+                                                    uncheckedIcon='circle'
+                                                    center={true}
+                                                    checkedColor='#2169ab'
+                                                    uncheckedColor='rgb(232, 237, 241)'
+                                                    onPress={() => {
+                                                        pressCountry(item)
+                                                    }} />
 
-                                        <Flag code={item.ICON.toUpperCase()} size={24} />
-                                        <ListItem.Content>
-                                            <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
-                                        </ListItem.Content>
-                                        <ListItem.Chevron />
-                                    </ListItem>
-                                )
-                                )}
+                                                <Flag code={item.ICON.toUpperCase()} size={24} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{item.COUNTRY_TR}</ListItem.Title>
+
+                                                </ListItem.Content>
+                                                <ListItem.Chevron />
+                                            </ListItem>
+                                        )
+                                        )}
+                                    </>
+                                    :
+                                    <>
+                                        {getCountryData.filter((x) => x.COUNTRY_EN.includes(searchValue)).map((item, i) => (
+                                            <ListItem
+                                                key={i}
+                                                bottomDivider
+                                                button
+                                                onPress={() => {
+                                                    pressCountry(item)
+                                                }}
+                                            >
+                                                <ListItem.CheckBox
+                                                    checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
+                                                    checkedIcon='circle'
+                                                    uncheckedIcon='circle'
+                                                    center={true}
+                                                    checkedColor='#2169ab'
+                                                    uncheckedColor='rgb(232, 237, 241)'
+                                                    onPress={() => {
+                                                        pressCountry(item)
+                                                    }} />
+
+                                                <Flag code={item.ICON.toUpperCase()} size={24} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+
+                                                </ListItem.Content>
+                                                <ListItem.Chevron />
+                                            </ListItem>
+                                        )
+                                        )}
+                                    </>
+                                }
                             </ScrollView>
                         </>
 
@@ -1599,7 +1811,12 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 pressSex(item)
                                             }} />
                                         <ListItem.Content>
-                                            <ListItem.Title>{item.SEX_EN}</ListItem.Title>
+                                            {Global.Language === 1 ?
+                                                <ListItem.Title>{item.SEX_TR}</ListItem.Title>
+                                                :
+                                                <ListItem.Title>{item.SEX_EN}</ListItem.Title>
+                                            }
+
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -1641,7 +1858,12 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 pressClass(item)
                                             }} />
                                         <ListItem.Content>
-                                            <ListItem.Title>{item.WINNER_TYPE_EN}</ListItem.Title>
+                                            {Global.Language === 1 ?
+                                                <ListItem.Title>{item.WINNER_TYPE_TR}</ListItem.Title>
+                                                :
+                                                <ListItem.Title>{item.WINNER_TYPE_EN}</ListItem.Title>
+                                            }
+
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -1882,61 +2104,61 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                         setAnzP(0)
                         setAnzS(0)
 
-                        if(checkStateMultiRM.checked.length>0) {
-                            for(let i=0; i<checkStateMultiRM.checked.length; i++) {
-                                if(checkStateMultiRM.checked[i] === "B"){
+                        if (checkStateMultiRM.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiRM.checked.length; i++) {
+                                if (checkStateMultiRM.checked[i] === "B") {
                                     setRmB(1)
                                 }
-                                if(checkStateMultiRM.checked[i] === "I"){
+                                if (checkStateMultiRM.checked[i] === "I") {
                                     setRmI(1)
                                 }
-                                if(checkStateMultiRM.checked[i] === "C"){
+                                if (checkStateMultiRM.checked[i] === "C") {
                                     setRmC(1)
                                 }
-                                if(checkStateMultiRM.checked[i] === "S"){
+                                if (checkStateMultiRM.checked[i] === "S") {
                                     setRmS(1)
                                 }
-                                if(checkStateMultiRM.checked[i] === "P"){
+                                if (checkStateMultiRM.checked[i] === "P") {
                                     setRmP(1)
                                 }
                             }
                         }
 
-                        if(checkStateMultiPA.checked.length>0) {
-                            for(let i=0; i<checkStateMultiPA.checked.length; i++) {
-                                if(checkStateMultiPA.checked[i] === "B"){
+                        if (checkStateMultiPA.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiPA.checked.length; i++) {
+                                if (checkStateMultiPA.checked[i] === "B") {
                                     setB(1)
                                 }
-                                if(checkStateMultiPA.checked[i] === "I"){
+                                if (checkStateMultiPA.checked[i] === "I") {
                                     setI(1)
                                 }
-                                if(checkStateMultiPA.checked[i] === "C"){
+                                if (checkStateMultiPA.checked[i] === "C") {
                                     setC(1)
                                 }
-                                if(checkStateMultiPA.checked[i] === "S"){
+                                if (checkStateMultiPA.checked[i] === "S") {
                                     setS(1)
                                 }
-                                if(checkStateMultiPA.checked[i] === "P"){
+                                if (checkStateMultiPA.checked[i] === "P") {
                                     setP(1)
                                 }
                             }
                         }
 
-                        if(checkStateMultiANZ.checked.length>0) {
-                            for(let i=0; i<checkStateMultiANZ.checked.length; i++) {
-                                if(checkStateMultiANZ.checked[i] === "B"){
+                        if (checkStateMultiANZ.checked.length > 0) {
+                            for (let i = 0; i < checkStateMultiANZ.checked.length; i++) {
+                                if (checkStateMultiANZ.checked[i] === "B") {
                                     setAnzB(1)
                                 }
-                                if(checkStateMultiANZ.checked[i] === "I"){
+                                if (checkStateMultiANZ.checked[i] === "I") {
                                     setAnzI(1)
                                 }
-                                if(checkStateMultiANZ.checked[i] === "C"){
+                                if (checkStateMultiANZ.checked[i] === "C") {
                                     setAnzC(1)
                                 }
-                                if(checkStateMultiANZ.checked[i] === "S"){
+                                if (checkStateMultiANZ.checked[i] === "S") {
                                     setAnzS(1)
                                 }
-                                if(checkStateMultiANZ.checked[i] === "P"){
+                                if (checkStateMultiANZ.checked[i] === "P") {
                                     setAnzP(1)
                                 }
                             }
@@ -1959,34 +2181,32 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                         setState({ checked: [state, item.id] });
                                         setChekedItem(item.id)
                                         BottomSheetSmall.current.close();
-                                        setConfirmation(item.title)
-                                        if (item.title === "All") {
+                                        if (item.id === 1) {
                                             setConfirm("");
                                         }
-                                        else if (item.title === "Approved") {
+                                        else if (item.id === 2) {
                                             setConfirm("1")
                                         }
-                                        else if (item.title === "Unapproved") {
+                                        else if (item.id === 3) {
                                             setConfirm("0")
+                                        }
+
+                                        if (Global.Language === 1) {
+                                            setConfirmation(item.titleTurkish)
+                                        }
+                                        else {
+                                            setConfirmation(item.titleEnglish)
                                         }
 
                                     }}
                                 >
-                                    <ListItem.CheckBox
-                                        checked={state.checked.includes(item.id)}
-                                        checkedIcon='circle'
-                                        uncheckedIcon='circle'
-                                        center={true}
-                                        checkedColor='#2169ab'
-                                        uncheckedColor='rgb(232, 237, 241)'
-                                        onPress={() => {
-                                            setState({ checked: [state, item.id] });
-                                            setChekedItem(item.id)
-                                            setConfirmation(item.title)
-                                            setConfirm(item.title);
-                                        }} />
                                     <ListItem.Content>
-                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                        {Global.Language === 1 ?
+                                            <ListItem.Title>{item.titleTurkish}</ListItem.Title>
+                                            :
+                                            <ListItem.Title>{item.titleEnglish}</ListItem.Title>
+                                        }
+
                                     </ListItem.Content>
 
                                 </ListItem>
@@ -2003,15 +2223,21 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                     onPress={() => {
                                         setStateDead({ checked: [state, item.id] });
                                         setChekedItem(item.id)
-                                        setDead(item.title)
-                                        if (item.title === "All") {
+
+                                        if (item.id === 1) {
                                             setIsDead("");
                                         }
-                                        else if (item.title === "Alive") {
+                                        else if (item.id === 2) {
                                             setIsDead("1")
                                         }
-                                        else if (item.title === "Dead") {
+                                        else if (item.id === 3) {
                                             setIsDead("0")
+                                        }
+                                        if (Global.Language === 1) {
+                                            setDead(item.titleTurkish)
+                                        }
+                                        else {
+                                            setDead(item.titleEnglish)
                                         }
                                         BottomSheetSmall.current.close();
                                     }}
@@ -2026,10 +2252,20 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                         onPress={() => {
                                             setStateDead({ checked: [state, item.id] });
                                             setChekedItem(item.id)
-                                            setDead(item.title)
+                                            if (Global.Language === 1) {
+                                                setDead(item.titleTurkish)
+                                            }
+                                            else {
+                                                setDead(item.titleEnglish)
+                                            }
                                         }} />
                                     <ListItem.Content>
-                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                        {Global.Language === 1 ?
+                                            <ListItem.Title>{item.titleTurkish}</ListItem.Title>
+                                            :
+                                            <ListItem.Title>{item.titleEnglish}</ListItem.Title>
+                                        }
+
                                     </ListItem.Content>
 
                                 </ListItem>
@@ -2137,13 +2373,23 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                             bottomDivider
                                             onPress={() => {
                                                 BottomSheetSmall.current.close()
-                                                setSortTypeString(item.SORT_TYPE_EN)
+                                                if (Global.Language === 1) {
+                                                    setSortTypeString(item.SORT_TYPE_TR)
+                                                }
+                                                else {
+                                                    setSortTypeString(item.SORT_TYPE_EN)
+                                                }
                                                 setTime(true)
                                                 readHorseGetFilter(item.SORT_TYPE_ID);
                                             }}
                                         >
                                             <ListItem.Content>
-                                                <ListItem.Title>{item.SORT_TYPE_EN}</ListItem.Title>
+                                                {Global.Language === 1 ?
+                                                    <ListItem.Title>{item.SORT_TYPE_TR}</ListItem.Title>
+                                                    :
+                                                    <ListItem.Title>{item.SORT_TYPE_EN}</ListItem.Title>
+                                                }
+
                                             </ListItem.Content>
 
                                         </ListItem>
@@ -2189,13 +2435,23 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                         <>
                             {getHorseGetFilter.length === 0 ?
                                 <View style={styles.ErrorMessageContainer}>
-                                <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                <Text style={styles.ErrorMessageText}>You can search again.</Text>
-                                <View style={styles.ErrorMessageButtonContainer}>
+                                    <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                                    {Global.Language === 1 ?
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                            <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                            <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                        </>
+                                        :
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                        </>
+                                    }
+                                    <View style={styles.ErrorMessageButtonContainer}>
+                                    </View>
                                 </View>
-                              </View>
                                 :
                                 <View>
                                     {getHorseGetFilter.map((item, index) => (
@@ -2212,7 +2468,12 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                                     <View style={{ flexDirection: 'row' }}>
-                                                        <Text style={styles.LatestCardItemTitle}>Sire</Text>
+                                                        {Global.Language === 1 ?
+                                                            <Text style={styles.LatestCardItemTitle}>Baba</Text>
+                                                            :
+                                                            <Text style={styles.LatestCardItemTitle}>Sire</Text>
+                                                        }
+
                                                         <View style={{ flexDirection: 'row', marginLeft: 40 }}>
                                                             <Flag code={item.ICON.toUpperCase()} size={24} />
                                                             <Text style={styles.CardItemText}>{item.FATHER_NAME}</Text>
@@ -2227,7 +2488,12 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                                     <View style={styles.LatestViewItem}>
-                                                        <Text style={styles.LatestCardItemTitle}>Dam</Text>
+                                                        {Global.Language === 1 ?
+                                                            <Text style={styles.LatestCardItemTitle}>Kısrak</Text>
+                                                            :
+                                                            <Text style={styles.LatestCardItemTitle}>Dam</Text>
+                                                        }
+
                                                         <View style={{ flexDirection: 'row', marginLeft: 35 }}>
                                                             <Flag code={item.ICON.toUpperCase()} size={24} />
                                                             <Text style={styles.CardItemText}>{item.MOTHER_NAME}</Text>
@@ -2242,7 +2508,12 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                                     <View style={styles.LatestViewItem}>
-                                                        <Text style={styles.LatestCardItemTitle}>BM Sire</Text>
+                                                        {Global.Language === 1 ?
+                                                            <Text style={styles.LatestCardItemTitle}>Kısrak Babası</Text>
+                                                            :
+                                                            <Text style={styles.LatestCardItemTitle}>BM Sire</Text>
+                                                        }
+
                                                         <View style={{ flexDirection: 'row', marginLeft: 15 }}>
                                                             <Flag code='UNK' size={24} />
                                                             <Text style={styles.CardItemText}>{item.BM_SIRE_NAME}</Text>
@@ -2259,14 +2530,30 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                        <Text style={styles.LatestCardItemTitle}>Records</Text>
+                                                        {Global.Language === 1 ?
+                                                            <Text style={styles.LatestCardItemTitle}>Yarışlar</Text>
+                                                            :
+                                                            <Text style={styles.LatestCardItemTitle}>Records</Text>
+                                                        }
+
                                                         <View style={{ flexDirection: 'row', marginLeft: 15 }}>
                                                             <Text>{item.START_COUNT} - {item.FIRST} - {item.SECOND} - {item.THIRD} - {item.FOURTH}</Text>
                                                         </View>
                                                     </View>
                                                     <View style={{ flexDirection: 'row' }}>
-                                                        <Text style={styles.LatestCardItemTitle}>Sex</Text>
-                                                        <Text style={{ marginLeft: 50 }}>{item.SEX_OBJECT.SEX_EN}</Text>
+                                                        {Global.Language === 1 ?
+                                                            <>
+                                                                <Text style={styles.LatestCardItemTitle}>Cinsiyet</Text>
+                                                                <Text style={{ marginLeft: 5 }}>{item.SEX_OBJECT.SEX_TR}</Text>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <Text style={styles.LatestCardItemTitle}>Sex</Text>
+                                                                <Text style={{ marginLeft: 5 }}>{item.SEX_OBJECT.SEX_EN}</Text>
+                                                            </>
+                                                        }
+
+
                                                     </View>
                                                 </View>
 
@@ -2276,12 +2563,27 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
 
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                        <Text style={styles.LatestCardItemTitle}>Earning</Text>
+                                                        {Global.Language === 1 ?
+                                                            <Text style={styles.LatestCardItemTitle}>Kazanç</Text>
+                                                            :
+                                                            <Text style={styles.LatestCardItemTitle}>Earning</Text>
+                                                        }
+
                                                         <Text style={{ marginLeft: 17 }}>{moneyFormat(item.EARN)} {item.EARN_ICON}</Text>
                                                     </View>
                                                     <View style={{ flexDirection: 'row' }}>
-                                                        <Text style={styles.LatestCardItemTitle}>Class</Text>
-                                                        <Text style={{ marginLeft: 50 }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</Text>
+                                                        {Global.Language === 1 ?
+                                                            <>
+                                                                <Text style={styles.LatestCardItemTitle}>Sınıf</Text>
+                                                                <Text style={{ marginLeft: 5 }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_TR}</Text>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <Text style={styles.LatestCardItemTitle}>Class</Text>
+                                                                <Text style={{ marginLeft: 5 }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</Text>
+                                                            </>
+                                                        }
+
                                                     </View>
 
                                                 </View>
@@ -2291,7 +2593,12 @@ export function ThoroughhbredsSearchScreen({ navigation }) {
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                                     <View style={styles.LatestViewItem}>
-                                                        <Text style={styles.LatestCardItemTitle}>Point</Text>
+                                                        {Global.Language === 1 ?
+                                                            <Text style={styles.LatestCardItemTitle}>Puan</Text>
+                                                            :
+                                                            <Text style={styles.LatestCardItemTitle}>Point</Text>
+                                                        }
+
                                                         <Text style={{ marginLeft: 35 }}>{item.POINT.toFixed()}</Text>
                                                     </View>
                                                     <View>
@@ -2538,24 +2845,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        marginVertical:30
-      },
-      ErrorMessageTitle: {
+        marginVertical: 30
+    },
+    ErrorMessageTitle: {
         textAlign: 'center',
         fontSize: 20,
         fontWeight: 'bold',
         color: '#222'
-      },
-      ErrorMessageText: {
+    },
+    ErrorMessageText: {
         fontSize: 16,
         color: '#c7c1c1',
         textAlign: 'center',
         marginTop: 5
-      },
-      ErrorMessageButtonContainer: {
+    },
+    ErrorMessageButtonContainer: {
         width: '80%',
         marginTop: 40,
         flexDirection: 'row',
         justifyContent: 'space-between'
-      },
+    },
 })

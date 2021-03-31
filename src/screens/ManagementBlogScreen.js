@@ -14,11 +14,27 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable } from 'react-native-paper';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { SearchBar, ListItem } from "react-native-elements";
+import { Global } from '../Global';
 
 
 const Tab = createMaterialTopTabNavigator();
 
 export function ManagementBlogScreen() {
+
+    const [getAddBlogName, setAddBlogName] = React.useState("Add Blog")
+    const [getCategoryName, setCategoryName] = React.useState("Category")
+
+    React.useEffect(() => {
+        if (Global.Language === 1) {
+            setAddBlogName("Blog Ekle")
+            setCategoryName("Kategori")
+        }
+        else {
+            setAddBlogName("Add Blog")
+            setCategoryName("Category")
+        }
+    }, [])
+
     return (
         <View style={styles.Container}>
             <Tab.Navigator
@@ -57,7 +73,7 @@ export function ManagementBlogScreen() {
                     name="AddBlog"
                     component={AddBlogScreen}
                     options={{
-                        tabBarLabel: 'Add Blog'
+                        tabBarLabel: getAddBlogName
                     }}
                 />
                 <Tab.Screen
@@ -72,7 +88,7 @@ export function ManagementBlogScreen() {
                     name="CategoryList"
                     component={CategoryList}
                     options={{
-                        tabBarLabel: 'Category',
+                        tabBarLabel: getCategoryName,
                     }}
                 />
             </Tab.Navigator>
@@ -98,6 +114,8 @@ function AddBlogScreen() {
     const [getImage, setImage] = React.useState("")
     const [getSummaryEN, setSummaryEN] = React.useState("")
     const [getSummaryTR, setSummaryTR] = React.useState("")
+
+    const [getSaveButtonName, setSaveButtonName] = React.useState("");
 
 
     const pickImage = async () => {
@@ -217,6 +235,12 @@ function AddBlogScreen() {
 
     React.useEffect(() => {
         readGetBlogCategory()
+        if (Global.Language === 1) {
+            setSaveButtonName("Şimdi Kaydet")
+        }
+        else {
+            setSaveButtonName("Save Now")
+        }
     }, [])
 
     return (
@@ -265,12 +289,23 @@ function AddBlogScreen() {
                                         button
                                         onPress={() => {
                                             setBlogCategoryID(item.BLOG_CATEGORY_ID.toString())
-                                            setBlogCategoryName(item.BLOG_CATEGORY_EN)
+                                            if (Global.Language === 1) {
+                                                setBlogCategoryName(item.BLOG_CATEGORY_TR)
+                                            }
+                                            else {
+                                                setBlogCategoryName(item.BLOG_CATEGORY_EN)
+                                            }
+
                                             BottomSheetLong.current.close()
                                         }}
                                     >
                                         <ListItem.Content>
-                                            <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
+                                            {Global.Language === 1 ?
+                                                <ListItem.Title>{item.BLOG_CATEGORY_TR}</ListItem.Title>
+                                                :
+                                                <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
+                                            }
+
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -296,7 +331,14 @@ function AddBlogScreen() {
                             :
                             <>
                                 {getBlogCategoryList !== undefined &&
-                                    <Text style={styles.InformationText}>{getBlogCategoryList[0].BLOG_CATEGORY_EN}</Text>
+                                    <>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.InformationText}>{getBlogCategoryList[0].BLOG_CATEGORY_TR}</Text>
+                                            :
+                                            <Text style={styles.InformationText}>{getBlogCategoryList[0].BLOG_CATEGORY_EN}</Text>
+                                        }
+                                    </>
+
                                 }
                             </>
                         }
@@ -310,10 +352,15 @@ function AddBlogScreen() {
 
 
                 <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                    <Text style={styles.TextInputHeader}>Header Turkish: </Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.TextInputHeader}>Başlık Türkçe: </Text>
+                        :
+                        <Text style={styles.TextInputHeader}>Header Turkish: </Text>
+                    }
+
                     <TextInput
                         style={styles.HalfInputStyle}
-                        placeholder={"Header Turkish"}
+                        placeholder={""}
                         name={"HeaderTurkish"}
                         value={getHeaderTR}
                         onChangeText={setHeaderTR}
@@ -321,10 +368,15 @@ function AddBlogScreen() {
                 </View>
 
                 <View style={[styles.TextInputContainer]}>
-                    <Text style={styles.TextInputHeader}>Header English: </Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.TextInputHeader}>Başlık İngilizce: </Text>
+                        :
+                        <Text style={styles.TextInputHeader}>Header English: </Text>
+                    }
+
                     <TextInput
                         style={styles.HalfInputStyle}
-                        placeholder={"Header English"}
+                        placeholder={""}
                         name={"HeaderEnglish"}
                         value={getHeaderEN}
                         onChangeText={setHeaderEN}
@@ -348,15 +400,25 @@ function AddBlogScreen() {
                     <TouchableOpacity
                         style={{ width: '100%', backgroundColor: '#e8edf1', padding: 10, borderRadius: 8, elevation: 8, marginVertical: 20 }}
                         onPress={pickImage}>
-                        <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Upload Image</Text>
+                        {Global.Language === 1 ?
+                            <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Resim Yukle</Text>
+                            :
+                            <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Upload Image</Text>
+                        }
+
                     </TouchableOpacity>
                 }
 
                 <View style={[styles.TextInputContainer, { marginTop: 30, height: 120 }]}>
-                    <Text style={styles.TextInputHeader}>Summary Turkish: </Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.TextInputHeader}>Özet Türkçe: </Text>
+                        :
+                        <Text style={styles.TextInputHeader}>Summary Turkish: </Text>
+                    }
+
                     <TextInput
                         style={[styles.HalfInputStyle, { width: '55%' }]}
-                        placeholder={"Summary Turkish"}
+                        placeholder={""}
                         name={"SummaryTurkish"}
                         multiline={true}
                         value={getSummaryTR}
@@ -365,10 +427,15 @@ function AddBlogScreen() {
                 </View>
 
                 <View style={[styles.TextInputContainer, { height: 120 }]}>
-                    <Text style={styles.TextInputHeader}>Summary English: </Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.TextInputHeader}>Özet İngilizce: </Text>
+                        :
+                        <Text style={styles.TextInputHeader}>Summary English: </Text>
+                    }
+
                     <TextInput
                         style={[styles.HalfInputStyle, { width: '55%' }]}
-                        placeholder={"Summary English"}
+                        placeholder={""}
                         name={"SummaryEnglish"}
                         multiline={true}
                         value={getSummaryEN}
@@ -377,10 +444,15 @@ function AddBlogScreen() {
                 </View>
 
                 <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                    <Text style={styles.TextInputHeader}>Explation Turkish: </Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.TextInputHeader}>Açıklama Türkçe: </Text>
+                        :
+                        <Text style={styles.TextInputHeader}>Explation Turkish: </Text>
+                    }
+
                     <TextInput
                         style={[styles.HalfInputStyle, { width: '55%' }]}
-                        placeholder={"Explation Turkish"}
+                        placeholder={""}
                         name={"ExplationTurkish"}
                         multiline={true}
                         value={getBlogTR}
@@ -389,10 +461,15 @@ function AddBlogScreen() {
                 </View>
 
                 <View style={[styles.TextInputContainer]}>
-                    <Text style={styles.TextInputHeader}>Explation English: </Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.TextInputHeader}>Açıklama ingilizce: </Text>
+                        :
+                        <Text style={styles.TextInputHeader}>Explation English: </Text>
+                    }
+
                     <TextInput
                         style={[styles.HalfInputStyle, { width: '55%' }]}
-                        placeholder={"Explation English"}
+                        placeholder={""}
                         name={"ExplationEnglish"}
                         multiline={true}
                         value={getBlogEN}
@@ -405,7 +482,7 @@ function AddBlogScreen() {
                         readBlogInsert()
                     }}
                     style={{ marginVertical: 40 }}
-                    title="Save Now"
+                    title={getSaveButtonName}
                 />
 
             </ScrollView>
@@ -436,6 +513,8 @@ function BlogListScreen({ navigation }) {
     const [getImage, setImage] = React.useState("")
     const [getSummaryEN, setSummaryEN] = React.useState("")
     const [getSummaryTR, setSummaryTR] = React.useState("")
+
+    const [getUpdateButtonName, setUpdateButtonName] = React.useState("")
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -636,6 +715,13 @@ function BlogListScreen({ navigation }) {
     React.useEffect(() => {
         readGetBlogListData()
         readGetBlogCategory();
+
+        if (Global.Language === 1) {
+            setUpdateButtonName("Güncelle")
+        }
+        else {
+            setUpdateButtonName("Update")
+        }
     }, [])
 
     return (
@@ -684,12 +770,23 @@ function BlogListScreen({ navigation }) {
                                         button
                                         onPress={() => {
                                             setBlogCategoryID(item.BLOG_CATEGORY_ID.toString())
-                                            setBlogCategoryName(item.BLOG_CATEGORY_EN)
+                                            if (Global.Language === 1) {
+                                                setBlogCategoryName(item.BLOG_CATEGORY_TR)
+                                            }
+                                            else {
+                                                setBlogCategoryName(item.BLOG_CATEGORY_EN)
+                                            }
+
                                             BottomSheetLong.current.close()
                                         }}
                                     >
                                         <ListItem.Content>
-                                            <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
+                                            {Global.Language === 1 ?
+                                                <ListItem.Title>{item.BLOG_CATEGORY_TR}</ListItem.Title>
+                                                :
+                                                <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
+                                            }
+
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -713,7 +810,12 @@ function BlogListScreen({ navigation }) {
                                 }}
                                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                                 <Icon name="chevron-left" size={24} color="silver" />
-                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                    :
+                                    <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                }
+
                             </TouchableOpacity>
                         </View>
 
@@ -730,7 +832,14 @@ function BlogListScreen({ navigation }) {
                                     :
                                     <>
                                         {getBlogCategoryList !== undefined &&
-                                            <Text style={styles.InformationText}>{getBlogCategoryList[0].BLOG_CATEGORY_EN}</Text>
+                                            <>
+                                                {Global.Language === 1 ?
+                                                    <Text style={styles.InformationText}>{getBlogCategoryList[0].BLOG_CATEGORY_TR}</Text>
+                                                    :
+                                                    <Text style={styles.InformationText}>{getBlogCategoryList[0].BLOG_CATEGORY_EN}</Text>
+                                                }
+                                            </>
+
                                         }
                                     </>
                                 }
@@ -742,10 +851,15 @@ function BlogListScreen({ navigation }) {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                            <Text style={styles.TextInputHeader}>Header Turkish: </Text>
+                            {Global.Language === 1 ?
+                                <Text style={styles.TextInputHeader}>Başlık Türkçe: </Text>
+                                :
+                                <Text style={styles.TextInputHeader}>Header Turkish: </Text>
+                            }
+
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Header Turkish"}
+                                placeholder={""}
                                 name={"HeaderTurkish"}
                                 value={getHeaderTR}
                                 onChangeText={setHeaderTR}
@@ -753,10 +867,15 @@ function BlogListScreen({ navigation }) {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            <Text style={styles.TextInputHeader}>Header English: </Text>
+                            {Global.Language === 1 ?
+                                <Text style={styles.TextInputHeader}>Başlık İngilizce: </Text>
+                                :
+                                <Text style={styles.TextInputHeader}>Header English: </Text>
+                            }
+
                             <TextInput
                                 style={styles.HalfInputStyle}
-                                placeholder={"Header English"}
+                                placeholder={""}
                                 name={"HeaderEnglish"}
                                 value={getHeaderEN}
                                 onChangeText={setHeaderEN}
@@ -780,15 +899,25 @@ function BlogListScreen({ navigation }) {
                             <TouchableOpacity
                                 style={{ width: '100%', backgroundColor: '#e8edf1', padding: 10, borderRadius: 8, elevation: 8, marginVertical: 20 }}
                                 onPress={pickImage}>
-                                <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Upload Image</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Resim Yukle</Text>
+                                    :
+                                    <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Upload Image</Text>
+                                }
+
                             </TouchableOpacity>
                         }
 
                         <View style={[styles.TextInputContainer, { marginTop: 30, height: 120 }]}>
-                            <Text style={styles.TextInputHeader}>Summary Turkish: </Text>
+                            {Global.Language === 1 ?
+                                <Text style={styles.TextInputHeader}>Özet Türkçe: </Text>
+                                :
+                                <Text style={styles.TextInputHeader}>Summary Turkish: </Text>
+                            }
+
                             <TextInput
                                 style={[styles.HalfInputStyle, { width: '55%' }]}
-                                placeholder={"Summary Turkish"}
+                                placeholder={""}
                                 name={"SummaryTurkish"}
                                 multiline={true}
                                 value={getSummaryTR}
@@ -797,10 +926,15 @@ function BlogListScreen({ navigation }) {
                         </View>
 
                         <View style={[styles.TextInputContainer, { height: 120 }]}>
-                            <Text style={styles.TextInputHeader}>Summary English: </Text>
+                            {Global.Language === 1 ?
+                                <Text style={styles.TextInputHeader}>Özet İngilizce: </Text>
+                                :
+                                <Text style={styles.TextInputHeader}>Summary English: </Text>
+                            }
+
                             <TextInput
                                 style={[styles.HalfInputStyle, { width: '55%' }]}
-                                placeholder={"Summary English"}
+                                placeholder={""}
                                 name={"SummaryEnglish"}
                                 multiline={true}
                                 value={getSummaryEN}
@@ -809,10 +943,15 @@ function BlogListScreen({ navigation }) {
                         </View>
 
                         <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                            <Text style={styles.TextInputHeader}>Explation Turkish: </Text>
+                            {Global.Language === 1 ?
+                                <Text style={styles.TextInputHeader}>Açıklama Türkçe: </Text>
+                                :
+                                <Text style={styles.TextInputHeader}>Explation Turkish: </Text>
+                            }
+
                             <TextInput
                                 style={[styles.HalfInputStyle, { width: '55%' }]}
-                                placeholder={"Explation Turkish"}
+                                placeholder={""}
                                 name={"ExplationTurkish"}
                                 multiline={true}
                                 value={getBlogTR}
@@ -821,10 +960,15 @@ function BlogListScreen({ navigation }) {
                         </View>
 
                         <View style={[styles.TextInputContainer]}>
-                            <Text style={styles.TextInputHeader}>Explation English: </Text>
+                            {Global.Language === 1 ?
+                                <Text style={styles.TextInputHeader}>Açıklama ingilizce: </Text>
+                                :
+                                <Text style={styles.TextInputHeader}>Explation English: </Text>
+                            }
+
                             <TextInput
                                 style={[styles.HalfInputStyle, { width: '55%' }]}
-                                placeholder={"Explation English"}
+                                placeholder={""}
                                 name={"ExplationEnglish"}
                                 multiline={true}
                                 value={getBlogEN}
@@ -837,7 +981,7 @@ function BlogListScreen({ navigation }) {
                                 readBlogUpdate()
                             }}
                             style={{ marginVertical: 40 }}
-                            title="Update"
+                            title={getUpdateButtonName}
                         />
 
 
@@ -857,35 +1001,80 @@ function BlogListScreen({ navigation }) {
                                         {getBlogListData.length === 0 ?
                                             <View style={styles.ErrorMessageContainer}>
                                                 <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                                <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                                <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                                <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                {Global.Language === 1 ?
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                        <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                    </>
+                                                }
                                             </View>
                                             :
                                             <ScrollView horizontal={true}>
 
                                                 <DataTable>
-                                                    <DataTable.Header>
-                                                        <DataTable.Title style={{ width: 150 }}>Category</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 150 }}>Turkish</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 150 }}>Date</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 150 }}>Reading</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 150 }}>Edit</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 150 }}>Active</DataTable.Title>
-                                                    </DataTable.Header>
+                                                    {Global.Language === 1 ?
+                                                        <DataTable.Header>
+                                                            <DataTable.Title style={{ width: 150 }}>Kategori</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Türkçe</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Tarih</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Okuma</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Düzenle</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Aktif</DataTable.Title>
+                                                        </DataTable.Header>
+                                                        :
+                                                        <DataTable.Header>
+                                                            <DataTable.Title style={{ width: 150 }}>Category</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Turkish</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Date</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Reading</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Edit</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Active</DataTable.Title>
+                                                        </DataTable.Header>
+                                                    }
+
 
                                                     {getBlogListData.map((item, i) => (
                                                         <DataTable.Row key={i}>
-                                                            <DataTable.Cell
-                                                                onPress={() => {
-                                                                    alertDialog('Category', item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN);
-                                                                }}
-                                                                style={{ width: 150 }} >{item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN.substring(0, 12)} ...</DataTable.Cell>
-                                                            <DataTable.Cell
-                                                                onPress={() => {
-                                                                    alertDialog('Turkish', item.HEADER_EN);
-                                                                }}
-                                                                style={{ width: 150 }}>{item.HEADER_EN.substring(0, 12)} ...</DataTable.Cell>
+                                                            {Global.Language === 1 ?
+                                                                <DataTable.Cell
+                                                                    onPress={() => {
+                                                                        alertDialog('Kategori', item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_TR);
+                                                                    }}
+                                                                    style={{ width: 150 }} >
+                                                                    {item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_TR.substring(0, 12)} ...
+                                                         </DataTable.Cell>
+                                                                :
+                                                                <DataTable.Cell
+                                                                    onPress={() => {
+                                                                        alertDialog('Category', item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN);
+                                                                    }}
+                                                                    style={{ width: 150 }} >
+                                                                    {item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN.substring(0, 12)} ...
+                                                        </DataTable.Cell>
+                                                            }
+
+                                                            {Global.Language === 1 ?
+                                                                <DataTable.Cell
+                                                                    onPress={() => {
+                                                                        alertDialog('Türkçe', item.HEADER_TR);
+                                                                    }}
+                                                                    style={{ width: 150 }}>{item.HEADER_TR.substring(0, 12)} ...</DataTable.Cell>
+                                                                :
+                                                                <DataTable.Cell
+                                                                    onPress={() => {
+                                                                        alertDialog('Turkish', item.HEADER_EN);
+                                                                    }}
+                                                                    style={{ width: 150 }}>{item.HEADER_EN.substring(0, 12)} ...</DataTable.Cell>
+                                                            }
+
+
                                                             <DataTable.Cell style={{ width: 150 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 150 }}>{item.COUNTER}</DataTable.Cell>
 
@@ -895,8 +1084,13 @@ function BlogListScreen({ navigation }) {
                                                                         setIsEdit(true)
                                                                         setBlogID(item.BLOG_ID)
                                                                         setEdittingItem(item)
+                                                                        if (Global.Language === 1) {
+                                                                            setBlogCategoryName(item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_TR)
+                                                                        }
+                                                                        else {
+                                                                            setBlogCategoryName(item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN)
+                                                                        }
 
-                                                                        setBlogCategoryName(item.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN)
                                                                         setHeaderEN(item.HEADER_EN)
                                                                         setHeaderTR(item.HEADER_TR)
                                                                         setImage(item.IMAGE)
@@ -906,7 +1100,12 @@ function BlogListScreen({ navigation }) {
                                                                         setBlogTR(item.BLOG_TR.replace('<p>', '').replace('</p>', ''))
                                                                     }}
                                                                     style={styles.TableActionButtonContainer}>
-                                                                    <Text style={styles.TableActionButtonText}>Edit</Text>
+                                                                    {Global.Language === 1 ?
+                                                                        <Text style={styles.TableActionButtonText}>Düzenle</Text>
+                                                                        :
+                                                                        <Text style={styles.TableActionButtonText}>Edit</Text>
+                                                                    }
+
                                                                 </TouchableOpacity>
                                                             </DataTable.Cell>
 
@@ -917,9 +1116,23 @@ function BlogListScreen({ navigation }) {
                                                                     }}
                                                                     style={styles.TableActionButtonContainer}>
                                                                     {item.ACTIVE === 1 ?
-                                                                        <Text style={styles.TableActionButtonText}>Deactive</Text>
+                                                                        <>
+                                                                            {Global.Language === 1 ?
+                                                                                <Text style={styles.TableActionButtonText}>Aktif Et</Text>
+                                                                                :
+                                                                                <Text style={styles.TableActionButtonText}>Deactive</Text>
+                                                                            }
+                                                                        </>
+
                                                                         :
-                                                                        <Text style={styles.TableActionButtonText}>Active</Text>
+                                                                        <>
+                                                                            {Global.Language === 1 ?
+                                                                                <Text style={styles.TableActionButtonText}>Aktif</Text>
+                                                                                :
+                                                                                <Text style={styles.TableActionButtonText}>Active</Text>
+                                                                            }
+                                                                        </>
+
                                                                     }
 
                                                                 </TouchableOpacity>
@@ -1161,10 +1374,15 @@ function CategoryList() {
                             <>
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30, width: '80%' }]}>
-                                    <Text style={styles.TextInputHeader}>Turkish: </Text>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.TextInputHeader}>Türkçe: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Turkish: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Turkish"}
+                                        placeholder={""}
                                         name={"Turkish"}
                                         value={getBlogCategoryTRForEditting}
                                         onChangeText={setBlogCategoryTRForEditting}
@@ -1172,10 +1390,15 @@ function CategoryList() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30, width: '80%' }]}>
-                                    <Text style={styles.TextInputHeader}>English: </Text>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.TextInputHeader}>ingilizce: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>English: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"English"}
+                                        placeholder={""}
                                         name={"English"}
                                         value={getBlogCategoryENForEditting}
                                         onChangeText={setBlogCategoryENForEditting}
@@ -1188,10 +1411,15 @@ function CategoryList() {
 
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30, width: '80%' }]}>
-                                    <Text style={styles.TextInputHeader}>Turkish: </Text>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.TextInputHeader}>Türkçe: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>Turkish: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Turkish"}
+                                        placeholder={""}
                                         name={"Turkish"}
                                         value={getBlogCategoryTR}
                                         onChangeText={setBlogCategoryTR}
@@ -1199,10 +1427,15 @@ function CategoryList() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30, width: '80%' }]}>
-                                    <Text style={styles.TextInputHeader}>English: </Text>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.TextInputHeader}>ingilizce: </Text>
+                                        :
+                                        <Text style={styles.TextInputHeader}>English: </Text>
+                                    }
+
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"English"}
+                                        placeholder={""}
                                         name={"English"}
                                         value={getBlogCategoryEN}
                                         onChangeText={setBlogCategoryEN}
@@ -1219,23 +1452,33 @@ function CategoryList() {
                                 onPress={() => {
                                     setModalVisible(false)
                                 }}>
-                                <Text style={[styles.AddCategoryButtonText, { color: '#2169ab' }]} >Cancel</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={[styles.AddCategoryButtonText, { color: '#2169ab' }]} >Vazgeç</Text>
+                                    :
+                                    <Text style={[styles.AddCategoryButtonText, { color: '#2169ab' }]} >Cancel</Text>
+                                }
+
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    if(isEditting === true) {
+                                    if (isEditting === true) {
                                         readBlogCategoryUpdate(getBlogCategoryID)
                                     }
-                                    else{
+                                    else {
                                         readBlogCategoryInsert();
                                     }
                                     setModalVisible(false)
-                                    
+
                                 }}
                                 style={[styles.AddCategoryButton, { backgroundColor: '#2169ab' }]}
                             >
-                                <Text style={[styles.AddCategoryButtonText, { color: 'rgb(232, 237, 241)' }]} >Save</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={[styles.AddCategoryButtonText, { color: 'rgb(232, 237, 241)' }]} >Kaydet</Text>
+                                    :
+                                    <Text style={[styles.AddCategoryButtonText, { color: 'rgb(232, 237, 241)' }]} >Save</Text>
+                                }
+
                             </TouchableOpacity>
                         </View>
 
@@ -1253,7 +1496,12 @@ function CategoryList() {
                             setModalVisible(true);
                         }}>
                         <Icon name="plus-circle" size={16} color="#fff" style={{ alignSelf: 'center', marginRight: 5 }} />
-                        <Text style={styles.SortTypeButtonText}>Add Category</Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.SortTypeButtonText}>Kategori Ekle</Text>
+                            :
+                            <Text style={styles.SortTypeButtonText}>Add Category</Text>
+                        }
+
                     </TouchableOpacity>
                 </View>
 
@@ -1262,21 +1510,42 @@ function CategoryList() {
                         {getBlogCategoryData.length === 0 ?
                             <View style={styles.ErrorMessageContainer}>
                                 <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                {Global.Language === 1 ?
+                                    <>
+                                        <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                        <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                        <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                    </>
+                                    :
+                                    <>
+                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                    </>
+                                }
                             </View>
                             :
                             <ScrollView horizontal={true}>
 
                                 <DataTable>
-                                    <DataTable.Header>
-                                        <DataTable.Title style={{ width: 150 }}>ID</DataTable.Title>
-                                        <DataTable.Title style={{ width: 150 }}>Turkish</DataTable.Title>
-                                        <DataTable.Title style={{ width: 150 }}>English</DataTable.Title>
-                                        <DataTable.Title style={{ width: 150 }}>Edit</DataTable.Title>
-                                        <DataTable.Title style={{ width: 150 }}>Active</DataTable.Title>
-                                    </DataTable.Header>
+                                    {Global.Language === 1 ?
+                                        <DataTable.Header>
+                                            <DataTable.Title style={{ width: 150 }}>ID</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Türkçe</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>İngilizce</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Düzenle</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Aktif</DataTable.Title>
+                                        </DataTable.Header>
+                                        :
+                                        <DataTable.Header>
+                                            <DataTable.Title style={{ width: 150 }}>ID</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Turkish</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>English</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Edit</DataTable.Title>
+                                            <DataTable.Title style={{ width: 150 }}>Active</DataTable.Title>
+                                        </DataTable.Header>
+                                    }
+
 
                                     {getBlogCategoryData.map((item, i) => (
                                         <DataTable.Row key={i}>
@@ -1293,8 +1562,8 @@ function CategoryList() {
                                                 style={{ width: 150 }}>{item.BLOG_CATEGORY_EN.substring(0, 12)} ...</DataTable.Cell>
 
                                             <DataTable.Cell style={{ width: 150 }}>
-                                                <TouchableOpacity 
-                                                    onPress={()=>{
+                                                <TouchableOpacity
+                                                    onPress={() => {
                                                         setBlogCategoryID(item.BLOG_CATEGORY_ID)
                                                         setIsEditting(true)
                                                         setBlogCategoryENForEditting(item.BLOG_CATEGORY_EN.substring(0, 12))
@@ -1302,7 +1571,12 @@ function CategoryList() {
                                                         setModalVisible(true)
                                                     }}
                                                     style={styles.TableActionButtonContainer}>
-                                                    <Text style={styles.TableActionButtonText}>Edit</Text>
+                                                    {Global.Language === 1 ?
+                                                        <Text style={styles.TableActionButtonText}>Düzenle</Text>
+                                                        :
+                                                        <Text style={styles.TableActionButtonText}>Edit</Text>
+                                                    }
+
                                                 </TouchableOpacity>
                                             </DataTable.Cell>
 
@@ -1313,9 +1587,21 @@ function CategoryList() {
                                                     }}
                                                     style={styles.TableActionButtonContainer}>
                                                     {item.ACTIVE === 1 ?
-                                                        <Text style={styles.TableActionButtonText}>Deactive</Text>
+                                                        <>
+                                                            {Global.Language === 1 ?
+                                                                <Text style={styles.TableActionButtonText}>Pasif Et</Text>
+                                                                :
+                                                                <Text style={styles.TableActionButtonText}>Deactive</Text>}
+                                                        </>
+
                                                         :
-                                                        <Text style={styles.TableActionButtonText}>Active</Text>
+                                                        <>
+                                                            {Global.Language === 1 ?
+                                                                <Text style={styles.TableActionButtonText}>Aktif</Text>
+                                                                :
+                                                                <Text style={styles.TableActionButtonText}>Active</Text>}
+                                                        </>
+
                                                     }
 
                                                 </TouchableOpacity>
@@ -1332,8 +1618,17 @@ function CategoryList() {
                     :
                     <View style={styles.ErrorMessageContainer}>
                         <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                        <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                        <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                        {Global.Language === 1 ?
+                            <>
+                                <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                                <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                            </>
+                            :
+                            <>
+                                <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                            </>
+                        }
                     </View>
                 }
             </ScrollView>

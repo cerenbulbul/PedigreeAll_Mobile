@@ -69,10 +69,16 @@ export function SettingBottomSheet(props,refRBSheet) {
             
             <View style={styles.FlagContainer}>
               <TouchableOpacity 
+                onPress={()=>{
+                  Global.Language=2;
+                }}
                 style={{marginRight:5}}>
                 <Flag code='US' size={24} />
               </TouchableOpacity>
               <TouchableOpacity 
+                onPress={()=>{
+                  Global.Language=1;
+                }}
                 style={{marginRight:5}} >
                 <Flag code='TR' size={24} />
               </TouchableOpacity>

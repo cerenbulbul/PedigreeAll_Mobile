@@ -37,6 +37,7 @@
     "react-native-raw-bottom-sheet": "^2.2.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-render-html": "^5.0.1",
+    "react-native-restart": "0.0.20",
     "react-native-screens": "^2.15.0",
     "react-native-storage": "^1.0.1",
     "react-native-svg": "^12.1.0",

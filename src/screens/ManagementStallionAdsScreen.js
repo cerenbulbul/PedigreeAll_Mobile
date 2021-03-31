@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable } from 'react-native-paper';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { SearchBar, ListItem } from 'react-native-elements'
+import { Global } from '../Global';
 
 export function ManagementStallionAdsScreen() {
 
@@ -61,6 +62,13 @@ export function ManagementStallionAdsScreen() {
     const [getYearObject, setYearObject] = React.useState();
 
     const [loadingForData, setLoadingForData] = React.useState(false)
+
+    const [getEarningName, setEarningName] = React.useState("")
+    const [getSaveButtonName, setSaveButtonName] = React.useState("")
+    const [getEditButtonName, setEditButtonName] = React.useState("")
+    const [getSearchButtonName, setSearchButtonName] = React.useState("")
+
+    const [getFeeName, setFeeName] = React.useState("")
 
     const pressSireName = item => {
         const { checked } = checkStateMultiSireName;
@@ -143,7 +151,7 @@ export function ManagementStallionAdsScreen() {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -395,6 +403,22 @@ export function ManagementStallionAdsScreen() {
         readGetYear();
         readDataCurrencyList();
         readGetPlace();
+
+        if (Global.Language === 1) {
+            setEarningName("Kazanc")
+            setSaveButtonName("Kaydet")
+            setEditButtonName("Düzenle")
+            setSearchButtonName("Arama")
+            setFeeName("Ücret")
+
+        }
+        else {
+            setEarningName("Earning")
+            setSaveButtonName("Save")
+            setEditButtonName("Edit")
+            setSearchButtonName("Search")
+            setFeeName("Fee")
+        }
     }, [])
 
     return (
@@ -759,7 +783,12 @@ export function ManagementStallionAdsScreen() {
                             }}
                             style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                             <Icon name="chevron-left" size={24} color="silver" />
-                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            {Global.Language === 1 ?
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                :
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            }
+
                         </TouchableOpacity>
                     </View>
 
@@ -774,7 +803,14 @@ export function ManagementStallionAdsScreen() {
                             {getSireText !== undefined ?
                                 <Text style={styles.InformationText}>{getSireText}</Text>
                                 :
-                                <Text style={styles.InformationText}>Sire | Mare</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Safkan | Kısrak</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Sire | Mare</Text>
+                                    }
+                                </>
+
                             }
 
                         </TouchableOpacity>
@@ -798,7 +834,14 @@ export function ManagementStallionAdsScreen() {
                             {getYearObject !== undefined ?
                                 <Text style={styles.InformationText}>{getYearObject.YEAR_TEXT}</Text>
                                 :
-                                <Text style={styles.InformationText}>Year</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Yıl</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Year</Text>
+                                    }
+                                </>
+
                             }
 
                         </TouchableOpacity>
@@ -822,7 +865,14 @@ export function ManagementStallionAdsScreen() {
                             {getPlaceObject !== undefined ?
                                 <Text style={styles.InformationText}>{getPlaceObject.NAME}</Text>
                                 :
-                                <Text style={styles.InformationText}>Place</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Yer</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Place</Text>
+                                    }
+                                </>
+
                             }
 
                         </TouchableOpacity>
@@ -838,7 +888,7 @@ export function ManagementStallionAdsScreen() {
                     <View style={[styles.EarningPriceItemContainer, { marginTop: 30 }]}>
                         <TextInput
                             style={styles.EarningPriceInput}
-                            placeholder={"Fee"}
+                            placeholder={getFeeName}
                             keyboardType="numeric"
                             value={getFee.toString()}
                             onChangeText={setFee}
@@ -852,7 +902,7 @@ export function ManagementStallionAdsScreen() {
                             {getCurrencyObject !== undefined ?
                                 <Text style={styles.EarningPriceButtonText}>{getCurrencyObject.ICON}</Text>
                                 :
-                                <Text style={styles.EarningPriceButtonText}>TL</Text>
+                                <Text style={styles.EarningPriceButtonText}>₺</Text>
                             }
 
                             <Icon name="caret-down" size={20} color="silver" />
@@ -860,70 +910,105 @@ export function ManagementStallionAdsScreen() {
                     </View>
 
                     <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                        <Text style={styles.TextInputHeader}>Quota: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Kontenjan: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Quota: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Quota"}
+                            placeholder={""}
                             value={getMaxCount.toString()}
                             onChangeText={setMaxCount}
                         />
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Mare: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Kısrak: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Mare: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Mare"}
+                            placeholder={""}
                             value={getMareCount.toString()}
                             onChangeText={setMareCount}
                         />
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Pregnant: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Gebe: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Pregnant: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Pregnant"}
+                            placeholder={""}
                             value={getPregnantCount.toString()}
                             onChangeText={setPregnantCount}
                         />
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Empty: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Boş: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Empty: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Empty"}
+                            placeholder={""}
                             value={getEmptyCount.toString()}
                             onChangeText={setEmptyCount}
                         />
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Uncheked: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Kontrol Edilmeyen: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Uncheked: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Uncheked"}
+                            placeholder={""}
                             value={getUnchekedCount.toString()}
                             onChangeText={setUnchekedCount}
                         />
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Dead Mare: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Ölen Kısrak: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Dead Mare: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Dead Mare"}
+                            placeholder={""}
                             value={getDeadMareCount.toString()}
                             onChangeText={setDeadMareCount}
                         />
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Alive Fool: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Canlı Tay: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Alive Fool: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Alive Fool"}
+                            placeholder={""}
                             value={getAliveCount.toString()}
                             onChangeText={setAliveCount}
                         />
@@ -936,7 +1021,7 @@ export function ManagementStallionAdsScreen() {
                                 readStallionAdsUpdate();
                             }}
                             style={{ marginVertical: 20 }}
-                            title="Edit"
+                            title={getEditButtonName}
                         />
                         :
                         <BlueButton
@@ -945,7 +1030,7 @@ export function ManagementStallionAdsScreen() {
                                 readStallionAdsAdd()
                             }}
                             style={{ marginVertical: 20 }}
-                            title="Save"
+                            title={getSaveButtonName}
                         />
                     }
 
@@ -973,7 +1058,14 @@ export function ManagementStallionAdsScreen() {
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
                             {checkStateMultiSireNameString.checkedString.length === 0 ?
-                                <Text style={styles.InformationText}>Sire Name</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Aygır</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Sire Name</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiSireNameString.checkedString}</Text>
                             }
@@ -996,7 +1088,14 @@ export function ManagementStallionAdsScreen() {
                             style={styles.InputTouchableContainer}>
                             <Icon name="plus-circle" size={24} color="#2169ab" />
                             {checkStateMultiYearString.checkedString.length === 0 ?
-                                <Text style={styles.InformationText}>Year</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Yıl</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Year</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiYearString.checkedString}</Text>
                             }
@@ -1023,7 +1122,7 @@ export function ManagementStallionAdsScreen() {
 
                         }}
                         style={{ marginVertical: 20 }}
-                        title="Search"
+                        title={getSearchButtonName}
                     />
 
                     {isLoading ?
@@ -1036,29 +1135,58 @@ export function ManagementStallionAdsScreen() {
                                     {getStallionAdsData.length === 0 ?
                                         <View style={styles.ErrorMessageContainer}>
                                             <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                            {Global.Language === 1 ?
+                                                <>
+                                                    <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                    <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                    <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                </>
+                                                :
+                                                <>
+                                                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                </>
+                                            }
                                         </View>
                                         :
                                         <ScrollView horizontal={true}>
 
                                             <DataTable>
-                                                <DataTable.Header>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Sire</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Year</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Place</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Fee</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Quota</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Mare</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Pregnant</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Empty</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Uncheked</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Dead Mare</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Alive Foal</DataTable.Title>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>Edit</DataTable.Title>
-                                                </DataTable.Header>
+                                                {Global.Language === 1 ?
+                                                    <DataTable.Header>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Safkan</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Yıl</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Yer</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Ücret</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Kontenjan</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Kısrak</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Gebe</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Boş</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Kontrol Edilmeyen</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Ölen Kısrak</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Canlı Tay</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Düzenle</DataTable.Title>
+                                                    </DataTable.Header>
+                                                    :
+                                                    <DataTable.Header>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Sire</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Year</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Place</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Fee</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Quota</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Mare</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Pregnant</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Empty</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Uncheked</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Dead Mare</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Alive Foal</DataTable.Title>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>Edit</DataTable.Title>
+                                                    </DataTable.Header>
+                                                }
+
 
                                                 {getStallionAdsData.map((item, index) => (
                                                     <DataTable.Row key={index}>
@@ -1111,7 +1239,12 @@ export function ManagementStallionAdsScreen() {
 
                                                                 }}
                                                                 style={styles.TableActionButtonContainer}>
-                                                                <Text style={styles.TableActionButtonText}>Edit</Text>
+                                                                {Global.Language === 1 ?
+                                                                    <Text style={styles.TableActionButtonText}>Düzenle</Text>
+                                                                    :
+                                                                    <Text style={styles.TableActionButtonText}>Edit</Text>
+                                                                }
+
                                                             </TouchableOpacity>
                                                         </DataTable.Cell>
                                                     </DataTable.Row>
@@ -1124,8 +1257,17 @@ export function ManagementStallionAdsScreen() {
                                 :
                                 <View style={styles.ErrorMessageContainer}>
                                     <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                    {Global.Language === 1 ?
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                                            <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                                        </>
+                                        :
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                            <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                        </>
+                                    }
                                 </View>
                             }
 

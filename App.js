@@ -31,7 +31,6 @@ import { AuthStackNavigator } from './src/navigation/AuthStackNavigator';
 import { ReportScreen } from './src/screens/ReportScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { SearchScreen } from './src/screens/SearchScreen';
-import MemberScreen from './src/screens/MemberScreen';
 import { MyAddingRequestScreen } from './src/screens/MyAddingRequestScreen';
 import { MyEditRequestsScreen } from './src/screens/MyEditRequestsScreen';
 import { SettingBottomSheet } from './src/components/SettingBottomSheet';
@@ -120,7 +119,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 export const BASE_URL = 'http://api.pedigreeall.com/';
 
-export default function App() {
+export default function App({navigation}) {
 
   const [isEnglish, setEnglish] = React.useState(true);
   const [EnglishTransparant, setEnglishTransparant] = React.useState('1');
@@ -181,6 +180,8 @@ export default function App() {
       setIsLoading(false);
     }, 1000);
   }, []);
+
+  
 
   if (isLoading) {
     return <SplashScreen />;
@@ -356,33 +357,14 @@ export default function App() {
     <LoginAuthStack.Navigator
       mode={"modal"}
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
       }}>
 
       <LoginAuthStack.Screen
         name={"LoginScreen"}
         component={LoginScreen}
 
-        options={({ navigation }) => ({
-          headerTitle: "Login",
-          headerStyle: {
-            backgroundColor: "#fff",
-          },
-          headerTintColor: '#000',
-          headerTitleStyle: {
-            fontSize: 20
-          },
-          headerLeft: () => (
-            <TouchableOpacity
-              style={{ marginLeft: 20 }}
-              onPress={() => {
-                navigation.navigate('Tab')
-              }}>
-              <Icon name="chevron-left" size={24} color="#000" />
-            </TouchableOpacity>
-          ),
-
-        })}
+        
       />
     </LoginAuthStack.Navigator>
   );
@@ -444,7 +426,7 @@ export default function App() {
         options={{
           headerShown: true,
           headerTitle: () => (
-
+            
             <Image
               style={{ width: "95%", height: 30, resizeMode:"contain" }}
               source={require('./assets/logo.png')}>
@@ -517,6 +499,40 @@ export default function App() {
 
       </Drawer.Screen>
 
+      <Drawer.Screen name={"Countries"}>
+        {() => (
+          <CountryStack.Navigator
+            mode={"card"}
+            screenOptions={{
+              gestureEnabled: false,
+            }} >
+            <CountryStack.Screen 
+              name={"Countries"} 
+              component={Country}
+              options={({ navigation }) => ({
+                headerTitle: "Back",
+                headerStyle: {
+                  backgroundColor: "#fff",
+                },
+                headerTintColor: '#000',
+                headerTitleStyle: {
+                  fontSize: 20
+                },
+                headerLeft: () => (
+                  <TouchableOpacity
+                    style={{ marginLeft: 20 }}
+                    onPress={() => {
+                      navigation.navigate('LoginScreen')
+                    }}>
+                    <Icon name="chevron-left" size={24} color="#000" />
+                  </TouchableOpacity>
+                ),
+      
+              })} />
+          </CountryStack.Navigator>
+        )}
+      </Drawer.Screen>
+
 
     </Drawer.Navigator>
   );
@@ -550,17 +566,7 @@ export default function App() {
         name="MyAddingRequestScreen"
         component={MyAddingRequestsStackScreen}
       />
-      <AuthStack.Screen name={"Countries"}>
-        {() => (
-          <CountryStack.Navigator
-            mode={"card"}
-            screenOptions={{
-              gestureEnabled: false,
-            }} >
-            <CountryStack.Screen name={"Countries"} component={Country} />
-          </CountryStack.Navigator>
-        )}
-      </AuthStack.Screen>
+      
       <ContactStack.Screen
         name={"Contact"}
         component={ContactScreen}

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet, Image, Dimensions, Switch, TouchableOpacity, TextInput , Alert} from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, Switch, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { Input } from "../components/Input";
 import { Error } from "../components/Error";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -11,6 +11,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { SettingBottomSheet } from '../components/SettingBottomSheet'
 import { BlueButton } from '../components/BlueButton';
 import AsyncStorage from '@react-native-community/async-storage'
+import { Global } from '../Global';
 
 export function ContactScreen({ navigation }) {
   const refRBSheet = useRef();
@@ -20,18 +21,18 @@ export function ContactScreen({ navigation }) {
   const [getMessage, setMessage] = React.useState("");
 
   const alertDialog = (messageTitle, message) =>
-  Alert.alert(
+    Alert.alert(
       messageTitle,
       message,
       [
-          {
-              text: "OK",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel"
-          },
+        {
+          text: "OK",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
       ],
       { cancelable: false }
-  );
+    );
 
 
   const [panelProps, setPanelProps] = useState({
@@ -54,9 +55,18 @@ export function ContactScreen({ navigation }) {
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
+  const [getMessagePlaceholder, setMessagePlaceholder] = React.useState("")
+  const [getSubmitButton, setSubmitButton] = React.useState("")
 
   React.useLayoutEffect(() => {
+    if (Global.Language===1) {
+      setMessagePlaceholder("Mesaj")
+      setSubmitButton("Gönder")
+    }
+    else{
+      setMessagePlaceholder("Message")
+      setSubmitButton("Submit")
+    }
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
@@ -98,10 +108,10 @@ export function ContactScreen({ navigation }) {
               setName("")
               setEmail("")
               setMessage("")
-          }
-          else {
+            }
+            else {
               alertDialog("Error", json.m_lUserMessageList[1])
-          }
+            }
           })
           .catch((error) => {
             console.error(error);
@@ -126,18 +136,27 @@ export function ContactScreen({ navigation }) {
 
           <View style={{ marginVertical: 40, paddingLeft: 10, paddingRight: 10 }}>
 
+            {Global.Language === 1 ?
+              <Text style={styles.Title}>İletişim</Text>
+              :
+              <Text style={styles.Title}>Contact</Text>
+            }
 
 
-            <Text style={styles.Title}>Contact</Text>
 
             <View style={styles.ButtonsContainer}>
 
               <View style={styles.TextInputContainer}>
                 <Icon name="user" size={16} color="#222" />
-                <Text style={styles.TextInputHeader}>Your Name: </Text>
+                {Global.Language === 1 ?
+                  <Text style={styles.TextInputHeader}>Adınız: </Text>
+                  :
+                  <Text style={styles.TextInputHeader}>Your Name: </Text>
+                }
+
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Name"}
+                  placeholder={""}
                   name={"username"}
                   value={getName}
                   onChangeText={setName}
@@ -146,10 +165,15 @@ export function ContactScreen({ navigation }) {
 
               <View style={styles.TextInputContainer}>
                 <Icon name="envelope" size={16} color="#222" />
-                <Text style={styles.TextInputHeader}>Email&Phone: </Text>
+                {Global.Language === 1 ?
+                  <Text style={styles.TextInputHeader}>Eposta&Telefon: </Text>
+                  :
+                  <Text style={styles.TextInputHeader}>Email&Phone: </Text>
+                }
+
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Email & Phone"}
+                  placeholder={""}
                   keyboardType={"email-address"}
                   name={"mail"}
                   value={getEmail}
@@ -160,7 +184,7 @@ export function ContactScreen({ navigation }) {
 
               <TextInput
                 style={styles.LongImputStyle}
-                placeholder={"Message"}
+                placeholder={getMessagePlaceholder}
                 name={"message"}
                 value={getMessage}
                 onChangeText={setMessage}
@@ -169,7 +193,7 @@ export function ContactScreen({ navigation }) {
 
 
               <BlueButton
-                title="Submit"
+                title={getSubmitButton}
                 style={styles.SubmitButton}
                 onPress={async (e) => {
                   if (getName === '') {
@@ -203,8 +227,12 @@ export function ContactScreen({ navigation }) {
                 }
 
               />
-
+              {Global.Language===1?
+              <Text style={styles.ThankfullText}>Bizimle İletişime Geçtiğiniz İçin Teşekkürler.</Text>
+              :
               <Text style={styles.ThankfullText}>Thank You For Contacting Us.</Text>
+              }
+              
               <View style={{ width: '100%', alignItems: 'center' }}>
                 <View style={styles.SocialIconContainer}>
                   <TouchableOpacity

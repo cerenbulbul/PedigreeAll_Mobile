@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Modal } fr
 import AsyncStorage from '@react-native-community/async-storage'
 import WebView from 'react-native-webview';
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { Global } from '../Global';
 
 export function EffectivenickSearchReportScreen({ route, navigation }) {
     const { FirstHorseID, SecondHorseID, RegistrationID, BackButtonVisible } = route.params;
@@ -46,7 +47,7 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + 2 + '&p_iRaceId=' + 1, {
+                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + Global.Language + '&p_iRaceId=' + 1, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -83,7 +84,11 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                             navigation.navigate('ThoroughbredAnalysis')
                         }}>
                         <Icon name="chevron-left" size={24} color="silver" style={{ alignSelf: 'center' }} />
+                        {Global.Language===1?
+                        <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                        :
                         <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                        }
                     </TouchableOpacity>
 
                 </View>
@@ -149,7 +154,12 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                             });
                         }}
                         style={styles.HeaderTextContainer}>
-                        <Text style={styles.HeaderText}>Mare Owners; Click here to create a report about a stallion not on the list!</Text>
+                            {Global.Language===1?
+                            <Text style={styles.HeaderText}>Kısrak Sahipleri; listede olmayan bir aygır ile ilgili rapor oluşturmak için tıklayınız!</Text>
+                            :
+                            <Text style={styles.HeaderText}>Mare Owners; Click here to create a report about a stallion not on the list!</Text>
+                            }
+                        
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
@@ -159,7 +169,12 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                             });
                         }}
                         style={styles.HeaderTextContainer}>
-                        <Text style={styles.HeaderText}>Registered Stallions are stallions registered on the system for EffectiveNick reports.</Text>
+                            {Global.Language===1?
+                            <Text style={styles.HeaderText}>Aygır Aşım İlanları kısmında yayınlanan aygırlar sistem üzerinde EffectiveNick raporlarmaları için kayıt yaptıran aygırlardır.</Text>
+                            :
+                            <Text style={styles.HeaderText}>Registered Stallions are stallions registered on the system for EffectiveNick reports.</Text>
+                            }
+                        
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
@@ -169,7 +184,12 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                             });
                         }}
                         style={styles.HeaderTextContainer}>
-                        <Text style={styles.HeaderText}>Stallion Owners; Click to reach more mare owners by registering your stallion!</Text>
+                            {Global.Language===1?
+                            <Text style={styles.HeaderText}>Aygır Sahipleri; aygırınızı kayıt ettirerek daha çok kısrak sahibine ulaşmak için tıklayınız!</Text>
+                            :
+                            <Text style={styles.HeaderText}>Stallion Owners; Click to reach more mare owners by registering your stallion!</Text>
+                            }
+                        
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
@@ -179,7 +199,12 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
                             });
                         }}
                         style={styles.HeaderTextContainer}>
-                        <Text style={styles.HeaderText}>An unlimited number of EffectiveNick Match Reports can be generated free of charge for registered stallions.</Text>
+                            {Global.Language===1?
+                            <Text style={styles.HeaderText}>Kayıtlı aygırlar için sınırsız sayıda EffectiveNick Eşleşme Raporu ücretsiz olarak oluşturulabilir.</Text>
+                            :
+                            <Text style={styles.HeaderText}>An unlimited number of EffectiveNick Match Reports can be generated free of charge for registered stallions.</Text>
+                            }
+                        
                     </TouchableOpacity>
                 </View>
                 :
@@ -192,7 +217,12 @@ export function EffectivenickSearchReportScreen({ route, navigation }) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
+                        {Global.Language===1?
+                        <Text style={styles.modalText}>Lütfen Bekleyiniz!</Text>
+                        :
                         <Text style={styles.modalText}>Please Wait!</Text>
+                        }
+                        
                         <ActivityIndicator size="large" color="#000" />
                     </View>
                 </View>

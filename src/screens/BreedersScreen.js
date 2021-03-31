@@ -109,8 +109,8 @@ export function BreedersScreen({ route, navigation }) {
     const [SireMareHorseName, setSireMareHorseName] = React.useState();
     const [SireData, setSireData] = React.useState();
     const [MareData, setMareData] = React.useState();
-    const [SireText, setSireText] = React.useState("Sire");
-    const [MareText, setMareText] = React.useState("Mare");
+    const [SireText, setSireText] = React.useState("");
+    const [MareText, setMareText] = React.useState("");
     const [getText, setText] = React.useState("");
     const [loader, setLoader] = React.useState(false)
 
@@ -119,6 +119,9 @@ export function BreedersScreen({ route, navigation }) {
 
     const [refreshing, setRefreshing] = React.useState(false);
     const [openHypoMating, setOpenHypoMating] = React.useState(false)
+
+    const [getSearchScreenName, setSeacrhScreenName] = React.useState("")
+    const [getHypotheticalScreenName, setHypotheticalScreenName] = React.useState("")
 
 
     const readUser = async () => {
@@ -159,6 +162,19 @@ export function BreedersScreen({ route, navigation }) {
         Global.Horse_ID = 0
         setSearchValue("")
         setRefreshing(false)
+
+        if (Global.Language === 1) {
+            setSireText("Aygır")
+            setMareText("Kısrak")
+            setSeacrhScreenName("Arama")
+            setHypotheticalScreenName("Varsayımsal Arama")
+        }
+        else {
+            setSireText("Sire")
+            setMareText("Mare")
+            setSeacrhScreenName("Search")
+            setHypotheticalScreenName("Hypothetical")
+        }
     }, [])
 
     return (
@@ -302,8 +318,17 @@ export function BreedersScreen({ route, navigation }) {
                             :
                             <View style={styles.ErrorMessageContainer}>
                                 <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                {Global.Language === 1 ?
+                                    <>
+                                        <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                                        <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                                    </>
+                                    :
+                                    <>
+                                        <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                        <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                    </>
+                                }
                                 <View style={styles.ErrorMessageButtonContainer}>
                                 </View>
                             </View>
@@ -318,9 +343,19 @@ export function BreedersScreen({ route, navigation }) {
                                                 {loader === false &&
                                                     <View style={styles.ErrorMessageContainer}>
                                                         <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                        {Global.Language === 1 ?
+                                                            <>
+                                                                <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                                <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                                <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                                <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                                <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                            </>
+                                                        }
                                                         <View style={styles.ErrorMessageButtonContainer}>
                                                         </View>
                                                     </View>
@@ -436,32 +471,75 @@ export function BreedersScreen({ route, navigation }) {
                             {getText === "" ?
                                 <>
                                     {Global.BreedingContentScreenName === "Siblings (Mare)" &&
-
-                                        <Text>Search Siblings Mare</Text>
+                                        <>
+                                        {Global.Language!==1?
+                                         <Text>Search Siblings Mare</Text>
+                                        :
+                                        <Text>Kardeşler (Kısrak) Ara</Text>
+                                        }
+                                        </>
 
                                         || Global.BreedingContentScreenName === "Siblings (Sire)" &&
 
+                                        <>
+                                        {Global.Language!==1?
                                         <Text>Search Siblings Sire</Text>
-
+                                        :
+                                        <Text>Kardeşler (Aygır) Ara</Text>
+                                        }
+                                        </>
+                                        
                                         || Global.BreedingContentScreenName === "Tail Female" &&
 
+                                        <>
+                                        {Global.Language!==1?
                                         <Text>Search Tail Female</Text>
+                                        :
+                                        <Text>Tail Female Dişi Soy Ara</Text>
+                                        }
+                                        </>
 
                                         || Global.BreedingContentScreenName === "Progeny" &&
-
+                                        <>
+                                        {Global.Language!==1?
                                         <Text>Search Progeny</Text>
+                                        :
+                                        <Text>Gebe Ara</Text>
+                                        }
+                                        </>
+                                        
 
                                         || Global.BreedingContentScreenName === "Profile" &&
-
+                                        <>
+                                        {Global.Language!==1?
                                         <Text>Search Profile</Text>
+                                        :
+                                        <Text>Profil Ara</Text>
+                                        }
+                                        </>
+                                        
 
                                         || Global.BreedingContentScreenName === "Foals  As Brood Mare Sire" &&
 
+                                        <>
+                                        {Global.Language===1?
+                                        <Text>Kısrak Babası Olarak Tayları Ara</Text>
+                                        :
                                         <Text>Search Foals  As Brood Mare Sire</Text>
+                                        }
+                                        </>
 
                                         || Global.BreedingContentScreenName === "Siblings (Broodmare Sire)" &&
 
+                                        <>
+                                        {Global.Language===1?
+                                        <Text>Kardeşler (Kısrak Babası) Ara</Text>
+                                        :
                                         <Text>Search Siblings (Broodmare Sire)</Text>
+                                        }
+                                        </>
+
+                                        
                                     }
                                 </>
                                 :
@@ -505,13 +583,13 @@ export function BreedersScreen({ route, navigation }) {
                                 name="SearchScreen"
                                 component={SearchScreen}
                                 initialParams={{ TabScreenName: 'Search' }}
-                                options={{ tabBarLabel: 'Search' }}
+                                options={{ tabBarLabel: getSearchScreenName }}
                             />
                             <Tab.Screen
                                 name="HypotheticalScreen"
                                 component={SearchScreen}
                                 initialParams={{ TabScreenName: 'Hypothetical' }}
-                                options={{ tabBarLabel: 'Hypothetical' }}
+                                options={{ tabBarLabel: getHypotheticalScreenName }}
                             />
                         </Tab.Navigator>
 
@@ -520,8 +598,8 @@ export function BreedersScreen({ route, navigation }) {
                 }
 
                 {openHypoMating ?
-                    <View style={{marginBottom:20, width:Dimensions.get('screen').width}}>
-                       { ScreenName === "HypoMatingScreen" &&
+                    <View style={{ marginBottom: 20, width: Dimensions.get('screen').width }}>
+                        {ScreenName === "HypoMatingScreen" &&
                             <HypotheticalSearchScreen />}
                     </View>
                     :
@@ -573,8 +651,8 @@ function SearchScreen({ route, navigation }) {
     const [SireMareHorseName, setSireMareHorseName] = React.useState();
     const [SireData, setSireData] = React.useState();
     const [MareData, setMareData] = React.useState();
-    const [SireText, setSireText] = React.useState("Sire");
-    const [MareText, setMareText] = React.useState("Mare");
+    const [SireText, setSireText] = React.useState("");
+    const [MareText, setMareText] = React.useState("");
     const [getText, setText] = React.useState("Sire");
     const [loader, setLoader] = React.useState(false)
 
@@ -620,6 +698,16 @@ function SearchScreen({ route, navigation }) {
         setText("");
         setSearchValue("")
         setRefreshing(false)
+
+        if (Global.Language===1) {
+            setSireText("Aygır")
+            setMareText("Kısrak")
+
+        }
+        else{
+            setSireText("Sire")
+            setMareText("Mare")
+        }
     }, [])
 
     return (
@@ -1029,7 +1117,7 @@ const styles = StyleSheet.create({
     },
     ErrorMessageContainer: {
         width: '100%',
-        height: '50%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,

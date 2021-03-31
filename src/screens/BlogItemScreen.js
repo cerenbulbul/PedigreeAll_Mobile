@@ -20,6 +20,7 @@ import { Title } from '../components/Title'
 import { ListItem, Input, SearchBar } from "react-native-elements";
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { Global } from '../Global';
 
 export function BlogItemScreen({ route, navigation }) {
   const { selectedBlog } = route.params;
@@ -30,52 +31,76 @@ export function BlogItemScreen({ route, navigation }) {
         onPress={() => { navigation.navigate('Blog') }}
         style={styles.SideBarTopBackIcon}>
         <Icon name="chevron-left" size={20} color="#222" />
+        {Global.Language===1?
+        <Text style={styles.SideBarBackText}>Geri</Text>
+        :
         <Text style={styles.SideBarBackText}>Back</Text>
-      </TouchableOpacity>
-        {selectedBlog !== undefined &&
-            <Card 
-              containerStyle={{ elevation: 0, borderWidth: 0, borderRadius: 10, padding: 10 }}
-              scrollEnabled={true}
-            >
-
-              <View style={styles.ButtonContainer}>
-                <View style={styles.IconsContainer}>
-                  <Icon name="calendar" size={15} color="#000" />
-                  <Moment style={{ marginLeft: 5, }} element={Text} format="YYYY/MM/DD"><Text>{selectedBlog.DATE}</Text></Moment>
-                </View>
-                <View style={styles.IconsContainer}>
-                  <Icon name="eye" size={15} color="#000" />
-                  <Text style={styles.IconText}>{selectedBlog.COUNTER}</Text>
-                </View>
-              </View>
-              <View style={[styles.IconsContainer, { marginTop: 10 }]}>
-                <Icon name="tags" size={15} color="#000" />
-                <Text style={styles.IconText}>{selectedBlog.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN}</Text>
-              </View>
-              
-              <Card.Image
-                style={{ borderRadius: 3, resizeMode: 'contain', height: 250, marginTop:10 }}
-                source={{ uri: 'https://www.pedigreeall.com/blog/' + selectedBlog.IMAGE }} />
-
-
-
-                <WebView
-                  source={{baseUrl: '', html: selectedBlog.BLOG_EN + '<meta name="viewport" content="width=device-width, initial-scale=1">' }}
-                  originWhitelist={['*']}
-                  automaticallyAdjustContentInsets={true}
-                  javaScriptEnabledAndroid={true}
-                  scrollEnabled={true}
-                  startInLoadingState={true}
-                  bounces={true}
-                  style={{width:'100%',height:250}}
-                  renderLoading={() => <ActivityIndicator color='#000' size='large' />}
-                />
-
-
-
-
-            </Card>
         }
+        
+      </TouchableOpacity>
+      {selectedBlog !== undefined &&
+        <Card
+          containerStyle={{ elevation: 0, borderWidth: 0, borderRadius: 10, padding: 10 }}
+          scrollEnabled={true}
+        >
+
+          <View style={styles.ButtonContainer}>
+            <View style={styles.IconsContainer}>
+              <Icon name="calendar" size={15} color="#000" />
+              <Moment style={{ marginLeft: 5, }} element={Text} format="YYYY/MM/DD"><Text>{selectedBlog.DATE}</Text></Moment>
+            </View>
+            <View style={styles.IconsContainer}>
+              <Icon name="eye" size={15} color="#000" />
+              <Text style={styles.IconText}>{selectedBlog.COUNTER}</Text>
+            </View>
+          </View>
+          <View style={[styles.IconsContainer, { marginTop: 10 }]}>
+            <Icon name="tags" size={15} color="#000" />
+            {Global.Language === 1 ?
+              <Text style={styles.IconText}>{selectedBlog.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_TR}</Text>
+              :
+              <Text style={styles.IconText}>{selectedBlog.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN}</Text>
+            }
+
+          </View>
+
+          <Card.Image
+            style={{ borderRadius: 3, resizeMode: 'contain', height: 250, marginTop: 10 }}
+            source={{ uri: 'https://www.pedigreeall.com/blog/' + selectedBlog.IMAGE }} />
+
+
+          {Global.Language === 1 ?
+            <WebView
+              source={{ baseUrl: '', html: selectedBlog.BLOG_TR + '<meta name="viewport" content="width=device-width, initial-scale=1">' }}
+              originWhitelist={['*']}
+              automaticallyAdjustContentInsets={true}
+              javaScriptEnabledAndroid={true}
+              scrollEnabled={true}
+              startInLoadingState={true}
+              bounces={true}
+              style={{ width: '100%', height: 250 }}
+              renderLoading={() => <ActivityIndicator color='#000' size='large' />}
+            />
+            :
+            <WebView
+              source={{ baseUrl: '', html: selectedBlog.BLOG_EN + '<meta name="viewport" content="width=device-width, initial-scale=1">' }}
+              originWhitelist={['*']}
+              automaticallyAdjustContentInsets={true}
+              javaScriptEnabledAndroid={true}
+              scrollEnabled={true}
+              startInLoadingState={true}
+              bounces={true}
+              style={{ width: '100%', height: 250 }}
+              renderLoading={() => <ActivityIndicator color='#000' size='large' />}
+            />
+          }
+
+
+
+
+
+        </Card>
+      }
 
     </ScrollView>
 

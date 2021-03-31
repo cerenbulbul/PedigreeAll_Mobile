@@ -10,6 +10,7 @@ import { Dimensions } from 'react-native';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { ToastAndroid } from 'react-native';
+import { Global } from '../Global';
 
 
 
@@ -119,7 +120,12 @@ export function MyOrderScreen() {
 
     return (
         <View style={styles.Container}>
+            {Global.Language===1?
+            <Title text="Siparişlerim" />
+            :
             <Title text="My Orders" />
+            }
+            
             <RBSheet
                 ref={BottomSheetSmall}
                 closeOnDragDown={true}

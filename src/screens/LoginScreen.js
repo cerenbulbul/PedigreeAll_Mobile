@@ -178,6 +178,7 @@ export function LoginScreen({ navigation }) {
                       Global.IsLogin = true;
                       //localStorage.setItem('USER',JSON.stringify(json.m_cData) )
                       saveData(JSON.stringify(json.m_cData), email, password)
+                      navigation.navigate("Main")
                     }
 
 

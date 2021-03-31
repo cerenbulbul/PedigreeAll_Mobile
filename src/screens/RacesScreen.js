@@ -11,6 +11,7 @@ import { ListItem, SearchBar } from "react-native-elements";
 import Flag from "react-native-flags";
 import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable } from 'react-native-paper';
+import { Global } from '../Global';
 
 export function RacesScreen({ navigation }) {
   const BottomSheetRef = useRef();
@@ -87,16 +88,33 @@ export function RacesScreen({ navigation }) {
   const [checkStateMultiClass, setcheckStateMultiClass] = React.useState({ checked: [] });
   const [checkStateMultiClassString, setcheckStateMultiClassString] = React.useState({ checkedString: [] });
 
+  const [getStartDateName, setStartNameDate] = React.useState("");
+  const [getEndDateName, setEndNameDate] = React.useState("");
+  const [getStartTimeName, setStartTimeName] = React.useState("");
+  const [getEndTimeName, setEndTimeName] = React.useState("");
+  const [getViewButtonName, setViewButtonName] = React.useState("")
+
   const pressCountry = item => {   // The onPress method
     const { checked } = checkStateMultiCountry;
     const { checkedString } = checkStateMultiCountryString;
     // These ensures that multiple checkboxes don't all get affected when one is clicked
     if (!checked.includes(item.COUNTRY_ID)) {
       setcheckStateMultiCountry({ checked: [...checked, item.COUNTRY_ID] });
-      setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_EN] })
+      if (Global.Language === 1) {
+        setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_TR] })
+      }
+      else {
+        setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_EN] })
+      }
+
     } else {
       setcheckStateMultiCountry({ checked: checked.filter(a => a !== item.COUNTRY_ID) });
-      setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_EN) });
+      if (Global.Language === 1) {
+        setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_TR) });
+      }
+      else {
+        setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_EN) });
+      }
     }
   }
 
@@ -106,10 +124,20 @@ export function RacesScreen({ navigation }) {
     // These ensures that multiple checkboxes don't all get affected when one is clicked
     if (!checked.includes(item.RACE_CITY_ID)) {
       setcheckStateMultiRaceCity({ checked: [...checked, item.RACE_CITY_ID] });
-      setcheckStateMultiRaceCityString({ checkedString: [...checkedString, item.RACE_CITY_EN] })
+      if (Global.Language === 1) {
+        setcheckStateMultiRaceCityString({ checkedString: [...checkedString, item.RACE_CITY_TR] })
+      }
+      else {
+        setcheckStateMultiRaceCityString({ checkedString: [...checkedString, item.RACE_CITY_EN] })
+      }
     } else {
       setcheckStateMultiRaceCity({ checked: checked.filter(a => a !== item.RACE_CITY_ID) });
-      setcheckStateMultiRaceCityString({ checkedString: checkedString.filter(a => a !== item.RACE_CITY_EN) });
+      if (Global.Language === 1) {
+        setcheckStateMultiRaceCityString({ checkedString: checkedString.filter(a => a !== item.RACE_CITY_TR) });
+      }
+      else {
+        setcheckStateMultiRaceCityString({ checkedString: checkedString.filter(a => a !== item.RACE_CITY_EN) });
+      }
     }
   }
 
@@ -278,7 +306,7 @@ export function RacesScreen({ navigation }) {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/Race/GetAsNameId?p_iLanguage=' + 2, {
+        fetch('https://api.pedigreeall.com/Race/GetAsNameId?p_iLanguage=' + Global.Language, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -306,7 +334,7 @@ export function RacesScreen({ navigation }) {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/RaceGroup/GetAsNameId?p_iLanguage=' + 2 + "&p_sRaceId=" + RaceID, {
+        fetch('https://api.pedigreeall.com/RaceGroup/GetAsNameId?p_iLanguage=' + Global.Language + "&p_sRaceId=" + RaceID, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -362,7 +390,7 @@ export function RacesScreen({ navigation }) {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/RaceFloor/GetAsNameId?p_iLanguage=' + 2, {
+        fetch('https://api.pedigreeall.com/RaceFloor/GetAsNameId?p_iLanguage=' + Global.Language, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -390,7 +418,7 @@ export function RacesScreen({ navigation }) {
     try {
       const token = await AsyncStorage.getItem('TOKEN')
       if (token !== null) {
-        fetch('https://api.pedigreeall.com/RaceType/GetAsNameId?p_iLanguage=' + 2, {
+        fetch('https://api.pedigreeall.com/RaceType/GetAsNameId?p_iLanguage=' + Global.Language, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -424,11 +452,31 @@ export function RacesScreen({ navigation }) {
     readDataDistanceList();
     readDataRunwayList();
     readDataClassList();
+
+    if (Global.Language === 1) {
+      setStartNameDate("Başlangıç Tarihi")
+      setEndNameDate("Bitiş Tarihi")
+      setStartTimeName("Başlangıç Saati")
+      setEndTimeName("Bitiş Saati")
+      setViewButtonName("Görüntüle")
+    }
+    else {
+      setStartNameDate("Start Date")
+      setEndNameDate("End Date")
+      setStartTimeName("Start Time")
+      setEndTimeName("End Time")
+      setViewButtonName("View")
+    }
   }, [])
 
   return (
     <View style={styles.Container}>
-      <Title text="Race Analysis" />
+      {Global.Language === 1 ?
+        <Title text="Yarışlar" />
+        :
+        <Title text="Race Analysis" />
+      }
+
       <RBSheet
         ref={BottomSheetRef}
         closeOnDragDown={true}
@@ -524,9 +572,19 @@ export function RacesScreen({ navigation }) {
               {getHorseGetFilter.length === 0 ?
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                  <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                  <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                  <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                      <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                      <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                      <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                      <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                    </>
+                  }
                 </View>
                 :
                 <ScrollView>
@@ -572,40 +630,84 @@ export function RacesScreen({ navigation }) {
               )}
               {CounrtyList !== undefined ?
                 <ScrollView style={styles.ScrollViewContainer}>
-                  {CounrtyList.filter((x) => x.COUNTRY_EN.includes(searchValue)).map((item, i) => (
-                    <ListItem
-                      key={i}
-                      bottomDivider
-                      button
-                      onPress={() => {
-                        pressCountry(item)
-                      }}
-                    >
-                      <ListItem.CheckBox
-                        checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
-                        checkedIcon='circle'
-                        uncheckedIcon='circle'
-                        center={true}
-                        checkedColor='#2169ab'
-                        uncheckedColor='rgb(232, 237, 241)'
-                        onPress={() => {
-                          pressCountry(item)
-                        }} />
+                  {Global.Language === 1 ?
+                    <>
+                      {CounrtyList.filter((x) => x.COUNTRY_TR.includes(searchValue)).map((item, i) => (
+                        <ListItem
+                          key={i}
+                          bottomDivider
+                          button
+                          onPress={() => {
+                            pressCountry(item)
+                          }}
+                        >
+                          <ListItem.CheckBox
+                            checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
+                            checkedIcon='circle'
+                            uncheckedIcon='circle'
+                            center={true}
+                            checkedColor='#2169ab'
+                            uncheckedColor='rgb(232, 237, 241)'
+                            onPress={() => {
+                              pressCountry(item)
+                            }} />
 
-                      <Flag code={item.ICON.toUpperCase()} size={24} />
-                      <ListItem.Content>
-                        <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
-                      </ListItem.Content>
-                      <ListItem.Chevron />
-                    </ListItem>
-                  )
-                  )}
+                          <Flag code={item.ICON.toUpperCase()} size={24} />
+                          <ListItem.Content>
+                            <ListItem.Title>{item.COUNTRY_TR}</ListItem.Title>
+                          </ListItem.Content>
+                          <ListItem.Chevron />
+                        </ListItem>
+                      )
+                      )}
+                    </>
+                    :
+                    <>
+                      {CounrtyList.filter((x) => x.COUNTRY_EN.includes(searchValue)).map((item, i) => (
+                        <ListItem
+                          key={i}
+                          bottomDivider
+                          button
+                          onPress={() => {
+                            pressCountry(item)
+                          }}
+                        >
+                          <ListItem.CheckBox
+                            checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
+                            checkedIcon='circle'
+                            uncheckedIcon='circle'
+                            center={true}
+                            checkedColor='#2169ab'
+                            uncheckedColor='rgb(232, 237, 241)'
+                            onPress={() => {
+                              pressCountry(item)
+                            }} />
+
+                          <Flag code={item.ICON.toUpperCase()} size={24} />
+                          <ListItem.Content>
+                            <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+                          </ListItem.Content>
+                          <ListItem.Chevron />
+                        </ListItem>
+                      )
+                      )}
+                    </>
+                  }
                 </ScrollView>
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -644,7 +746,12 @@ export function RacesScreen({ navigation }) {
                           pressRaceCity(item)
                         }} />
                       <ListItem.Content>
-                        <ListItem.Title>{item.RACE_CITY_EN}</ListItem.Title>
+                        {Global.Language === 1 ?
+                          <ListItem.Title>{item.RACE_CITY_TR}</ListItem.Title>
+                          :
+                          <ListItem.Title>{item.RACE_CITY_EN}</ListItem.Title>
+                        }
+
                       </ListItem.Content>
                       <ListItem.Chevron />
                     </ListItem>
@@ -654,8 +761,17 @@ export function RacesScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -704,8 +820,17 @@ export function RacesScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -754,8 +879,17 @@ export function RacesScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -804,8 +938,17 @@ export function RacesScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -908,8 +1051,17 @@ export function RacesScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -957,8 +1109,17 @@ export function RacesScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
                 </View>
               }
             </>
@@ -977,7 +1138,12 @@ export function RacesScreen({ navigation }) {
                 }}
                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                 <Icon name="chevron-left" size={24} color="silver" />
-                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                {Global.Language === 1 ?
+                  <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                  :
+                  <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                }
+
               </TouchableOpacity>
             </View>
 
@@ -996,49 +1162,75 @@ export function RacesScreen({ navigation }) {
                     {getHorseGetFilter.length === 0 ?
                       <View style={styles.ErrorMessageContainer}>
                         <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                        {Global.Language === 1 ?
+                          <>
+                            <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                            <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                            <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                          </>
+                          :
+                          <>
+                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                          </>
+                        }
                       </View>
                       :
                       <ScrollView style={styles.ScrollViewContainer}>
                         <ScrollView horizontal={true}>
 
                           <DataTable>
-                            <DataTable.Header>
-                              <DataTable.Title >ID</DataTable.Title>
-                              <DataTable.Title >Analysis</DataTable.Title>
-                              <DataTable.Title >Header</DataTable.Title>
-                              <DataTable.Title >Country</DataTable.Title>
-                              <DataTable.Title >City</DataTable.Title>
-                              <DataTable.Title >Race</DataTable.Title>
-                              <DataTable.Title >Race G.</DataTable.Title>
-                              <DataTable.Title >Distance</DataTable.Title>
-                              <DataTable.Title >Runway</DataTable.Title>
-                              <DataTable.Title >Class</DataTable.Title>
-                              <DataTable.Title >Prize</DataTable.Title>
-                              <DataTable.Title >Date</DataTable.Title>
-                              <DataTable.Title >Horse Count</DataTable.Title>
-                              <DataTable.Title >Visit. Count</DataTable.Title>
-                              <DataTable.Title >Link</DataTable.Title>
-                            </DataTable.Header>
+                            {Global.Language === 1 ?
+                              <DataTable.Header>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >ID</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Başlık</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Ülke</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Şehir</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Irk</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Koşu G.</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Mesafe</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Pist</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Koşu Cinsi</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >İkramiye</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Tarih</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >At Sayısı</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Ziyaretçi S.</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Link</DataTable.Title>
+                              </DataTable.Header>
+                              :
+                              <DataTable.Header>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >ID</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Header</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }} >Country</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>City</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Race</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Race G.</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Distance</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Runway</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Class</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Prize</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Date</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Horse Count</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Visit. Count</DataTable.Title>
+                                <DataTable.Title style={{ width: 100, justifyContent: 'center' }}>Link</DataTable.Title>
+                              </DataTable.Header>}
                             {getHorseGetFilter.map((item, i) => (
                               <DataTable.Row key={i}>
-                                <DataTable.Cell numeric>{item.HORSE_RACE_ID}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 110, justifyContent: 'center' }} >Analysis</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 110, justifyContent: 'center' }} >{item.HORSE_RACE_TITLE}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.HORSE_RACE_ID}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.HORSE_RACE_TITLE}</DataTable.Cell>
                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }} >{item.RACE_CITY_OBJECT.COUNTRY.COUNTRY_EN}</DataTable.Cell>
                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_CITY_OBJECT.RACE_CITY_EN}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_OBJECT.RACE_EN}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_GROUP_EN}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_DISTANCE_OBJECT.DISTANCE}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_FLOOR_OBJECT.RACE_FLOOR_EN}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.RACE_TYPE_OBJECT.RACE_TYPE_EN}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 80, justifyContent: 'center' }}>{item.PRIZE1}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_OBJECT.RACE_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_GROUP_OBJECT.RACE_GROUP_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_DISTANCE_OBJECT.DISTANCE}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_FLOOR_OBJECT.RACE_FLOOR_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.RACE_TYPE_OBJECT.RACE_TYPE_EN}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.PRIZE1}</DataTable.Cell>
                                 <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.DATE}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.HORSE_COUNT}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>{item.COUNTER}</DataTable.Cell>
-                                <DataTable.Cell style={{ width: 60, justifyContent: 'center' }}>Link</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.HORSE_COUNT}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>{item.COUNTER}</DataTable.Cell>
+                                <DataTable.Cell style={{ width: 100, justifyContent: 'center' }}>Link</DataTable.Cell>
                               </DataTable.Row>
                             )
                             )}
@@ -1050,8 +1242,17 @@ export function RacesScreen({ navigation }) {
                   :
                   <View style={styles.ErrorMessageContainer}>
                     <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    {Global.Language === 1 ?
+                      <>
+                        <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                        <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                      </>
+                      :
+                      <>
+                        <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                        <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                      </>
+                    }
                   </View>
                 }
               </ScrollView>
@@ -1066,10 +1267,15 @@ export function RacesScreen({ navigation }) {
           <>
             <View style={styles.InformationContainer}>
               <View style={styles.TextInputContainer}>
-                <Text style={styles.TextInputHeader}>Header: </Text>
+                {Global.Language === 1 ?
+                  <Text style={styles.TextInputHeader}>Başlık: </Text>
+                  :
+                  <Text style={styles.TextInputHeader}>Header: </Text>
+                }
+
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Header"}
+                  placeholder={""}
                   value={Header}
                   onChange={setHeader}
                 />
@@ -1083,7 +1289,13 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="flag" size={20} color="#2169ab" />
                   {checkStateMultiCountryString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A Country</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Ülke Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A Country</Text>
+                      }
+                    </>
                     :
                     <Text style={styles.InformationText}>{checkStateMultiCountryString.checkedString}</Text>
                   }
@@ -1102,7 +1314,14 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="city" size={20} color="#2169ab" />
                   {checkStateMultiRaceCityString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A City</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Şehir Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A City</Text>
+                      }
+                    </>
+
                     :
                     <Text style={styles.InformationText}>{checkStateMultiRaceCityString.checkedString}</Text>
                   }
@@ -1121,7 +1340,14 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="horse" size={20} color="#2169ab" />
                   {checkStateMultiRaceString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A Race</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Irk Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A Race</Text>
+                      }
+                    </>
+
                     :
                     <Text style={styles.InformationText}>{checkStateMultiRaceString.checkedString}</Text>
                   }
@@ -1140,7 +1366,14 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="horse" size={20} color="#2169ab" />
                   {checkStateMultiGroupRaceString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A Group Race</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Koşu Grubu Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A Group Race</Text>
+                      }
+                    </>
+
                     :
                     <Text style={styles.InformationText}>{checkStateMultiGroupRaceString.checkedString}</Text>
                   }
@@ -1159,7 +1392,14 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="route" size={20} color="#2169ab" />
                   {checkStateMultiRaceDistanceString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A Distance</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Mesafe Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A Distance</Text>
+                      }
+                    </>
+
                     :
                     <Text style={styles.InformationText}>{checkStateMultiRaceDistanceString.checkedString}</Text>
                   }
@@ -1178,7 +1418,14 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="route" size={20} color="#2169ab" />
                   {checkStateMultiRunwayString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A Runway</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Pist Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A Runway</Text>
+                      }
+                    </>
+
                     :
                     <Text style={styles.InformationText}>{checkStateMultiRunwayString.checkedString}</Text>
                   }
@@ -1197,7 +1444,14 @@ export function RacesScreen({ navigation }) {
                   style={styles.OneValueInLineButton}>
                   <Icon name="horse" size={20} color="#2169ab" />
                   {checkStateMultiClassString.checkedString.length === 0 ?
-                    <Text style={styles.InformationText}>Select A Class</Text>
+                    <>
+                      {Global.Language === 1 ?
+                        <Text style={styles.InformationText}>Koşu Cinsi Seçiniz</Text>
+                        :
+                        <Text style={styles.InformationText}>Select A Class</Text>
+                      }
+                    </>
+
                     :
                     <Text style={styles.InformationText}>{checkStateMultiClassString.checkedString}</Text>
                   }
@@ -1209,20 +1463,30 @@ export function RacesScreen({ navigation }) {
               </View>
 
               <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                <Text style={styles.TextInputHeader}>Prize Min: </Text>
+                {Global.Language === 1 ?
+                  <Text style={styles.TextInputHeader}>İkramiye Min: </Text>
+                  :
+                  <Text style={styles.TextInputHeader}>Prize Min: </Text>
+                }
+
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Prize Min"}
+                  placeholder={""}
                   keyboardType="numeric"
                   value={getMinPrize}
                   onChange={setMinPrize}
                 />
               </View>
               <View style={styles.TextInputContainer}>
-                <Text style={styles.TextInputHeader}>Prize Min: </Text>
+                {Global.Language === 1 ?
+                  <Text style={styles.TextInputHeader}>İkramiye Max: </Text>
+                  :
+                  <Text style={styles.TextInputHeader}>Prize Min: </Text>
+                }
+
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Prize Max"}
+                  placeholder={""}
                   keyboardType="numeric"
                   value={getMaxPrize}
                   onChange={setMaxPrize}
@@ -1232,7 +1496,7 @@ export function RacesScreen({ navigation }) {
               <View style={{ marginTop: 30 }}>
                 <TextInput
                   style={styles.FullInputStyle}
-                  placeholder={"Start Date"}
+                  placeholder={getStartDateName}
                   name={"StartDate"}
                   value={getStartDate}
                   onChangeText={setStartDate}
@@ -1240,7 +1504,24 @@ export function RacesScreen({ navigation }) {
                 />
                 <TextInput
                   style={styles.FullInputStyle}
-                  placeholder={"Start Time"}
+                  placeholder={getEndDateName}
+                  name={"StartDate"}
+                  value={getEndDate}
+                  onChangeText={setEndDate}
+                  keyboardType={"numeric"}
+                />
+
+                <TextInput
+                  style={styles.FullInputStyle}
+                  placeholder={getStartTimeName}
+                  name={"StartDate"}
+                  value={getStartDate}
+                  onChangeText={setStartDate}
+                  keyboardType={"numeric"}
+                />
+                <TextInput
+                  style={styles.FullInputStyle}
+                  placeholder={getEndTimeName}
                   name={"StartDate"}
                   value={getEndDate}
                   onChangeText={setEndDate}
@@ -1253,7 +1534,7 @@ export function RacesScreen({ navigation }) {
             </View>
             <View style={styles.ButtonContainer}>
               <BlueButton
-                title="View"
+                title={getViewButtonName}
                 style={{ width: '95%' }}
                 onPress={() => {
                   setLoadingForTable(true)

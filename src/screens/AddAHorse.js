@@ -15,6 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { Alert } from 'react-native';
+import { Global } from '../Global';
 
 
 const RomanMillerData = [
@@ -310,7 +311,7 @@ export function AddAHorse({ navigation }) {
             ID: 1,
             NAME: searchValue,
           })
-          
+
         })
           .then((response) => response.json())
           .then((json) => {
@@ -405,7 +406,7 @@ export function AddAHorse({ navigation }) {
             "ANZ_C": getAnzC,
             "ANZ_S": getAnzS,
             "ANZ_P": getAnzP,
-            "RACE_ID" : 1,
+            "RACE_ID": 1,
             "FAMILY_OBJECT": {
               "FAMILY_ID": getFamilyID.toString()
             },
@@ -538,6 +539,19 @@ export function AddAHorse({ navigation }) {
   }
 
 
+  const [getStartRequestDatePlaceholder, setStartRequestDatePlaceholder] = React.useState("")
+  const [getFirstPlacePlaceholder, setFirstPlacePlaceholder] = React.useState("")
+  const [getSecondPlacePlaceholder, setSecondPlacePlaceholder] = React.useState("")
+  const [getThirdPlacePlaceholder, setThirdPlacePlaceholder] = React.useState("")
+  const [getFourthPlacePlaceholder, setFourthPlacePlaceholder] = React.useState("")
+  const [getStartsPlacePlaceholder, setStartsPlacePlaceholder] = React.useState("")
+  const [getEarningPlaceholder, setEarningPlaceholder] = React.useState("")
+  const [getPricePlaceholder, setPricePlaceholder] = React.useState("")
+  const [getHeaderPlaceholder, setHeaderPlaceholder] = React.useState("")
+  const [getParagraphPlaceholder, setParagraphPlaceholder] = React.useState("")
+  const [getDeadCheckName, setDeadCheckName] = React.useState("")
+  const [getNamePlaceholder, setNamePlaceholder] = React.useState("")
+  const [getAddButtonName, setAddButtonName] = React.useState("")
 
   React.useEffect(() => {
     readDataSexList();
@@ -547,6 +561,55 @@ export function AddAHorse({ navigation }) {
     readDataColorList();
     readUser()
     readGetOwnerBreeder()
+
+    if (Global.Language === 1) {
+      setStartRequestDatePlaceholder("Doğum Tarihi (GG/AA/YYYY)")
+      setFirstPlacePlaceholder("1'incilik Sayısı")
+      setSecondPlacePlaceholder("2'ncilik Sayısı")
+      setThirdPlacePlaceholder("3'üncülük Sayısı")
+      setFourthPlacePlaceholder("4'üncülük Sayısı")
+      setStartsPlacePlaceholder("Toplam Yarış Sayısı")
+      setEarningPlaceholder("Kazanç")
+      setPricePlaceholder("Fiyat")
+      setHeaderPlaceholder("Başlık")
+      setParagraphPlaceholder("Paragraf")
+      setSexText("Cinsiyet Sec")
+      setCounrtyText("Ulke Sec")
+      setWinnerText("Sınıf Sec")
+      setColorText("Renk Sec")
+      setDeadCheckName("Ölü")
+      setOwnerText("Sahip")
+      setBreederText("Yetiştirici")
+      setCoach("Antrenör")
+      setNamePlaceholder("Adı")
+      setSireText("Aygır")
+      setMareText("Kısrak")
+      setAddButtonName("Ekle")
+    }
+    else {
+      setStartRequestDatePlaceholder("Birth Date (DD/MM/YYYY)")
+      setFirstPlacePlaceholder("First Place")
+      setSecondPlacePlaceholder("Second Place")
+      setThirdPlacePlaceholder("Third Place")
+      setFourthPlacePlaceholder("Fourth Place")
+      setStartsPlacePlaceholder("Starts")
+      setEarningPlaceholder("Earning")
+      setPricePlaceholder("Price")
+      setHeaderPlaceholder("Header")
+      setParagraphPlaceholder("Paragraph")
+      setSexText("Select A Sex")
+      setCounrtyText("Select A Country")
+      setWinnerText("Select a Class")
+      setColorText("Select a Color")
+      setDeadCheckName("Dead")
+      setOwnerText("Owner")
+      setBreederText("Breeder")
+      setCoach("Coach")
+      setNamePlaceholder("Name")
+      setSireText("Sire")
+      setMareText("Mare")
+      setAddButtonName("Add")
+    }
   }, [])
 
   React.useLayoutEffect(() => {
@@ -674,13 +737,23 @@ export function AddAHorse({ navigation }) {
                         bottomDivider
                         button
                         onPress={() => {
-                          console.log(item.SEX_EN)
-                          setSexText(item.SEX_EN)
+                          if (Global.Language === 1) {
+                            setSexText(item.SEX_TR)
+                          }
+                          else {
+                            setSexText(item.SEX_EN)
+                          }
+
                           setSexID(item.SEX_ID)
                           BottomSheetRef.current.close();
                         }} >
                         <ListItem.Content>
-                          <ListItem.Title>{item.SEX_EN}</ListItem.Title>
+                          {Global.Language === 1 ?
+                            <ListItem.Title>{item.SEX_TR}</ListItem.Title>
+                            :
+                            <ListItem.Title>{item.SEX_EN}</ListItem.Title>
+                          }
+
                         </ListItem.Content>
                         <ListItem.Chevron />
                       </ListItem>
@@ -700,12 +773,22 @@ export function AddAHorse({ navigation }) {
                           bottomDivider
                           button
                           onPress={() => {
-                            setWinnerText(item.WINNER_TYPE_EN)
+                            if (Global.Language === 1) {
+                              setWinnerText(item.WINNER_TYPE_TR)
+                            }
+                            else {
+                              setWinnerText(item.WINNER_TYPE_EN)
+                            }
                             setWinnerTypeID(item.WINNER_TYPE_ID)
                             BottomSheetRef.current.close()
                           }} >
                           <ListItem.Content>
-                            <ListItem.Title>{item.WINNER_TYPE_EN}</ListItem.Title>
+                            {Global.Language === 1 ?
+                              <ListItem.Title>{item.WINNER_TYPE_TR}</ListItem.Title>
+                              :
+                              <ListItem.Title>{item.WINNER_TYPE_EN}</ListItem.Title>
+                            }
+
                           </ListItem.Content>
                           <ListItem.Chevron />
                         </ListItem>
@@ -756,13 +839,24 @@ export function AddAHorse({ navigation }) {
                           bottomDivider
                           button
                           onPress={() => {
-                            setCounrtyText(item.COUNTRY_EN)
+                            if (Global.Language === 1) {
+                              setCounrtyText(item.COUNTRY_TR)
+                            }
+                            else {
+                              setCounrtyText(item.COUNTRY_EN)
+                            }
+
                             setCountryID(item.COUNTRY_ID)
                             BottomSheetRef.current.close()
                           }} >
                           <Flag code={item.ICON.toUpperCase()} size={24} />
                           <ListItem.Content>
-                            <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+                            {Global.Language === 1 ?
+                              <ListItem.Title>{item.COUNTRY_TR}</ListItem.Title>
+                              :
+                              <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+                            }
+
                           </ListItem.Content>
                           <ListItem.Chevron />
                         </ListItem>
@@ -1066,7 +1160,12 @@ export function AddAHorse({ navigation }) {
       <Root>
         <View style={styles.AddAHorseContainer}>
           <View style={{ marginVertical: 40, paddingLeft: 10, paddingRight: 10 }}>
-            <Text style={styles.Title}>Add A Horse</Text>
+            {Global.Language === 1 ?
+              <Text style={styles.Title}>At Ekle</Text>
+              :
+              <Text style={styles.Title}>Add A Horse</Text>
+            }
+
             <ScrollView style={{ marginBottom: 150 }}>
               {isLoadingForAdding ?
                 <ActivityIndicator color="#000" size="large" style={{ position: 'absolute', alignSelf: 'center', justifyContent: 'center', zIndex: 1 }} />
@@ -1085,7 +1184,12 @@ export function AddAHorse({ navigation }) {
                           }}
                           style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                           <Icon name="chevron-left" size={24} color="silver" />
-                          <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                          {Global.Language === 1 ?
+                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                            :
+                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                          }
+
                         </TouchableOpacity>
                       </View>
 
@@ -1094,7 +1198,7 @@ export function AddAHorse({ navigation }) {
                         <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                         <TextInput
                           style={styles.HalfInputStyle}
-                          placeholder={"Start Request Date"}
+                          placeholder={getStartRequestDatePlaceholder}
                           name={"StartRequestDate"}
                           keyboardType="numeric"
                           value={getHorseBirthDate}
@@ -1113,7 +1217,13 @@ export function AddAHorse({ navigation }) {
                           <Text style={styles.InformationText}>{sexText}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                          setSexText("Select a Sex")
+                          if (Global.Language === 1) {
+                            setSexText("Cinsiyet Sec")
+                          }
+                          else {
+
+                          }
+
                         }}>
                           <Icon name="times-circle" size={24} color="silver" />
                         </TouchableOpacity>
@@ -1130,7 +1240,13 @@ export function AddAHorse({ navigation }) {
                           <Text style={styles.InputText}>{CounrtyText}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                          setCounrtyText("Select a Country")
+                          if (Global.Language === 1) {
+                            setCounrtyText("Ulke Sec")
+                          }
+                          else {
+                            setCounrtyText("Select a Country")
+                          }
+
                         }}>
                           <Icon name="times-circle" size={24} color="silver" />
                         </TouchableOpacity>
@@ -1148,7 +1264,13 @@ export function AddAHorse({ navigation }) {
 
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                          setWinnerText("Select a Class")
+                          if (Global.Language === 1) {
+                            setWinnerText("Sınıf Sec")
+                          }
+                          else {
+                            setWinnerText("Select a Class")
+                          }
+
                         }}>
                           <Icon name="times-circle" size={24} color="silver" />
                         </TouchableOpacity>
@@ -1165,7 +1287,12 @@ export function AddAHorse({ navigation }) {
                           <Text style={styles.InputText}>{ColorText}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                          setColorText("Select a Color")
+                          if (Global.Language === 1) {
+                            setColorText("Renk Sec")
+                          }
+                          else {
+                            setColorText("Select a Color")
+                          }
                         }}>
                           <Icon name="times-circle" size={24} color="silver" />
                         </TouchableOpacity>
@@ -1176,7 +1303,7 @@ export function AddAHorse({ navigation }) {
                           <Icon name="award" size={20} color="#2169ab" style={{ marginLeft: 5 }} />
                           <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"First Place"}
+                            placeholder={getFirstPlacePlaceholder}
                             value={getFirst}
                             onChangeText={setFirst}
                           />
@@ -1185,7 +1312,7 @@ export function AddAHorse({ navigation }) {
                           <Icon name="award" size={20} color="#2169ab" style={{ marginLeft: 5 }} />
                           <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Second Place"}
+                            placeholder={getSecondPlacePlaceholder}
                             value={getSecond}
                             onChangeText={setSecond}
                           />
@@ -1194,7 +1321,7 @@ export function AddAHorse({ navigation }) {
                           <Icon name="award" size={20} color="#2169ab" style={{ marginLeft: 5 }} />
                           <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Third Place"}
+                            placeholder={getThirdPlacePlaceholder}
                             value={getThird}
                             onChangeText={setThird}
                           />
@@ -1204,7 +1331,7 @@ export function AddAHorse({ navigation }) {
                           <Icon name="award" size={20} color="#2169ab" style={{ marginLeft: 5 }} />
                           <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Fourth Place"}
+                            placeholder={getFourthPlacePlaceholder}
                             value={getFourth}
                             onChangeText={setFourth}
                           />
@@ -1214,7 +1341,7 @@ export function AddAHorse({ navigation }) {
                           <Icon name="award" size={20} color="#2169ab" style={{ marginLeft: 5 }} />
                           <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Starts Place"}
+                            placeholder={getStartsPlacePlaceholder}
                             value={getStartCount}
                             onChangeText={setStartCount}
                           />
@@ -1224,7 +1351,7 @@ export function AddAHorse({ navigation }) {
                       <View style={{ width: "30%" }}>
                         <CheckBox
                           center
-                          title="Dead"
+                          title={getDeadCheckName}
                           checkedIcon="dot-circle-o"
                           uncheckedIcon="circle-o"
                           style={{ margin: 0 }}
@@ -1238,7 +1365,7 @@ export function AddAHorse({ navigation }) {
                         <View style={styles.EarningPriceItemContainer}>
                           <TextInput
                             style={styles.EarningPriceInput}
-                            placeholder={"Earning"}
+                            placeholder={getEarningPlaceholder}
                             keyboardType="numeric"
                             value={getEarn}
                             onChangeText={setEarn}
@@ -1258,7 +1385,7 @@ export function AddAHorse({ navigation }) {
                         <View style={styles.EarningPriceItemContainer}>
                           <TextInput
                             style={styles.EarningPriceInput}
-                            placeholder={"Price"}
+                            placeholder={getPricePlaceholder}
                             keyboardType="numeric"
                             value={getPrice}
                             onChangeText={setPrice}
@@ -1396,7 +1523,7 @@ export function AddAHorse({ navigation }) {
                       <View style={{ marginVertical: 30 }}>
                         <TextInput
                           style={styles.HeaderStyle}
-                          placeholder={"Header"}
+                          placeholder={getHeaderPlaceholder}
                           name={"Header"}
                           value={getHeader}
                           onChangeText={setHeader}
@@ -1405,7 +1532,7 @@ export function AddAHorse({ navigation }) {
 
                         <TextInput
                           style={styles.LongImputStyle}
-                          placeholder={"Paragraph"}
+                          placeholder={getParagraphPlaceholder}
                           value={getInfo}
                           onChangeText={setInfo}
                         />
@@ -1428,7 +1555,12 @@ export function AddAHorse({ navigation }) {
                         <TouchableOpacity
                           style={{ width: '100%', backgroundColor: '#e8edf1', padding: 10, borderRadius: 8, elevation: 8, marginVertical: 20 }}
                           onPress={pickImage}>
-                          <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Upload Image</Text>
+                          {Global.Language === 1 ?
+                            <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Resim Yukle</Text>
+                            :
+                            <Text style={{ color: '#000', textAlign: 'center', fontSize: 16 }}>Upload Image</Text>
+                          }
+
                         </TouchableOpacity>
                       }
                     </View>
@@ -1437,7 +1569,7 @@ export function AddAHorse({ navigation }) {
                     <View>
                       <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Name"}
+                        placeholder={getNamePlaceholder}
                         name={"username"}
                         value={getHorseName}
                         onChangeText={setHorseName}
@@ -1469,17 +1601,26 @@ export function AddAHorse({ navigation }) {
                       <TouchableOpacity
                         onPress={() => { setIsDetail(true) }}
                         style={{ width: '100%', backgroundColor: '#e8edf1', padding: 10, borderRadius: 8, elevation: 8, marginVertical: 20 }}>
-                        <Text style={{ color: '#000', textAlign: 'center', fontSize: 16, }}>Continue For Details</Text>
+                          {Global.Language===1?
+                          <Text style={{ color: '#000', textAlign: 'center', fontSize: 16, }}>Ayrıntılar İçin Devam Ediniz</Text>
+                          :
+                          <Text style={{ color: '#000', textAlign: 'center', fontSize: 16, }}>Continue For Details</Text>
+                          }
+                        
                       </TouchableOpacity>
-
-                      <Text style={{ textAlign: 'center', }}>Or</Text>
+                        {Global.Language===1?
+                        <Text style={{ textAlign: 'center', }}>Ya Da</Text>
+                        :
+                        <Text style={{ textAlign: 'center', }}>Or</Text>
+                        }
+                      
                     </View>
                   }
                 </View>
 
                 <View style={{ width: "100%", alignItems: 'center' }}>
                   <BlueButton
-                    title="Add"
+                    title={getAddButtonName}
                     style={styles.SubmitButton}
                     onPress={async (e) => {
                       if (getFatherID !== -1 && getMotherID !== -1) {

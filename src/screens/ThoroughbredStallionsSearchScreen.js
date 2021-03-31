@@ -22,30 +22,36 @@ import { timing } from 'react-native-reanimated';
 const ConfirmationData = [
     {
         id: "1",
-        title: "All",
+        titleEnglish: "All",
+        titleTurkish: "Hepsi"
     },
     {
         id: "2",
-        title: "Approved",
+        titleEnglish: "Approved",
+        titleTurkish: "Onaylı"
     },
     {
         id: "3",
-        title: "Unapproved",
+        titleEnglish: "Unapproved",
+        titleTurkish: "Onaysız"
     },
 ]
 
 const DeadData = [
     {
         id: "1",
-        title: "All",
+        titleEnglish: "All",
+        titleTurkish: "Hepsi"
     },
     {
         id: "2",
-        title: "Dead",
+        titleEnglish: "Dead",
+        titleTurkish: "Ölü"
     },
     {
         id: "3",
-        title: "Alive",
+        titleEnglish: "Alive",
+        titleTurkish: "Sağ"
     },
 ]
 
@@ -231,10 +237,21 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.REGISTRATION_ID)) {
             setcheckStateMultiRegistration({ checked: [...checked, item.REGISTRATION_ID] });
-            setcheckStateMultiRegistrationString({ checkedString: [...checkedString, item.REGISTRATION_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiRegistrationString({ checkedString: [...checkedString, item.REGISTRATION_TR] })
+            }
+            else {
+                setcheckStateMultiRegistrationString({ checkedString: [...checkedString, item.REGISTRATION_EN] })
+            }
         } else {
             setcheckStateMultiRegistration({ checked: checked.filter(a => a !== item.REGISTRATION_ID) });
-            setcheckStateMultiRegistrationString({ checkedString: checkedString.filter(a => a !== item.REGISTRATION_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiRegistrationString({ checkedString: checkedString.filter(a => a !== item.REGISTRATION_TR) });
+            }
+            else {
+                setcheckStateMultiRegistrationString({ checkedString: checkedString.filter(a => a !== item.REGISTRATION_EN) });
+            }
+
         }
     }
 
@@ -313,10 +330,22 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.COUNTRY_ID)) {
             setcheckStateMultiCountry({ checked: [...checked, item.COUNTRY_ID] });
-            setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_TR] })
+            }
+            else {
+                setcheckStateMultiCountryString({ checkedString: [...checkedString, item.COUNTRY_EN] })
+            }
+
         } else {
             setcheckStateMultiCountry({ checked: checked.filter(a => a !== item.COUNTRY_ID) });
-            setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_TR) });
+            }
+            else {
+                setcheckStateMultiCountryString({ checkedString: checkedString.filter(a => a !== item.COUNTRY_EN) });
+            }
+
         }
     }
 
@@ -326,10 +355,22 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.SEX_ID)) {
             setcheckStateMultiSex({ checked: [...checked, item.SEX_ID] });
-            setcheckStateMultiSexString({ checkedString: [...checkedString, item.SEX_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiSexString({ checkedString: [...checkedString, item.SEX_TR] })
+            }
+            else {
+                setcheckStateMultiSexString({ checkedString: [...checkedString, item.SEX_EN] })
+            }
+
         } else {
             setcheckStateMultiSex({ checked: checked.filter(a => a !== item.SEX_ID) });
-            setcheckStateMultiSexString({ checkedString: checkedString.filter(a => a !== item.SEX_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiSexString({ checkedString: checkedString.filter(a => a !== item.SEX_TR) });
+            }
+            else {
+                setcheckStateMultiSexString({ checkedString: checkedString.filter(a => a !== item.SEX_EN) });
+            }
+
         }
     }
 
@@ -339,10 +380,22 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
         // These ensures that multiple checkboxes don't all get affected when one is clicked
         if (!checked.includes(item.WINNER_TYPE_ID)) {
             setcheckStateMultiClass({ checked: [...checked, item.WINNER_TYPE_ID] });
-            setcheckStateMultiClassString({ checkedString: [...checkedString, item.WINNER_TYPE_EN] })
+            if (Global.Language === 1) {
+                setcheckStateMultiClassString({ checkedString: [...checkedString, item.WINNER_TYPE_TR] })
+            }
+            else {
+                setcheckStateMultiClassString({ checkedString: [...checkedString, item.WINNER_TYPE_EN] })
+            }
+
         } else {
             setcheckStateMultiClass({ checked: checked.filter(a => a !== item.WINNER_TYPE_ID) });
-            setcheckStateMultiClassString({ checkedString: checkedString.filter(a => a !== item.WINNER_TYPE_EN) });
+            if (Global.Language === 1) {
+                setcheckStateMultiClassString({ checkedString: checkedString.filter(a => a !== item.WINNER_TYPE_TR) });
+            }
+            else {
+                setcheckStateMultiClassString({ checkedString: checkedString.filter(a => a !== item.WINNER_TYPE_EN) });
+            }
+
         }
     }
 
@@ -776,6 +829,35 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
         }
     }
 
+    const [getMinFoalPlaceholder, setMinFoalPlaceholder] = React.useState("")
+    const [getMaxFoalPlaceholder, setMaxFoalPlaceholder] = React.useState("")
+    const [getMinRaceFoalPlaceholder, setMinRaceFoalPlaceholder] = React.useState("")
+    const [getMaxRaceFoalPlaceholder, setMaxRaceFoalPlaceholder] = React.useState("")
+    const [getMinWinnerFoalPlaceholder, setMinWinnerFoalPlaceholder] = React.useState("")
+    const [getMaxWinnerFoalPlaceholder, setMaxWinnerFoalPlaceholder] = React.useState("")
+    const [getMinGroupRaceWinnerFoalPlaceholder, setMinGroupRaceWinnerFoalPlaceholder] = React.useState("")
+    const [getMaxGroupRaceWinnerFoalPlaceholder, setMaxGroupRaceWinnerFoalPlaceholder] = React.useState("")
+    const [getMinBlackTypeFoalPlaceholder, setMinBlackTypeFoalPlaceholder] = React.useState("")
+    const [getMaxBlackTypeFoalPlaceholder, setMaxBlackTypeFoalPlaceholder] = React.useState("")
+    const [getMinEarningPlaceholder, setMinEarningPlaceholder] = React.useState("")
+    const [getMaxEarningPlaceholder, setMaxEarningPlaceholder] = React.useState("")
+    const [getMinStartsPlaceholder, setMinStartsPlaceholder] = React.useState("")
+    const [getMaxStartsPlaceholder, setMaxStartsPlaceholder] = React.useState("")
+    const [getMinFirstPlacePlaceholder, setMinFirstPlacePlaceholder] = React.useState("")
+    const [getMaxFirstPlacePlaceholder, setMaxFirstPlacePlaceholder] = React.useState("")
+    const [getMinSecondPlacePlaceholder, setMinSecondPlacePlaceholder] = React.useState("")
+    const [getMaxSecondPlacePlaceholder, setMaxSecondPlacePlaceholder] = React.useState("")
+    const [getMinThirdPlacePlaceholder, setMinThirdPlacePlaceholder] = React.useState("")
+    const [getMaxThirdPlacePlaceholder, setMaxThirdPlacePlaceholder] = React.useState("")
+    const [getMinFourthPlacePlaceholder, setMinFourthPlacePlaceholder] = React.useState("")
+    const [getMaxFourthPlacePlaceholder, setMaxFourthPlacePlaceholder] = React.useState("")
+    const [getTJKSireMarePlaceholder, setTJKSireMarePlaceholder] = React.useState("")
+    const [getHorseNamePlaceholder, setHorseNamePlaceholder] = React.useState("");
+    const [getMinPricePlaceholder, setMinPricePlaceholder] = React.useState("")
+    const [getMaxPricePlaceholder, setMaxPricePlaceholder] = React.useState("")
+    const [getStartBDatePlaceholder, setStartBDatePlaceholder] = React.useState("")
+    const [getEndBDatePlaceholder, setEndBDatePlaceholder] = React.useState("")
+
     React.useEffect(() => {
         readGetSortType();
         readGetYear()
@@ -788,6 +870,78 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
         readGetOwnerBreeder()
         readGetPlace()
         readGetRegistration();
+
+        if (Global.Language === 1) {
+            setSortTypeString("Son Eklenenler")
+            setConfirmation("Onay")
+            setDead("Ölü")
+
+            setHorseNamePlaceholder("Isim")
+            setMinFoalPlaceholder("Min Tay")
+            setMaxFoalPlaceholder("Max Tay")
+            setMinRaceFoalPlaceholder("Min Yarışan Tay")
+            setMaxRaceFoalPlaceholder("Max Yarışan Tay")
+            setMinWinnerFoalPlaceholder("Min Kazanan Tay")
+            setMaxWinnerFoalPlaceholder("Max Kazanan Tay")
+            setMinGroupRaceWinnerFoalPlaceholder("Min Grup Yarış Kazanan Tay")
+            setMaxGroupRaceWinnerFoalPlaceholder("Max Grup Yarış Kazanan Tay")
+            setMinBlackTypeFoalPlaceholder("Min Black Type Tay")
+            setMaxBlackTypeFoalPlaceholder("Max Black Type Tay")
+            setMinEarningPlaceholder("Min Kazanç")
+            setMaxEarningPlaceholder("Max Kazanç")
+            setMinStartsPlaceholder("Min Toplam Yarış Sayısı")
+            setMaxStartsPlaceholder("Max Toplam Yarış Sayısı")
+            setMinFirstPlacePlaceholder("Min 1'incilik")
+            setMaxFirstPlacePlaceholder("Max 1'incilik")
+            setMinSecondPlacePlaceholder("Min 2'ncilik")
+            setMaxSecondPlacePlaceholder("Max 2'ncilik")
+            setMinThirdPlacePlaceholder("Min 3'üncülük")
+            setMaxThirdPlacePlaceholder("Max 3'üncülük")
+            setMinFourthPlacePlaceholder("Min 4'üncülük")
+            setMaxFourthPlacePlaceholder("Max 4'üncülük")
+            setTJKSireMarePlaceholder("TJK ID Aygır/Kısrak")
+            setMinPricePlaceholder("Min Fiyat")
+            setMaxPricePlaceholder("Max Fiyat")
+            setStartBDatePlaceholder("Başlangıç Doğum Tarihi")
+            setEndBDatePlaceholder("Bitiş Doğum Tarihi")
+
+
+        }
+        else {
+            setSortTypeString("Recently Added")
+            setConfirmation("Confimation")
+            setDead("Dead")
+
+            setHorseNamePlaceholder("Name")
+            setMinFoalPlaceholder("Min Foal")
+            setMaxFoalPlaceholder("Max Foal")
+            setMinRaceFoalPlaceholder("Min Race Foal")
+            setMaxRaceFoalPlaceholder("Max Race Foal")
+            setMinWinnerFoalPlaceholder("Min Winner Foal")
+            setMaxWinnerFoalPlaceholder("Max Winner Foal")
+            setMinGroupRaceWinnerFoalPlaceholder("Min Group Winner Foal")
+            setMaxGroupRaceWinnerFoalPlaceholder("Max Group Winner Foal")
+            setMinBlackTypeFoalPlaceholder("Min Black Type Foal")
+            setMaxBlackTypeFoalPlaceholder("Max Black Type Foal")
+            setMinEarningPlaceholder("Min Earning")
+            setMaxEarningPlaceholder("Max Earning")
+            setMinStartsPlaceholder("Min Start Count")
+            setMaxStartsPlaceholder("Max Start Count")
+            setMinFirstPlacePlaceholder("Min 1st place")
+            setMaxFirstPlacePlaceholder("Max 1st place")
+            setMinSecondPlacePlaceholder("Min 2nd place")
+            setMaxSecondPlacePlaceholder("Max 2nd place")
+            setMinThirdPlacePlaceholder("Min 3rd place")
+            setMaxThirdPlacePlaceholder("Max 3rd place")
+            setMinFourthPlacePlaceholder("Min 4th place")
+            setMaxFourthPlacePlaceholder("Max 4th place")
+            setTJKSireMarePlaceholder("TJK ID Sire/Mare")
+            setMinPricePlaceholder("Min Price")
+            setMaxPricePlaceholder("Max Price")
+            setStartBDatePlaceholder("Start Birth Date")
+            setEndBDatePlaceholder("End Birth Date")
+        }
+
     }, [])
 
     return (
@@ -796,7 +950,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                 ref={BottomSheetFiltering}
                 closeOnDragDown={true}
                 closeOnPressMask={true}
-                height={Dimensions.get('window').height - 50}
+                height={Dimensions.get('window').height}
                 customStyles={{
                     container: {
                         borderTopLeftRadius: 10,
@@ -823,7 +977,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="map-marker-alt" size={20} color="#2169ab" />
                             {checkStateMultiPlaceString.checkedString.length === 0 ?
-                                <Text style={styles.InformationText}>Place</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Yer</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Place</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiPlaceString.checkedString}</Text>
                             }
@@ -846,7 +1007,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                             style={styles.InputTouchableContainer}>
                             <Icon name="registered" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                             {checkStateMultiRegistrationString.checkedString.length === 0 ?
-                                <Text style={styles.InformationText}>Registiration Type</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Kayıt Tipi</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Registiration Type</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text style={styles.InformationText}>{checkStateMultiRegistrationString.checkedString}</Text>
                             }
@@ -862,7 +1030,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 50 }]}
-                        placeholder={"Min Foal"}
+                        placeholder={getMinFoalPlaceholder}
                         name={"MinFoal"}
                         value={getMinFoal}
                         onChangeText={setMinFoal}
@@ -870,7 +1038,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                     />
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Foal"}
+                        placeholder={getMaxFoalPlaceholder}
                         name={"MaxFoal"}
                         value={getMaxFoal}
                         onChangeText={setMaxFoal}
@@ -879,7 +1047,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Race Foal"}
+                        placeholder={getMinRaceFoalPlaceholder}
                         name={"MinRaceFoal"}
                         value={getMinRaceFoal}
                         onChangeText={setMinRaceFoal}
@@ -888,7 +1056,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Race Foal"}
+                        placeholder={getMaxRaceFoalPlaceholder}
                         name={"MaxRaceFoal"}
                         value={getMaxRaceFoal}
                         onChangeText={setMaxRaceFoal}
@@ -897,7 +1065,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Winner Foal"}
+                        placeholder={getMinWinnerFoalPlaceholder}
                         name={"MinWinnerFoal"}
                         value={getMinWinnerFoal}
                         onChangeText={setMinWinnerFoal}
@@ -906,7 +1074,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Winner Foal"}
+                        placeholder={getMaxWinnerFoalPlaceholder}
                         name={"MaxWinnerFoal"}
                         value={getMaxWinnerFoal}
                         onChangeText={setMaxWinnerFoal}
@@ -915,7 +1083,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Group Race Winner Foal"}
+                        placeholder={getMinGroupRaceWinnerFoalPlaceholder}
                         name={"MinGroupRaceWinnerFoal"}
                         value={getMinGWinnerFoal}
                         onChangeText={setMinGWinnerFoal}
@@ -924,7 +1092,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Group Race Winner Foal"}
+                        placeholder={getMaxGroupRaceWinnerFoalPlaceholder}
                         name={"MaxGroupRaceWinnerFoal"}
                         value={getMaxGWinnerFoal}
                         onChangeText={setMaxGWinnerFoal}
@@ -933,7 +1101,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Black Type Foal"}
+                        placeholder={getMinBlackTypeFoalPlaceholder}
                         name={"MinBlackTypeFoal"}
                         value={getMinBWinnerFoal}
                         onChangeText={setMinBWinnerFoal}
@@ -942,7 +1110,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Black Type Foal"}
+                        placeholder={getMaxBlackTypeFoalPlaceholder}
                         name={"MaxBlackTypeFoal"}
                         value={getMaxBWinnerFoal}
                         onChangeText={setMaxBWinnerFoal}
@@ -951,7 +1119,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Earning"}
+                        placeholder={getMinEarningPlaceholder}
                         name={"MinEarning"}
                         value={getMinEarningAsFoal}
                         onChangeText={setMinEarningAsFoal}
@@ -960,7 +1128,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Earning"}
+                        placeholder={getMaxEarningPlaceholder}
                         name={"MaxEarning"}
                         value={getMaxEarningAsFoal}
                         onChangeText={setMaxEarningAsFoal}
@@ -969,7 +1137,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min Start"}
+                        placeholder={getMinStartsPlaceholder}
                         name={"MinStart"}
                         value={getMinStartsAsFoal}
                         onChangeText={setMinStartAsFoal}
@@ -978,7 +1146,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max Start"}
+                        placeholder={getMaxStartsPlaceholder}
                         name={"MaxStart"}
                         value={getMaxStartsAsFoal}
                         onChangeText={setMinStartAsFoal}
@@ -987,7 +1155,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 1st place"}
+                        placeholder={getMinFirstPlacePlaceholder}
                         name={"Min1stplace"}
                         value={getMinFirstAsFoal}
                         onChangeText={setMinFirstAsFoal}
@@ -996,7 +1164,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 1st place"}
+                        placeholder={getMaxFirstPlacePlaceholder}
                         name={"Max1stplace"}
                         value={getMaxFirstAsFoal}
                         onChangeText={setMaxFirstAsFoal}
@@ -1005,7 +1173,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 2nd place"}
+                        placeholder={getMinSecondPlacePlaceholder}
                         name={"Min2ndplace"}
                         value={getMinSecondAsFoal}
                         onChangeText={setMinSecondAsFoal}
@@ -1014,7 +1182,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 2nd place"}
+                        placeholder={getMaxSecondPlacePlaceholder}
                         name={"Max2ndplace"}
                         value={getMaxSecondAsFoal}
                         onChangeText={setMaxSecondAsFoal}
@@ -1023,7 +1191,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 3rd place"}
+                        placeholder={getMinThirdPlacePlaceholder}
                         name={"Min3rdplace"}
                         value={getMinThirdAsFoal}
                         onChangeText={setMinThirdAsFoal}
@@ -1032,7 +1200,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 3rd place"}
+                        placeholder={getMaxThirdPlacePlaceholder}
                         name={"Max3rdplace"}
                         value={getMaxThirdAsFoal}
                         onChangeText={setMaxThirdAsFoal}
@@ -1041,7 +1209,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={[styles.FullInputStyle, { marginTop: 30 }]}
-                        placeholder={"Min 4th place"}
+                        placeholder={getMinFourthPlacePlaceholder}
                         name={"Min4thplace"}
                         value={getMinFourthAsFoal}
                         onChangeText={setMinFourthAsFoal}
@@ -1050,7 +1218,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                     <TextInput
                         style={styles.FullInputStyle}
-                        placeholder={"Max 4th place"}
+                        placeholder={getMaxFourthPlacePlaceholder}
                         name={"Max4thplace"}
                         value={getMaxFourthAsFoal}
                         onChangeText={setMaxFourthAsFoal}
@@ -1059,10 +1227,10 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
 
                     {isDetail ?
-                        <>
+                        <View style={{ marginTop: 30 }}>
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Horse ID"}
+                                placeholder={"ID"}
                                 name={"HorseID"}
                                 value={getHorseID}
                                 onChangeText={setHorseID}
@@ -1070,7 +1238,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Name"}
+                                placeholder={getHorseNamePlaceholder}
                                 name={"HorseName"}
                                 value={getHorseName}
                                 onChangeText={setHorseName}
@@ -1085,7 +1253,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     style={styles.InputTouchableContainer}>
                                     <Icon name="plus-circle" size={24} color="#2169ab" />
                                     {checkStateMultiSireNameString.checkedString.length === 0 ?
-                                        <Text style={styles.InformationText}>Sire Name</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Aygır Adı</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Sire Name</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiSireNameString.checkedString}</Text>
                                     }
@@ -1109,7 +1284,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     style={styles.InputTouchableContainer}>
                                     <Icon name="plus-circle" size={24} color="#2169ab" />
                                     {checkStateMultiMareNameString.checkedString.length === 0 ?
-                                        <Text style={styles.InformationText}>Mare Name</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Kısrak Adı</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Mare Name</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiMareNameString.checkedString}</Text>
                                     }
@@ -1131,7 +1313,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     style={styles.InputTouchableContainer}>
                                     <Icon name="plus-circle" size={24} color="#2169ab" />
                                     {checkStateMultiBMSireName.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>BM Sire Name</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Kısrak Babası Adı</Text>
+                                                :
+                                                <Text style={styles.InformationText}>BM Sire Name</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiBMSireNameString.checkedString}</Text>
                                     }
@@ -1193,7 +1382,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     style={styles.InputTouchableContainer}>
                                     <Icon name="flag" size={20} color="#2169ab" />
                                     {checkStateMultiCountry.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>Country</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Ülke</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Country</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiCountryString.checkedString}</Text>
                                     }
@@ -1217,7 +1413,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     style={styles.InputTouchableContainer}>
                                     <Icon name="male" size={20} color="#2169ab" />
                                     {checkStateMultiSex.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>Sex</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Cinsiyet</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Sex</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiSexString.checkedString}</Text>
                                     }
@@ -1241,7 +1444,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     style={styles.InputTouchableContainer}>
                                     <Icon name="horse" size={20} color="#2169ab" />
                                     {checkStateMultiClass.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>Class</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Sınıf</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Class</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiClassString.checkedString}</Text>
                                     }
@@ -1258,7 +1468,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 50 }]}
-                                placeholder={"Min Earning"}
+                                placeholder={getMinEarningPlaceholder}
                                 name={"MinEarning"}
                                 value={getMinEarning.toString()}
                                 onChangeText={setMinEarning}
@@ -1267,7 +1477,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Max Earning"}
+                                placeholder={getMaxEarningPlaceholder}
                                 name={"MaxEarning"}
                                 value={getMaxEarning.toString()}
                                 onChangeText={setMaxEarning}
@@ -1276,7 +1486,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 30 }]}
-                                placeholder={"Min Price"}
+                                placeholder={getMinPricePlaceholder}
                                 name={"MinPrice"}
                                 value={getMinPrice.toString()}
                                 onChangeText={setMinPrice}
@@ -1285,7 +1495,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"max Earning"}
+                                placeholder={getMaxPricePlaceholder}
                                 name={"MaxPrice"}
                                 value={getMaxPrice.toString()}
                                 onChangeText={setMaxPrice}
@@ -1294,7 +1504,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 30 }]}
-                                placeholder={"Start B.Date"}
+                                placeholder={getStartBDatePlaceholder}
                                 name={"StartBDate"}
                                 value={getStartBirthdate.toString()}
                                 onChangeText={setStartBirthdate}
@@ -1303,7 +1513,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"End B.Date"}
+                                placeholder={getEndBDatePlaceholder}
                                 name={"EndBDate"}
                                 value={getEndBirthdate.toString()}
                                 onChangeText={setEndBirthdate}
@@ -1318,7 +1528,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     }}
                                     style={styles.InputTouchableContainer}>
                                     {checkStateMultiOwner.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>Owner</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Sahip</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Owner</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiOwnerString.checkedString}</Text>
                                     }
@@ -1342,7 +1559,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     }}
                                     style={styles.InputTouchableContainer}>
                                     {checkStateMultiBreeder.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>Breeder</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Yetiştirici</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Breeder</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiBreederString.checkedString}</Text>
                                     }
@@ -1366,7 +1590,14 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     }}
                                     style={styles.InputTouchableContainer}>
                                     {checkStateMultiCoach.checked.length === 0 ?
-                                        <Text style={styles.InformationText}>Coach</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Antrenör</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Coach</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiCoachString.checkedString}</Text>
                                     }
@@ -1384,7 +1615,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 50 }]}
-                                placeholder={"Min Starts"}
+                                placeholder={getMinStartsPlaceholder}
                                 name={"MinStarts"}
                                 value={getMinStartsCount.toString()}
                                 onChangeText={setMinStartsCount}
@@ -1393,7 +1624,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Max Starts"}
+                                placeholder={getMaxStartsPlaceholder}
                                 name={"MaxStarts"}
                                 value={getMaxStartsCount.toString()}
                                 onChangeText={setMaxStartsCount}
@@ -1402,7 +1633,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 30 }]}
-                                placeholder={"Min 1st Place"}
+                                placeholder={getMinFirstPlacePlaceholder}
                                 name={"Min1stPlace"}
                                 value={getMinFirst.toString()}
                                 onChangeText={setMinFirst}
@@ -1411,7 +1642,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Max 1st Place"}
+                                placeholder={getMaxFirstPlacePlaceholder}
                                 name={"Max1stPlace"}
                                 value={getMaxFirst.toString()}
                                 onChangeText={setMaxFirst}
@@ -1420,7 +1651,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 30 }]}
-                                placeholder={"Min 2nd Place"}
+                                placeholder={getMinSecondPlacePlaceholder}
                                 name={"Min2ndPlace"}
                                 value={getMinSecond.toString()}
                                 onChangeText={setMinSecond}
@@ -1429,7 +1660,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Max 2nd Place"}
+                                placeholder={getMaxSecondPlacePlaceholder}
                                 name={"Max2ndPlace"}
                                 value={getMaxSecond.toString()}
                                 onChangeText={setMaxSecond}
@@ -1438,7 +1669,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 30 }]}
-                                placeholder={"Min 3rd Place"}
+                                placeholder={getMinThirdPlacePlaceholder}
                                 name={"Min3rdPlace"}
                                 value={getMinThird.toString()}
                                 onChangeText={setMinThird}
@@ -1447,7 +1678,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Max 3rd Place"}
+                                placeholder={getMaxThirdPlacePlaceholder}
                                 name={"Max3rdPlace"}
                                 value={getMaxThird.toString()}
                                 onChangeText={setMaxThird}
@@ -1456,7 +1687,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={[styles.FullInputStyle, { marginTop: 30 }]}
-                                placeholder={"Min 4th Place"}
+                                placeholder={getMinFourthPlacePlaceholder}
                                 name={"Min4thPlace"}
                                 value={getMinFourth.toString()}
                                 onChangeText={setMinFourth}
@@ -1465,7 +1696,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"Max 4th Place"}
+                                placeholder={getMaxFourthPlacePlaceholder}
                                 name={"Max4thPlace"}
                                 value={getMaxFourth.toString()}
                                 onChangeText={setMaxFourth}
@@ -1483,7 +1714,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.FullInputStyle}
-                                placeholder={"TJK ID Sire/Mare ID"}
+                                placeholder={getTJKSireMarePlaceholder}
                                 name={"TJKIDSire/Mare"}
                                 value={getReference2.toString()}
                                 onChangeText={setReference2}
@@ -1546,7 +1777,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                 </TouchableOpacity>
                             </View>
 
-                        </>
+                        </View>
                         :
                         null
                     }
@@ -1557,20 +1788,39 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                             setIsDetail(!isDetail)
                         }}>
                         {isDetail ?
-                            <Text style={styles.DetailButtonText}>Less Detail</Text>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.DetailButtonText}>Ayrıntı Azalt</Text>
+                                    :
+                                    <Text style={styles.DetailButtonText}>Less Detail</Text>
+                                }
+                            </>
+
                             :
-                            <Text style={styles.DetailButtonText}>More Detail</Text>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.DetailButtonText}>Ayrınti Goster</Text>
+                                    :
+                                    <Text style={styles.DetailButtonText}>More Detail</Text>
+                                }
+                            </>
+
                         }
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={styles.SearchButtonStyle}
+                        style={[styles.SearchButtonStyle, { marginBottom: 50 }]}
                         onPress={() => {
                             setTime(true)
                             readHorseGetFilter(getSortTypeIDGlobal, getYearIDGlobal);
                             BottomSheetFiltering.current.close()
                         }}>
-                        <Text style={styles.SearchButtonText}>Search</Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.SearchButtonText}>Arama</Text>
+                            :
+                            <Text style={styles.SearchButtonText}>Search</Text>
+                        }
+
                     </TouchableOpacity>
 
                 </ScrollView>
@@ -1974,34 +2224,68 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                 </View>
                             )}
                             <ScrollView style={styles.ScrollViewContainer}>
-                                {getCountryData.filter((x) => x.COUNTRY_EN.includes(searchValue)).map((item, i) => (
-                                    <ListItem
-                                        key={i}
-                                        bottomDivider
-                                        button
-                                        onPress={() => {
-                                            pressCountry(item)
-                                        }}
-                                    >
-                                        <ListItem.CheckBox
-                                            checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
-                                            checkedIcon='circle'
-                                            uncheckedIcon='circle'
-                                            center={true}
-                                            checkedColor='#2169ab'
-                                            uncheckedColor='rgb(232, 237, 241)'
-                                            onPress={() => {
-                                                pressCountry(item)
-                                            }} />
+                                {Global.Language === 1 ?
+                                    <>
+                                        {getCountryData.filter((x) => x.COUNTRY_TR.includes(searchValue)).map((item, i) => (
+                                            <ListItem
+                                                key={i}
+                                                bottomDivider
+                                                button
+                                                onPress={() => {
+                                                    pressCountry(item)
+                                                }}
+                                            >
+                                                <ListItem.CheckBox
+                                                    checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
+                                                    checkedIcon='circle'
+                                                    uncheckedIcon='circle'
+                                                    center={true}
+                                                    checkedColor='#2169ab'
+                                                    uncheckedColor='rgb(232, 237, 241)'
+                                                    onPress={() => {
+                                                        pressCountry(item)
+                                                    }} />
 
-                                        <Flag code={item.ICON.toUpperCase()} size={24} />
-                                        <ListItem.Content>
-                                            <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
-                                        </ListItem.Content>
-                                        <ListItem.Chevron />
-                                    </ListItem>
-                                )
-                                )}
+                                                <Flag code={item.ICON.toUpperCase()} size={24} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{item.COUNTRY_TR}</ListItem.Title>
+                                                </ListItem.Content>
+                                                <ListItem.Chevron />
+                                            </ListItem>
+                                        )
+                                        )}
+                                    </>
+                                    :
+                                    <>
+                                        {getCountryData.filter((x) => x.COUNTRY_EN.includes(searchValue)).map((item, i) => (
+                                            <ListItem
+                                                key={i}
+                                                bottomDivider
+                                                button
+                                                onPress={() => {
+                                                    pressCountry(item)
+                                                }}
+                                            >
+                                                <ListItem.CheckBox
+                                                    checked={checkStateMultiCountry.checked.includes(item.COUNTRY_ID)}
+                                                    checkedIcon='circle'
+                                                    uncheckedIcon='circle'
+                                                    center={true}
+                                                    checkedColor='#2169ab'
+                                                    uncheckedColor='rgb(232, 237, 241)'
+                                                    onPress={() => {
+                                                        pressCountry(item)
+                                                    }} />
+
+                                                <Flag code={item.ICON.toUpperCase()} size={24} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{item.COUNTRY_EN}</ListItem.Title>
+                                                </ListItem.Content>
+                                                <ListItem.Chevron />
+                                            </ListItem>
+                                        )
+                                        )}
+                                    </>}
                             </ScrollView>
                         </>
 
@@ -2038,7 +2322,12 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                                 pressSex(item)
                                             }} />
                                         <ListItem.Content>
-                                            <ListItem.Title>{item.SEX_EN}</ListItem.Title>
+                                            {Global.Language === 1 ?
+                                                <ListItem.Title>{item.SEX_TR}</ListItem.Title>
+                                                :
+                                                <ListItem.Title>{item.SEX_EN}</ListItem.Title>
+                                            }
+
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -2080,7 +2369,12 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                                 pressClass(item)
                                             }} />
                                         <ListItem.Content>
-                                            <ListItem.Title>{item.WINNER_TYPE_EN}</ListItem.Title>
+                                            {Global.Language == 1 ?
+                                                <ListItem.Title>{item.WINNER_TYPE_TR}</ListItem.Title>
+                                                :
+                                                <ListItem.Title>{item.WINNER_TYPE_EN}</ListItem.Title>
+                                            }
+
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -2467,7 +2761,12 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                                     pressRegistration(item)
                                                 }} />
                                             <ListItem.Content>
+                                                {Global.Language===1?
+                                                <ListItem.Title>{item.REGISTRATION_TR}</ListItem.Title>
+                                                :
                                                 <ListItem.Title>{item.REGISTRATION_EN}</ListItem.Title>
+                                                }
+                                                
                                             </ListItem.Content>
 
                                         </ListItem>
@@ -2485,13 +2784,24 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                             bottomDivider
                                             onPress={() => {
                                                 BottomSheetSmall.current.close()
-                                                setSortTypeString(item.SORT_TYPE_EN)
+                                                if (Global.Language===1) {
+                                                    setSortTypeString(item.SORT_TYPE_TR)
+                                                }
+                                                else{
+                                                    setSortTypeString(item.SORT_TYPE_EN)
+                                                }
+                                                
                                                 setTime(true)
                                                 setSortTypeIDGlobal(item.SORT_TYPE_ID)
                                                 readHorseGetFilter(item.SORT_TYPE_ID, getYearIDGlobal);
                                             }}>
                                             <ListItem.Content>
+                                                {Global.Language===1?
+                                                <ListItem.Title>{item.SORT_TYPE_TR}</ListItem.Title>
+                                                :
                                                 <ListItem.Title>{item.SORT_TYPE_EN}</ListItem.Title>
+                                                }
+                                                
                                             </ListItem.Content>
                                         </ListItem>
                                     ))}
@@ -2535,35 +2845,32 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     onPress={() => {
                                         setState({ checked: [state, item.id] });
                                         setChekedItem(item.id)
-                                        setConfirmation(item.title)
-                                        if (item.title === "All") {
+                                        if (item.id === 1) {
                                             setConfirm("");
                                         }
-                                        else if (item.title === "Approved") {
+                                        else if (item.id === 2) {
                                             setConfirm("1")
                                         }
-                                        else if (item.title === "Unapproved") {
+                                        else if (item.id === 3) {
                                             setConfirm("0")
+                                        }
+
+                                        if (Global.Language === 1) {
+                                            setConfirmation(item.titleTurkish)
+                                        }
+                                        else {
+                                            setConfirmation(item.titleEnglish)
                                         }
                                         BottomSheetSmall.current.close();
 
                                     }}
                                 >
-                                    <ListItem.CheckBox
-                                        checked={state.checked.includes(item.id)}
-                                        checkedIcon='circle'
-                                        uncheckedIcon='circle'
-                                        center={true}
-                                        checkedColor='#2169ab'
-                                        uncheckedColor='rgb(232, 237, 241)'
-                                        onPress={() => {
-                                            setState({ checked: [state, item.id] });
-                                            setChekedItem(item.id)
-                                            setConfirmation(item.title)
-                                            BottomSheetSmall.current.close();
-                                        }} />
                                     <ListItem.Content>
-                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                        {Global.Language === 1 ?
+                                            <ListItem.Title>{item.titleTurkish}</ListItem.Title>
+                                            :
+                                            <ListItem.Title>{item.titleEnglish}</ListItem.Title>
+                                        }
                                     </ListItem.Content>
 
                                 </ListItem>
@@ -2580,15 +2887,20 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                     onPress={() => {
                                         setStateDead({ checked: [state, item.id] });
                                         setChekedItem(item.id)
-                                        setDead(item.title)
-                                        if (item.title === "All") {
+                                        if (item.id === 1) {
                                             setIsDead("");
                                         }
-                                        else if (item.title === "Alive") {
+                                        else if (item.id === 2) {
                                             setIsDead("1")
                                         }
-                                        else if (item.title === "Dead") {
+                                        else if (item.id === 3) {
                                             setIsDead("0")
+                                        }
+                                        if (Global.Language === 1) {
+                                            setDead(item.titleTurkish)
+                                        }
+                                        else {
+                                            setDead(item.titleEnglish)
                                         }
                                         BottomSheetSmall.current.close();
                                         readHorseGetFilter(getSortTypeIDGlobal, getYearIDGlobal)
@@ -2604,12 +2916,21 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                         onPress={() => {
                                             setStateDead({ checked: [state, item.id] });
                                             setChekedItem(item.id)
-                                            setDead(item.title)
+                                            if (Global.Language === 1) {
+                                                setDead(item.titleTurkish)
+                                            }
+                                            else {
+                                                setDead(item.titleEnglish)
+                                            }
                                             BottomSheetSmall.current.close();
                                             readHorseGetFilter(getSortTypeIDGlobal, getYearIDGlobal)
                                         }} />
                                     <ListItem.Content>
-                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                        {Global.Language === 1 ?
+                                            <ListItem.Title>{item.titleTurkish}</ListItem.Title>
+                                            :
+                                            <ListItem.Title>{item.titleEnglish}</ListItem.Title>
+                                        }
                                     </ListItem.Content>
 
                                 </ListItem>
@@ -2754,9 +3075,19 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                             {getHorseGetFilter.length === 0 ?
                                 <View style={styles.ErrorMessageContainer}>
                                     <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                    {Global.Language === 1 ?
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                            <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                            <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                        </>
+                                        :
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                        </>
+                                    }
                                     <View style={styles.ErrorMessageButtonContainer}>
                                     </View>
                                 </View>
@@ -2767,7 +3098,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                             onPress={() => {
                                                 //Linking.openURL("https://" + item.LINK + ".pedigreeall.com")
                                                 Global.Link = item.LINK;
-                                                navigation.navigate("StallionsSearchLink",{
+                                                navigation.navigate("StallionsSearchLink", {
                                                     Link: item.LINK
                                                 });
                                             }}

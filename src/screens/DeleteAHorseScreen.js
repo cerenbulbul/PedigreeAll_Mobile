@@ -6,6 +6,7 @@ import { BlueButton } from '../components/BlueButton'
 import RBSheet from "react-native-raw-bottom-sheet";
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { Global } from '../Global';
 
 export function DeleteAHorseScreen({ navigation }) {
 
@@ -15,6 +16,7 @@ export function DeleteAHorseScreen({ navigation }) {
     const [getHorseGetByName, setHorseGetByName] = React.useState();
     const [getSelectedDeleteHorse, setSelectedDeleteHorse] =React.useState();
     const [loader, setLoader] = React.useState(false)
+
 
     const readHorseGetByName = async () => {
         try {
@@ -82,9 +84,20 @@ export function DeleteAHorseScreen({ navigation }) {
         }
       }
     
+      const [getSearchPlaceholder, setSearchPlaceholder] = React.useState("")
+      const [getDeleteButtonPlaceholder,setDeleteButtonPlaceholder ] = React.useState("")
 
     React.useEffect(() => {
         readHorseGetByName();
+
+        if (Global.Language===1) {
+            setSearchPlaceholder("Lütfen isim giriniz ve ara butonuna basınız ..")
+            setDeleteButtonPlaceholder("Sil")
+        }
+        else{
+            setSearchPlaceholder("Please type here and press enter .. ")
+            setDeleteButtonPlaceholder("Delete")
+        }
     }, [])
 
     const deleteMessage = (HorseID) =>
@@ -204,10 +217,14 @@ export function DeleteAHorseScreen({ navigation }) {
 
                 </View>
             </RBSheet>
-
+            {Global.Language===1?
+            <Title text="At Sil" />
+            :
             <Title text="Delete A Horse" />
+            }
+            
             <SearchBar
-                placeholder="Please type here and press enter .. "
+                placeholder={getSearchPlaceholder}
                 lightTheme
                 platform="ios"
                 cancelButtonTitle=""
@@ -228,7 +245,7 @@ export function DeleteAHorseScreen({ navigation }) {
                         readHorseGetByName();
                         BottomSheetLong.current.open()
                     }}
-                    title="Delete"
+                    title={getDeleteButtonPlaceholder}
                     style={{ width: '95%' }} />
             </View>
 

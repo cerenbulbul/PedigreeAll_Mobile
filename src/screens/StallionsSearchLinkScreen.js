@@ -151,12 +151,16 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                         setStallionByLinkData(json.m_cData[0]);
                         Global.Horse_ID = json.m_cData[0].HORSE_ID
                         Global.Generation = 5
-                        if (json.m_cData[0].REF1 > 0) {
-                            setIsTJK(true)
+                        if (json.m_cData !== undefined) {
+                            if (json.m_cData[0].REF1 > 0) {
+                                setIsTJK(true)
+                            }
+                            else {
+                                setIsTJK(false)
+                            }
+
                         }
-                        else {
-                            setIsTJK(false)
-                        }
+
                     })
                     .catch((error) => {
                         console.error(error);
@@ -205,7 +209,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' + 2, {
+                fetch('https://api.pedigreeall.com/Registration/GetAsNameIdForStallion?p_iHorseId=' + ID + '&p_iLanguage=' + Global.Language, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -229,9 +233,27 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
         }
     }
 
+    const [getHypotheticalSearchButtonName, setHypotheticalSearchButtonName] = React.useState("")
+    const [getEffectiveNickSearchButtonName, setEffectiveNickSearchButtonName] = React.useState("")
+    const [getStatisticScreenName, setStatisticScreenName] = React.useState("")
+    const [getProfileScreenName, setProfileScreenName] = React.useState("")
+
     React.useEffect(() => {
         readGetStallionPageByLink();
         readHorse();
+
+        if (Global.Language === 1) {
+            setHypotheticalSearchButtonName("Varsayımsal Arama")
+            setEffectiveNickSearchButtonName("EffectiveNick")
+            setStatisticScreenName("Istatistikler")
+            setProfileScreenName("Profil")
+        }
+        else {
+            setHypotheticalSearchButtonName("Hypothetical Search")
+            setEffectiveNickSearchButtonName("EffectiveNick Search")
+            setStatisticScreenName("Statistic")
+            setProfileScreenName("Profile")
+        }
     }, [])
 
     return (
@@ -421,7 +443,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                     <View>
 
-                        <View style={{flexDirection:'row', justifyContent:'space-between', alignSelf:'center'}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center' }}>
                             <SearchBar
                                 placeholder={searchValue}
                                 lightTheme
@@ -571,7 +593,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                     <View style={styles.ShowHeaderTrueButtonContainer}>
 
                                         <Button
-                                            title="Hypothetical Search"
+                                            title={getHypotheticalSearchButtonName}
                                             onPress={() => {
                                                 setBottomSheetText("Hypothetical")
                                                 BottomSheetHypotheticalSearch.current.open();
@@ -579,7 +601,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                         />
 
                                         <Button
-                                            title="EffectiveNick Search"
+                                            title={getEffectiveNickSearchButtonName}
                                             onPress={() => {
                                                 readGetAsNameIdForStallion(Global.Horse_ID);
                                                 setBottomSheetText("EffectiveNick")
@@ -608,27 +630,51 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                     <View style={styles.HeaderNumbersContainer}>
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.FOAL}</Text>
+                                            {Global.Language===1?
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Tay</Text>
+                                            :
                                             <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Foals</Text>
+                                            }
+                                            
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.RACE_FOAL}</Text>
+                                            {Global.Language===1?
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Koşan</Text>
+                                            :
                                             <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Runner</Text>
+                                            }
+                                            
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.WINNER_FOAL}</Text>
+                                            {Global.Language===1?
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Kazanan</Text>
+                                            :
                                             <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Winner</Text>
+                                            }
+                                            
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.G_WINNER_FOAL}</Text>
+                                            {Global.Language===1?
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Grup Kazanan</Text>
+                                            :
                                             <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Group Winner</Text>
+                                            }
+                                            
                                         </View>
 
                                         <View style={styles.HeaderNumbersContainerItem}>
                                             <Text style={styles.HeaderNumberText}>{getStallionByLinkData.EARN} {getStallionByLinkData.EARN_CURRENCY_OBJECT.ICON}</Text>
+                                            {Global.Language===1?
+                                            <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Kazanç</Text>
+                                            :
                                             <Text style={[styles.HeaderNumberText, { fontWeight: 'normal', fontSize: 12 }]}>Earning</Text>
+                                            }
                                         </View>
                                     </View>
 
@@ -721,7 +767,20 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 setTJKFontSize(16)
                             }}>
                             <Icon name="network-wired" size={16} color={getMainColor} style={{ alignSelf: 'center' }} />
-                            <Text style={[styles.TabNavigationItemText, { color: getMainColor, fontWeight: getMainFontWeight, fontSize: getMainFontSize }]}>Main</Text>
+                            {Global.Language === 1 ?
+                                <Text
+                                    style={[styles.TabNavigationItemText,
+                                    { color: getMainColor, fontWeight: getMainFontWeight, fontSize: getMainFontSize }]}>
+                                    Anasayfa
+                        </Text>
+                                :
+                                <Text
+                                    style={[styles.TabNavigationItemText,
+                                    { color: getMainColor, fontWeight: getMainFontWeight, fontSize: getMainFontSize }]}>
+                                    Main
+                            </Text>
+                            }
+
 
                         </TouchableOpacity>
 
@@ -875,7 +934,20 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                             }}>
                             <Icon name="cloudsmith" size={16} color={getProgencyColor} style={{ alignSelf: 'center' }} />
-                            <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Progency</Text>
+                            {Global.Language === 1 ?
+                                <Text
+                                    style={[styles.TabNavigationItemText,
+                                    { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>
+                                    Taylar
+                        </Text>
+                                :
+                                <Text
+                                    style={[styles.TabNavigationItemText,
+                                    { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>
+                                    Progency
+                            </Text>
+                            }
+
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1026,7 +1098,20 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 setTJKFontSize(16)
                             }}>
                             <Icon name="cloudsmith" size={16} color={getSiblingsMareColor} style={{ alignSelf: 'center' }} />
-                            <Text style={[styles.TabNavigationItemText, { color: getSiblingsMareColor, fontWeight: getSiblingsMareFontWeight, fontSize: getSiblingsMareFontSize }]}>Siblings</Text>
+                            {Global.Language === 1 ?
+                                <Text
+                                    style={[styles.TabNavigationItemText,
+                                    { color: getSiblingsMareColor, fontWeight: getSiblingsMareFontWeight, fontSize: getSiblingsMareFontSize }]}>
+                                    Kardeşler
+                                </Text>
+                                :
+                                <Text
+                                    style={[styles.TabNavigationItemText,
+                                    { color: getSiblingsMareColor, fontWeight: getSiblingsMareFontWeight, fontSize: getSiblingsMareFontSize }]}>
+                                    Siblings
+                                    </Text>
+                            }
+
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1101,7 +1186,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 setTJKFontSize(16)
                             }}>
                             <Icon name="cloudsmith" size={16} color={getTailFemaleColor} style={{ alignSelf: 'center' }} />
+                            {Global.Language===1?
+                            <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Dişi Soy</Text>
+                            :
                             <Text style={[styles.TabNavigationItemText, { color: getTailFemaleColor, fontWeight: getTailFemaleFontWeight, fontSize: getTailFemaleFontSize }]}>Tail Female</Text>
+                            }
+                            
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1176,7 +1266,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                                 setTJKFontSize(16)
                             }}>
                             <Icon name="cloudsmith" size={16} color={getBroodmareSireColor} style={{ alignSelf: 'center' }} />
+                            {Global.Language===1?
+                            <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Annenin Babası</Text>
+                            :
                             <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
+                            }
+                            
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1252,7 +1347,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                             }}>
                             <Icon name="cloudsmith" size={16} color={getLinebreedingColor} style={{ alignSelf: 'center' }} />
+                            {Global.Language===1?
+                            <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Eşsoyluluk</Text>
+                            :
                             <Text style={[styles.TabNavigationItemText, { color: getLinebreedingColor, fontWeight: getLinebreedingFontWeight, fontSize: getLinebreedingFontSize }]}>Linebreeding</Text>
+                            }
+                            
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -1328,7 +1428,12 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
 
                             }}>
                             <Icon name="cloudsmith" size={16} color={getFemaleFamilyColor} style={{ alignSelf: 'center' }} />
+                            {Global.Language===1?
+                            <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Kapsamlı Dişi Soy</Text>
+                            :
                             <Text style={[styles.TabNavigationItemText, { color: getFemaleFamilyColor, fontWeight: getFemaleFamilyFontWeight, fontSize: getFemaleFamilyFontSize }]}>Female Family</Text>
+                            }
+                            
                         </TouchableOpacity>
 
                         {isTJK ?
@@ -1448,10 +1553,16 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
                             <Tab.Screen
                                 name="Statistics"
                                 component={StatisticsScreen}
+                                options={{
+                                    tabBarLabel: getStatisticScreenName
+                                }}
                             />
                             <Tab.Screen
                                 name="Profile"
                                 component={HorseDetailProfileScreenInformation}
+                                options={{
+                                    tabBarLabel: getProfileScreenName
+                                }}
                             />
                         </Tab.Navigator>
                     </View>
@@ -1494,6 +1605,7 @@ export function StallionsSearchLinkScreen({ route, navigation }) {
         </View>
     )
 }
+
 
 
 function StatisticsScreen() {

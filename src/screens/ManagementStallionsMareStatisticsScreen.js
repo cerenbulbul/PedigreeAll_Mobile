@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { DataTable } from 'react-native-paper';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { SearchBar, ListItem } from 'react-native-elements'
+import { Global } from '../Global';
 
 export function ManagementStallionsMareStatisticsScreen({ navigation }) {
 
@@ -71,6 +72,10 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
     const [checkStateMultiSireNameString, setcheckStateMultiSireNameString] = React.useState({ checkedString: [] });
 
     const [loadingForData, setLoadingForData] = React.useState(false)
+    const [getEarningName, setEarningName] = React.useState("")
+    const [getSaveButtonName, setSaveButtonName] = React.useState("")
+    const [getEditButtonName, setEditButtonName] = React.useState("")
+    const [getSearchButtonName, setSearchButtonName] = React.useState("")
 
     const alertDialog = (messageTitle, message) =>
         Alert.alert(
@@ -101,7 +106,7 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
-                fetch('https://api.pedigreeall.com/ParentPage/Get?p_iId=' + ID +  '&p_iRaceId=' + 1 + '&p_sParentId=' + getParentId + '&p_iPageNo=' + 1 + '&p_iPageCount=' + 100, {
+                fetch('https://api.pedigreeall.com/ParentPage/Get?p_iId=' + ID + '&p_iRaceId=' + 1 + '&p_sParentId=' + getParentId + '&p_iPageNo=' + 1 + '&p_iPageCount=' + 100, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -224,7 +229,7 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: getSearchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -456,13 +461,28 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
         readGetRegistration()
         readGetBlogCategory()
         readDataCurrencyList()
+
+        if (Global.Language === 1) {
+            setEarningName("Kazanc")
+            setSaveButtonName("Kaydet")
+            setEditButtonName("Düzenle")
+            setSearchButtonName("Arama")
+
+
+        }
+        else {
+            setEarningName("Earning")
+            setSaveButtonName("Save")
+            setEditButtonName("Edit")
+            setSearchButtonName("Search")
+        }
     }, [])
 
     React.useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
             readGetParentPage('0')
-            
+
         });
 
         return () => {
@@ -691,13 +711,24 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                             bottomDivider
                                             button
                                             onPress={() => {
-                                                setBlogCategoryName(item.BLOG_CATEGORY_EN)
+                                                if (Global.Language === 1) {
+                                                    setBlogCategoryName(item.BLOG_CATEGORY_TR)
+                                                }
+                                                else {
+                                                    setBlogCategoryName(item.BLOG_CATEGORY_EN)
+                                                }
+
                                                 setBlogCategoryID(item.BLOG_CATEGORY_ID)
                                                 BottomSheetLong.current.close()
                                             }}
                                         >
                                             <ListItem.Content>
-                                                <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
+                                                {Global.Language === 1 ?
+                                                    <ListItem.Title>{item.BLOG_CATEGORY_TR}</ListItem.Title>
+                                                    :
+                                                    <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
+                                                }
+
                                             </ListItem.Content>
                                             <ListItem.Chevron />
                                         </ListItem>
@@ -776,14 +807,24 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                             bottomDivider
                                             button
                                             onPress={() => {
-                                                setRegistrationForm(item.REGISTRATION_EN)
+                                                if (Global.Language === 1) {
+                                                    setRegistrationForm(item.REGISTRATION_TR)
+                                                }
+                                                else {
+                                                    setRegistrationForm(item.REGISTRATION_EN)
+                                                }
                                                 setRegistrationIDForm(item.REGISTRATION_ID)
                                                 setRegistrationObject(item)
                                                 BottomSheetSmall.current.close()
                                             }}
                                         >
                                             <ListItem.Content>
-                                                <ListItem.Title>{item.REGISTRATION_EN}</ListItem.Title>
+                                                {Global.Language === 1 ?
+                                                    <ListItem.Title>{item.REGISTRATION_TR}</ListItem.Title>
+                                                    :
+                                                    <ListItem.Title>{item.REGISTRATION_EN}</ListItem.Title>
+                                                }
+
                                             </ListItem.Content>
                                             <ListItem.Chevron />
                                         </ListItem>
@@ -859,7 +900,12 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                             }}
                             style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                             <Icon name="chevron-left" size={24} color="silver" />
-                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            {Global.Language === 1 ?
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                :
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            }
+
                         </TouchableOpacity>
                     </View>
 
@@ -874,7 +920,14 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                             {getSireMareNameForm !== undefined ?
                                 <Text style={styles.InformationText}>{getSireMareNameForm}</Text>
                                 :
-                                <Text style={styles.InformationText}>Sire | Mare</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Aygır | Kısrak</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Sire | Mare</Text>
+                                    }
+                                </>
+
                             }
 
                         </TouchableOpacity>
@@ -898,7 +951,14 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                             {getRelatedPersonForm !== undefined ?
                                 <Text style={styles.InformationText}>{getRelatedPersonForm}</Text>
                                 :
-                                <Text style={styles.InformationText}>Related Person</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>İlgili Kişi</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Related Person</Text>
+                                    }
+                                </>
+
                             }
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -922,7 +982,14 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                             {getRegistrationForm !== undefined ?
                                 <Text style={styles.InformationText}>{getRegistrationForm}</Text>
                                 :
-                                <Text style={styles.InformationText}>Registration Type</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Kayıt Tipi</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Registration Type</Text>
+                                    }
+                                </>
+
                             }
 
                         </TouchableOpacity>
@@ -932,10 +999,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                        <Text style={styles.TextInputHeader}>Foal: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Tay: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Foal: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Foal"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getFoal.toString()}
                             onChangeText={setFoal}
@@ -943,10 +1015,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Racing Foal: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Yarışan Tay: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Racing Foal: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"RacingFoal"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getRacingFoal.toString()}
                             onChangeText={setRacingFoal}
@@ -954,10 +1031,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Race Winner Foal: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Yarış Kazanan Tay: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Race Winner Foal: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"RaceWinnerFoal"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getRaceWinnerFoal.toString()}
                             onChangeText={setRaceWinnerFoal}
@@ -965,10 +1047,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Group Race Winner Foal: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Grup Yarış Kazanan Tay: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Group Race Winner Foal: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"GroupRaceWinnerFoal"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getGroupRaceWinnerFoal.toString()}
                             onChangeText={setGroupRaceWinnerFoal}
@@ -976,10 +1063,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Black Type Foal: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Black Type Tay: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Black Type Foal: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"BlackTypeFoal"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getBlackTypeFoal.toString()}
                             onChangeText={setBlackTypeFoal}
@@ -987,10 +1079,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                        <Text style={styles.TextInputHeader}>Start: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Koşu: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Start: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Start"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getStart.toString()}
                             onChangeText={setStart}
@@ -998,10 +1095,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>1st: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>1'incilik: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>1st: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"1st"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getFirst.toString()}
                             onChangeText={setFirst}
@@ -1009,10 +1111,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>2nd: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>2'ncilik: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>2nd: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"2nd"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getSecond.toString()}
                             onChangeText={setSecond}
@@ -1020,10 +1127,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>3rd: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>3'üncülük: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>3rd: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"3rd"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getThird.toString()}
                             onChangeText={setThird}
@@ -1031,10 +1143,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>4th: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>4'üncülük: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>4th: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"4th"}
+                            placeholder={""}
                             keyboardType="numeric"
                             value={getFourth.toString()}
                             onChangeText={setFourth}
@@ -1052,7 +1169,14 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                             {getBlogCategoryName !== undefined ?
                                 <Text style={styles.InformationText}>{getBlogCategoryName}</Text>
                                 :
-                                <Text style={styles.InformationText}>Blog Kategori</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.InformationText}>Blog Kategori</Text>
+                                        :
+                                        <Text style={styles.InformationText}>Blog Category</Text>
+                                    }
+                                </>
+
                             }
 
                         </TouchableOpacity>
@@ -1062,10 +1186,15 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
-                        <Text style={styles.TextInputHeader}>Link: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>URL: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Link: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
-                            placeholder={"Link"}
+                            placeholder={""}
                             keyboardType="url"
                             value={getLink}
                             onChangeText={setLink}
@@ -1073,7 +1202,12 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.TextInputContainer]}>
-                        <Text style={styles.TextInputHeader}>Cover Link: </Text>
+                        {Global.Language === 1 ?
+                            <Text style={styles.TextInputHeader}>Kapak Url: </Text>
+                            :
+                            <Text style={styles.TextInputHeader}>Cover Link: </Text>
+                        }
+
                         <TextInput
                             style={styles.HalfInputStyle}
                             placeholder={"CoverLink"}
@@ -1132,7 +1266,7 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                     <View style={styles.EarningPriceItemContainer}>
                         <TextInput
                             style={styles.EarningPriceInput}
-                            placeholder={"Earning"}
+                            placeholder={getEarningName}
                             keyboardType="numeric"
                             value={getEarning.toString()}
                             onChangeText={setEarning}
@@ -1157,16 +1291,16 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                 readParentPageUpdate();
                             }}
                             style={{ marginVertical: 20 }}
-                            title="Edit"
+                            title={getEditButtonName}
                         />
                         :
                         <BlueButton
-                            onPress={()=>{
+                            onPress={() => {
                                 setLoadingForData(true)
                                 readParentPageAdd()
                             }}
                             style={{ marginVertical: 20 }}
-                            title="Save"
+                            title={getSaveButtonName}
                         />
                     }
 
@@ -1197,7 +1331,14 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                 style={styles.InputTouchableContainer}>
                                 <Icon name="plus-circle" size={24} color="#2169ab" />
                                 {checkStateMultiSireNameString.checkedString.length === 0 ?
-                                    <Text style={styles.InformationText}>Sire Name</Text>
+                                    <>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.InformationText}>Aygır | Kısrak</Text>
+                                            :
+                                            <Text style={styles.InformationText}>Sire Name</Text>
+                                        }
+                                    </>
+
                                     :
                                     <Text style={styles.InformationText}>{checkStateMultiSireNameString.checkedString}</Text>
                                 }
@@ -1223,14 +1364,14 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                 else if (getIDTextInput === "") {
                                     readGetParentPage("0");
                                 }
-                                else{
+                                else {
                                     readGetParentPage(getIDTextInput.toString())
                                 }
-                               
-                               
+
+
                             }}
                             style={{ marginVertical: 20 }}
-                            title="Search"
+                            title={getSearchButtonName}
                         />
 
                     </View>
@@ -1250,48 +1391,95 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                     {getParentPageData.length === 0 ?
                                         <View style={styles.ErrorMessageContainer}>
                                             <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                            {Global.Language === 1 ?
+                                                <>
+                                                    <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                    <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                    <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                </>
+                                                :
+                                                <>
+                                                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                </>
+                                            }
                                         </View>
                                         :
                                         <ScrollView horizontal={true}>
 
                                             <DataTable>
-                                                <DataTable.Header>
-                                                    <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Sire | Mare</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Registration Type</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Foal</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Racing</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Racing %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Race Win.</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Race Win. %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Group Race Win.</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Group Race Win. %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Black Type</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Black Type %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Top 4</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Top 4 %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>2nd</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>R. Person</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>URL</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Cover URL</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Web Site</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Facebook</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Instagram</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Twitter</DataTable.Title>
-                                                    <DataTable.Title style={styles.DataTableTitle}>Edit</DataTable.Title>
-                                                </DataTable.Header>
+                                                {Global.Language === 1 ?
+                                                    <DataTable.Header>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Aygır | Kısrak </DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Kayıt Tipi</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Tay</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Yarışan</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Yarışan %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Yarış Kaz.</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Yarış Kaz. %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Grup Yarış Kaz.</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Grup Yarış Kaz. %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Black Type</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Black Type %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Koşu</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>İlk 4</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>İlk 4 %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>1'incilik </DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>1'incilik %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>2'ncilik</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>2'ncilik %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>3'üncülük</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>3'üncülük %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>4'üncülük</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>4'üncülük %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Kazanç</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>İlgili Kişi</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>URL</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Kapan Url</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Web Site</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Facebook</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Instagram</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Twitter</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Düzenle</DataTable.Title>
+                                                    </DataTable.Header>
+                                                    :
+                                                    <DataTable.Header>
+                                                        <DataTable.Title style={[styles.DataTableTitle]}>ID</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Sire | Mare</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Registration Type</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Foal</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Racing</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Racing %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Race Win.</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Race Win. %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Group Race Win.</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Group Race Win. %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Black Type</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Black Type %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Start</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Top 4</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Top 4 %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>1st</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>1st %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>2nd</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>2nd %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>3rd</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>3rd %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>4th</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>4th %</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Earning</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>R. Person</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>URL</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Cover URL</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Web Site</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Facebook</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Instagram</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Twitter</DataTable.Title>
+                                                        <DataTable.Title style={styles.DataTableTitle}>Edit</DataTable.Title>
+                                                    </DataTable.Header>
+                                                }
 
                                                 {getParentPageData.map((item, index) => (
                                                     <DataTable.Row key={index}>

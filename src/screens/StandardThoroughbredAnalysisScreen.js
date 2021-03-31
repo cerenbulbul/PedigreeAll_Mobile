@@ -18,13 +18,16 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
     const [buildReport, setBuildReport] = React.useState(false)
     const [getCounter, setCounter] = React.useState();
 
+    const [getThoroughbredName, setThoroughbredName] = React.useState("")
+    const [getHypotheticalName, setHypotheticalName] = React.useState("")
+
 
     const readCounter = async () => {
         try {
             const token = await AsyncStorage.getItem('TOKEN')
             if (token !== null) {
                 //console.log(atob('Z2ZydWx1dGFzQGhvdG1haWwuY29tOjEyMw=='))
-                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + 2 + '&p_iRaceId=' + 1, {
+                fetch('https://api.pedigreeall.com/Horse/GetCounter?p_iLanguage=' + Global.Language + '&p_iRaceId=' + 1, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -49,212 +52,277 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
 
     const StandardThoroughbredList = [
         {
-            text: "Detailed Thoroughbred Profile"
+            textEnglish: "Detailed Thoroughbred Profile",
+            textTurkish: " Detaylı Safkan Profili"
         },
         {
-            text: "5x Pedigree"
+            textEnglish: "5x Pedigree",
+            textTurkish: " 5x Pedigree | Soyağacı"
         },
         {
-            text: "Family Summary"
+            textEnglish: "Family Summary",
+            textTurkish: "Familya Özeti",
         },
         {
-            text: "5x Linebreeding"
+            textEnglish: "5x Linebreeding",
+            textTurkish: "5x Linebreeding | Eş Soyluluk",
         },
         {
-            text: "Top 5 Horses Bred On This Cross"
+            textEnglish: "Top 5 Horses Bred On This Cross",
+            textTurkish: "Benzer Nickten Top 5 Safkan",
         },
         {
-            text: "4 Different Dosage Index and Distance Analysis"
+            textEnglish: "4 Different Dosage Index and Distance Analysis",
+            textTurkish: "4 Farklı Dosaj İndeks ve Mesafe Analizi"
         }
     ]
 
     const AdvancedThoroughbredList = [
         {
-            text: "Full Standard Report"
+            textEnglish: "Full Standard Report",
+            textTurkish: "Standart Raporun Tamamı ile Birlikte"
         },
         {
-            text: "Detailed Thoroughbred Profile"
+            textEnglish: "Detailed Thoroughbred Profile",
+            textTurkish: " Detaylı Safkan Profili"
         },
         {
-            text: "5x Pedigree"
+            textEnglish: "5x Pedigree",
+            textTurkish: "5x Pedigree | Soyağacı"
         },
         {
-            text: "7x Linebreeding"
+            textEnglish: "7x Linebreeding",
+            textTurkish: "7x Linebreeding | Eş Soyluluk"
         },
         {
-            text: "Top 15 Horses Bred On This Cross"
+            textEnglish: "Top 15 Horses Bred On This Cross",
+            textTurkish: "Benzer Nickten Top 15 Safkan"
         },
         {
-            text: "Family Summary"
+            textEnglish: "Family Summary",
+            textTurkish: "Familya Özeti"
         },
         {
-            text: "4 Different Dosage Index and Distance Analysis"
+            textEnglish: "4 Different Dosage Index and Distance Analysis",
+            textTurkish: " 4 Farklı Dosaj İndeks ve Mesafe Analizi"
         },
         {
-            text: "Siblings From Mare"
+            textEnglish: "Siblings From Mare",
+            textTurkish: "Kısrak Kardeşleri"
         },
         {
-            text: "Tail Female"
+            textEnglish: "Tail Female",
+            textTurkish: "Dişi Soy | Tail Female"
         },
         {
-            text: "Progeny"
+            textEnglish: "Progeny",
+            textTurkish: "Taylar | Progeny"
         }
     ]
     const ProfessionalThoroughbredList = [
         {
-            text: "Full Standard Report"
+            textEnglish: "Full Standard Report",
+            textTurkish: "Gelişmiş Raporun Tamamı ile Birlikte"
         },
         {
-            text: "Detailed Thoroughbred Profile"
+            textEnglish: "Detailed Thoroughbred Profile",
+            textTurkish: "Detaylı Safkan Profili"
         },
         {
-            text: "5x Pedigree"
+            textEnglish: "5x Pedigree",
+            textTurkish: "5x Pedigree | Soyağacı"
         },
         {
-            text: "9x Linebreeding"
+            textEnglish: "9x Linebreeding",
+            textTurkish: "9x Linebreeding | Eş Soyluluk"
         },
         {
-            text: "All Horses Bred On This Cross"
+            textEnglish: "All Horses Bred On This Cross",
+            textTurkish: "Benzer Nickten Bütün Safkanlar"
         },
         {
-            text: "Family Summary"
+            textEnglish: "Family Summary",
+            textTurkish: "Familya Özeti"
         },
         {
-            text: "4 Different Dosage Index and Distance Analysis"
+            textEnglish: "4 Different Dosage Index and Distance Analysis",
+            textTurkish: "4 Farklı Dosaj İndeks ve Mesafe Analizi"
         },
         {
-            text: "Siblings From Mare"
+            textEnglish: "Siblings From Mare",
+            textTurkish: "Kısrak Kardeşleri"
         },
         {
-            text: "Tail Female"
+            textEnglish: "Tail Female",
+            textTurkish: "Dişi Soy | Tail Female"
         },
         {
-            text: "Progeny"
+            textEnglish: "Progeny",
+            textTurkish: "Taylar | Progeny"
         },
         {
-            text: "Siblings From Sire"
+            textEnglish: "Siblings From Sire",
+            textTurkish: "Aygır Kardeşleri"
         },
         {
-            text: "Siblings From Broodmare Sire"
+            textEnglish: "Siblings From Broodmare Sire",
+            textTurkish: "Kısrak Babasından Kardeşleri"
         },
         {
-            text: "Foals As Broodmare Sire"
+            textEnglish: "Foals As Broodmare Sire",
+            textTurkish: "Kısrak Babası Olarak Tayları"
         }
     ]
 
     const StandardStallionList = [
         {
-            text: "Unlimited Standart Reports"
+            textEnglish: "Unlimited Standart Reports",
+            textTurkish: "Sınırsız Standart Rapor"
         },
         {
-            text: "1 Year Free Detailed Stallion Ad"
+            textEnglish: "1 Year Free Detailed Stallion Ad",
+            textTurkish: "1 Yıllık Ücretsiz Detaylı Aygır Aşım İlanı"
         },
         {
-            text: "For Next Years Detailed Stallion Ad Fee 99 USD"
+            textEnglish: "For Next Years Detailed Stallion Ad Fee 99 USD",
+            textTurkish: "Sonraki Yıllar için Yıllık Aşım İlanı 99 USD"
         },
         {
-            text: "Detailed Thoroughbred Profile"
+            textEnglish: "Detailed Thoroughbred Profile",
+            textTurkish: "Detaylı Safkan Profili"
         },
         {
-            text: "5x Pedigree"
+            textEnglish: "5x Pedigree",
+            textTurkish: "5x Pedigree | Soyağacı"
         },
         {
-            text: "Family Summary"
+            textEnglish: "Family Summary",
+            textTurkish: "Familya Özeti"
         },
         {
-            text: "5x Linebreeding"
+            textEnglish: "5x Linebreeding",
+            textTurkish: "5x Linebreeding | Eş Soyluluk"
         },
         {
-            text: "Top 5 Horses Bred On This Cross"
+            textEnglish: "Top 5 Horses Bred On This Cross",
+            textTurkish: "Benzer Nickten Top 5 Safkan"
         },
         {
-            text: "4 Different Dosage Index and Distance Analysis"
+            textEnglish: "4 Different Dosage Index and Distance Analysis",
+            textTurkish: "4 Farklı Dosaj İndeks ve Mesafe Analizi"
         }
     ]
     const AdvancedStallionList = [
         {
-            text: "Unlimited Standart Reports"
+            textEnglish: "Unlimited Standart Reports",
+            textTurkish: "Sınırsız Gelişmiş Rapor"
         },
         {
-            text: "1 Year Free Detailed Stallion Ad"
+            textEnglish: "1 Year Free Detailed Stallion Ad",
+            textTurkish: "1 Yıllık Ücretsiz Detaylı Aygır Aşım İlanı"
         },
         {
-            text: "For Next Years Detailed Stallion Ad Fee 99 USD"
+            textEnglish: "For Next Years Detailed Stallion Ad Fee 99 USD",
+            textTurkish: "Sonraki Yıllar için Yıllık Aşım İlanı 199 USD"
         },
         {
-            text: "Detailed Thoroughbred Profile"
+            textEnglish: "Detailed Thoroughbred Profile",
+            textTurkish: "Detaylı Safkan Profili"
         },
         {
-            text: "5x Pedigree"
+            textEnglish: "5x Pedigree",
+            textTurkish: "5x Pedigree | Soyağacı"
         },
         {
-            text: "Family Summary"
+            textEnglish: "Family Summary",
+            textTurkish: "Familya Özeti"
         },
         {
-            text: "7x Linebreeding"
+            textEnglish: "7x Linebreeding",
+            textTurkish: "7x Linebreeding | Eş Soyluluk"
         },
         {
-            text: "Top 15 Horses Bred On This Cross"
+            textEnglish: "Top 15 Horses Bred On This Cross",
+            textTurkish: "Benzer Nickten Top 15 Safkan"
         },
         {
-            text: "4 Different Dosage Index and Distance Analysis"
+            textEnglish: "4 Different Dosage Index and Distance Analysis",
+            textTurkish: "4 Farklı Dosaj İndeks ve Mesafe Analizi"
         },
         {
-            text: "Full Standard Report"
+            textEnglish: "Full Standard Report",
+            textTurkish: "Standart Raporun Tamamı ile Birlikte"
         },
         {
-            text: "Siblings From Mare"
+            textEnglish: "Siblings From Mare",
+            textTurkish: "Kısrak Kardeşleri"
         },
         {
-            text: "Tail Female"
+            textEnglish: "Tail Female",
+            textTurkish: "Dişi Soy | Tail Female"
         },
         {
-            text: "Progeny"
+            textEnglish: "Progeny",
+            textTurkish: "Taylar | Progeny"
         }
     ]
 
     const ProfessionalStallionList = [
         {
-            text: "Unlimited Standart Reports"
+            textEnglish: "Unlimited Standart Reports",
+            textTurkish: "Sınırsız Profesyonel Rapor"
         },
         {
-            text: "1 Year Free Detailed Stallion Ad"
+            textEnglish: "1 Year Free Detailed Stallion Ad",
+            textTurkish: "1 Yıllık Ücretsiz Detaylı Aygır Aşım İlanı"
         },
         {
-            text: "For Next Years Detailed Stallion Ad Fee 99 USD"
+            textEnglish: "For Next Years Detailed Stallion Ad Fee 99 USD",
+            textTurkish: "Sonraki Yıllar için Yıllık Aşım İlanı 299 USD"
         },
         {
-            text: "Detailed Thoroughbred Profile"
+            textEnglish: "Detailed Thoroughbred Profile",
+            textTurkish: "Detaylı Safkan Profili"
         },
         {
-            text: "5x Pedigree"
+            textEnglish: "5x Pedigree",
+            textTurkish: "5x Pedigree | Soyağacı"
         },
         {
-            text: "Family Summary"
+            textEnglish: "Family Summary",
+            textTurkish: "Familya Özeti"
         },
         {
-            text: "9x Linebreeding"
+            textEnglish: "9x Linebreeding",
+            textTurkish: "9x Linebreeding | Eş Soyluluk"
         },
         {
-            text: "All Horses Bred On This Cross"
+            textEnglish: "All Horses Bred On This Cross",
+            textTurkish: "Benzer Nickten Bütün Safkanlar"
         },
         {
-            text: "4 Different Dosage Index and Distance Analysis"
+            textEnglish: "4 Different Dosage Index and Distance Analysis",
+            textTurkish: "4 Farklı Dosaj İndeks ve Mesafe Analizi"
         },
         {
-            text: "Full Standard Report"
+            textEnglish: "Full Standard Report",
+            textTurkish: "Standart Raporun Tamamı ile Birlikte"
         },
         {
-            text: "Siblings From Sire"
+            textEnglish: "Siblings From Sire",
+            textTurkish: "Aygır Kardeşleri"
         },
         {
-            text: "Siblings From Broodmare Sire"
+            textEnglish: "Siblings From Broodmare Sire",
+            textTurkish: "Kısrak Babasından Kardeşleri"
         },
         {
-            text: "Foals As Broodmare Sire"
+            textEnglish: "Foals As Broodmare Sire",
+            textTurkish: "Kısrak Babası Olarak Tayları"
         },
         {
-            text: "Website with a Domain Name for Your Stallion"
+            textEnglish: "Website with a Domain Name for Your Stallion",
+            textTurkish: "Aygırınıza Özel Alan Adı İle Web Sitesi"
         }
 
     ]
@@ -263,6 +331,15 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
 
     React.useEffect(() => {
         readCounter();
+
+        if (Global.Language === 1) {
+            setThoroughbredName("Safkan");
+            setHypotheticalName("Varsayımsal")
+        }
+        else {
+            setThoroughbredName("Thoroughbred");
+            setHypotheticalName("Hypothetical")
+        }
     }, [])
 
 
@@ -280,7 +357,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                             }}
                             style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                             <Icon name="chevron-left" size={24} color="silver" />
-                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            {Global.Language === 1 ?
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                :
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            }
+
                         </TouchableOpacity>
 
                         <Tab.Navigator
@@ -320,7 +402,7 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                 component={BuildReportHorseSearchScreen}
                                 initialParams={{ ScreenName: "Thoroughbred", EffectiveNick_Code: EffectiveNick_Code }}
                                 options={{
-                                    tabBarLabel: 'Thoroughbred'
+                                    tabBarLabel: getThoroughbredName
                                 }}
                             />
                             <Tab.Screen
@@ -328,7 +410,7 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                 component={BuildReportHorseSearchScreen}
                                 initialParams={{ ScreenName: "Hypothetical", EffectiveNick_Code: EffectiveNick_Code }}
                                 options={{
-                                    tabBarLabel: 'Hypothetical',
+                                    tabBarLabel: getHypotheticalName,
                                 }}
                             />
                         </Tab.Navigator>
@@ -344,31 +426,94 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                 <ScrollView>
                     <Card>
                         {EffectiveNick_Code === "StandardThoroughbred" &&
-                            <Card.Title style={styles.CardTitle}>Standard Thoroughbred Analysis</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Standart Safkan Analiz</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Standard Thoroughbred Analysis</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "AdvancedThoroughbred" &&
-                            <Card.Title style={styles.CardTitle}>Advanced Thoroughbred Analysis</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Gelişmiş Safkan Analiz</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Advanced Thoroughbred Analysis</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "ProfessionalThoroughbred" &&
-                            <Card.Title style={styles.CardTitle}>Professional Thoroughbred Analysis</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Profesyonel Safkan Analiz</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Professional Thoroughbred Analysis</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "StandardMare" &&
-                            <Card.Title style={styles.CardTitle}>Standard Mare Analysis</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Standart Kısrak Analiz</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Standard Mare Analysis</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "AdvancedMare" &&
-                            <Card.Title style={styles.CardTitle}>Advanced Mare Analysis</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Gelişmiş Kısrak Analiz</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Advanced Mare Analysis</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "ProfessionalMare" &&
-                            <Card.Title style={styles.CardTitle}>Professional Mare Analysis</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Profesyonel Kısrak Analiz</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Professional Mare Analysis</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "StandartStallion" &&
-                            <Card.Title style={styles.CardTitle}>Standard Stallion Registration</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Standart Aygır Kaydı</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Standard Stallion Registration</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "AdvancedStallion" &&
-                            <Card.Title style={styles.CardTitle}>Advanced Stallion Registration</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Gelişmiş Aygır Kaydı</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Advanced Stallion Registration</Card.Title>
+                                }
+                            </>
+
                             ||
                             EffectiveNick_Code === "ProfessionalStallion" &&
-                            <Card.Title style={styles.CardTitle}>Professional Stallion Registration</Card.Title>
+                            <>
+                                {Global.Language === 1 ?
+                                    <Card.Title style={styles.CardTitle}>Profesyonel Aygır Kaydı</Card.Title>
+                                    :
+                                    <Card.Title style={styles.CardTitle}>Professional Stallion Registration</Card.Title>
+                                }
+                            </>
+
                         }
 
                         <View style={styles.PaymentContainer}>
@@ -419,7 +564,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                         }}
                                         style={[styles.Button, { backgroundColor: '#4DB7FE' }]}>
                                         <Icon style={{ alignSelf: 'center' }} name="eye" size={16} color="#fff" />
-                                        <Text style={styles.ButtonText}>View Sample Report</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ButtonText}>Örnek Raporu Görüntüle</Text>
+                                            :
+                                            <Text style={styles.ButtonText}>View Sample Report</Text>
+                                        }
+
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => {
@@ -427,20 +577,99 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                         }}
                                         style={[styles.Button, { backgroundColor: '#2e3f6e' }]}>
                                         <Icon style={{ alignSelf: 'center' }} name="shopping-basket" size={16} color="#fff" />
-                                        <Text style={styles.ButtonText}>Build Report</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={styles.ButtonText}>Rapor Oluştur</Text>
+                                            :
+                                            <Text style={styles.ButtonText}>Build Report</Text>
+                                        }
+
                                     </TouchableOpacity>
                                 </View>
 
                                 {getCounter !== undefined &&
 
                                     <View style={{ marginVertical: 8, marginBottom: 5, width: '100%', marginLeft: 15 }}>
-                                        <Text style={{ fontSize: 14, fontWeight: '700' }}>{getCounter.REPORT} Reports Created</Text>
+                                        {Global.Language === 1 ?
+                                            <Text style={{ fontSize: 14, fontWeight: '700' }}>{getCounter.REPORT} Rapor Oluşturuldu</Text>
+                                            :
+                                            <Text style={{ fontSize: 14, fontWeight: '700' }}>{getCounter.REPORT} Reports Created</Text>}
+
                                     </View>
 
                                 }
+                                <View style={{ marginTop: 20 }}>
+                                    {EffectiveNick_Name === "Thoroughbred" &&
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <>
+                                                    <Text style={[styles.BoldText, { textAlign: 'center' }]}>
+                                                        Herhangi bir at veya varsayımsal çiftleşme için oluşturulabilir.
+                                                </Text>
+                                                    <Text style={[styles.Text]}>
+                                                        Raporlar, ilgili safkanın verilerinin, veri uzmanlarımız tarafından derlenip kontrol edilmesinden sonra oluşturulmaktadır.
+                                                </Text>
+                                                </>
+                                                :
+                                                <>
+                                                    <Text style={[styles.BoldText, { textAlign: 'center' }]}>
+                                                        Available for any horse or hypothetical mating.
+                                                </Text>
+                                                    <Text style={[styles.Text]}>
+                                                        Reports are created after the data of the relevant pedigree are compiled and checked by our data experts.
+                                                </Text>
+                                                </>
+                                            }
+                                        </>
+                                        ||
+                                        EffectiveNick_Name === "Mare" &&
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <>
+                                                    <Text style={[styles.BoldText, { textAlign: 'center' }]}>
+                                                        Kısrağınız ve sizin seçeceğiniz 5 farklı aygır ile varsayımsal çiftleşme için oluşturulur.
+                                                </Text>
+                                                    <Text style={[styles.Text]}>
+                                                        Raporlar, ilgili safkanın verilerinin, veri uzmanlarımız tarafından derlenip kontrol edilmesinden sonra oluşturulmaktadır.
+                                                </Text>
+                                                </>
+                                                :
+                                                <>
+                                                    <Text style={[styles.BoldText, { textAlign: 'center' }]}>
+                                                        Available for your mare and hypothetical mating with 5 stallions of your choice.
+                                                </Text>
+                                                    <Text style={[styles.Text]}>
+                                                        Available for your mare and hypothetical mating with 5 stallions of your choice.
+                                                </Text>
+                                                </>
+                                            }
+                                        </>
+                                        ||
+                                        EffectiveNick_Name === "Stallion" &&
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <>
+                                                    <Text style={[styles.BoldText, { textAlign: 'center' }]}>
+                                                        Aygır kayıt ücretleri bir defaya mahsustur.
+                                                </Text>
+                                                    <Text style={[styles.Text]}>
+                                                        Raporlar, ilgili safkanın verilerinin, veri uzmanlarımız tarafından derlenip kontrol edilmesinden sonra oluşturulmaktadır.
+                                                </Text>
+                                                </>
+                                                :
+                                                <>
+                                                    <Text style={[styles.BoldText, { textAlign: 'center' }]}>
+                                                        Stallion registration fees are for once.
+                                                </Text>
+                                                    <Text style={[styles.Text]}>
+                                                        Reports are created after the data of the relevant pedigree are compiled and checked by our data experts.
+                                                </Text>
+                                                </>
+                                            }
+                                        </>
+                                    }
+                                </View>
 
-                                <Text style={[styles.BoldText, { textAlign: 'center' }]}>Available for any horse or hypothetical mating.</Text>
-                                <Text style={[styles.Text, { textAlign: 'center' }]}>Reports are created after the data of the relevant pedigree are compiled and checked by our data experts.</Text>
+
                                 {EffectiveNick_Code === "StandardThoroughbred" &&
                                     <View style={styles.ListViewContainer}>
                                         {StandardThoroughbredList.map((item, index) => (
@@ -448,7 +677,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -460,7 +694,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -472,7 +711,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -484,7 +728,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -496,7 +745,11 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
                                             </View>
                                         ))}
                                     </View>
@@ -508,7 +761,11 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
                                             </View>
                                         ))}
                                     </View>
@@ -519,7 +776,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -530,7 +792,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -541,7 +808,12 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                                 style={styles.ListItemContainer}
                                                 key={index}>
                                                 <Icon style={{ alignSelf: 'center' }} name="caret-right" size={16} color="#2e3f6e" />
-                                                <Text style={[styles.Text, { marginLeft: 10 }]}>{item.text}</Text>
+                                                {Global.Language === 1 ?
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textTurkish}</Text>
+                                                    :
+                                                    <Text style={[styles.Text, { marginLeft: 10 }]}>{item.textEnglish}</Text>
+                                                }
+
                                             </View>
                                         ))}
                                     </View>
@@ -563,13 +835,31 @@ export function StandardThoroughbredAnalysisScreen({ route, navigation }) {
                                 });
                             }}>
                             {EffectiveNick_Name === "Thoroughbred" &&
-                                <Text style={styles.OpenPriceBoxButtonText}>Thoroughbred Analysis Price</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.OpenPriceBoxButtonText}>Safkan Analizleri Fiyatları</Text>
+                                        :
+                                        <Text style={styles.OpenPriceBoxButtonText}>Thoroughbred Analysis Price</Text>
+                                    }
+                                </>
+
                                 ||
                                 EffectiveNick_Name === "Mare" &&
-                                <Text style={styles.OpenPriceBoxButtonText}>Mare Analysis Price</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.OpenPriceBoxButtonText}>Kısrak Analizleri Fiyatları</Text>
+                                        :
+                                        <Text style={styles.OpenPriceBoxButtonText}>Mare Analysis Price</Text>
+                                    }
+                                </>
                                 ||
                                 EffectiveNick_Name === "Stallion" &&
-                                <Text style={styles.OpenPriceBoxButtonText}>Stallion Analysis Price</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text style={styles.OpenPriceBoxButtonText}>Aygır Kayıtları Fiyatları</Text>
+                                        : <Text style={styles.OpenPriceBoxButtonText}>Stallion Analysis Price</Text>
+                                    }
+                                </>
                             }
 
                         </TouchableOpacity>
@@ -607,6 +897,8 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
 
     const [getProductType, setProductType] = React.useState();
     const [getProduct, setProduct] = React.useState();
+
+    const [getAddToBasketButtonName, setAddToBasketButtonName] = React.useState("")
 
     const BottomSheetLong = React.useRef();
 
@@ -723,52 +1015,59 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
 
     const checkSepet = async (Basket) => {
         try {
-          const userKey = await AsyncStorage.getItem('SEPETIM')
-          if (userKey !== null) {
-            for(let i = 0 ; i < (JSON.parse(userKey).length); i++){
-                Basket.push(JSON.parse(userKey)[i])
+            const userKey = await AsyncStorage.getItem('SEPETIM')
+            if (userKey !== null) {
+                for (let i = 0; i < (JSON.parse(userKey).length); i++) {
+                    Basket.push(JSON.parse(userKey)[i])
+                }
+                saveData(Basket);
+                Global.getBasket();
+                Alert.alert(
+                    "Successfully",
+                    "Product has been added to your basket successfully",
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        },
+                    ],
+                    { cancelable: false }
+                );
             }
-            saveData(Basket);
-            Global.getBasket();
-            Alert.alert(
-                "Successfully",
-                "Product has been added to your basket successfully",
-                [
-                  {
-                    text: "OK",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
-                ],
-                { cancelable: false }
-              );
-        }
-        else {
-            saveData(Basket);
-            Global.getBasket();
-            Alert.alert(
-                "Successfully",
-                "Product has been added to your basket successfully",
-                [
-                  {
-                    text: "OK",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
-                ],
-                { cancelable: false }
-              );
-        }
+            else {
+                saveData(Basket);
+                Global.getBasket();
+                Alert.alert(
+                    "Successfully",
+                    "Product has been added to your basket successfully",
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }
         } catch (e) {
-          console.log("User Error")
+            console.log("User Error")
         }
-      };
+    };
 
 
 
     React.useEffect(() => {
         readHorseGetByName();
         readGetProductUsingTypeID()
+
+        if (Global.Language===1) {
+            setAddToBasketButtonName("Sepete Ekle")
+        }
+        else{
+            setAddToBasketButtonName("Add To Basket")
+        }
     }, [])
 
     return (
@@ -888,7 +1187,14 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                             }}
                             style={styles.SireMareButtonContainer}>
                             {getSireName === undefined ?
-                                <Text>Sire Name</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text>Aygır Adı</Text>
+                                        :
+                                        <Text>Sire Name</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text>{getSireName.substring(0, 8)}...</Text>
                             }
@@ -902,7 +1208,13 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                             }}
                             style={styles.SireMareButtonContainer}>
                             {getMareName === undefined ?
-                                <Text>Mare Name</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text>Kısrak Adı</Text>
+                                        :
+                                        <Text>Mare Name</Text>
+                                    }
+                                </>
                                 :
                                 <Text>{getMareName.substring(0, 8)}...</Text>
                             }
@@ -925,7 +1237,14 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                             }}
                             style={[styles.SireMareButtonContainer, { width: '92%', }]}>
                             {getHorseName === undefined ?
-                                <Text>Please type name...</Text>
+                                <>
+                                    {Global.Language === 1 ?
+                                        <Text>Isim Giriniz...</Text>
+                                        :
+                                        <Text>Please type name...</Text>
+                                    }
+                                </>
+
                                 :
                                 <Text>{getHorseName}</Text>
                             }
@@ -948,17 +1267,17 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                         console.log(getProduct)
                         if (getProduct !== undefined) {
                             if (ScreenName === "Hypothetical") {
-                                 const Basket = [
-                                {
-                                    "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
-                                    "COST_USD": getProduct.FEE,
-                                    "INFO": "(" + getSireName + "," + getSireID + ") (" + getMareName + "," + getMareID + ")",
-                                    "ORDER_DETAIL_ID": Math.floor(Math.random() * Math.floor(100)),
-                                    "ORDER_ID": -1,
-                                    "PRODUCT": getProduct
-                                }
-                            ]
-                            checkSepet(Basket)
+                                const Basket = [
+                                    {
+                                        "COST_TL": (getProduct.FEE * getProduct.FEE_CURRENCY.PARITE),
+                                        "COST_USD": getProduct.FEE,
+                                        "INFO": "(" + getSireName + "," + getSireID + ") (" + getMareName + "," + getMareID + ")",
+                                        "ORDER_DETAIL_ID": Math.floor(Math.random() * Math.floor(100)),
+                                        "ORDER_ID": -1,
+                                        "PRODUCT": getProduct
+                                    }
+                                ]
+                                checkSepet(Basket)
                             }
                             else if (ScreenName === "Thoroughbred") {
                                 const Basket = [
@@ -973,13 +1292,13 @@ function BuildReportHorseSearchScreen({ route, navigation }) {
                                 ]
                                 checkSepet(Basket)
                             }
-                           
-                            
+
+
                         }
 
                     }}
                     style={{ marginVertical: 20 }}
-                    title="Add To Basket"
+                    title={getAddToBasketButtonName}
                 />
             </View>
 

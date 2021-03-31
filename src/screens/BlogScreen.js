@@ -27,6 +27,7 @@ import { ListItem, Input, SearchBar } from "react-native-elements";
 import Moment from 'react-moment';
 import 'moment-timezone';
 import HTML from "react-native-render-html";
+import { Global } from '../Global';
 
 
 export function BlogScreen({ navigation }) {
@@ -40,7 +41,7 @@ export function BlogScreen({ navigation }) {
   const [selectedBlog, setSelectedBlog] = useState()
   const [selectedCategoryID, setSelectedCategoryID] = useState()
   const [BlogIsAvaible, setBlogIsAvaible] = useState()
- 
+
 
   const readDataBlogList = async (data) => {
     fetch('https://api.pedigreeall.com/Blog/Get?p_iBlogCategoryId=' + -1 + '&p_iSelection=' + 1, {
@@ -135,6 +136,7 @@ export function BlogScreen({ navigation }) {
                       })
                     }} >
                     <ListItem.Content>
+
                       <ListItem.Title>{item.BLOG_CATEGORY_EN}</ListItem.Title>
                     </ListItem.Content>
                     <ListItem.Chevron />
@@ -155,14 +157,30 @@ export function BlogScreen({ navigation }) {
 
         <View style={styles.ErrorMessageContainer}>
           <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-          <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-          <Text style={styles.ErrorMessageText}>The Category has not data. You can choose another category or see the Blog Screen.</Text>
+          {Global.Language === 1 ?
+            <>
+              <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+              <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+              <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+            </>
+            :
+            <>
+              <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+              <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+              <Text style={styles.ErrorMessageText}>You can search again.</Text>
+            </>
+          }
           <View style={styles.ErrorMessageButtonContainer}>
             <TouchableOpacity
               style={styles.ErrorMessageButton}
               onPress={() => { BottomSheetCategory.current.open(); }}
             >
-              <Text style={styles.ErrorMessageButtonText}>Go Categories</Text>
+              {Global.Language === 1 ?
+                <Text style={styles.ErrorMessageButtonText}>Kategorilere Git</Text>
+                :
+                <Text style={styles.ErrorMessageButtonText}>Go Categories</Text>
+              }
+
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.ErrorMessageButton, { backgroundColor: '#2169ab' }]}
@@ -171,7 +189,12 @@ export function BlogScreen({ navigation }) {
                 setBlogIsAvaible(true)
               }}
             >
-              <Text style={[styles.ErrorMessageButtonText, { color: 'rgb(232, 237, 241)' }]}>Go Blog</Text>
+              {Global.Language === 1 ?
+                <Text style={[styles.ErrorMessageButtonText, { color: 'rgb(232, 237, 241)' }]}>Blog Sayfasına Git</Text>
+                :
+                <Text style={[styles.ErrorMessageButtonText, { color: 'rgb(232, 237, 241)' }]}>Go Blog</Text>
+              }
+
             </TouchableOpacity>
           </View>
         </View>
@@ -189,28 +212,45 @@ export function BlogScreen({ navigation }) {
                         {selectedCategoryID === i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_ID &&
                           <>
                             <View style={[styles.IconsContainer, { marginTop: 10 }]}>
-                              <Text style={{ fontSize: 18, margin: 10, textAlign: 'center', fontWeight: '500' }}>{i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN}</Text>
+                              {Global.Language === 1 ?
+                                <Text style={{ fontSize: 18, margin: 10, textAlign: 'center', fontWeight: '500' }}>{i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_TR}</Text>
+                                :
+                                <Text style={{ fontSize: 18, margin: 10, textAlign: 'center', fontWeight: '500' }}>{i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN}</Text>
+                              }
+
                             </View>
                             <TouchableOpacity onPress={() => {
-                              //BottomSheetBlogSelected.current.open();
-                              console.log('asama1')
                               navigation.navigate('BlogItem', {
                                 selectedBlog: i
                               })
                               setSelectedBlog(i)
                             }}>
                               <Card containerStyle={{ borderRadius: 10 }}>
-                                <Card.Title> {i.HEADER_EN}</Card.Title>
+                                {Global.Language === 1 ?
+                                  <Card.Title> {i.HEADER_TR}</Card.Title>
+                                  :
+                                  <Card.Title> {i.HEADER_EN}</Card.Title>
+                                }
+
                                 <Card.Image
                                   style={{ borderRadius: 3, }}
                                   source={{ uri: 'https://www.pedigreeall.com/blog/' + i.IMAGE }} />
+                                {Global.Language === 1 ?
+                                  <Text
+                                    style={{ marginBottom: 10, marginTop: 10 }}
+                                    onTextLayout={onTextLayout}
+                                    numberOfLines={textShown ? undefined : 3}>
+                                    {i.SUMMARY_TR}
+                                  </Text>
+                                  :
+                                  <Text
+                                    style={{ marginBottom: 10, marginTop: 10 }}
+                                    onTextLayout={onTextLayout}
+                                    numberOfLines={textShown ? undefined : 3}>
+                                    {i.SUMMARY_EN}
+                                  </Text>
+                                }
 
-                                <Text
-                                  style={{ marginBottom: 10, marginTop: 10 }}
-                                  onTextLayout={onTextLayout}
-                                  numberOfLines={textShown ? undefined : 3}>
-                                  {i.SUMMARY_EN}
-                                </Text>
                                 <Card.Divider />
                                 <View style={styles.ButtonContainer}>
                                   <View style={styles.IconsContainer}>
@@ -241,21 +281,40 @@ export function BlogScreen({ navigation }) {
 
                         }}>
                           <Card containerStyle={{ borderRadius: 10 }}>
-                            <Card.Title> {i.HEADER_EN}</Card.Title>
+                            {Global.Language === 1 ?
+                              <Card.Title> {i.HEADER_TR}</Card.Title>
+                              :
+                              <Card.Title> {i.HEADER_EN}</Card.Title>
+                            }
+
                             <Card.Image
-                              style={{ borderRadius: 3, resizeMode:"contain" }}
+                              style={{ borderRadius: 3, resizeMode: "contain" }}
                               source={{ uri: 'https://www.pedigreeall.com/blog/' + i.IMAGE }} />
                             <View style={[styles.IconsContainer, { marginTop: 10 }]}>
                               <Icon name="tags" size={15} color="#000" />
-                              <Text style={styles.IconText}>{i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN}</Text>
-                            </View>
+                              {Global.Language === 1 ?
+                                <Text style={styles.IconText}>{i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_TR}</Text>
+                                :
+                                <Text style={styles.IconText}>{i.BLOG_CATEGORY_OBJECT.BLOG_CATEGORY_EN}</Text>
+                              }
 
-                            <Text
-                              style={{ marginBottom: 10, marginTop: 10 }}
-                              onTextLayout={onTextLayout}
-                              numberOfLines={textShown ? undefined : 3}>
-                              {i.SUMMARY_EN}
-                            </Text>
+                            </View>
+                            {Global.Language === 1 ?
+                              <Text
+                                style={{ marginBottom: 10, marginTop: 10 }}
+                                onTextLayout={onTextLayout}
+                                numberOfLines={textShown ? undefined : 3}>
+                                {i.SUMMARY_TR}
+                              </Text>
+                              :
+                              <Text
+                                style={{ marginBottom: 10, marginTop: 10 }}
+                                onTextLayout={onTextLayout}
+                                numberOfLines={textShown ? undefined : 3}>
+                                {i.SUMMARY_EN}
+                              </Text>
+                            }
+
 
                             <Card.Divider />
 

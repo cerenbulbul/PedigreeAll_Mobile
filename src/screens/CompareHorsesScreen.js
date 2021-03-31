@@ -6,6 +6,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import AsyncStorage from '@react-native-community/async-storage'
 import { SearchBar, ListItem } from "react-native-elements";
 import { DataTable } from 'react-native-paper';
+import { Global } from '../Global';
 
 export function CompareHorsesScreen() {
 
@@ -37,7 +38,7 @@ export function CompareHorsesScreen() {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchValue,
-                      })
+                    })
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -104,7 +105,12 @@ export function CompareHorsesScreen() {
 
     return (
         <View style={styles.Container}>
-            <Title text="Compare Horse" />
+            {Global.Language === 1 ?
+                <Title text="At Karşılaştır" />
+                :
+                <Title text="Compare Horse" />
+            }
+
 
             <RBSheet
                 ref={BottomSheetLong}
@@ -159,9 +165,19 @@ export function CompareHorsesScreen() {
                             {getHorseData.length === 0 ?
                                 <View style={styles.ErrorMessageContainer}>
                                     <Icon name="exclamation-circle" size={150} color="#e54f4f" />
-                                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                    {Global.Language === 1 ?
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                            <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                            <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                        </>
+                                        :
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                        </>
+                                    }
                                 </View>
                                 :
                                 <ScrollView style={{ marginBottom: 30 }}>
@@ -185,7 +201,7 @@ export function CompareHorsesScreen() {
                                                         pressHorse(item)
                                                     }} />
                                                 <Image
-                                                    style={{ width: 70, height: 70, justifyContent:'center', resizeMode:'contain' }}
+                                                    style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
                                                     source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                                                 />
                                                 <ListItem.Content>
@@ -230,10 +246,10 @@ export function CompareHorsesScreen() {
                             </TouchableOpacity>
                         </View>
 
-                            <Image 
-                                style={{height:'90%', width:'95%', resizeMode:'contain', justifyContent:'center'}} 
-                                source={{uri:'https://www.pedigreeall.com//upload/150/' + getImageURL}}
-                            />
+                        <Image
+                            style={{ height: '90%', width: '95%', resizeMode: 'contain', justifyContent: 'center' }}
+                            source={{ uri: 'https://www.pedigreeall.com//upload/150/' + getImageURL }}
+                        />
                     </View>
                 </View>
             </Modal>
@@ -246,7 +262,12 @@ export function CompareHorsesScreen() {
                     }}
                     style={styles.AddingHorseButton}>
                     <Icon name="plus" size={16} color="#fff" style={{ alignSelf: 'center', marginRight: 10 }} />
-                    <Text style={styles.AddingHorseButtonText}>Add Horse</Text>
+                    {Global.Language === 1 ?
+                        <Text style={styles.AddingHorseButtonText}>At Ekle</Text>
+                        :
+                        <Text style={styles.AddingHorseButtonText}>Add Horse</Text>
+                    }
+
                 </TouchableOpacity>
             </View>
 
@@ -254,36 +275,68 @@ export function CompareHorsesScreen() {
 
                 <ScrollView horizontal={true}>
                     <DataTable>
-                        <DataTable.Header removeClippedSubviews={true}>
-                            <DataTable.Title >Image</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 90 }}>Name</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 90 }}>Class</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Point</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Earning</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Fam</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Color</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Sire</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 70 }}>Dam</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Birth D.</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Start</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 40 }}>1st</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 40 }}>1st %</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 40 }}>2nd</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 40 }}>2nd %</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 40 }}>3rd</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 60 }}>3rd %</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>4th</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 50 }}>4th %</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Price</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Dr. RM</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>ANZ</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>PedigreeAll</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 30 }}>Owner</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 50 }}>Breeder</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 80 }}>Coach</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 50 }}>Dead</DataTable.Title>
-                            <DataTable.Title style={{ marginLeft: 10 }}>Update D.</DataTable.Title>
-                        </DataTable.Header>
+                        {Global.Language === 1 ?
+                            <DataTable.Header removeClippedSubviews={true}>
+                                <DataTable.Title >Resim</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 90 }}>Adı</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 90 }}>Sınıf</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Puan</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Kazanç</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Fam</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Renk</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Aygır</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 70 }}>Kısrak</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Doğum T.</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Koşu</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>1.</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>1. %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>2.</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>2. %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>3.</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 60 }}>3. %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>4.</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 50 }}>4. %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Fiyat</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Dr. RM</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>ANZ</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>PedigreeAll</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Sahip</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 50 }}>Yetiştirici</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 80 }}>Antrenör</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 50 }}>Ölü</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 10 }}>Güncelleme T.</DataTable.Title>
+                            </DataTable.Header>
+                            :
+                            <DataTable.Header removeClippedSubviews={true}>
+                                <DataTable.Title >Image</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 90 }}>Name</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 90 }}>Class</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Point</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Earning</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Fam</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Color</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Sire</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 70 }}>Dam</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Birth D.</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Start</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>1st</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>1st %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>2nd</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>2nd %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 40 }}>3rd</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 60 }}>3rd %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>4th</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 50 }}>4th %</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Price</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Dr. RM</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>ANZ</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>PedigreeAll</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 30 }}>Owner</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 50 }}>Breeder</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 80 }}>Coach</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 50 }}>Dead</DataTable.Title>
+                                <DataTable.Title style={{ marginLeft: 10 }}>Update D.</DataTable.Title>
+                            </DataTable.Header>}
 
                         <>
 
@@ -298,14 +351,18 @@ export function CompareHorsesScreen() {
                                             {getHorseCompareListData.map((item, index) => (
 
                                                 <DataTable.Row centered={true} key={index}>
-                                                    <DataTable.Cell onPress={() => { 
+                                                    <DataTable.Cell onPress={() => {
                                                         setImageURL(item.IMAGE)
-                                                        setFullScreenVisible(true) 
-                                                    }} style={{ width:120, justifyContent:'center' }}>
-                                                        <Image style={{ width: 100, height: 100, alignSelf:'center' }} source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }} />
+                                                        setFullScreenVisible(true)
+                                                    }} style={{ width: 120, justifyContent: 'center' }}>
+                                                        <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }} />
                                                     </DataTable.Cell>
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ width: 100, height: 'auto' }}>{item.HORSE_NAME}</DataTable.Cell>
+                                                    {Global.Language===1?
+                                                    <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 15, width: 80, justifyContent: 'center' }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_TR}</DataTable.Cell>
+                                                    :
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 15, width: 80, justifyContent: 'center' }}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                                                    }
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.POINT}</DataTable.Cell>
                                                     <DataTable.Cell style={{ marginLeft: 0, width: 80, justifyContent: 'center' }} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 70, justifyContent: 'center' }} >{item.FAMILY_TEXT}</DataTable.Cell>
@@ -330,8 +387,22 @@ export function CompareHorsesScreen() {
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.BREEDER}</DataTable.Cell>
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ width: 100, height: 'auto', marginLeft: 20 }}>{item.COACH}</DataTable.Cell>
                                                     {item.IS_DEAD ?
-                                                        <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>DEAD</DataTable.Cell>
-                                                        : <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>ALIVE</DataTable.Cell>}
+                                                    <>
+                                                    {Global.Language===1?
+                                                    <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>Ölü</DataTable.Cell>
+                                                    :
+                                                    <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>DEAD</DataTable.Cell>
+                                                    }
+                                                    </>
+                                                        : 
+                                                        <>
+                                                    {Global.Language===1?
+                                                    <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>Sağ</DataTable.Cell>
+                                                    :
+                                                    <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>ALIVE</DataTable.Cell>
+                                                    }
+                                                    </>
+                                                    }
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ marginLeft: 0, width: 80, justifyContent: 'center' }}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                                                 </DataTable.Row>
 
@@ -385,7 +456,7 @@ const styles = StyleSheet.create({
     },
     ErrorMessageContainer: {
         width: '100%',
-        height: '100%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
@@ -425,12 +496,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 0,
         backgroundColor: '#6c6c6ca8'
-      },
-      FullScreenContainer: {
+    },
+    FullScreenContainer: {
         width: '100%',
         height: '100%',
         backgroundColor: '#fff',
         alignItems: 'center',
         shadowColor: "#000",
-      },
+    },
 })

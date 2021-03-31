@@ -9,6 +9,7 @@ import { Dimensions } from 'react-native';
 import { ListItem } from "react-native-elements";
 import { DataTable } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage'
+import { Global } from '../Global';
 
 export function ManagementDeleteRequestScreen() {
     const BottomSheetSmall = useRef();
@@ -42,19 +43,27 @@ export function ManagementDeleteRequestScreen() {
     const [checkStateMultiEditor, setcheckStateMultiEditor] = React.useState({ checked: [] });
     const [checkStateMultiEditorString, setcheckStateMultiEditorString] = React.useState({ checkedString: [] });
 
+
+    const [getStartRequestDateName, setStartRequestDateName] = React.useState();
+    const [getEndRequestDateName, setEndRequestDateName] = React.useState();
+    const [getStartLastActionDateName, setStartLastActionDateName] = React.useState();
+    const [getLastActionDateName, setEndLastActionDateName] = React.useState();
+
+    const [getViewButtonName, setViewButtonName] = React.useState("");
+
     const alertDialog = (messageTitle, message) =>
-    Alert.alert(
-        messageTitle,
-        message,
-        [
-            {
-                text: "OK",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-            },
-        ],
-        { cancelable: false }
-    );
+        Alert.alert(
+            messageTitle,
+            message,
+            [
+                {
+                    text: "OK",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+            ],
+            { cancelable: false }
+        );
 
     const pressRequestStatus = item => {   // The onPress method
         const { checked } = checkStateMultiRequestStatus;
@@ -335,10 +344,30 @@ export function ManagementDeleteRequestScreen() {
         readDataRequestStatusList();
         readDataSystemUserGetNameAndIDList();
         readDataSystemUserGetEditor()
+
+        if (Global.Language === 1) {
+            setStartRequestDateName("Talep Tarihi (Başlangıç)")
+            setEndRequestDateName("Talep Tarihi (Bitiş)")
+            setStartLastActionDateName("Son İşlem Tarihi (Başlangıç)")
+            setEndLastActionDateName("Son İşlem Tarihi (Bitiş)")
+            setViewButtonName("Görüntüle");
+        }
+        else {
+            setStartRequestDateName("Request Date (Start)")
+            setEndRequestDateName("Request Date (End)")
+            setStartLastActionDateName("Last Action Date (Start)")
+            setEndLastActionDateName("Last Action Date (End)")
+            setViewButtonName("View");
+        }
     }, [])
     return (
         <View style={styles.Container}>
-            <Title text="Delete Requests" />
+            {Global.Language === 1 ?
+                <Title text="Silme Talepleri" />
+                :
+                <Title text="Delete Requests" />
+            }
+
             <RBSheet
                 ref={BottomSheetSmall}
                 closeOnDragDown={true}
@@ -556,7 +585,11 @@ export function ManagementDeleteRequestScreen() {
                                 }}
                                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                                 <Icon name="chevron-left" size={24} color="silver" />
-                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                {Global.Language === 1 ?
+                                    <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                    :
+                                    <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                                }
                             </TouchableOpacity>
                         </View>
 
@@ -574,67 +607,98 @@ export function ManagementDeleteRequestScreen() {
                                         {getHorseAddRequestData.length === 0 ?
                                             <View style={styles.ErrorMessageContainer}>
                                                 <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                                <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                                <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                                <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                {Global.Language === 1 ?
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                        <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                    </>
+                                                }
                                             </View>
                                             :
                                             <ScrollView horizontal={true}>
 
                                                 <DataTable>
-                                                    <DataTable.Header>
-                                                        <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Name</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Sire</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Dam</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Request Status</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Request Date</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Last Action Date</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Request Owner</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Editor</DataTable.Title>
-                                                        <DataTable.Title style={{ width: 120 }}>Action</DataTable.Title>
-                                                    </DataTable.Header>
+                                                    {Global.Language === 1 ?
+                                                        <DataTable.Header>
+                                                            <DataTable.Title style={{ width: 150 }}>ID</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Adı</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Baba</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Anne</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Talep Durumu</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Talep Tarihi</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Son İşlem Tarihi</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Talep Sahibi</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>Editor</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 150 }}>İşlemler</DataTable.Title>
+                                                        </DataTable.Header>
+                                                        :
+                                                        <DataTable.Header>
+                                                            <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Name</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Sire</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Dam</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Request Status</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Request Date</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Last Action Date</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Request Owner</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Editor</DataTable.Title>
+                                                            <DataTable.Title style={{ width: 120 }}>Action</DataTable.Title>
+                                                        </DataTable.Header>
+                                                    }
+
 
                                                     {getHorseAddRequestData.map((item, i) => (
                                                         <DataTable.Row key={i}>
                                                             <DataTable.Cell style={{ width: 150 }} >{item.HORSE_DELETE_REQUEST_ID}</DataTable.Cell>
-                                                            <DataTable.Cell 
-                                                                onPress={()=>{
+                                                            <DataTable.Cell
+                                                                onPress={() => {
                                                                     alertDialog("Name", item.HORSE_NAME)
                                                                 }}
                                                                 style={{ width: 150 }}>
-                                                                    {item.HORSE_NAME.substring(0, 10)}...
+                                                                {item.HORSE_NAME.substring(0, 10)}...
                                                             </DataTable.Cell>
-                                                            <DataTable.Cell 
-                                                                onPress={()=>{
+                                                            <DataTable.Cell
+                                                                onPress={() => {
                                                                     alertDialog("Sire", item.FATHER_NAME)
                                                                 }}
                                                                 style={{ width: 150 }}>
-                                                                    {item.FATHER_NAME.substring(0, 10)}...
+                                                                {item.FATHER_NAME.substring(0, 10)}...
                                                             </DataTable.Cell>
-                                                            <DataTable.Cell 
-                                                                onPress={()=>{
+                                                            <DataTable.Cell
+                                                                onPress={() => {
                                                                     alertDialog("Dam", item.MOTHER_NAME)
                                                                 }}
                                                                 style={{ width: 150 }}>
-                                                                    {item.MOTHER_NAME.substring(0, 10)}...
+                                                                {item.MOTHER_NAME.substring(0, 10)}...
                                                             </DataTable.Cell>
-                                                            <DataTable.Cell style={{ width: 150 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
+                                                            {Global.Language === 1 ?
+                                                                <DataTable.Cell style={{ width: 150 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_TR}</DataTable.Cell>
+                                                                :
+                                                                <DataTable.Cell style={{ width: 150 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
+                                                            }
+
                                                             <DataTable.Cell style={{ width: 150 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 150 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
-                                                            <DataTable.Cell 
-                                                                onPress={()=>{
+                                                            <DataTable.Cell
+                                                                onPress={() => {
                                                                     alertDialog("Request Owner", item.REQUEST_OWNER)
                                                                 }}
                                                                 style={{ width: 150 }}>
-                                                                    {item.REQUEST_OWNER.substring(0, 10)}...
+                                                                {item.REQUEST_OWNER.substring(0, 10)}...
                                                             </DataTable.Cell>
-                                                            <DataTable.Cell 
-                                                                onPress={()=>{
+                                                            <DataTable.Cell
+                                                                onPress={() => {
                                                                     alertDialog("Editor", item.EDITOR)
                                                                 }}
                                                                 style={{ width: 150 }}>
-                                                                    {item.EDITOR.substring(0, 10)}...
+                                                                {item.EDITOR.substring(0, 10)}...
                                                             </DataTable.Cell>
                                                             <DataTable.Cell style={{ width: 200 }}>
                                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -653,14 +717,35 @@ export function ManagementDeleteRequestScreen() {
                                                                         }}
                                                                         style={styles.TableActionButtonContainer}>
                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 1 &&
-                                                                            <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                            <>
+                                                                                {Global.Language === 1 ?
+                                                                                    <Text style={styles.TableActionButtonText}>Onayla</Text>
+                                                                                    :
+                                                                                    <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                                }
+                                                                            </>
+
                                                                         }
 
                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 2 &&
-                                                                            <Text style={styles.TableActionButtonText}>Take Review</Text>
+                                                                            <>
+                                                                                {Global.Language === 1 ?
+                                                                                    <Text style={styles.TableActionButtonText}>İncelemeye Al</Text>
+                                                                                    :
+                                                                                    <Text style={styles.TableActionButtonText}>Take Review</Text>
+                                                                                }
+                                                                            </>
+
                                                                         }
                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 3 &&
-                                                                            <Text style={styles.TableActionButtonText}>Take Review</Text>
+                                                                            <>
+                                                                                {Global.Language === 1 ?
+                                                                                    <Text style={styles.TableActionButtonText}>İncelemeye Al</Text>
+                                                                                    :
+                                                                                    <Text style={styles.TableActionButtonText}>Take Review</Text>
+                                                                                }
+                                                                            </>
+
                                                                         }
                                                                     </TouchableOpacity>
                                                                     <TouchableOpacity
@@ -677,14 +762,35 @@ export function ManagementDeleteRequestScreen() {
                                                                         }}
                                                                         style={[styles.TableActionButtonContainer, { marginLeft: 5 }]} >
                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 1 &&
-                                                                            <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                            <>
+                                                                                {Global.Language === 1 ?
+                                                                                    <Text style={styles.TableActionButtonText}>Reddet</Text>
+                                                                                    :
+                                                                                    <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                                }
+                                                                            </>
+
                                                                         }
 
                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 2 &&
-                                                                            <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                            <>
+                                                                                {Global.Language === 1 ?
+                                                                                    <Text style={styles.TableActionButtonText}>Reddet</Text>
+                                                                                    :
+                                                                                    <Text style={styles.TableActionButtonText}>Reject</Text>
+                                                                                }
+                                                                            </>
+
                                                                         }
                                                                         {item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_ID === 3 &&
-                                                                            <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                            <>
+                                                                                {Global.Language === 1 ?
+                                                                                    <Text style={styles.TableActionButtonText}>Onayla</Text>
+                                                                                    :
+                                                                                    <Text style={styles.TableActionButtonText}>Approve</Text>
+                                                                                }
+                                                                            </>
+
                                                                         }
                                                                     </TouchableOpacity>
                                                                 </View>
@@ -701,8 +807,17 @@ export function ManagementDeleteRequestScreen() {
                                     :
                                     <View style={styles.ErrorMessageContainer}>
                                         <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                        <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                        <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                        {Global.Language === 1 ?
+                                            <>
+                                                <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                                                <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                                            </>
+                                            :
+                                            <>
+                                                <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                                <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                            </>
+                                        }
                                     </View>
                                 }
                             </ScrollView>
@@ -719,7 +834,7 @@ export function ManagementDeleteRequestScreen() {
                                 <Text style={styles.TextInputHeader}>ID: </Text>
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"ID"}
+                                    placeholder={""}
                                     name={"ID"}
                                     keyboardType="numeric"
                                     value={getAddRequestID}
@@ -727,30 +842,45 @@ export function ManagementDeleteRequestScreen() {
                                 />
                             </View>
                             <View style={styles.TextInputContainer}>
-                                <Text style={styles.TextInputHeader}>Name: </Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.TextInputHeader}>İsim: </Text>
+                                    :
+                                    <Text style={styles.TextInputHeader}>Name: </Text>
+                                }
+
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"Name"}
+                                    placeholder={""}
                                     name={"HorseName"}
                                     value={getHorseName}
                                     onChangeText={setHorseName}
                                 />
                             </View>
                             <View style={styles.TextInputContainer}>
-                                <Text style={styles.TextInputHeader}>Sire: </Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.TextInputHeader}>Baba: </Text>
+                                    :
+                                    <Text style={styles.TextInputHeader}>Sire: </Text>
+                                }
+
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"Sire"}
+                                    placeholder={""}
                                     name={"FatherName"}
                                     value={getFatherName}
                                     onChangeText={setFatherName}
                                 />
                             </View>
                             <View style={styles.TextInputContainer}>
-                                <Text style={styles.TextInputHeader}>Dam: </Text>
+                                {Global.Language === 1 ?
+                                    <Text style={styles.TextInputHeader}>Baba: </Text>
+                                    :
+                                    <Text style={styles.TextInputHeader}>Dam: </Text>
+                                }
+
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"Dam"}
+                                    placeholder={""}
                                     name={"username"}
                                     value={getMotherName}
                                     onChangeText={setMotherName}
@@ -770,7 +900,13 @@ export function ManagementDeleteRequestScreen() {
                                     style={styles.OneValueInLineButton}>
                                     <Icon name="circle" size={20} color="#2169ab" />
                                     {checkStateMultiRequestStatusString.checkedString.length === 0 ?
-                                        <Text style={styles.InformationText}>Request Status</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Talep Durumu</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Request Status</Text>}
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiRequestStatusString.checkedString}</Text>
                                     }
@@ -785,7 +921,7 @@ export function ManagementDeleteRequestScreen() {
                                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"Start Request Date"}
+                                    placeholder={getStartRequestDateName}
                                     name={"StartRequestDate"}
                                     keyboardType="numeric"
                                     value={getStartRequestDate}
@@ -797,7 +933,7 @@ export function ManagementDeleteRequestScreen() {
                                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"End Request Date"}
+                                    placeholder={getEndRequestDateName}
                                     name={"EndRequestDate"}
                                     keyboardType="numeric"
                                     value={getEndRequestDate}
@@ -809,7 +945,7 @@ export function ManagementDeleteRequestScreen() {
                                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"Start Last Action Date"}
+                                    placeholder={getStartLastActionDateName}
                                     name={"StartLastActionDate"}
                                     keyboardType="numeric"
                                     value={getStartLastActionDate}
@@ -821,7 +957,7 @@ export function ManagementDeleteRequestScreen() {
                                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                 <TextInput
                                     style={styles.HalfInputStyle}
-                                    placeholder={"End Last Action Date"}
+                                    placeholder={getLastActionDateName}
                                     name={"EndLastActionDate"}
                                     keyboardType="numeric"
                                     value={getEndLastActionDate}
@@ -838,7 +974,14 @@ export function ManagementDeleteRequestScreen() {
                                     style={styles.OneValueInLineButton}>
                                     <Icon name="circle" size={20} color="#2169ab" />
                                     {checkStateMultiRequestOwnerString.checkedString.length === 0 ?
-                                        <Text style={styles.InformationText}>Request Owner</Text>
+                                        <>
+                                            {Global.Language === 1 ?
+                                                <Text style={styles.InformationText}>Talep Sahibi</Text>
+                                                :
+                                                <Text style={styles.InformationText}>Request Owner</Text>
+                                            }
+                                        </>
+
                                         :
                                         <Text style={styles.InformationText}>{checkStateMultiRequestOwnerString.checkedString}</Text>
                                     }
@@ -876,7 +1019,7 @@ export function ManagementDeleteRequestScreen() {
 
                         <BlueButton
                             style={{ marginVertical: 20 }}
-                            title="View"
+                            title={getViewButtonName}
                             onPress={() => {
                                 setLoadingForTable(true)
                                 readGetHorseDeleteRequest()

@@ -11,6 +11,7 @@ import { Dimensions } from 'react-native';
 import { ListItem } from "react-native-elements";
 import { DataTable } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage'
+import { Global } from '../Global';
 
 export function MyAddingRequestScreen({ navigation }) {
 
@@ -86,7 +87,7 @@ export function MyAddingRequestScreen({ navigation }) {
             "EDITOR_ID": getEditorID,
             "PAGE_NO": 1,
             "PAGE_COUNT": 100,
-            "RACE_ID" : 1,
+            "RACE_ID": 1,
           })
         })
           .then((response) => response.json())
@@ -107,15 +108,43 @@ export function MyAddingRequestScreen({ navigation }) {
     }
   }
 
+  const [getStartRequestDatePlaceholder, setStartRequestDatePlaceholder] = React.useState("")
+  const [getEndRequestDatePlaceholder, setEndRequestDatePlaceholder] = React.useState("")
+  const [getStartLastActionDatePlaceholder, setStartLastActionDatePlaceholder] = React.useState("")
+  const [getEndLastActionDatePlaceholder, setEndLastActionDatePlaceholder] = React.useState("")
+  const [getViewButton, setViewButton] = React.useState("")
+
   React.useEffect(() => {
     readDataRequestStatusList();
     readGetHorseAddRequest()
+
+    if (Global.Language === 1) {
+      setRequestStatusText("Talep Durumu Seçiniz")
+      setStartRequestDatePlaceholder("Talep Tarihi (Başlangıç)")
+      setEndRequestDatePlaceholder("Talep Tarihi (Bitiş)")
+      setStartLastActionDatePlaceholder("Son İşlem Tarihi (Başlangıç)")
+      setEndLastActionDatePlaceholder("Son İşlem Tarihi (Bitiş)")
+      setViewButton("Görüntüle")
+    }
+    else {
+      setRequestStatusText("Select A Request Status")
+      setStartRequestDatePlaceholder("Request Date (Start)")
+      setEndRequestDatePlaceholder("Request Date (End)")
+      setStartLastActionDatePlaceholder("Last Action Date (Start)")
+      setEndLastActionDatePlaceholder("Last Action Date (End)")
+      setViewButton("view")
+    }
   }, [])
 
 
   return (
     <View style={styles.Container}>
-      <Title text="My Adding Request" />
+      {Global.Language === 1 ?
+        <Title text="Ekleme Taleplerim" />
+        :
+        <Title text="My Adding Request" />
+      }
+
       <RBSheet
         ref={BottomSheetRequestsStatus}
         closeOnDragDown={true}
@@ -145,13 +174,22 @@ export function MyAddingRequestScreen({ navigation }) {
                     bottomDivider
                     button
                     onPress={() => {
-                      console.log(item.REQUEST_STATUS_EN)
-                      setRequestStatusText(item.REQUEST_STATUS_EN)
+                      if (Global.Language === 1) {
+                        setRequestStatusText(item.REQUEST_STATUS_TR)
+                      } else {
+                        setRequestStatusText(item.REQUEST_STATUS_EN)
+                      }
+
                       setRequestStatusID(item.REQUEST_STATUS_ID)
                       BottomSheetRequestsStatus.current.close();
                     }} >
                     <ListItem.Content>
-                      <ListItem.Title>{item.REQUEST_STATUS_EN}</ListItem.Title>
+                      {Global.Language === 1 ?
+                        <ListItem.Title>{item.REQUEST_STATUS_TR}</ListItem.Title>
+                        :
+                        <ListItem.Title>{item.REQUEST_STATUS_EN}</ListItem.Title>
+                      }
+
                     </ListItem.Content>
                     <ListItem.Chevron />
                   </ListItem>
@@ -174,7 +212,12 @@ export function MyAddingRequestScreen({ navigation }) {
                 }}
                 style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                 <Icon name="chevron-left" size={24} color="silver" />
-                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                {Global.Language === 1 ?
+                  <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                  :
+                  <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                }
+
               </TouchableOpacity>
             </View>
 
@@ -183,24 +226,48 @@ export function MyAddingRequestScreen({ navigation }) {
                 {getHorseAddRequestData.length === 0 ?
                   <View style={styles.ErrorMessageContainer}>
                     <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                    {Global.Language === 1 ?
+                      <>
+                        <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                        <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                        <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                      </>
+                      :
+                      <>
+                        <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                        <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                        <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                      </>
+                    }
                   </View>
                   :
                   <ScrollView horizontal={true}>
 
                     <DataTable>
-                      <DataTable.Header>
-                        <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Name</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Sire</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Dam</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Request Status</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Request Date</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Last Action Date</DataTable.Title>
-                        <DataTable.Title style={{ width: 120 }}>Action</DataTable.Title>
-                      </DataTable.Header>
+                      {Global.Language === 1 ?
+                        <DataTable.Header>
+                          <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Adı</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Baba</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Anne</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Talep Durumu</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Talep Tarihi</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Son İşlem Tarihi</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>İşlemler</DataTable.Title>
+                        </DataTable.Header>
+                        :
+                        <DataTable.Header>
+                          <DataTable.Title style={{ width: 120 }}>ID</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Name</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Sire</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Dam</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Request Status</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Request Date</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Last Action Date</DataTable.Title>
+                          <DataTable.Title style={{ width: 120 }}>Action</DataTable.Title>
+                        </DataTable.Header>
+                      }
+
 
                       {getHorseAddRequestData.map((item, i) => (
                         <DataTable.Row key={i}>
@@ -208,9 +275,14 @@ export function MyAddingRequestScreen({ navigation }) {
                           <DataTable.Cell style={{ width: 120 }}>{item.HORSE_NAME}</DataTable.Cell>
                           <DataTable.Cell style={{ width: 120 }}>{item.FATHER_NAME}</DataTable.Cell>
                           <DataTable.Cell style={{ width: 120 }}>{item.MOTHER_NAME}</DataTable.Cell>
-                          <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
-                          <DataTable.Cell style={{ width: 120 }}>{item.DATE.substring(0,10)}</DataTable.Cell>
-                          <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0,10)}</DataTable.Cell>
+                          {Global.Language === 1 ?
+                            <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_TR}</DataTable.Cell>
+                            :
+                            <DataTable.Cell style={{ width: 120 }}>{item.REQUEST_STATUS_OBJECT.REQUEST_STATUS_EN}</DataTable.Cell>
+                          }
+
+                          <DataTable.Cell style={{ width: 120 }}>{item.DATE.substring(0, 10)}</DataTable.Cell>
+                          <DataTable.Cell style={{ width: 120 }}>{item.EDIT_DATE.substring(0, 10)}</DataTable.Cell>
                           <DataTable.Cell style={{ width: 120 }}>-</DataTable.Cell>
 
                         </DataTable.Row>
@@ -219,13 +291,22 @@ export function MyAddingRequestScreen({ navigation }) {
                     </DataTable>
 
                   </ScrollView>
-                  }
+                }
               </>
               :
               <View style={styles.ErrorMessageContainer}>
                 <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                {Global.Language === 1 ?
+                  <>
+                    <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                    <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                  </>
+                  :
+                  <>
+                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  </>
+                }
               </View>
             }
           </>
@@ -237,7 +318,7 @@ export function MyAddingRequestScreen({ navigation }) {
                 <Text style={styles.TextInputHeader}>ID: </Text>
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"ID"}
+                  placeholder={""}
                   name={"ID"}
                   keyboardType="numeric"
                   value={getAddRequestID}
@@ -245,30 +326,45 @@ export function MyAddingRequestScreen({ navigation }) {
                 />
               </View>
               <View style={styles.TextInputContainer}>
+                {Global.Language===1?
+                <Text style={styles.TextInputHeader}>Adı: </Text>
+                :
                 <Text style={styles.TextInputHeader}>Name: </Text>
+                }
+                
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Name"}
+                  placeholder={""}
                   name={"HorseName"}
                   value={getHorseName}
                   onChangeText={setHorseName}
                 />
               </View>
               <View style={styles.TextInputContainer}>
+                {Global.Language===1?
+                <Text style={styles.TextInputHeader}>Baba: </Text>
+                :
                 <Text style={styles.TextInputHeader}>Sire: </Text>
+                }
+                
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Sire"}
+                  placeholder={""}
                   name={"FatherName"}
                   value={getFatherName}
                   onChangeText={setFatherName}
                 />
               </View>
               <View style={styles.TextInputContainer}>
+                {Global.Language===1?
+                <Text style={styles.TextInputHeader}>Anne: </Text>
+                :
                 <Text style={styles.TextInputHeader}>Dam: </Text>
+                }
+                
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Dam"}
+                  placeholder={""}
                   name={"username"}
                   value={getMotherName}
                   onChangeText={setMotherName}
@@ -295,7 +391,7 @@ export function MyAddingRequestScreen({ navigation }) {
                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Start Request Date"}
+                  placeholder={getStartRequestDatePlaceholder}
                   name={"StartRequestDate"}
                   keyboardType="numeric"
                   value={getStartRequestDate}
@@ -307,7 +403,7 @@ export function MyAddingRequestScreen({ navigation }) {
                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"End Request Date"}
+                  placeholder={getEndRequestDatePlaceholder}
                   name={"EndRequestDate"}
                   keyboardType="numeric"
                   value={getEndRequestDate}
@@ -319,7 +415,7 @@ export function MyAddingRequestScreen({ navigation }) {
                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"Start Last Action Date"}
+                  placeholder={getStartLastActionDatePlaceholder}
                   name={"StartLastActionDate"}
                   keyboardType="numeric"
                   value={getStartLastActionDate}
@@ -331,7 +427,7 @@ export function MyAddingRequestScreen({ navigation }) {
                 <Icon name="calendar-alt" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                 <TextInput
                   style={styles.HalfInputStyle}
-                  placeholder={"End Last Action Date"}
+                  placeholder={getEndLastActionDatePlaceholder}
                   name={"EndLastActionDate"}
                   keyboardType="numeric"
                   value={getEndLastActionDate}
@@ -346,7 +442,7 @@ export function MyAddingRequestScreen({ navigation }) {
 
             <BlueButton
               style={{ marginVertical: 20 }}
-              title="View"
+              title={getViewButton}
               onPress={() => {
                 readGetHorseAddRequest()
                 setShowReport(true);
@@ -452,34 +548,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-},
-ErrorMessageTitle: {
+  },
+  ErrorMessageTitle: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#222'
-},
-ErrorMessageText: {
+  },
+  ErrorMessageText: {
     fontSize: 16,
     color: '#c7c1c1',
     textAlign: 'center',
     marginTop: 5
-},
-ErrorMessageButtonContainer: {
+  },
+  ErrorMessageButtonContainer: {
     width: '80%',
     marginTop: 40,
     flexDirection: 'row',
     justifyContent: 'space-between'
-},
-ErrorMessageButton: {
+  },
+  ErrorMessageButton: {
     backgroundColor: 'rgb(232, 237, 241)',
     width: '40%',
     padding: 10,
     borderRadius: 8
-},
-ErrorMessageButtonText: {
+  },
+  ErrorMessageButtonText: {
     textAlign: 'center',
     color: '#2169ab',
     fontSize: 14,
-},
+  },
 })

@@ -16,12 +16,26 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { SearchBar, ListItem } from "react-native-elements";
 import AsyncStorage from '@react-native-community/async-storage'
 import RBSheet from "react-native-raw-bottom-sheet";
+import { Global } from '../Global';
 
 
 const Tab = createMaterialTopTabNavigator();
 
 export function ManagementReportScreen() {
 
+    const [getThoroughbredAnalysisName, setThoroughbredAnalysisName] = React.useState("")
+    const [getMareAnalysisName, setMareAnalysisName] = React.useState("");
+
+    React.useEffect(() => {
+        if (Global.Language===1) {
+            setThoroughbredAnalysisName("Safkan Analizi")
+            setMareAnalysisName("Kısrak Analizi");
+        }
+        else{
+            setThoroughbredAnalysisName("Thoroughbred Analysis")
+            setMareAnalysisName("Mare Analysis");
+        }
+    }, [])
 
     return (
         <View style={styles.Container}>
@@ -61,14 +75,14 @@ export function ManagementReportScreen() {
                     name="ThoroughbredAnalysis"
                     component={ThoroughbredAnalysisScreen}
                     options={{
-                        tabBarLabel: 'Thoroughbred Analysis'
+                        tabBarLabel: getThoroughbredAnalysisName
                     }}
                 />
                 <Tab.Screen
                     name="MareAnalysis"
                     component={MareAnalysisScreen}
                     options={{
-                        tabBarLabel: 'Mare Analysis',
+                        tabBarLabel: getMareAnalysisName,
                     }}
                 />
             </Tab.Navigator>
@@ -273,8 +287,17 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                                 :
                                 <View style={styles.ErrorMessageContainer}>
                                     <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                    {Global.Language === 1 ?
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                                            <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                                        </>
+                                        :
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                            <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                        </>
+                                    }
                                     <View style={styles.ErrorMessageButtonContainer}>
                                     </View>
                                 </View>
@@ -288,9 +311,19 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                                                     {loader === false &&
                                                         <View style={styles.ErrorMessageContainer}>
                                                             <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                                                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                                                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                                                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                            {Global.Language === 1 ?
+                                                                <>
+                                                                    <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                                                                    <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                                                                    <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                                                                    <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                                                                    <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                                                                </>
+                                                            }
                                                             <View style={styles.ErrorMessageButtonContainer}>
                                                             </View>
                                                         </View>
@@ -334,8 +367,17 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                                 :
                                 <View style={styles.ErrorMessageContainer}>
                                     <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                                    <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                                    <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                    {Global.Language === 1 ?
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                                            <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                                        </>
+                                        :
+                                        <>
+                                            <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                                            <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                                        </>
+                                    }
                                     <View style={styles.ErrorMessageButtonContainer}>
                                     </View>
                                 </View>
@@ -373,10 +415,10 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                         if (chekedItem === undefined) {
                             setStallionCode("-")
                         }
-                        else{
+                        else {
                             setStallionCode(chekedItem);
                         }
-                        
+
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
@@ -392,16 +434,30 @@ function ThoroughbredAnalysisScreen({ navigation }) {
                                             key={i}
                                             bottomDivider
                                             onPress={() => {
-                                                setState({ checked: [state, item.REGISTRATION_EN] });
-                                                setChekedItem(item.REGISTRATION_EN)
-                                                setStallionCode(item.REGISTRATION_EN)
+                                                
+                                                if (Global.Language === 1) {
+                                                    setState({ checked: [state, item.REGISTRATION_TR] });
+                                                    setChekedItem(item.REGISTRATION_TR)
+                                                    setStallionCode(item.REGISTRATION_TR)
+                                                }
+                                                else {
+                                                    setState({ checked: [state, item.REGISTRATION_TR] });
+                                                    setChekedItem(item.REGISTRATION_EN)
+                                                    setStallionCode(item.REGISTRATION_EN)
+                                                }
+
                                                 setRegistrationID(item.REGISTRATION_ID)
                                                 OpenSmallBottomSheet.current.close()
                                             }}
                                         >
 
                                             <ListItem.Content>
+                                                {Global.Language===1?
+                                                <ListItem.Title>{item.REGISTRATION_TR}</ListItem.Title>
+                                                :
                                                 <ListItem.Title>{item.REGISTRATION_EN}</ListItem.Title>
+                                                }
+                                                
                                             </ListItem.Content>
 
                                         </ListItem>
@@ -475,7 +531,12 @@ function ThoroughbredAnalysisScreen({ navigation }) {
 
                     }}
                     style={[styles.SearchButtonStyle, { marginVertical: 34 }]}>
+                    {Global.Language===1?
+                    <Text style={styles.SearchButtonText}>Arama</Text>
+                    :
                     <Text style={styles.SearchButtonText}>Search</Text>
+                    }
+                    
                 </TouchableOpacity>
             </View>
         </View>
@@ -862,10 +923,10 @@ function MareAnalysisScreen({ navigation }) {
                         if (chekedItem === undefined) {
                             setStallionCode("-")
                         }
-                        else{
+                        else {
                             setStallionCode(chekedItem);
                         }
-                        
+
                     }}
                     style={styles.SwipableCloseIcon}>
                     <Icon name="times" size={20} color="#adb5bd" />
@@ -882,14 +943,27 @@ function MareAnalysisScreen({ navigation }) {
                                             bottomDivider
                                             onPress={() => {
                                                 setState({ checked: [state, item.NAME] });
-                                                setChekedItem(item.REGISTRATION_EN)
                                                 setRegistrationID(item.REGISTRATION_ID)
-                                                 setStallionCode(item.REGISTRATION_EN);
+                                                
                                                 OpenSmallBottomSheet.current.close();
+
+                                                if (Global.Language===1) {
+                                                    setChekedItem(item.REGISTRATION_TR)
+                                                    setStallionCode(item.REGISTRATION_TR);
+                                                }
+                                                else{
+                                                    setChekedItem(item.REGISTRATION_EN)
+                                                    setStallionCode(item.REGISTRATION_EN);
+                                                }
                                             }}
                                         >
                                             <ListItem.Content>
+                                                {Global.Language===1?
+                                                <ListItem.Title>{item.REGISTRATION_TR}</ListItem.Title>
+                                                :
                                                 <ListItem.Title>{item.REGISTRATION_EN}</ListItem.Title>
+                                                }
+                                                
                                             </ListItem.Content>
 
                                         </ListItem>
@@ -960,7 +1034,12 @@ function MareAnalysisScreen({ navigation }) {
 
                     }}
                     style={[styles.SearchButtonStyle, { marginVertical: 34 }]}>
-                    <Text style={styles.SearchButtonText}>Search</Text>
+                        {Global.Language===1?
+                        <Text style={styles.SearchButtonText}>Arama</Text>
+                        :
+                        <Text style={styles.SearchButtonText}>Search</Text>
+                        }
+                    
                 </TouchableOpacity>
             </View>
         </View>

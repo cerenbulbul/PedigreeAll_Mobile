@@ -82,8 +82,78 @@ export function MainScreen({ navigation }) {
     };
   }, [navigation]);
 
+  const [getSearchName, setSearchName] = React.useState()
+  const [getHypotheticalName, setHypotheticalName] = React.useState()
+  const [getEffectiveNickName, setEffectiveNickName] = React.useState()
+
+  React.useEffect(() => {
+
+    if (Global.Language === 1) {
+      setSearchName("Arama")
+      setHypotheticalName("Varsayımsal Eşleştirme")
+      setEffectiveNickName("EffectiveNick")
+    }
+    else {
+      setSearchName("Search")
+      setHypotheticalName("Hypothetical")
+      setEffectiveNickName('EffectiveNick')
+    }
+
+  });
   return (
-    <MyTabs />
+    <>
+      <View>
+        <Image
+          style={{ resizeMode: 'stretch', height: 200, }}
+          source={{
+            uri:
+              'https://images.unsplash.com/photo-1450052590821-8bf91254a353?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80',
+          }}
+        />
+      </View>
+
+      <Tab.Navigator
+        initialRouteName="SearchScreen"
+        removeClippedSubviews={true}
+        sceneContainerStyle={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'white',
+        }}
+        tabBarOptions={{
+          activeTintColor: '#000',
+          inactiveTintColor: '#b5b5b5',
+          indicatorStyle: {
+            backgroundColor: '#2169ab'
+          },
+          labelStyle: {
+            fontSize: 12,
+          },
+          style: {
+            backgroundColor: 'white', //e8edf1
+            height: (Platform.OS === 'ios') ? 48 : 50,
+            overflow: "hidden"
+          },
+        }}
+      >
+        <Tab.Screen
+          name="SearchScreen"
+          component={SearchScreen}
+          options={{ tabBarLabel: getSearchName }}
+        />
+        <Tab.Screen
+          name="HypotheticalScreen"
+          component={HypotheticalScreen}
+          options={{ tabBarLabel: getHypotheticalName }}
+        />
+        <Tab.Screen
+          name="EffectiveNickScreen"
+          component={EffectiveNickSearchScreen}
+          options={{ tabBarLabel: getEffectiveNickName }}
+        />
+      </Tab.Navigator>
+
+    </>
   );
 
 }
@@ -262,7 +332,7 @@ function SearchScreen({ navigation }) {
 
                     }} >
                     <Image
-                      style={{  width: 70, height: 70, justifyContent:'center', resizeMode:'contain' }}
+                      style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
                       source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                     />
                     <ListItem.Content>
@@ -417,7 +487,7 @@ function HypotheticalScreen({ navigation }) {
       setSireText("Aygır Adı")
       setMareText("Kısrak Adı")
     }
-    else{
+    else {
       setSireText("Sire Name")
       setMareText("Mare Name")
     }
@@ -544,7 +614,7 @@ function HypotheticalScreen({ navigation }) {
                           }
                         }} >
                         <Image
-                          style={{  width: 70, height: 70, justifyContent:'center', resizeMode:'contain' }}
+                          style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
                           source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                         />
                         <ListItem.Content>
@@ -793,7 +863,7 @@ function EffectiveNickSearchScreen({ navigation }) {
       setRegisteredStallionsName("Aygır Adı")
       setSireName("Kısrak")
     }
-    else{
+    else {
       setRegisteredStallionsName("Stallions")
       setSireName("Sire")
     }
@@ -860,11 +930,11 @@ function EffectiveNickSearchScreen({ navigation }) {
                               setSireName(item.HORSE_NAME);
                               setSecondHorseID(item.HORSE_ID);
                               setSireData(item);
-                              
+
 
                             }} >
                             <Image
-                              style={{  width: 70, height: 70, justifyContent:'center', resizeMode:'contain'  }}
+                              style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
                               source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                             />
                             <ListItem.Content>
@@ -932,33 +1002,33 @@ function EffectiveNickSearchScreen({ navigation }) {
                           readGetAsNameIdForStallion(item.HORSE_ID);
                         }} >
                         <Image
-                          style={{ width: 70, height: 70, justifyContent:'center', resizeMode:'contain' }}
+                          style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
                           source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
                         />
                         <ListItem.Content>
                           <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
                           {item.REGISTRATION_ID === 3 &&
                             <ListItem.Subtitle>
-                              <View style={{backgroundColor:'#21ba45', width:25,height:25,}}>
-                                <Text style={{color:'#fff', fontWeight:'700', alignSelf:'center', margin:'auto'}}>P</Text>
+                              <View style={{ backgroundColor: '#21ba45', width: 25, height: 25, }}>
+                                <Text style={{ color: '#fff', fontWeight: '700', alignSelf: 'center', margin: 'auto' }}>P</Text>
                               </View>
                             </ListItem.Subtitle>
                           }
                           {item.REGISTRATION_ID === 2 &&
                             <ListItem.Subtitle>
-                              <View style={{backgroundColor:'#fbbd08',width:25,height:25,}}>
-                                <Text style={{color:'#fff', fontWeight:'700', alignSelf:'center', margin:'auto'}}>A</Text>
+                              <View style={{ backgroundColor: '#fbbd08', width: 25, height: 25, }}>
+                                <Text style={{ color: '#fff', fontWeight: '700', alignSelf: 'center', margin: 'auto' }}>A</Text>
                               </View>
                             </ListItem.Subtitle>
                           }
                           {item.REGISTRATION_ID === 1 &&
                             <ListItem.Subtitle>
-                              <View style={{backgroundColor:'#db2828',width:25,height:25,}}>
-                                <Text style={{color:'#fff', fontWeight:'700', alignSelf:'center', margin:'auto'}}>S</Text>
+                              <View style={{ backgroundColor: '#db2828', width: 25, height: 25, }}>
+                                <Text style={{ color: '#fff', fontWeight: '700', alignSelf: 'center', margin: 'auto' }}>S</Text>
                               </View>
                             </ListItem.Subtitle>
                           }
-                          
+
                         </ListItem.Content>
                         <ListItem.Chevron />
                       </ListItem>
@@ -967,8 +1037,18 @@ function EffectiveNickSearchScreen({ navigation }) {
                 :
                 <View style={styles.ErrorMessageContainer}>
                   <Icon style={{ marginBottom: 40 }} name="wifi" size={150} color="#222" />
-                  <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
-                  <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                  {Global.Language === 1 ?
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>Internet Bağlantısı Yok!</Text>
+                      <Text style={styles.ErrorMessageText}>Wifi'ye bağlı olduğunuzdan emin olun ve tekrar bağlanın.</Text>
+                    </>
+                    :
+                    <>
+                      <Text style={styles.ErrorMessageTitle}>No Internet Connection !</Text>
+                      <Text style={styles.ErrorMessageText}>Make sure Wifi or cellular data is turned on and then try again.</Text>
+                    </>
+                  }
+
                   <View style={styles.ErrorMessageButtonContainer}>
                   </View>
                 </View>
@@ -1114,82 +1194,6 @@ function EffectiveNickSearchScreen({ navigation }) {
 
 const Tab = createMaterialTopTabNavigator();
 
-function MyTabs() {
-
-  const [getSearchName, setSearchName] = React.useState()
-  const [getHypotheticalName, setHypotheticalName] = React.useState()
-  const [getEffectiveNickName, setEffectiveNickName] = React.useState()
-
-  React.useEffect(() => {
-
-    if (Global.Language === 1) {
-      setSearchName("Arama")
-      setHypotheticalName("Varsayımsal Eşleştirme")
-      setEffectiveNickName("EffectiveNick")
-    }
-    else {
-      setSearchName("Search")
-      setHypotheticalName("Hypothetical")
-      setEffectiveNickName('EffectiveNick')
-    }
-
-  });
-  return (
-    <>
-      <View>
-        <Image
-          style={{ resizeMode: 'stretch', height: 200, }}
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1450052590821-8bf91254a353?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80',
-          }}
-        />
-      </View>
-
-      <Tab.Navigator
-        initialRouteName="SearchScreen"
-        removeClippedSubviews={true}
-        sceneContainerStyle={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-        }}
-        tabBarOptions={{
-          activeTintColor: '#000',
-          inactiveTintColor: '#b5b5b5',
-          indicatorStyle: {
-            backgroundColor: '#2169ab'
-          },
-          labelStyle: {
-            fontSize: 12,
-          },
-          style: {
-            backgroundColor: 'white', //e8edf1
-            height: (Platform.OS === 'ios') ? 48 : 50,
-            overflow: "hidden"
-          },
-        }}
-      >
-        <Tab.Screen
-          name="SearchScreen"
-          component={SearchScreen}
-          options={{ tabBarLabel: getSearchName }}
-        />
-        <Tab.Screen
-          name="HypotheticalScreen"
-          component={HypotheticalScreen}
-          options={{ tabBarLabel: getHypotheticalName }}
-        />
-        <Tab.Screen
-          name="EffectiveNickScreen"
-          component={EffectiveNickSearchScreen}
-          options={{ tabBarLabel: getEffectiveNickName }}
-        />
-      </Tab.Navigator>
-
-    </>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {

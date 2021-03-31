@@ -7,6 +7,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Flag from "react-native-flags";
+import { Global } from '../Global';
 
 const RomanMillerData = [
     {
@@ -35,7 +36,7 @@ export function RequestsEditAHorse() {
 
     const BottomSheetLong = React.useRef();
     const BottomSheetRef = useRef();
-    const [searchText, setSearchText] = React.useState("cerenin");
+    const [searchText, setSearchText] = React.useState("");
     const [showEdition, setShowEdition] = React.useState(false)
 
     const [getHorseGetByName, setHorseGetByName] = React.useState();
@@ -186,7 +187,7 @@ export function RequestsEditAHorse() {
                     body: JSON.stringify({
                         ID: 1,
                         NAME: searchText,
-                      })
+                    })
 
                 })
                     .then((response) => response.json())
@@ -284,7 +285,7 @@ export function RequestsEditAHorse() {
                             if (json.m_cData[0].P === 1) {
                                 paArray.push("P")
                             }
-                            setcheckStateMultiPA({checked: paArray})
+                            setcheckStateMultiPA({ checked: paArray })
 
                             const rmArray = []
 
@@ -303,7 +304,7 @@ export function RequestsEditAHorse() {
                             if (json.m_cData[0].RM_P === 1) {
                                 rmArray.push("P")
                             }
-                            setcheckStateMultiRM({checked: rmArray})
+                            setcheckStateMultiRM({ checked: rmArray })
 
 
                             const anzArray = []
@@ -323,7 +324,7 @@ export function RequestsEditAHorse() {
                             if (json.m_cData[0].ANZ_P === 1) {
                                 anzArray.push("P")
                             }
-                            setcheckStateMultiANZ({checked: anzArray})
+                            setcheckStateMultiANZ({ checked: anzArray })
 
 
 
@@ -626,7 +627,7 @@ export function RequestsEditAHorse() {
                         "ANZ_C": getAnzC,
                         "ANZ_S": getAnzS,
                         "ANZ_P": getAnzP,
-                        "RACE_ID" : 1,
+                        "RACE_ID": 1,
                         "FAMILY_OBJECT": {
                             "FAMILY_ID": getFamilyID.toString()
                         },
@@ -705,6 +706,19 @@ export function RequestsEditAHorse() {
         }
     }
 
+    const [getSearchPlaceholder, setSearchPlaceholder] = React.useState("")
+    const [getEditButtonName, setEditButtonName] = React.useState("")
+    const [getFirstPlaceholder, setFirstPlaceholder] = React.useState("")
+    const [getSecondPlaceholder, setSecondPlaceholder] = React.useState("")
+    const [getThirdPlaceholder, setThirdPlaceholder] = React.useState("")
+    const [getFourthPlaceholder, setFourthPlaceholder] = React.useState("")
+    const [getStartPlaceholder, setStartPlaceholder] = React.useState("")
+    const [getEarningPlaceholder, setEarningPlaceholder] = React.useState("")
+    const [getPricePlaceholder, setPricePlaceholder] = React.useState("")
+    const [getHeaderPlaceholder, setHeaderPlaceholder] = React.useState("")
+    const [getParagraphPlaceholder, setParagraphPlaceholder] = React.useState("")
+    const [getDeadCheckName, setDeadCheckName] = React.useState("")
+
     React.useEffect(() => {
         readHorseSex();
         readCountry();
@@ -713,11 +727,45 @@ export function RequestsEditAHorse() {
         readColor()
         readFamily()
         readGetOwnerBreeder();
+
+        if (Global.Language === 1) {
+            setSearchPlaceholder("Lütfen isim giriniz ve ara butonuna basınız .. ")
+            setEditButtonName("Düzenle")
+            setFirstPlaceholder("1'incilik Sayısı")
+            setSecondPlaceholder("2'ncilik Sayısı")
+            setThirdPlaceholder("3'üncülük Sayısı")
+            setFourthPlaceholder("3'üncülük Sayısı")
+            setStartPlaceholder("Toplam Yarış Sayısı")
+            setEarningPlaceholder("Kazanç")
+            setPricePlaceholder("Fiyat")
+            setHeaderPlaceholder("Başlık")
+            setParagraphPlaceholder("Paragraf")
+            setDeadCheckName("Ölü")
+        }
+        else {
+            setSearchPlaceholder("Please type here and press enter .. ")
+            setEditButtonName("Edit")
+            setFirstPlaceholder("First Place")
+            setSecondPlaceholder("Second Place")
+            setThirdPlaceholder("Third Place")
+            setFourthPlaceholder("Fourth Place")
+            setStartPlaceholder("Starts")
+            setEarningPlaceholder("Earning")
+            setPricePlaceholder("Price")
+            setHeaderPlaceholder("Header")
+            setParagraphPlaceholder("Paragraph")
+            setDeadCheckName("Dead")
+        }
     }, [])
 
     return (
         <View style={styles.Container}>
-            <Title text="Edit A Horse" />
+            {Global.Language === 1 ?
+                <Title text="At Düzenle" />
+                :
+                <Title text="Edit A Horse" />
+            }
+
             <RBSheet
                 ref={BottomSheetLong}
                 closeOnDragDown={true}
@@ -1281,7 +1329,7 @@ export function RequestsEditAHorse() {
 
                                     }}
                                 >
-                                    
+
                                     <ListItem.CheckBox
                                         checked={checkStateMultiPA.checked.includes(item.title)}
                                         checkedIcon='circle'
@@ -1315,7 +1363,12 @@ export function RequestsEditAHorse() {
                             }}
                             style={{ width: '100%', flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', marginBottom: 10 }}>
                             <Icon name="chevron-left" size={24} color="silver" />
-                            <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            {Global.Language === 1 ?
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Geri</Text>
+                                :
+                                <Text style={{ fontSize: 16, marginLeft: 10 }}>Back</Text>
+                            }
+
                         </TouchableOpacity>
                     </View>
 
@@ -1383,7 +1436,13 @@ export function RequestsEditAHorse() {
 
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        setSexText("Select a Sex")
+
+                                        if (Global.Language === 1) {
+                                            setSexText("Cinsiyet Seç")
+                                        }
+                                        else {
+                                            setSexText("Select a Sex")
+                                        }
                                     }}>
                                         <Icon name="times-circle" size={24} color="silver" />
                                     </TouchableOpacity>
@@ -1408,7 +1467,13 @@ export function RequestsEditAHorse() {
 
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        setSexText("Select a Country")
+                                        if (Global.Language === 1) {
+                                            setSexText("Ülke Seç")
+                                        }
+                                        else {
+                                            setSexText("Select a Country")
+                                        }
+
                                     }}>
                                         <Icon name="times-circle" size={24} color="silver" />
                                     </TouchableOpacity>
@@ -1433,7 +1498,12 @@ export function RequestsEditAHorse() {
 
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        setSexText("Select a Class")
+                                        if (Global.Language === 1) {
+                                            setSexText("Sınıf Seç")
+                                        }
+                                        else {
+                                            setSexText("Select a Class")
+                                        }
                                     }}>
                                         <Icon name="times-circle" size={24} color="silver" />
                                     </TouchableOpacity>
@@ -1443,7 +1513,7 @@ export function RequestsEditAHorse() {
                                     <Icon name="award" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"First"}
+                                        placeholder={getFirstPlaceholder}
                                         name={"FirstPlace"}
                                         keyboardType="numeric"
                                         value={getFirst.toString()}
@@ -1455,7 +1525,7 @@ export function RequestsEditAHorse() {
                                     <Icon name="award" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Second"}
+                                        placeholder={getSecondPlaceholder}
                                         name={"SecondPlace"}
                                         keyboardType="numeric"
                                         value={getSecond.toString()}
@@ -1467,7 +1537,7 @@ export function RequestsEditAHorse() {
                                     <Icon name="award" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Third"}
+                                        placeholder={getThirdPlaceholder}
                                         name={"ThirdPlace"}
                                         keyboardType="numeric"
                                         value={getThird.toString()}
@@ -1479,7 +1549,7 @@ export function RequestsEditAHorse() {
                                     <Icon name="award" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Fourth"}
+                                        placeholder={getFourthPlaceholder}
                                         name={"FourthPlace"}
                                         keyboardType="numeric"
                                         value={getFourth.toString()}
@@ -1491,7 +1561,7 @@ export function RequestsEditAHorse() {
                                     <Icon name="award" size={20} color="#2169ab" style={{ alignSelf: 'center' }} />
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Start Count"}
+                                        placeholder={getStartPlaceholder}
                                         name={"StartCount"}
                                         keyboardType="numeric"
                                         value={getStartCount.toString()}
@@ -1504,7 +1574,7 @@ export function RequestsEditAHorse() {
                                     <View style={styles.EarningPriceItemContainer}>
                                         <TextInput
                                             style={styles.EarningPriceInput}
-                                            placeholder={"Earning"}
+                                            placeholder={getEarningPlaceholder}
                                             keyboardType="numeric"
                                             name={"Earning"}
                                             value={getEarn.toString()}
@@ -1532,7 +1602,7 @@ export function RequestsEditAHorse() {
                                     <View style={styles.EarningPriceItemContainer}>
                                         <TextInput
                                             style={styles.EarningPriceInput}
-                                            placeholder={"Price"}
+                                            placeholder={getPricePlaceholder}
                                             keyboardType="numeric"
                                             name={"Price"}
                                             value={getPrice.toString()}
@@ -1560,7 +1630,7 @@ export function RequestsEditAHorse() {
                                     <View style={{ width: "100%" }}>
                                         <CheckBox
                                             center
-                                            title="Dead"
+                                            title={getDeadCheckName}
                                             checkedIcon="dot-circle-o"
                                             uncheckedIcon="circle-o"
                                             style={{ margin: 0 }}
@@ -1591,7 +1661,13 @@ export function RequestsEditAHorse() {
                                         <Text style={styles.InputText}></Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        setColorText("Select a Color")
+                                        if (Global.Language===1) {
+                                            setColorText("Renk Sec")
+                                        }
+                                        else{
+
+                                        }
+                                        
                                     }}>
                                         <Icon name="times-circle" size={24} color="silver" />
                                     </TouchableOpacity>
@@ -1614,7 +1690,12 @@ export function RequestsEditAHorse() {
                                         ))}
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        setColorText("Select a Family")
+                                        if (Global.Language===1) {
+                                            setColorText("Aile Sec")
+                                        }
+                                        else{
+                                            setColorText("Select a Family")
+                                        }
                                     }}>
                                         <Icon name="times-circle" size={24} color="silver" />
                                     </TouchableOpacity>
@@ -1737,10 +1818,15 @@ export function RequestsEditAHorse() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer, { marginTop: 30 }]}>
+                                    {Global.Language===1?
+                                    <Text style={{ fontWeight: '700', alignSelf: 'center', fontSize: 16 }}>Başlık: </Text>
+                                    :
                                     <Text style={{ fontWeight: '700', alignSelf: 'center', fontSize: 16 }}>Header: </Text>
+                                    }
+                                    
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Header"}
+                                        placeholder={getHeaderPlaceholder}
                                         name={"Header"}
                                         value={getHeader}
                                         onChangeText={setHeader}
@@ -1748,10 +1834,15 @@ export function RequestsEditAHorse() {
                                 </View>
 
                                 <View style={[styles.TextInputContainer]}>
+                                    {Global.Language===1?
+                                    <Text style={{ fontWeight: '700', alignSelf: 'center', fontSize: 16 }}>Paragraf: </Text>
+                                    :
                                     <Text style={{ fontWeight: '700', alignSelf: 'center', fontSize: 16 }}>Paragraph: </Text>
+                                    }
+                                    
                                     <TextInput
                                         style={styles.HalfInputStyle}
-                                        placeholder={"Info"}
+                                        placeholder={getParagraphPlaceholder}
                                         name={"Info"}
                                         value={getInfo}
                                         onChangeText={setInfo}
@@ -1777,7 +1868,7 @@ export function RequestsEditAHorse() {
                 :
                 <>
                     <SearchBar
-                        placeholder="Please type here and press enter .. "
+                        placeholder={getSearchPlaceholder}
                         lightTheme
                         platform="ios"
                         cancelButtonTitle=""
@@ -1793,7 +1884,7 @@ export function RequestsEditAHorse() {
                     />
                     <View style={styles.ButtonContainer}>
                         <BlueButton
-                            title="Edit"
+                            title={getEditButtonName}
                             style={{ width: '95%' }}
                             onPress={() => {
                                 readHorseGetByName();
