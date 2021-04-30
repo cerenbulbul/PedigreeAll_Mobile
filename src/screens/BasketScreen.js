@@ -31,6 +31,11 @@ export function BasketScreen({ navigation }) {
 
                 setLoader(false)
             }
+            else{
+                setLoader(false)
+                totalTL = 0;
+                totalUSD = 0;
+            }
         } catch (e) {
             console.log("User Error")
         }

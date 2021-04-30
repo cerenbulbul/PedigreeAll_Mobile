@@ -36,7 +36,7 @@ export function HorseDetailPRofileScreen({ BackButton, navigation }) {
             setProfileMoreInformationScreenName("Daha fazla profil bilgisi")
         }
         else{
-            etProfileInformationScreenName("Information")
+            setProfileInformationScreenName("Information")
             setProfileMoreInformationScreenName("More Information")
         }
     
@@ -238,7 +238,7 @@ function InformationScreen() {
                                                     style={{ width: Dimensions.get('window').width, height: 250 }}
                                                     key={index}
                                                 >
-                                                    <ImageBackground source={{ uri: 'https://www.pedigreeall.com//upload/1000/' + item }} style={styles.card}>
+                                                    <ImageBackground source={{ uri: item }} style={styles.card}>
                                                         <View>
                                                         </View>
                                                     </ImageBackground>

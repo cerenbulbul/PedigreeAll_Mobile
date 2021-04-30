@@ -578,7 +578,7 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                             <Image
                                                 source={{
                                                     uri:
-                                                        'https://www.pedigreeall.com//upload/1000/' + item.IMAGE,
+                                                         item.IMAGE,
                                                 }}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode='contain'
@@ -634,7 +634,7 @@ export function ManagementStallionsMareStatisticsScreen({ navigation }) {
                                             <Image
                                                 source={{
                                                     uri:
-                                                        'https://www.pedigreeall.com//upload/1000/' + item.IMAGE,
+                                                         item.IMAGE,
                                                 }}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode='contain'

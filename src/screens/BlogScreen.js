@@ -234,7 +234,7 @@ export function BlogScreen({ navigation }) {
 
                                 <Card.Image
                                   style={{ borderRadius: 3, }}
-                                  source={{ uri: 'https://www.pedigreeall.com/blog/' + i.IMAGE }} />
+                                  source={{ uri:  i.IMAGE }} />
                                 {Global.Language === 1 ?
                                   <Text
                                     style={{ marginBottom: 10, marginTop: 10 }}
@@ -289,7 +289,7 @@ export function BlogScreen({ navigation }) {
 
                             <Card.Image
                               style={{ borderRadius: 3, resizeMode: "contain" }}
-                              source={{ uri: 'https://www.pedigreeall.com/blog/' + i.IMAGE }} />
+                              source={{ uri: i.IMAGE }} />
                             <View style={[styles.IconsContainer, { marginTop: 10 }]}>
                               <Icon name="tags" size={15} color="#000" />
                               {Global.Language === 1 ?

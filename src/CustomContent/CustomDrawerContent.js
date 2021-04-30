@@ -334,10 +334,10 @@ export default function CustomDrawerContent(props, navigation) {
                           case 'Search':
                             props.navigation.navigate('ThoroughhbredsSearch');
                             break;
-                          case 'Stallions':
+                          case 'Registered Stallions':
                             props.navigation.navigate('ThoroughbredStallionsSearch');
                             break;
-                          case 'Ads':
+                          case 'My Ads':
                             props.navigation.navigate('ThoroughbredStallionsSearch');
                             break;
                           case 'PedigreePlan':

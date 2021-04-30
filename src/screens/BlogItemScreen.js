@@ -66,7 +66,7 @@ export function BlogItemScreen({ route, navigation }) {
 
           <Card.Image
             style={{ borderRadius: 3, resizeMode: 'contain', height: 250, marginTop: 10 }}
-            source={{ uri: 'https://www.pedigreeall.com/blog/' + selectedBlog.IMAGE }} />
+            source={{ uri: selectedBlog.IMAGE }} />
 
 
           {Global.Language === 1 ?

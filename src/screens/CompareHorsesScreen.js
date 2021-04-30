@@ -198,7 +198,7 @@ export function CompareHorsesScreen() {
                                                     checkedColor='#2169ab'
                                                     uncheckedColor='rgb(232, 237, 241)'
                                                     onPress={() => {
-                                                        pressHorse(item)
+                                                        pressHorse(item);
                                                     }} />
                                                 <Image
                                                     style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
@@ -247,8 +247,8 @@ export function CompareHorsesScreen() {
                         </View>
 
                         <Image
-                            style={{ height: '90%', width: '95%', resizeMode: 'contain', justifyContent: 'center' }}
-                            source={{ uri: 'https://www.pedigreeall.com//upload/150/' + getImageURL }}
+                            style={{ height: 200, width: '95%', resizeMode: 'contain', justifyContent: 'center' }}
+                            source={{ uri: getImageURL }}
                         />
                     </View>
                 </View>
@@ -354,8 +354,8 @@ export function CompareHorsesScreen() {
                                                     <DataTable.Cell onPress={() => {
                                                         setImageURL(item.IMAGE)
                                                         setFullScreenVisible(true)
-                                                    }} style={{ width: 120, justifyContent: 'center' }}>
-                                                        <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }} />
+                                                    }} style={{ width: 120, alignItems:'center',}}>
+                                                        <Image style={{ width: 120, height: 200, alignSelf: 'center',justifyContent:'center' }} source={{ uri:  item.IMAGE }} />
                                                     </DataTable.Cell>
                                                     <DataTable.Cell onPress={() => { alert(item.HORSE_NAME) }} style={{ width: 100, height: 'auto' }}>{item.HORSE_NAME}</DataTable.Cell>
                                                     {Global.Language===1?

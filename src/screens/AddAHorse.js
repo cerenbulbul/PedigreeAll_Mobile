@@ -936,7 +936,7 @@ export function AddAHorse({ navigation }) {
                           }} >
                           <Image
                             style={{ width: 70, height: 70, borderRadius: 50 }}
-                            source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                            source={{ uri: item.IMAGE }}
                           />
                           <ListItem.Content>
                             <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>

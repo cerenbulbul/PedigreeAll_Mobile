@@ -3109,7 +3109,7 @@ export function ThoroughbredStallionsSearchScreen({ navigation }) {
                                                 <Card.Divider />
                                                 <Card.Image
                                                     style={{ resizeMode: 'contain' }}
-                                                    source={{ uri: 'https://www.pedigreeall.com/upload/1000/' + item.IMAGE }}>
+                                                    source={{ uri:  item.IMAGE }}>
                                                 </Card.Image>
                                                 <View style={styles.CardInformationContainer}>
                                                     <View style={styles.CardInformationTextAndIconContainer}>

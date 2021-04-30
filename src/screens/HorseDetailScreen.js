@@ -540,7 +540,7 @@ export function HorseDetailScreen({ route, navigation }) {
                     }} >
                     <Image
                       style={{ width: 70, height: 70, borderRadius: 50 }}
-                      source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                      source={{ uri: item.IMAGE }}
                     />
                     <ListItem.Content>
                       <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
@@ -606,7 +606,7 @@ export function HorseDetailScreen({ route, navigation }) {
               || ModalText === "Image" &&
 
               <>
-                <Image style={styles.HorseImage} source={{ uri: 'https://www.pedigreeall.com//upload/1000/' + HorseInfo[0].IMAGE_LIST[0] }} />
+                <Image style={styles.HorseImage} source={{ uri:  HorseInfo[0].IMAGE_LIST[0] }} />
               </>
 
               || ModalText === "Statistics" &&
