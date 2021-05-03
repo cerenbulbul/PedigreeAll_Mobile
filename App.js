@@ -142,23 +142,18 @@ export default function App({navigation}) {
 
   const [getLanguageLoading, setLanguageLoading] = React.useState(false);
 
-  const readData = async () => {
+  const saveData = async (data) => {
     try {
-      const userKey = await AsyncStorage.getItem('USER')
-      if (userKey !== null) {
-        //console.log('User Var')
-        //document.getElementById('vvlogin').hidden=true;
-        setUser(userKey)
-        //{console.log(JSON.parse(userKey['0']))}
-      }
-      else {
-        setUser(null)
-        console.log('User Yok')
-      }
+      await AsyncStorage.setItem('USER', data)
+      setIsLoading(false)
+      console.log('Data successfully saved')
     } catch (e) {
-      console.log('Failed')
+      console.log('Failed to save the data to the storage')
     }
   }
+
+
+
 
   const deviceLanguage =
           Platform.OS === 'ios'
@@ -1353,7 +1348,6 @@ const styles = StyleSheet.create({
 
 /**
  Nested Navigation
-
    const TabScreen =() => {
     return (
       <Tab.Navigator
@@ -1369,7 +1363,6 @@ const styles = StyleSheet.create({
           name="Main"
           component={AuthStackScreen}
         />
-
         <Tab.Screen
           name="Password"
           component={ForgotPassword}
@@ -1378,7 +1371,6 @@ const styles = StyleSheet.create({
       </Tab.Navigator>
     );
   }
-
  */
 
 

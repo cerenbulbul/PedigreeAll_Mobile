@@ -12,7 +12,8 @@ import {
   UIManager,
   Image,
   Linking,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ListItem, Input, SearchBar } from "react-native-elements";
@@ -63,7 +64,7 @@ if (
 }
 
 
-export default function CustomDrawerContent(props, navigation) {
+export default function CustomDrawerContent(props, {navigation}) {
 
   const MyStatusBar = ({ backgroundColor, ...props }) => (
     <View style={[styles.statusBar, { backgroundColor }]}>
@@ -88,6 +89,10 @@ export default function CustomDrawerContent(props, navigation) {
   const [secondBoxPosition, setSecondBoxPosition] = useState("left");
   const [thirdBoxPosition, setThirdBoxPosition] = useState("left");
 
+  const [getUserMail, setUserMail] = React.useState("");
+
+
+
   const toggleFirstBox = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setFirstBoxPosition(firstBoxPosition === "left" ? "right" : "left");
@@ -98,39 +103,65 @@ export default function CustomDrawerContent(props, navigation) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  const saveData = async (data) => {
+    try {
+      await AsyncStorage.setItem('USER', data)
+      setIsLoading(false)
+      console.log('Data successfully saved')
+    } catch (e) {
+      console.log('Failed to save the data to the storage')
+    }
+  }
+
   const readData = async () => {
     try {
       const userKey = await AsyncStorage.getItem('USER')
       if (userKey !== null) {
-        Global.IsLogin = true
         setUser(userKey)
         const user = JSON.parse(userKey)[0].PAGE_LIST
         setUserData(user);
+        const mail = JSON.parse(userKey)[0].EMAIL
+        setUserMail(mail);
+        if (mail === "info@pedigreeall.com") {
+          Global.IsLogin = false;
+        }
+        else{
+          Global.IsLogin = true;
+        }
+        setIsLoading(false)
       }
       else {
         Global.IsLogin = false
-        setUser(null)
+        fetch('https://api.pedigreeall.com/systemuser/login', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            EMAIL: 'info@pedigreeall.com',
+            PASSWORD: 'Ccoft2020'
+          })
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.m_cDetail.m_eProcessState > 0) {
+              saveData(JSON.stringify(json.m_cData))
+            }
+
+          })
+          .catch((error) => {
+            console.error(error);
+          })
       }
     } catch (e) {
     }
   }
 
   React.useEffect(() => {
+    setIsLoading(true);
     readData();
   }, [])
-
-
-  if (Global.IsLogin) {
-    if (userData === undefined) {
-      readData();
-    }
-  }
-
-  if (Global.IsLogin === false) {
-    if (userData !== undefined) {
-      readData();
-    }
-  }
 
 
 
@@ -138,6 +169,27 @@ export default function CustomDrawerContent(props, navigation) {
     try {
       await AsyncStorage.removeItem('USER')
       await AsyncStorage.removeItem('TOKEN')
+      fetch('https://api.pedigreeall.com/systemuser/login', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            EMAIL: 'info@pedigreeall.com',
+            PASSWORD: 'Ccoft2020'
+          })
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.m_cDetail.m_eProcessState > 0) {
+              saveData(JSON.stringify(json.m_cData))
+            }
+
+          })
+          .catch((error) => {
+            console.error(error);
+          })
       //console.log('Data successfully saved')
     } catch (e) {
       console.log('Failed to remove user')
@@ -151,18 +203,18 @@ export default function CustomDrawerContent(props, navigation) {
       <MyStatusBar backgroundColor={StatusBarColor} barStyle="light-content" />
       <View style={styles.ProfileContainer}>
 
-      <TouchableOpacity
-        style={{width:'80%', height:40}}
-        onPress={()=>{
-          props.navigation.navigate('SearchScreen')
-        }}>
-        <Image
-          resizeMode={'contain'}
-          style={{ width: "100%", height: "100%", marginTop: 20 }}
-          source={require('../../assets/logo.png')}>
-        </Image>
-      </TouchableOpacity>
-        
+        <TouchableOpacity
+          style={{ width: '80%', height: 40 }}
+          onPress={() => {
+            props.navigation.navigate('SearchScreen')
+          }}>
+          <Image
+            resizeMode={'contain'}
+            style={{ width: "100%", height: "100%", marginTop: 20 }}
+            source={require('../../assets/logo.png')}>
+          </Image>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={{ marginTop: 30 }}
           onPress={() => {
@@ -171,6 +223,22 @@ export default function CustomDrawerContent(props, navigation) {
           <Icon name="times" size={26} color="#96999c" />
         </TouchableOpacity>
       </View>
+
+      {isLoading ?
+        <View style={{
+          position: 'absolute',
+          width: '100%',
+          height: "100%",
+          backgroundColor: '#ffffffba',
+          alignItems: 'center',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', zIndex: 9999 }} />
+        </View>
+        :
+        null}
 
       <DrawerContentScrollView>
         <View forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -182,11 +250,11 @@ export default function CustomDrawerContent(props, navigation) {
                   style={styles.SideBarTopBackIcon}>
                   <Icon name="chevron-left" size={20} color="#222" />
                   {Global.Language === 1 ?
-                  <Text style={styles.SideBarBackText}>Geri</Text>
-                  :
-                  <Text style={styles.SideBarBackText}>Back</Text>
+                    <Text style={styles.SideBarBackText}>Geri</Text>
+                    :
+                    <Text style={styles.SideBarBackText}>Back</Text>
                   }
-                  
+
                 </TouchableOpacity>
 
               </View>
@@ -263,12 +331,12 @@ export default function CustomDrawerContent(props, navigation) {
                         props.navigation.navigate('MainStack')
                     }
                   }}>
-                    {Global.Language === 1 ?
-                     <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
+                  {Global.Language === 1 ?
+                    <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
                     :
                     <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
-                    }
-                 
+                  }
+
                   <Icon name="angle-right" size={16} color="#7b7373" style={styles.SideBarMenuIcon} />
                 </TouchableOpacity>
 
@@ -282,10 +350,10 @@ export default function CustomDrawerContent(props, navigation) {
                     style={styles.SideBarTopBackIcon}>
                     <Icon name="chevron-left" size={20} color="#222" />
                     {Global.Language === 1 ?
-                  <Text style={styles.SideBarBackText}>Geri</Text>
-                  :
-                  <Text style={styles.SideBarBackText}>Back</Text>
-                  }
+                      <Text style={styles.SideBarBackText}>Geri</Text>
+                      :
+                      <Text style={styles.SideBarBackText}>Back</Text>
+                    }
                   </TouchableOpacity>
 
                 </View>
@@ -436,12 +504,12 @@ export default function CustomDrawerContent(props, navigation) {
                         }
                       }
                     }}>
-                      {Global.Language === 1 ?
+                    {Global.Language === 1 ?
                       <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
                       :
                       <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
-                      }
-                    
+                    }
+
                     <Icon name="angle-right" size={16} color="#7b7373" style={styles.SideBarMenuIcon} />
                   </TouchableOpacity>
 
@@ -462,12 +530,12 @@ export default function CustomDrawerContent(props, navigation) {
                             setSubPageTitle(item.SUB_PAGE)
                           }
                         }}>
-                          {Global.Language === 1 ?
+                        {Global.Language === 1 ?
                           <Text style={styles.SideBarMenuText}>{item.PAGE_TR}</Text>
                           :
                           <Text style={styles.SideBarMenuText}>{item.PAGE_EN}</Text>
-                          }
-                        
+                        }
+
                         <Icon name="angle-right" size={16} color="#7b7373" style={styles.SideBarMenuIcon} />
                       </TouchableOpacity>
 
@@ -485,12 +553,12 @@ export default function CustomDrawerContent(props, navigation) {
                       onPress={() => {
                         props.navigation.navigate('Contact')
                       }}>
-                        {Global.Language === 1?
+                      {Global.Language === 1 ?
                         <Text style={styles.SideBarMenuText}>İletişim</Text>
                         :
                         <Text style={styles.SideBarMenuText}>Contact</Text>
-                        }
-                      
+                      }
+
                     </TouchableOpacity>
 
                   </ScrollView>) : null}
@@ -511,12 +579,12 @@ export default function CustomDrawerContent(props, navigation) {
                   readData();
                   Global.IsLogin = false
                 }}>
-                  {Global.Language === 1?
+                {Global.Language === 1 ?
                   <Text style={[styles.MyButtonText, { color: "#fff" }]}>Çıkış</Text>
                   :
                   <Text style={[styles.MyButtonText, { color: "#fff" }]}>Logout</Text>
-                  }
-                
+                }
+
               </TouchableOpacity>
             </View>
 
@@ -529,12 +597,12 @@ export default function CustomDrawerContent(props, navigation) {
                   onPress={() => {
                     props.navigation.navigate('LoginScreen');
                   }}>
-                    {Global.Language === 1?
+                  {Global.Language === 1 ?
                     <Text style={styles.MyButtonText}>Giriş Yap</Text>
                     :
                     <Text style={styles.MyButtonText}>Login</Text>
-                    }
-                  
+                  }
+
                 </TouchableOpacity>
               </View>
 
@@ -550,12 +618,12 @@ export default function CustomDrawerContent(props, navigation) {
                       countryIcon: "flag",
                     });
                   }}>
-                     {Global.Language === 1?
+                  {Global.Language === 1 ?
                     <Text style={styles.MyButtonText}>Üye Ol</Text>
                     :
                     <Text style={styles.MyButtonText}>Register</Text>
-                    }
-                  
+                  }
+
                 </TouchableOpacity>
               </View>
             </View>
@@ -723,4 +791,3 @@ const styles = StyleSheet.create({
   }
 
 });
-

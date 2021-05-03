@@ -39,10 +39,22 @@ export function LoginScreen({ navigation }) {
 
   const saveData = async (data , email, password) => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, data)
-      await AsyncStorage.setItem('TOKEN', btoa(email + ":" + password))
-      Global.Token = btoa(email + ":" + password);
-      console.log('Data successfully saved')
+      const user = AsyncStorage.getItem('USER')
+      if (user !== null) {
+        await AsyncStorage.removeItem('USER')
+        await AsyncStorage.setItem(STORAGE_KEY, data)
+        await AsyncStorage.setItem('TOKEN', btoa(email + ":" + password))
+        Global.Token = btoa(email + ":" + password);
+        console.log('Data successfully saved')
+      }
+      else{
+        await AsyncStorage.setItem(STORAGE_KEY, data)
+        await AsyncStorage.setItem('TOKEN', btoa(email + ":" + password))
+        Global.Token = btoa(email + ":" + password);
+        console.log('Data successfully saved')
+      }
+      Global.IsLogin = true;
+      
     } catch (e) {
       console.log('Failed to save the data to the storage')
     }
