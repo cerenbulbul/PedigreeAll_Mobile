@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules, Platform , Image, ScrollView, ActivityIndicator} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -135,8 +135,12 @@ export default function App({navigation}) {
   const [getBottomNavigationBasketName, setBottomNavigationBasketName] = React.useState()
   const [getBottomNavigationSearchName, setBottomNavigationSearchName] = React.useState()
 
+  const [getLanguageClicking, setLanguageClicking] = React.useState(false)
+
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  const [getLanguageLoading, setLanguageLoading] = React.useState(false);
 
   const readData = async () => {
     try {
@@ -164,31 +168,13 @@ export default function App({navigation}) {
 
 
   React.useEffect(() => {
-    Global.getBasket();
+    //Global.getBasket();
     //console.log(deviceLanguage)
-    if (Global.getLanguageClicking=== false) {
-        if (deviceLanguage === "tr_TR") {
-            Global.Language=1
-            
-          }
-          else{
-            Global.Language=2
-            
-          }
-    }
 
-    if (Global.Language===1) {
-        setBottomNavigationMainName("Anasayfa")
-        setBottomNavigationProfileName("Profil")
-        setBottomNavigationBasketName("Sepet")
-        setBottomNavigationSearchName("Arama")
-    }
-    else{
-      setBottomNavigationMainName("Main")
-      setBottomNavigationProfileName("Profile")
-      setBottomNavigationBasketName("Basket")
-      setBottomNavigationSearchName("Search")
-    }
+   if (getLanguageClicking === false) {
+     changeLanguage();
+   }
+
   
     setTimeout(() => {
       setIsLoading(false);
@@ -196,6 +182,26 @@ export default function App({navigation}) {
   }, []);
 
   
+  const changeLanguage = () =>{
+    if (deviceLanguage === "tr_TR") {
+      Global.Language=1
+      setBottomNavigationMainName("Anasayfa")
+      setBottomNavigationProfileName("Profil")
+      setBottomNavigationBasketName("Sepet")
+      setBottomNavigationSearchName("Arama")
+      
+    }
+    else{
+      Global.Language=2
+      setBottomNavigationMainName("Main")
+      setBottomNavigationProfileName("Profile")
+      setBottomNavigationBasketName("Basket")
+      setBottomNavigationSearchName("Search")
+      
+    }
+    setLanguageLoading(false)
+  }
+
 
   if (isLoading) {
     return <SplashScreen />;
@@ -1211,6 +1217,12 @@ export default function App({navigation}) {
     <AuthContext.Provider>
       <NavigationContainer>
         <RootStackScreen />
+
+      {getLanguageLoading ?
+        <ActivityIndicator size="small" color="#0000ff" />
+      :
+      null}
+
         <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -1260,24 +1272,28 @@ export default function App({navigation}) {
             <View style={styles.FlagContainer}>
               <TouchableOpacity 
                 onPress={()=>{
+                  setLanguageClicking(true)
                   Global.Language=2;
+                  
                   setBottomNavigationMainName("Main")
                   setBottomNavigationProfileName("Profile")
                   setBottomNavigationBasketName("Basket")
                   setBottomNavigationSearchName("Search")
-                  Global.getLanguageClicking=== true
+                  
                 }}
                 style={{marginRight:5}}>
                 <Flag code='US' size={24} />
               </TouchableOpacity>
               <TouchableOpacity 
                 onPress={()=>{
+                  setLanguageClicking(true)
                   Global.Language=1;
+                  
                   setBottomNavigationMainName("Anasayfa")
                   setBottomNavigationProfileName("Profil")
                   setBottomNavigationBasketName("Sepet")
                   setBottomNavigationSearchName("Arama")
-                  Global.getLanguageClicking=== true
+                  
                 }}
                 style={{marginRight:5}} >
                 <Flag code='TR' size={24} />
