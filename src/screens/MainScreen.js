@@ -10,7 +10,8 @@ import {
   ScrollView,
   UIManager,
   ActivityIndicator,
-  Alert
+  Alert,
+  FlatList
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { SearchBar, Tabs, Card, CheckBox, ListItem } from "react-native-elements";
@@ -18,6 +19,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { decode as atob, encode as btoa } from 'base-64'
+import Autocomplete from 'react-native-autocomplete-input';
 
 
 import { SettingBottomSheet } from '../components/SettingBottomSheet'
@@ -63,6 +65,23 @@ const GenerationData = [
     title: "Gen 9",
   },
 ];
+
+String.prototype.turkishtoEnglish = function () {
+  return this.replace('Ğ', 'G')
+    .replace('Ü', 'U')
+    .replace('Ş', 'S')
+    .replace('I', 'I')
+    .replace('İ', 'I')
+    .replace('Ö', 'O')
+    .replace('Ç', 'C')
+    .replace('ğ', 'g')
+    .replace('ü', 'u')
+    .replace('ş', 's')
+    .replace('ı', 'i')
+    .replace('ö', 'o')
+    .replace('ç', 'c');
+};
+
 
 export function MainScreen({ navigation }) {
   React.useEffect(() => {
@@ -164,41 +183,70 @@ function SearchScreen({ navigation }) {
   const [GenerationTitle, setGenerationTitle] = React.useState("Gen 5");
   const [state, setState] = React.useState({ checked: [] });
   const [chekedItem, setChekedItem] = React.useState(5)
-  const [searchValue, setSearchValue] = React.useState("SEFIR")
+  const [searchValue, setSearchValue] = React.useState("")
   const [userData, setUserData] = useState();
   const [HorseData, setHorseData] = useState([]);
   const [loader, setLoader] = useState(false)
 
   const [getSearchTitle, setSearchTitle] = React.useState();
 
-  const readUser = async () => {
-    try {
-      fetch('https://api.pedigreeall.com/Horse/GetByName', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': "Basic " + "Z2ZydWx1dGFzQGhvdG1haWwuY29tOjE=",
-        },
-        body: JSON.stringify({
-          ID: 1,
-          NAME: searchValue,
-        })
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          setHorseData(json)
-          setLoader(false)
-        })
-        .catch((error) => {
-          console.error(error);
-        })
+  const [getText, setText] = React.useState({ query: '' });
+  const [getData, setData] = React.useState([]);
 
-    } catch (e) {
+  function upperCaseIt(text) {
+    console.log(text)
+    var textUpperCase = text.toUpperCase();
+    setSearchValue(textUpperCase)
+  }
+
+  const readUser = async (text) => {
+    setData([])
+
+    if (text === "")
+      return
+    else if (text.length < 3)
+      return
+    else {
+      try {
+        fetch('https://api.pedigreeall.com/Horse/GetByName', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': "Basic " + "Z2ZydWx1dGFzQGhvdG1haWwuY29tOjE=",
+          },
+          body: JSON.stringify({
+            ID: 1,
+            NAME: text,
+          })
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            var aa = [];
+            json.m_cData.map((i, index) => (
+              aa.push({
+                HORSE_DATA: i,
+                HORSE_ID: i.HORSE_ID
+              })
+            ))
+            setData(aa)
+            console.log(aa)
+            setHorseData(json)
+            setLoader(false)
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+
+      } catch (e) {
+      }
     }
   }
   React.useEffect(() => {
-    readUser();
+    setText({ query: '' })
+    setData([])
+    readUser([]);
+
     setState({ checked: [state, 4] })
     if (Global.Language === 1) {
       setSearchTitle("Lütfen bir isim yazıp gönder tuşuna basınız")
@@ -209,7 +257,7 @@ function SearchScreen({ navigation }) {
   }, [])
 
   return (
-    <View style={styles.ScreensContainer}>
+    <View style={{ width: '100%', height: '100%' , backgroundColor:'#fff'}}>
       <RBSheet
         ref={refRBSheetGeneration}
         closeOnDragDown={true}
@@ -301,44 +349,52 @@ function SearchScreen({ navigation }) {
             onChangeText={setSearchValue}
             onSubmitEditing={() => {
               setLoader(true);
-              readUser();
+              readUser(searchValue);
             }}
             showLoading={true}
           />
-          {HorseData.m_cData !== undefined &&
-            <ScrollView style={{ marginBottom: 30 }}>
-              {HorseData.m_cData.filter((x) => x.HORSE_NAME).map(
-                (item, i) => (
-                  <ListItem
-                    key={i}
-                    bottomDivider
-                    button
-                    onPress={() => {
-                      BottomSheetSearchNavigation.current.close();
-                      navigation.navigate('HorseDetail', {
-                        HorseData: item,
-                        Generation: chekedItem
-                      });
-                      if (item.HORSE_ID !== undefined) {
-                        Global.Horse_ID = item.HORSE_ID;
-                      }
+          {searchValue.length < 3 ?
+            null
+            :
+            <>
+              {HorseData.m_cData !== undefined &&
+                <ScrollView style={{ marginBottom: 30 }}>
+                  {HorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+                    (item, i) => (
+                      <ListItem
+                        key={i}
+                        bottomDivider
+                        button
+                        onPress={() => {
+                          BottomSheetSearchNavigation.current.close();
+                          navigation.navigate('HorseDetail', {
+                            HorseData: item,
+                            Generation: chekedItem
+                          });
+                          if (item.HORSE_ID !== undefined) {
+                            Global.Horse_ID = item.HORSE_ID;
+                          }
 
 
-                    }} >
-                    <Image
-                      style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
-                      source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
-                    />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
-                      <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
-                      <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem>
-                ))}
-            </ScrollView>
+                        }} >
+                        <Image
+                          style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
+                          source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                        />
+                        <ListItem.Content>
+                          <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                          <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                          <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                      </ListItem>
+                    ))}
+                </ScrollView>
+              }
+            </>
+
           }
+
           {HorseData.m_cDetail !== undefined &&
             <>
               {HorseData.m_cDetail.m_eProcessState < 0 &&
@@ -379,35 +435,85 @@ function SearchScreen({ navigation }) {
 
             : null}
 
-
-
         </View>
       </RBSheet>
       <View style={{ width: '100%', alignItems: 'center' }}>
+
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <SearchBar
-            placeholder={getSearchTitle}
-            lightTheme
-            platform="ios"
-            cancelButtonTitle=""
-            inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
-            containerStyle={{ backgroundColor: 'transparent', width: '70%' }}
-            inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
-            rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-            leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-            value={searchValue}
-            onChangeText={setSearchValue}
-          />
+
+          {HorseData !== undefined &&
+            <View style={{ width: '65%', marginTop: 12, flexDirection: 'row', justifyContent: 'center', borderColor: '#2e3f6e', borderWidth: 0.5, borderRadius: 8, marginRight: 5, zIndex: 9999 }}>
+
+              <Icon style={{ marginLeft: 5, marginTop: 10 }} name='search' size={15} color="#2e3f6e" />
+              <Autocomplete
+                data={getData}
+                value={getText.query}
+                style={{ width: '80%', height: 30, alignSelf: 'center', borderColor: '#fff', zIndex: 9999, }}
+                inputContainerStyle={{ borderRadius: 8 }}
+                containerStyle={{ zIndex: 9999 }}
+                listContainerStyle={{ zIndex: 9999, maxHeight: 150 }}
+                defaultValue={getText.query}
+                placeholder="Enter symbol"
+                onChangeText={(text) => { setText({ query: text }); readUser(text); setLoader(true) }}
+                flatListProps={{
+                  keyExtractor: (_, idx) => idx.toString(),
+                  renderItem: ({ item }) =>
+                    <TouchableOpacity
+                      style={{ padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', flexDirection: 'row' }}
+                      onPress={() => {
+                        setText({ query: item.HORSE_DATA.HORSE_NAME })
+
+                        //readUser(item.HORSE_NAME)
+                        if (item.HORSE_DATA.HORSE_ID !== undefined) {
+                          Global.Horse_ID = item.HORSE_DATA.HORSE_ID;
+                        }
+                        navigation.navigate('HorseDetail', {
+                          HorseData: item.HORSE_DATA,
+                          Generation: chekedItem
+
+                        });
+                        setData([])
+                      }}>
+                      <Image
+                        style={{ width: 40, height: 40, justifyContent: 'center', resizeMode: 'contain' }}
+                        source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.HORSE_DATA.IMAGE }}
+                      />
+                      <Text style={{ alignSelf: 'center', width: '80%' }}>{item.HORSE_DATA.HORSE_NAME}</Text>
+                    </TouchableOpacity>
+                }}
+              />
+              {loader ?
+                <ActivityIndicator style={{ marginRight: 5, marginTop: 0, marginLeft: 5 }} size="small" color="#0000ff" />
+                :
+                <TouchableOpacity
+                  onPress={() => {
+                    setText({ query: '' });
+                    readUser("");
+                  }}
+                  style={{ marginTop: 10, marginRight: 5 }}>
+                  <Icon name="times-circle" size={16} color="#2e3f6e" />
+                </TouchableOpacity>
+              }
+
+            </View>
+
+          }
           <TouchableOpacity
-            onPress={() => { refRBSheetGeneration.current.open() }}
+            onPress={() => {
+              refRBSheetGeneration.current.open()
+            }}
             style={styles.GenerationButtonContainer}>
             <Text>{GenerationTitle}</Text>
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
         </View>
+
+
+
         <TouchableOpacity
-          style={styles.SearchButtonStyle}
+          style={[styles.SearchButtonStyle, { zIndex: 0 }]}
           onPress={() => {
+            setSearchValue(getText.query)
             BottomSheetSearchNavigation.current.open();
             readUser();
             setLoader(true)
@@ -418,6 +524,7 @@ function SearchScreen({ navigation }) {
             <Text style={styles.SearchButtonText}>Search</Text>
           }
         </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -464,272 +571,290 @@ function HypotheticalScreen({ navigation }) {
         .catch((error) => {
           console.error(error);
         })
-    
+
     } catch (e) {
+    }
   }
-}
-React.useEffect(() => {
-  readUser();
-  Global.Hypothetical_Search_View = true;
-  if (Global.Language === 1) {
-    setSireText("Aygır Adı")
-    setMareText("Kısrak Adı")
-  }
-  else {
-    setSireText("Sire Name")
-    setMareText("Mare Name")
-  }
-}, [])
+  React.useEffect(() => {
+    readUser();
+    Global.Hypothetical_Search_View = true;
+    if (Global.Language === 1) {
+      setSireText("Aygır Adı")
+      setMareText("Kısrak Adı")
+    }
+    else {
+      setSireText("Sire Name")
+      setMareText("Mare Name")
+    }
+  }, [])
 
-return (
-  <View style={styles.ScreensContainer}>
-    <RBSheet
-      ref={refRBSheetGeneration}
-      closeOnDragDown={true}
-      closeOnPressMask={true}
-      height={350}
-      animationType='fade'
-      customStyles={{
-        container: {
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10
-        },
-        draggableIcon: {
-          backgroundColor: "#000"
-        }
-      }}>
-      <TouchableOpacity
-        onPress={() => {
-          refRBSheetGeneration.current.close();
-          setGenerationTitle("Gen " + chekedItem);
-        }}
-        style={styles.SwipableCloseIcon}>
-        <Icon name="times" size={20} color="#adb5bd" />
-      </TouchableOpacity>
-      <View>
-        <ScrollView style={{ marginBottom: 50 }}>
-          {
-            GenerationData.map((item, i) => (
-              <ListItem
-                key={i}
-                bottomDivider
-                onPress={() => {
-                  setState({ checked: [state, item.id] });
-                  setChekedItem(item.id)
-                  setGenerationTitle("Gen " + item.id);
-                  refRBSheetGeneration.current.close();
-
-                }}
-              >
-                <ListItem.Content>
-                  <ListItem.Title>{item.title}</ListItem.Title>
-                </ListItem.Content>
-
-              </ListItem>
-            ))
+  return (
+    <View style={styles.ScreensContainer}>
+      <RBSheet
+        ref={refRBSheetGeneration}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        height={350}
+        animationType='fade'
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10
+          },
+          draggableIcon: {
+            backgroundColor: "#000"
           }
-
-        </ScrollView>
-
-      </View>
-    </RBSheet>
-    <RBSheet
-      ref={BottomSheetSearchNavigation}
-      closeOnDragDown={true}
-      closeOnPressMask={true}
-      height={Dimensions.get('window').height - 50}
-      animationType='fade'
-      customStyles={{
-        container: {
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10
-        },
-        draggableIcon: {
-          backgroundColor: "#000"
-        }
-      }}>
-      <TouchableOpacity
-        onPress={() => {
-          BottomSheetSearchNavigation.current.close();
-        }}
-        style={styles.SwipableCloseIcon}>
-        <Icon name="times" size={20} color="#adb5bd" />
-      </TouchableOpacity>
-
-      <View>
-        <SearchBar
-          placeholder={searchValue}
-          lightTheme
-          platform="ios"
-          cancelButtonTitle=""
-          inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
-          containerStyle={{ backgroundColor: 'transparent', }}
-          inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
-          rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-          leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
-          value={searchValue}
-          onChangeText={setSearchValue}
-          onSubmitEditing={() => {
-            setLoader(true);
-            readUser();
-          }}
-          showLoading={true}
-        />
-        {SireMareHorseData !== undefined &&
-          <>
-            {SireMareHorseData.m_cData !== undefined &&
-
-              <ScrollView style={{ marginBottom: 30 }}>
-                {SireMareHorseData.m_cData.filter((x) => x.HORSE_NAME).map(
-                  (item, i) => (
-                    <ListItem
-                      key={i}
-                      bottomDivider
-                      button
-                      onPress={() => {
-                        BottomSheetSearchNavigation.current.close();
-                        if (SireMareHorseName === 'Sire') {
-                          setSireText(item.HORSE_NAME);
-                          setSireData(item);
-                          setSelectedSire(item.HORSE_ID);
-                          Global.Horse_First_ID = item.HORSE_ID
-                        }
-                        else if (SireMareHorseName === 'Mare') {
-                          setMareText(item.HORSE_NAME);
-                          setMareData(item);
-                          setSelectedMare(item.HORSE_ID);
-                          Global.Horse_Second_ID = item.HORSE_ID
-                        }
-                      }} >
-                      <Image
-                        style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
-                        source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
-                      />
-                      <ListItem.Content>
-                        <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
-                        <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
-                        <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
-                      </ListItem.Content>
-                      <ListItem.Chevron />
-                    </ListItem>
-                  ))}
-              </ScrollView>
-            }
-          </>
-        }
-
-        {SireMareHorseData !== undefined &&
-          <>
-            {SireMareHorseData.m_cDetail !== undefined &&
-              <>
-                {SireMareHorseData.m_cDetail.m_eProcessState < 0 &&
-                  <>
-                    {loader === false &&
-                      <View style={styles.ErrorMessageContainer}>
-                        <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
-                        {Global.Language === 1 ?
-                          <>
-                            <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
-                            <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
-                            <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
-                          </>
-                          :
-                          <>
-                            <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
-                            <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
-                            <Text style={styles.ErrorMessageText}>You can search again.</Text>
-                          </>
-                        }
-                        <View style={styles.ErrorMessageButtonContainer}>
-                        </View>
-                      </View>
-                    }
-                  </>
-
-                }
-              </>
-            }
-
-          </>}
-
-
-        {loader ?
-          <ActivityIndicator
-            color="black"
-            size="large"
-            style={styles.ActivityIndicatorStyle}
-          />
-
-          : null}
-
-      </View>
-    </RBSheet>
-
-    <View style={{ width: '100%', alignItems: 'center' }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <TouchableOpacity
-          onPress={() => {
-            BottomSheetSearchNavigation.current.open();
-            setSireMareHorseName('Sire');
-            setLoader(true);
-          }}
-          style={styles.SireMareButtonContainer}>
-          <Text>{SireText.substring(0, 6)}...</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            BottomSheetSearchNavigation.current.open();
-            setSireMareHorseName('Mare');
-          }}
-          style={styles.SireMareButtonContainer}>
-          <Text>{MareText.substring(0, 6)}...</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => { refRBSheetGeneration.current.open() }}
-          style={styles.GenerationButtonContainer}>
-          <Text>{GenerationTitle}</Text>
-          <Icon name="chevron-down" size={16} color="#5f6368" />
-        </TouchableOpacity>
-
-      </View>
-      <TouchableOpacity
-        style={[styles.SearchButtonStyle, { marginVertical: 34 }]}
-        onPress={() => {
-          if (getSelectedSire === undefined || getSelectedMare === undefined) {
-            Alert.alert(
-              "Searching Error",
-              "You have to fill spaces",
-              [
-                {
-                  text: "OK",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                },
-              ],
-              { cancelable: false }
-            );
-          }
-          else {
-            Global.Generation_Hypothetical = chekedItem;
-            Global.Horse_First_ID = SireData.HORSE_ID;
-            Global.Horse_Second_ID = MareData.HORSE_ID;
-            navigation.navigate('HypotheticalSearch');
-          }
-
-
         }}>
-        {Global.Language === 1 ?
-          <Text style={styles.SearchButtonText}>Arama Yap</Text>
-          :
-          <Text style={styles.SearchButtonText}>Search</Text>
-        }
+        <TouchableOpacity
+          onPress={() => {
+            refRBSheetGeneration.current.close();
+            setGenerationTitle("Gen " + chekedItem);
+          }}
+          style={styles.SwipableCloseIcon}>
+          <Icon name="times" size={20} color="#adb5bd" />
+        </TouchableOpacity>
+        <View>
+          <ScrollView style={{ marginBottom: 50 }}>
+            {
+              GenerationData.map((item, i) => (
+                <ListItem
+                  key={i}
+                  bottomDivider
+                  onPress={() => {
+                    setState({ checked: [state, item.id] });
+                    setChekedItem(item.id)
+                    setGenerationTitle("Gen " + item.id);
+                    refRBSheetGeneration.current.close();
 
-      </TouchableOpacity>
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{item.title}</ListItem.Title>
+                  </ListItem.Content>
+
+                </ListItem>
+              ))
+            }
+
+          </ScrollView>
+
+        </View>
+      </RBSheet>
+      <RBSheet
+        ref={BottomSheetSearchNavigation}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        height={Dimensions.get('window').height - 50}
+        animationType='fade'
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10
+          },
+          draggableIcon: {
+            backgroundColor: "#000"
+          }
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            BottomSheetSearchNavigation.current.close();
+          }}
+          style={styles.SwipableCloseIcon}>
+          <Icon name="times" size={20} color="#adb5bd" />
+        </TouchableOpacity>
+
+        <View>
+          <SearchBar
+            placeholder={searchValue}
+            lightTheme
+            platform="ios"
+            cancelButtonTitle=""
+            inputStyle={{ fontSize: 12, minHeight: 'auto', height: 36 }}
+            containerStyle={{ backgroundColor: 'transparent', }}
+            inputContainerStyle={{ backgroundColor: 'rgb(232, 237, 241)', minHeight: 'auto', height: 'auto' }}
+            rightIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+            leftIconContainerStyle={{ margin: 0, padding: 0, minHeight: 'auto', height: 'auto' }}
+            value={searchValue}
+            onChangeText={setSearchValue}
+            onSubmitEditing={() => {
+              setLoader(true);
+              readUser();
+            }}
+            showLoading={true}
+          />
+          {SireMareHorseData !== undefined &&
+            <>
+              {SireMareHorseData.m_cData !== undefined &&
+
+                <ScrollView style={{ marginBottom: 30 }}>
+                  {SireMareHorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+                    (item, i) => (
+                      <ListItem
+                        key={i}
+                        bottomDivider
+                        button
+                        onPress={() => {
+                          BottomSheetSearchNavigation.current.close();
+                          if (SireMareHorseName === 'Sire') {
+                            setSireText(item.HORSE_NAME);
+                            setSireData(item);
+                            setSelectedSire(item.HORSE_ID);
+                            Global.Horse_First_ID = item.HORSE_ID
+                          }
+                          else if (SireMareHorseName === 'Mare') {
+                            setMareText(item.HORSE_NAME);
+                            setMareData(item);
+                            setSelectedMare(item.HORSE_ID);
+                            Global.Horse_Second_ID = item.HORSE_ID
+                          }
+                        }} >
+                        <Image
+                          style={{ width: 70, height: 70, justifyContent: 'center', resizeMode: 'contain' }}
+                          source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                        />
+                        <ListItem.Content>
+                          <ListItem.Title>{item.HORSE_NAME}</ListItem.Title>
+                          <ListItem.Subtitle>{item.FATHER_NAME}</ListItem.Subtitle>
+                          <ListItem.Subtitle>{item.MOTHER_NAME}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                      </ListItem>
+                    ))}
+                </ScrollView>
+              }
+            </>
+          }
+
+          {SireMareHorseData !== undefined &&
+            <>
+              {SireMareHorseData.m_cDetail !== undefined &&
+                <>
+                  {SireMareHorseData.m_cDetail.m_eProcessState < 0 &&
+                    <>
+                      {loader === false &&
+                        <View style={styles.ErrorMessageContainer}>
+                          <Icon style={{ marginBottom: 40 }} name="exclamation-circle" size={150} color="#e54f4f" />
+                          {Global.Language === 1 ?
+                            <>
+                              <Text style={styles.ErrorMessageTitle}>Veriler Bulunamadı !</Text>
+                              <Text style={styles.ErrorMessageText}>Hiçbir At Verisi Bulunmamaktadır.</Text>
+                              <Text style={styles.ErrorMessageText}>Tekrar Arama Yapabilirsiniz.</Text>
+                            </>
+                            :
+                            <>
+                              <Text style={styles.ErrorMessageTitle}>Oh No, Data Not Found !</Text>
+                              <Text style={styles.ErrorMessageText}>Could not find any horses.</Text>
+                              <Text style={styles.ErrorMessageText}>You can search again.</Text>
+                            </>
+                          }
+                          <View style={styles.ErrorMessageButtonContainer}>
+                          </View>
+                        </View>
+                      }
+                    </>
+
+                  }
+                </>
+              }
+
+            </>}
+
+
+          {loader ?
+            <ActivityIndicator
+              color="black"
+              size="large"
+              style={styles.ActivityIndicatorStyle}
+            />
+
+            : null}
+
+        </View>
+      </RBSheet>
+
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%' }}>
+
+          <TouchableOpacity
+            onPress={() => {
+              BottomSheetSearchNavigation.current.open();
+              setSireMareHorseName('Sire');
+              setLoader(true);
+            }}
+            style={styles.SireMareButtonContainer}>
+            <Text>{SireText}</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              BottomSheetSearchNavigation.current.open();
+              setSireMareHorseName('Mare');
+            }}
+            style={styles.SireMareButtonContainer}>
+            <Text>{MareText}</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
+          </TouchableOpacity>
+
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            width: '90%',
+            alignSelf: 'center',
+            alignItems: 'center',
+
+          }}>
+          <TouchableOpacity
+            onPress={() => { refRBSheetGeneration.current.open() }}
+            style={styles.GenerationButtonContainer}>
+            <Text>{GenerationTitle}</Text>
+            <Icon name="chevron-down" size={16} color="#5f6368" />
+          </TouchableOpacity>
+
+
+          <TouchableOpacity
+            style={[styles.SearchButtonStyle]}
+            onPress={() => {
+              if (getSelectedSire === undefined || getSelectedMare === undefined) {
+                Alert.alert(
+                  "Searching Error",
+                  "You have to fill spaces",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "cancel"
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }
+              else {
+                Global.Generation_Hypothetical = chekedItem;
+                Global.Horse_First_ID = SireData.HORSE_ID;
+                Global.Horse_Second_ID = MareData.HORSE_ID;
+                navigation.navigate('HypotheticalSearch');
+              }
+
+
+            }}>
+            {Global.Language === 1 ?
+              <Text style={styles.SearchButtonText}>Arama Yap</Text>
+              :
+              <Text style={styles.SearchButtonText}>Search</Text>
+            }
+
+          </TouchableOpacity>
+
+
+        </View>
+
+
+      </View>
     </View>
-  </View>
-);
+  );
 }
 
 function EffectiveNickSearchScreen({ navigation }) {
@@ -741,7 +866,7 @@ function EffectiveNickSearchScreen({ navigation }) {
   const [chekedItem, setChekedItem] = React.useState()
   const [getRegisteredStallions, setRegisteredStallions] = React.useState();
   const [getRegisteredStallionsItemData, setRegisteredStallionsItemData] = React.useState();
-  const [getRegisteredStallionsName, setRegisteredStallionsName] = React.useState("Stallions");
+  const [getRegisteredStallionsName, setRegisteredStallionsName] = React.useState("Stallions NAme");
   const [getSireData, setSireData] = React.useState();
   const [getSearchHorseData, setSearchHorseData] = React.useState();
   const [getSireName, setSireName] = React.useState("Sire Name");
@@ -785,27 +910,27 @@ function EffectiveNickSearchScreen({ navigation }) {
   }
   const readHorseData = async () => {
     try {
-        fetch('https://api.pedigreeall.com/Horse/GetByName', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': "Basic " + 'Z2ZydWx1dGFzQGhvdG1haWwuY29tOjE=',
-          },
-          body: JSON.stringify({
-            ID: 1,
-            NAME: searchValue,
-          })
+      fetch('https://api.pedigreeall.com/Horse/GetByName', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': "Basic " + 'Z2ZydWx1dGFzQGhvdG1haWwuY29tOjE=',
+        },
+        body: JSON.stringify({
+          ID: 1,
+          NAME: searchValue,
         })
-          .then((response) => response.json())
-          .then((json) => {
-            setSearchHorseData(json)
-            setLoader(false);
-          })
-          .catch((error) => {
-            console.error(error);
-          })
-      
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          setSearchHorseData(json)
+          setLoader(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+
     } catch (e) {
     }
   }
@@ -1106,14 +1231,14 @@ function EffectiveNickSearchScreen({ navigation }) {
       </RBSheet>
 
       <View style={{ width: '100%', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ width: '100%' }}>
           <TouchableOpacity
             onPress={() => {
               setBottomSheetText("RegisteredStallions");
               OpenFullBottomSheet.current.open();
             }}
             style={styles.SireMareButtonContainer}>
-            <Text>{getRegisteredStallionsName.substring(0, 10)} ...</Text>
+            <Text>{getRegisteredStallionsName}</Text>
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
           <TouchableOpacity
@@ -1122,9 +1247,22 @@ function EffectiveNickSearchScreen({ navigation }) {
               OpenFullBottomSheet.current.open();
             }}
             style={styles.SireMareButtonContainer}>
-            <Text>{getSireName.substring(0, 10)} ...</Text>
+            <Text>{getSireName}</Text>
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
+
+
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            width: '90%',
+            alignSelf: 'center',
+            alignItems: 'center',
+
+          }}>
           <TouchableOpacity
             onPress={() => {
               setBottomSheetText("StallionsCode");
@@ -1135,40 +1273,44 @@ function EffectiveNickSearchScreen({ navigation }) {
             <Icon name="chevron-down" size={16} color="#5f6368" />
           </TouchableOpacity>
 
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            if (getFirstHorseID === undefined || getSecondHorseID === undefined || getRegistrationID === undefined) {
-              Alert.alert(
-                "Searching Error",
-                "You have to fill spaces",
-                [
-                  {
-                    text: "OK",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
-                ],
-                { cancelable: false }
-              );
-            }
-            else {
-              navigation.navigate('EffectivenickSearchReport', {
-                FirstHorseID: getFirstHorseID,
-                SecondHorseID: getSecondHorseID,
-                RegistrationID: getRegistrationID,
-                BackButtonVisible: false
-              });
-            }
 
-          }}
-          style={[styles.SearchButtonStyle, { marginVertical: 34 }]}>
-          {Global.Language === 1 ?
-            <Text style={styles.SearchButtonText}>Arama Yap</Text>
-            :
-            <Text style={styles.SearchButtonText}>Search</Text>
-          }
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (getFirstHorseID === undefined || getSecondHorseID === undefined || getRegistrationID === undefined) {
+                Alert.alert(
+                  "Searching Error",
+                  "You have to fill spaces",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "cancel"
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }
+              else {
+                navigation.navigate('EffectivenickSearchReport', {
+                  FirstHorseID: getFirstHorseID,
+                  SecondHorseID: getSecondHorseID,
+                  RegistrationID: getRegistrationID,
+                  BackButtonVisible: false
+                });
+              }
+
+            }}
+            style={[styles.SearchButtonStyle]}>
+            {Global.Language === 1 ?
+              <Text style={styles.SearchButtonText}>Arama Yap</Text>
+              :
+              <Text style={styles.SearchButtonText}>Search</Text>
+            }
+          </TouchableOpacity>
+
+
+        </View>
+
       </View>
     </View>
   )
@@ -1196,7 +1338,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   SearchButtonStyle: {
-    width: '92%',
+    width: '50%',
     padding: 15,
     marginVertical: 20,
     borderColor: '#2e3f6e',
@@ -1218,21 +1360,23 @@ const styles = StyleSheet.create({
   },
   SireMareButtonContainer: {
     backgroundColor: "#e8edf1",
-    padding: 9,
+    padding: 8,
     borderRadius: 8,
     height: 36,
-    width: '33%',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 12,
-    marginRight: 7
+    marginRight: 5,
+    marginLeft: 5,
+    alignSelf: 'center'
   },
   GenerationButtonContainer: {
     backgroundColor: "#e8edf1",
     padding: 9,
     borderRadius: 8,
     height: 36,
-    width: '25%',
+    width: '40%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 12,
@@ -1444,10 +1588,53 @@ const styles = StyleSheet.create({
     color: '#2169ab',
     fontSize: 14,
   },
+  autocompleteContainer: {
+    borderWidth: 1,
+    zIndex: 999,
+    borderColor: '#87ceeb',
+    width: '80%',
+    backgroundColor: '#e8edf1'
+  },
 
 });
 
 
+
+/*
+
+    {HorseData.m_cData !== undefined &&
+
+          <ScrollView style={{ width: '80%', maxHeight: 150 }}>
+            {HorseData.m_cData.filter((x) => x.HORSE_NAME).map(
+              (item, i) => (
+
+                <TouchableOpacity
+                  key={i}
+                  style={{ padding: 5 }}
+                  onPress={() => {
+                    navigation.navigate('HorseDetail', {
+                      HorseData: item,
+                      Generation: chekedItem
+                    });
+                    if (item.HORSE_ID !== undefined) {
+                      Global.Horse_ID = item.HORSE_ID;
+                    }
+                  }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image
+                      style={{ width: 30, height: 30, justifyContent: 'center', resizeMode: 'contain', alignItems: 'center' }}
+                      source={{ uri: 'https://www.pedigreeall.com//upload/150/' + item.IMAGE }}
+                    />
+                    <Text style={{ justifyContent: 'center', marginLeft: 5 }}>{item.HORSE_NAME}</Text>
+                  </View>
+
+                </TouchableOpacity>
+
+              ))}
+          </ScrollView>
+        }
+
+*/
 
 
 /*

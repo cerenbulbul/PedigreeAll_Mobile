@@ -28,6 +28,7 @@
     "react-dom": "16.13.1",
     "react-moment": "^1.1.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
+    "react-native-autocomplete-input": "^5.0.0",
     "react-native-chart-kit": "^6.11.0",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-flags": "^1.0.0",

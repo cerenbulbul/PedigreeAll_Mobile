@@ -7,14 +7,15 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert
+  Alert,
+  Modal
 } from "react-native";
 import { FilledButton } from "../components/FilledButton";
 import { Input } from "../components/Input";
 import { Error } from "../components/Error";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Global } from '../Global';
-import {decode as atob, encode as btoa} from 'base-64'
+import { decode as atob, encode as btoa } from 'base-64'
 
 //import { SwipeablePanel } from "rn-swipeable-panel";
 import { Root, Popup, Toast } from "../components/Popup";
@@ -24,8 +25,8 @@ const STORAGE_KEY = 'USER'
 
 
 export function LoginScreen({ navigation }) {
-  const [email, setEmail] = React.useState("gfrulutas@hotmail.com");
-  const [password, setPassword] = React.useState("1");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [checked, toggleChecked] = React.useState(false);
   const [isOverlay, toggleIsOverlay] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -33,11 +34,13 @@ export function LoginScreen({ navigation }) {
   const [getEmailPlaceholder, setEmailPlaceholder] = React.useState("")
   const [getPasswordPlaceholder, setPasswordPlaceholder] = React.useState("")
   const [getForgotPasswordText, setFotgotPasswordText] = React.useState("")
-  const [getLoginButtonText, setLoginButtonText] =  React.useState("")
+  const [getLoginButtonText, setLoginButtonText] = React.useState("")
   const [getNewToPedigreeText, setNewToPedigreeText] = React.useState("")
   const [getCreateAnAccountText, setCreateAnAccountText] = React.useState("")
 
-  const saveData = async (data , email, password) => {
+  const [getForgotPasswordPopup, setForgotPasswordPopup] = React.useState(false);
+
+  const saveData = async (data, email, password) => {
     try {
       const user = AsyncStorage.getItem('USER')
       if (user !== null) {
@@ -47,27 +50,28 @@ export function LoginScreen({ navigation }) {
         Global.Token = btoa(email + ":" + password);
         console.log('Data successfully saved')
       }
-      else{
+      else {
         await AsyncStorage.setItem(STORAGE_KEY, data)
         await AsyncStorage.setItem('TOKEN', btoa(email + ":" + password))
         Global.Token = btoa(email + ":" + password);
         console.log('Data successfully saved')
       }
       Global.IsLogin = true;
-      
+      Global.SideNavigationData = JSON.parse(data)[0].PAGE_LIST
+
     } catch (e) {
       console.log('Failed to save the data to the storage')
     }
   }
 
   const AlertMessage = (Title, Message) =>
-  Alert.alert(
-    Title,
-    Message,
-    [
-      { text: "OK" }
-    ]
-  );
+    Alert.alert(
+      Title,
+      Message,
+      [
+        { text: "OK" }
+      ]
+    );
 
 
   const [isPanelActive, setIsPanelActive] = useState(false);
@@ -75,7 +79,7 @@ export function LoginScreen({ navigation }) {
     setIsPanelActive(true);
   };
   React.useEffect(() => {
-    if (Global.Language===1) {
+    if (Global.Language === 1) {
       setEmailPlaceholder("Eposta")
       setPasswordPlaceholder("Şifre")
       setFotgotPasswordText("Şifremi Unuttum")
@@ -83,7 +87,7 @@ export function LoginScreen({ navigation }) {
       setNewToPedigreeText("PedigreeAll'da Yeni Misin?")
       setCreateAnAccountText("Üye Ol")
     }
-    else{
+    else {
       setEmailPlaceholder("Email")
       setPasswordPlaceholder("Password")
       setFotgotPasswordText("Forgot Password")
@@ -99,118 +103,135 @@ export function LoginScreen({ navigation }) {
     <ImageBackground
       source={require("../../assets/background.jpg")}
       style={styles.background}
+
     >
-        <View style={{ position: "absolute", width: '100%', height: '100%' }}>
-          <Image
-            resizeMode={"contain"}
-            style={styles.image}
-            source={require("../../assets/logo.png")}
-          />
 
-          <View
-            style={{ paddingTop: 50, flex: 1, padding: 16, alignItems: "center" }}
-          >
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={getForgotPasswordPopup}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
 
-            <View style={styles.inputView}>
-              <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
-              <Input
-                placeholder={getEmailPlaceholder}
-                keyboardType={"email-address"}
-                name={"username"}
-                value={email}
-                onChangeText={setEmail}
-              />
-            </View>
+            <Text>sfsf</Text>
 
-            <View style={styles.inputView}>
-              <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
-              <Input
-                placeholder={getPasswordPlaceholder}
-                secureTextEntry
-                name={"password"}
-                value={password}
-                onChangeText={setPassword}
-              />
-            </View>
-
-            <View style={styles.checkBoxContainer}>
-              <Text
-                style={{ fontWeight: "bold", color: "#2e3f6e", paddingRight: 0, marginTop:10, marginBottom:10 }}
-                onPress={() => {
-                  navigation.navigate("ForgotPassword");
-                }}
-              >
-                {getForgotPasswordText}
-              </Text>
-            </View>
-
-            <FilledButton
-              title={getLoginButtonText}
-              onPress={() =>
-                fetch('https://api.pedigreeall.com/systemuser/login', {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    EMAIL: email,
-                    PASSWORD: password
-                  })
-                })
-                  .then((response) => response.json())
-                  .then((json) => {
-                    if (json.m_cDetail.m_eProcessState > 0) {
-                      Global.IsLogin = true;
-                      //localStorage.setItem('USER',JSON.stringify(json.m_cData) )
-                      saveData(JSON.stringify(json.m_cData), email, password)
-                      if (Global.Language===1) {
-                        AlertMessage("İşlem Başarılı",json.m_cDetail.m_lUserMessageList[0])
-                    }
-                    else{
-                      AlertMessage("Process Successful",json.m_cDetail.m_lUserMessageList[1])
-                    }
-                      navigation.navigate("Main")
-                    }
-                    else{
-                       if (Global.Language===1) {
-                          AlertMessage("İşlem Başarısız",json.m_cDetail.m_lUserMessageList[0])
-                      }
-                      else{
-                        AlertMessage("Process Unsuccessful",json.m_cDetail.m_lUserMessageList[1])
-                      }
-                    }
-                   
-
-
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                  })
-              }
-
-            />
-
-
-            <View style={styles.TextView}>
-              <Text>{getNewToPedigreeText} </Text>
-              <Text
-                style={{ color: "#2e3f6e", fontSize: 18, fontWeight: "bold" }}
-                onPress={() => {
-                  navigation.navigate("Register", {
-                    headerTitle: "abc",
-                    countryID: 0,
-                    countryCode: "",
-                    countryName: "Select a country",
-                    countryIcon: "flag",
-                  });
-                }}
-              >
-                {getCreateAnAccountText}
-          </Text>
-            </View>
           </View>
         </View>
+      </Modal>
+
+      <View style={{ position: "absolute", width: '100%', height: '100%' }}>
+        <Image
+          resizeMode={"contain"}
+          style={styles.image}
+          source={require("../../assets/logo.png")}
+        />
+
+        <View
+          style={{ paddingTop: 50, flex: 1, padding: 16, alignItems: "center" }}
+        >
+
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="envelope" size={20} color="#2e3f6e" />
+            <Input
+              placeholder={getEmailPlaceholder}
+              keyboardType={"email-address"}
+              name={"username"}
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+
+          <View style={styles.inputView}>
+            <Icon style={styles.icon} name="key" size={20} color="#2e3f6e" />
+            <Input
+              placeholder={getPasswordPlaceholder}
+              secureTextEntry
+              name={"password"}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+
+          <View style={styles.checkBoxContainer}>
+            <Text
+              style={{ fontWeight: "bold", color: "#2e3f6e", paddingRight: 0, marginTop: 10, marginBottom: 10 }}
+              onPress={() => {
+                navigation.navigate("ForgotPassword");
+              }}
+            >
+              {getForgotPasswordText}
+            </Text>
+          </View>
+
+          <FilledButton
+            title={getLoginButtonText}
+            onPress={() =>
+              fetch('https://api.pedigreeall.com/systemuser/login', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  EMAIL: email,
+                  PASSWORD: password
+                })
+              })
+                .then((response) => response.json())
+                .then((json) => {
+                  if (json.m_cDetail.m_eProcessState > 0) {
+                    Global.IsLogin = true;
+                    //localStorage.setItem('USER',JSON.stringify(json.m_cData) )
+                    saveData(JSON.stringify(json.m_cData), email, password)
+                    if (Global.Language === 1) {
+                      AlertMessage("İşlem Başarılı", json.m_cDetail.m_lUserMessageList[0])
+
+                    }
+                    else {
+                      AlertMessage("Process Successful", json.m_cDetail.m_lUserMessageList[1])
+                    }
+                    navigation.navigate("Tab")
+                  }
+                  else {
+                    if (Global.Language === 1) {
+                      AlertMessage("İşlem Başarısız", json.m_cDetail.m_lUserMessageList[0])
+                    }
+                    else {
+                      AlertMessage("Process Unsuccessful", json.m_cDetail.m_lUserMessageList[1])
+                    }
+                  }
+
+
+
+                })
+                .catch((error) => {
+                  console.error(error);
+                })
+            }
+
+          />
+
+
+          <View style={styles.TextView}>
+            <Text>{getNewToPedigreeText} </Text>
+            <Text
+              style={{ color: "#2e3f6e", fontSize: 18, fontWeight: "bold" }}
+              onPress={() => {
+                navigation.navigate("Register", {
+                  headerTitle: "abc",
+                  countryID: 0,
+                  countryCode: "",
+                  countryName: "Select a country",
+                  countryIcon: "flag",
+                });
+              }}
+            >
+              {getCreateAnAccountText}
+            </Text>
+          </View>
+        </View>
+      </View>
 
     </ImageBackground>
 
@@ -297,6 +318,27 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#6c6c6ca8'
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
 });
 

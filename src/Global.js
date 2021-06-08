@@ -29,6 +29,8 @@ export class Global {
   static Hypothetical_Search_View = true;
   static getLanguageClicking = false;
 
+  static SideNavigationData = null;
+
   static deviceLanguage =
     Platform.OS === 'ios'
       ? NativeModules.SettingsManager.settings.AppleLocale ||

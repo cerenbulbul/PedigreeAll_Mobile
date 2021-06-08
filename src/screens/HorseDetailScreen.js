@@ -35,7 +35,8 @@ import { HorseDetailBroodMareSireScreen } from "./HorseDetailBroodMareSireScreen
 import { HorseDetailLinebreedingScreen } from './HorseDetailLinebreedingScreen'
 import { HorseDetailScreenFemaleFamily } from './HorseDetailScreenFemaleFamily';
 import { HorseDetailScreenTJK } from './HorseDetailScreenTJK';
-import { HorseDetailScreenNick } from './HorseDetailScreenNick'
+import { HorseDetailScreenNick } from './HorseDetailScreenNick';
+import { HorseDetailFamilyaScreen } from './HorseDetailFamilyaScreen'
 
 import WebView from 'react-native-webview';
 const Tab = createMaterialTopTabNavigator();
@@ -170,6 +171,11 @@ export function HorseDetailScreen({ route, navigation }) {
   const [getNickFontWeight, setNickFontWeight] = React.useState("500")
   const [getNickFontSize, setNickFontSize] = React.useState(16)
 
+  const [getFamilyLineColor, setFamilyLineColor] = React.useState("#fff");
+  const [getFamilyColor, setFamilyColor] = React.useState("#000");
+  const [getFamilyFontWeight, setFamilyFontWeight] = React.useState("500")
+  const [getFamilyFontSize, setFamilyFontSize] = React.useState(16)
+
   const refRBSheetGeneration = useRef();
   const BottomSheetSearchNavigation = useRef();
   const [GenerationTitle, setGenerationTitle] = React.useState("");
@@ -185,6 +191,11 @@ export function HorseDetailScreen({ route, navigation }) {
   const scrollRef = useRef(ScrollView);
 
   const [isTJK, setIsTJK] = React.useState(false);
+  const [isProgency, setIsProgency] = React.useState(false);
+  const [isNick, setIsNick] = React.useState(false);
+  const [isFamilya, setIsFamilya] = React.useState(false);
+  const [isBroodmareSire, setIsBroodmareSire] = React.useState(false);
+
 
   const readUser = async () => {
     try {
@@ -208,6 +219,22 @@ export function HorseDetailScreen({ route, navigation }) {
               }
               else {
                 setIsTJK(false)
+              }
+              if (json.m_cData.HEADER_OBJECT.IS_FATHER === true) {
+                setIsProgency(true);
+                setIsNick(true);
+                setIsFamilya(true);
+                setIsBroodmareSire(true);
+              }
+              else if (json.m_cData.HEADER_OBJECT.IS_MOTHER === true) {
+                setIsProgency(true);
+
+              }
+              else {
+                setIsProgency(false);
+                setIsBroodmareSire(false);
+                setIsNick(false);
+                setIsFamilya(false)
               }
             })
             .catch((error) => {
@@ -385,6 +412,7 @@ export function HorseDetailScreen({ route, navigation }) {
                   key={i}
                   bottomDivider
                   onPress={() => {
+                    readUser();
                     setState({ checked: [state, item.id] });
                     setChekedItem(item.id)
                     Global.Generation = item.id
@@ -460,6 +488,10 @@ export function HorseDetailScreen({ route, navigation }) {
                       BottomSheetSearchNavigation.current.close();
                       setHorseData(item)
                       setGenerationData(chekedItem)
+                      setIsProgency(false);
+                      setIsNick(false);
+                      setIsBroodmareSire(false);
+
                       readUser();
                       readHorseInfo();
                       readFoalInfo();
@@ -606,7 +638,7 @@ export function HorseDetailScreen({ route, navigation }) {
               || ModalText === "Image" &&
 
               <>
-                <Image style={styles.HorseImage} source={{ uri:  HorseInfo[0].IMAGE_LIST[0] }} />
+                <Image style={styles.HorseImage} source={{ uri: HorseInfo[0].IMAGE_LIST[0] }} />
               </>
 
               || ModalText === "Statistics" &&
@@ -644,95 +676,95 @@ export function HorseDetailScreen({ route, navigation }) {
 
                           <ScrollView horizontal>
                             <DataTable>
-                              {Global.Language ===1 ?
-                              <DataTable.Header>
-                              <DataTable.Title style={{width:350}}>İsim</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Sınıf</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Puan</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Kazanç</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Fam</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Renk</DataTable.Title>
-                              <DataTable.Title style={{width:400}}>Kısrak</DataTable.Title>
-                              <DataTable.Title style={{width:400}}>Kısrak Babası</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Goğum T.</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Koşu</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>1.</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>1. %</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>2.</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>2. %</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>3.</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>3. %</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>4.</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>4. %</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Fiyat</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Dr. RM</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>ANZ</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>PedigreeAll</DataTable.Title>
-                              <DataTable.Title style={{width:150}}>Sahip</DataTable.Title>
-                              <DataTable.Title style={{width:150}}>Yetiştirici</DataTable.Title>
-                              <DataTable.Title style={{width:150}}>Antrenör</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Ölü</DataTable.Title>
-                              <DataTable.Title style={styles.DataTableText}>Güncellenme T.</DataTable.Title>
-                            </DataTable.Header>
-                              :
-                              <DataTable.Header>
-                                <DataTable.Title style={{width:350}}>Name</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Class</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Point</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Earning</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Fam</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Color</DataTable.Title>
-                                <DataTable.Title style={{width:400}}>Dam</DataTable.Title>
-                                <DataTable.Title style={{width:400}}>BroodMare Sire</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Birth D.</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Start</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>1st</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>1st %</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>2nd</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>2nd %</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>3rd</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>3rd %</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>4th</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>4th %</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Price</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Dr. RM</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>ANZ</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>PedigreeAll</DataTable.Title>
-                                <DataTable.Title style={{width:150}}>Owner</DataTable.Title>
-                                <DataTable.Title style={{width:150}}>Breeder</DataTable.Title>
-                                <DataTable.Title style={{width:150}}>Coach</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Dead</DataTable.Title>
-                                <DataTable.Title style={styles.DataTableText}>Update D.</DataTable.Title>
-                              </DataTable.Header>
+                              {Global.Language === 1 ?
+                                <DataTable.Header>
+                                  <DataTable.Title style={{ width: 350 }}>İsim</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Sınıf</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Puan</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Kazanç</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Fam</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Renk</DataTable.Title>
+                                  <DataTable.Title style={{ width: 400 }}>Kısrak</DataTable.Title>
+                                  <DataTable.Title style={{ width: 400 }}>Kısrak Babası</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Goğum T.</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Koşu</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>1.</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>1. %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>2.</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>2. %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>3.</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>3. %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>4.</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>4. %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Fiyat</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Dr. RM</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>ANZ</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>PedigreeAll</DataTable.Title>
+                                  <DataTable.Title style={{ width: 150 }}>Sahip</DataTable.Title>
+                                  <DataTable.Title style={{ width: 150 }}>Yetiştirici</DataTable.Title>
+                                  <DataTable.Title style={{ width: 150 }}>Antrenör</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Ölü</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Güncellenme T.</DataTable.Title>
+                                </DataTable.Header>
+                                :
+                                <DataTable.Header>
+                                  <DataTable.Title style={{ width: 350 }}>Name</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Class</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Point</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Earning</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Fam</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Color</DataTable.Title>
+                                  <DataTable.Title style={{ width: 400 }}>Dam</DataTable.Title>
+                                  <DataTable.Title style={{ width: 400 }}>BroodMare Sire</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Birth D.</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Start</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>1st</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>1st %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>2nd</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>2nd %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>3rd</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>3rd %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>4th</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>4th %</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Price</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Dr. RM</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>ANZ</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>PedigreeAll</DataTable.Title>
+                                  <DataTable.Title style={{ width: 150 }}>Owner</DataTable.Title>
+                                  <DataTable.Title style={{ width: 150 }}>Breeder</DataTable.Title>
+                                  <DataTable.Title style={{ width: 150 }}>Coach</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Dead</DataTable.Title>
+                                  <DataTable.Title style={styles.DataTableText}>Update D.</DataTable.Title>
+                                </DataTable.Header>
                               }
-                              
+
 
                               {getStatisticInfo.map((item, index) => (
                                 <DataTable.Row centered={true} key={index}>
-                                  <DataTable.Cell 
-                                    onPress={() => { alert(item.HORSE_NAME) }} 
-                                    style={{width:350}}>
-                                      {item.HORSE_NAME}
+                                  <DataTable.Cell
+                                    onPress={() => { alert(item.HORSE_NAME) }}
+                                    style={{ width: 350 }}>
+                                    {item.HORSE_NAME}
                                   </DataTable.Cell>
-                                  {Global.Language ===1?
-                                  <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_TR}</DataTable.Cell>
-                                  :
-                                  <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
+                                  {Global.Language === 1 ?
+                                    <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_TR}</DataTable.Cell>
+                                    :
+                                    <DataTable.Cell style={styles.DataTableText}>{item.WINNER_TYPE_OBJECT.WINNER_TYPE_EN}</DataTable.Cell>
                                   }
-                                  
+
                                   <DataTable.Cell style={styles.DataTableText}>{item.POINT}</DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText} >{item.EARN} {item.EARN_ICON}</DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText}>{item.FAMILY_TEXT}</DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText}>{item.COLOR_TEXT}</DataTable.Cell>
-                                  <DataTable.Cell 
-                                    onPress={() => { alert(item.MOTHER_NAME) }} 
-                                    style={{width:400}}>
-                                      {item.MOTHER_NAME}
+                                  <DataTable.Cell
+                                    onPress={() => { alert(item.MOTHER_NAME) }}
+                                    style={{ width: 400 }}>
+                                    {item.MOTHER_NAME}
                                   </DataTable.Cell>
-                                  <DataTable.Cell 
-                                    onPress={() => { alert(item.BM_SIRE_NAME) }} 
-                                    style={{width:400}}>
-                                      {item.BM_SIRE_NAME}
+                                  <DataTable.Cell
+                                    onPress={() => { alert(item.BM_SIRE_NAME) }}
+                                    style={{ width: 400 }}>
+                                    {item.BM_SIRE_NAME}
                                   </DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText}>{item.HORSE_BIRTH_DATE_TEXT}</DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText}>{item.START_COUNT}</DataTable.Cell>
@@ -748,42 +780,42 @@ export function HorseDetailScreen({ route, navigation }) {
                                   <DataTable.Cell style={styles.DataTableText}>{item.RM}</DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText}>{item.ANZ}</DataTable.Cell>
                                   <DataTable.Cell style={styles.DataTableText}>{item.PA}</DataTable.Cell>
-                                  <DataTable.Cell 
-                                    onPress={() => { alert(item.OWNER) }} 
-                                    style={{width:150}}>
-                                      {item.OWNER}
+                                  <DataTable.Cell
+                                    onPress={() => { alert(item.OWNER) }}
+                                    style={{ width: 150 }}>
+                                    {item.OWNER}
                                   </DataTable.Cell>
-                                  <DataTable.Cell 
-                                    onPress={() => { alert(item.BREEDER) }} 
-                                    style={{width:150}}>
-                                      {item.BREEDER}
+                                  <DataTable.Cell
+                                    onPress={() => { alert(item.BREEDER) }}
+                                    style={{ width: 150 }}>
+                                    {item.BREEDER}
                                   </DataTable.Cell>
-                                  <DataTable.Cell 
-                                    onPress={() => { alert(item.COACH) }} 
-                                    style={{width:150}}>
-                                      {item.COACH}
+                                  <DataTable.Cell
+                                    onPress={() => { alert(item.COACH) }}
+                                    style={{ width: 150 }}>
+                                    {item.COACH}
                                   </DataTable.Cell>
                                   {item.IS_DEAD ?
-                                  <>
-                                  {Global.Language===1?
-                                  <DataTable.Cell style={styles.DataTableText}>Ölü</DataTable.Cell>
-                                  :
-                                  <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
-                                  }
-                                  
-                                  </>
-                                    
+                                    <>
+                                      {Global.Language === 1 ?
+                                        <DataTable.Cell style={styles.DataTableText}>Ölü</DataTable.Cell>
+                                        :
+                                        <DataTable.Cell style={styles.DataTableText}>DEAD</DataTable.Cell>
+                                      }
+
+                                    </>
+
                                     :
                                     <>
-                                    {Global.Language===1?
-                                    <DataTable.Cell style={styles.DataTableText}>Sağ</DataTable.Cell>
-                                    :
-                                    <DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell>
-                                  }
-                                    
+                                      {Global.Language === 1 ?
+                                        <DataTable.Cell style={styles.DataTableText}>Sağ</DataTable.Cell>
+                                        :
+                                        <DataTable.Cell style={styles.DataTableText}>ALIVE</DataTable.Cell>
+                                      }
+
                                     </>
-                                     
-                                     }
+
+                                  }
                                   <DataTable.Cell style={styles.DataTableText}>{item.EDIT_DATE_TEXT}</DataTable.Cell>
                                 </DataTable.Row>
 
@@ -977,6 +1009,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setNickFontWeight("500")
                 setNickFontSize(16)
 
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
+
                 setProfileLineColor("#fff")
                 setProfileColor("#222")
                 setProfileFontWeight("500")
@@ -1047,6 +1084,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setNickFontWeight("500")
                 setNickFontSize(16)
 
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
+
                 setProfileLineColor("#2169ab")
                 setProfileColor("#2169ab")
                 setProfileFontWeight("700")
@@ -1105,151 +1147,253 @@ export function HorseDetailScreen({ route, navigation }) {
               }
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.TabNavigationItem, { borderColor: getProgencyLineColor }]}
-              onPress={() => {
-                setScreenName("Progency")
+            {isProgency ?
+              <TouchableOpacity
+                style={[styles.TabNavigationItem, { borderColor: getProgencyLineColor }]}
+                onPress={() => {
+                  setScreenName("Progency")
 
-                setProgencyLineColor("#2169ab")
-                setProgencyColor("#2169ab")
-                setProgencyFontWeight("700")
-                setProgencyFontSize(18)
+                  setProgencyLineColor("#2169ab")
+                  setProgencyColor("#2169ab")
+                  setProgencyFontWeight("700")
+                  setProgencyFontSize(18)
 
 
-                setNickLineColor("#fff")
-                setNickColor("#222")
-                setNickFontWeight("500")
-                setNickFontSize(16)
+                  setNickLineColor("#fff")
+                  setNickColor("#222")
+                  setNickFontWeight("500")
+                  setNickFontSize(16)
 
-                setPedigreeLineColor("#fff")
-                setPedigreeColor("#222")
-                setPedigreeFontWeight("500")
-                setPedigreeFontSize(16)
+                  setFamilyLineColor("#fff")
+                  setFamilyColor("#222")
+                  setFamilyFontWeight("500")
+                  setFamilyFontSize(16)
 
-                setProfileLineColor("#fff")
-                setProfileColor("#222")
-                setProfileFontWeight("500")
-                setProfileFontSize(16)
+                  setPedigreeLineColor("#fff")
+                  setPedigreeColor("#222")
+                  setPedigreeFontWeight("500")
+                  setPedigreeFontSize(16)
 
-                setSiblingsMareLineColor("#fff")
-                setSiblingsMareColor("#222")
-                setSiblingsMareFontWeight("500")
-                setSiblingsMareFontSize(16)
+                  setProfileLineColor("#fff")
+                  setProfileColor("#222")
+                  setProfileFontWeight("500")
+                  setProfileFontSize(16)
 
-                setSiblingsSireLineColor("#fff")
-                setSiblingsSireColor("#222")
-                setSiblingsSireFontWeight("500")
-                setSiblingsSireFontSize(16)
+                  setSiblingsMareLineColor("#fff")
+                  setSiblingsMareColor("#222")
+                  setSiblingsMareFontWeight("500")
+                  setSiblingsMareFontSize(16)
 
-                setSiblingsBroodmareSireLineColor("#fff")
-                setSiblingsBroodmareSireColor("#222")
-                setSiblingsBroodmareSireFontWeight("500")
-                setSiblingsBroodmareSireFontSize(16)
+                  setSiblingsSireLineColor("#fff")
+                  setSiblingsSireColor("#222")
+                  setSiblingsSireFontWeight("500")
+                  setSiblingsSireFontSize(16)
 
-                setTailFemaleLineColor("#fff")
-                setTailFemaleColor("#222")
-                setTailFemaleFontWeight("500")
-                setTailFemaleFontSize(16)
+                  setSiblingsBroodmareSireLineColor("#fff")
+                  setSiblingsBroodmareSireColor("#222")
+                  setSiblingsBroodmareSireFontWeight("500")
+                  setSiblingsBroodmareSireFontSize(16)
 
-                setBroodmareSireLineColor("#fff")
-                setBroodmareSireColor("#222")
-                setBroodmareSireFontWeight("500")
-                setBroodmareSireFontSize(16)
+                  setTailFemaleLineColor("#fff")
+                  setTailFemaleColor("#222")
+                  setTailFemaleFontWeight("500")
+                  setTailFemaleFontSize(16)
 
-                setLinebreedingLineColor("#fff")
-                setLinebreedingColor("#222")
-                setLinebreedingFontWeight("500")
-                setLinebreedingFontSize(16)
+                  setBroodmareSireLineColor("#fff")
+                  setBroodmareSireColor("#222")
+                  setBroodmareSireFontWeight("500")
+                  setBroodmareSireFontSize(16)
 
-                setFemaleFamilyLineColor("#fff")
-                setFemaleFamilyColor("#222")
-                setFemaleFamilyFontWeight("500")
-                setFemaleFamilyFontSize(16)
+                  setLinebreedingLineColor("#fff")
+                  setLinebreedingColor("#222")
+                  setLinebreedingFontWeight("500")
+                  setLinebreedingFontSize(16)
 
-                setTJKLineColor("#fff")
-                setTJKColor("#222")
-                setTJKFontWeight("500")
-                setTJKFontSize(16)
+                  setFemaleFamilyLineColor("#fff")
+                  setFemaleFamilyColor("#222")
+                  setFemaleFamilyFontWeight("500")
+                  setFemaleFamilyFontSize(16)
 
-              }}>
-              <Icon name="cloudsmith" size={16} color={getProgencyColor} style={{ alignSelf: 'center' }} />
-              {Global.Language === 1 ?
-                <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Taylar</Text>
+                  setTJKLineColor("#fff")
+                  setTJKColor("#222")
+                  setTJKFontWeight("500")
+                  setTJKFontSize(16)
 
-                :
-                <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Progency</Text>
-              }
-            </TouchableOpacity>
+                }}>
+                <Icon name="cloudsmith" size={16} color={getProgencyColor} style={{ alignSelf: 'center' }} />
+                {Global.Language === 1 ?
+                  <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Taylar</Text>
 
-            <TouchableOpacity
-              style={[styles.TabNavigationItem, { borderColor: getNickLineColor }]}
-              onPress={() => {
-                setScreenName("Nick")
+                  :
+                  <Text style={[styles.TabNavigationItemText, { color: getProgencyColor, fontWeight: getProgencyFontWeight, fontSize: getProgencyFontSize }]}>Progency</Text>
+                }
+              </TouchableOpacity>
+              :
+              null}
 
-                setNickLineColor("#2169ab")
-                setNickColor("#2169ab")
-                setNickFontWeight("700")
-                setNickFontSize(18)
+            {isNick ?
+              <TouchableOpacity
+                style={[styles.TabNavigationItem, { borderColor: getNickLineColor }]}
+                onPress={() => {
+                  setScreenName("Nick")
 
-                setProgencyLineColor("#fff")
-                setProgencyColor("#222")
-                setProgencyFontWeight("500")
-                setProgencyFontSize(16)
+                  setNickLineColor("#2169ab")
+                  setNickColor("#2169ab")
+                  setNickFontWeight("700")
+                  setNickFontSize(18)
 
-                setPedigreeLineColor("#fff")
-                setPedigreeColor("#222")
-                setPedigreeFontWeight("500")
-                setPedigreeFontSize(16)
+                  setFamilyLineColor("#fff")
+                  setFamilyColor("#222")
+                  setFamilyFontWeight("500")
+                  setFamilyFontSize(16)
 
-                setProfileLineColor("#fff")
-                setProfileColor("#222")
-                setProfileFontWeight("500")
-                setProfileFontSize(16)
+                  setProgencyLineColor("#fff")
+                  setProgencyColor("#222")
+                  setProgencyFontWeight("500")
+                  setProgencyFontSize(16)
 
-                setSiblingsMareLineColor("#fff")
-                setSiblingsMareColor("#222")
-                setSiblingsMareFontWeight("500")
-                setSiblingsMareFontSize(16)
+                  setPedigreeLineColor("#fff")
+                  setPedigreeColor("#222")
+                  setPedigreeFontWeight("500")
+                  setPedigreeFontSize(16)
 
-                setSiblingsSireLineColor("#fff")
-                setSiblingsSireColor("#222")
-                setSiblingsSireFontWeight("500")
-                setSiblingsSireFontSize(16)
+                  setProfileLineColor("#fff")
+                  setProfileColor("#222")
+                  setProfileFontWeight("500")
+                  setProfileFontSize(16)
 
-                setSiblingsBroodmareSireLineColor("#fff")
-                setSiblingsBroodmareSireColor("#222")
-                setSiblingsBroodmareSireFontWeight("500")
-                setSiblingsBroodmareSireFontSize(16)
+                  setSiblingsMareLineColor("#fff")
+                  setSiblingsMareColor("#222")
+                  setSiblingsMareFontWeight("500")
+                  setSiblingsMareFontSize(16)
 
-                setTailFemaleLineColor("#fff")
-                setTailFemaleColor("#222")
-                setTailFemaleFontWeight("500")
-                setTailFemaleFontSize(16)
+                  setSiblingsSireLineColor("#fff")
+                  setSiblingsSireColor("#222")
+                  setSiblingsSireFontWeight("500")
+                  setSiblingsSireFontSize(16)
 
-                setBroodmareSireLineColor("#fff")
-                setBroodmareSireColor("#222")
-                setBroodmareSireFontWeight("500")
-                setBroodmareSireFontSize(16)
+                  setSiblingsBroodmareSireLineColor("#fff")
+                  setSiblingsBroodmareSireColor("#222")
+                  setSiblingsBroodmareSireFontWeight("500")
+                  setSiblingsBroodmareSireFontSize(16)
 
-                setLinebreedingLineColor("#fff")
-                setLinebreedingColor("#222")
-                setLinebreedingFontWeight("500")
-                setLinebreedingFontSize(16)
+                  setTailFemaleLineColor("#fff")
+                  setTailFemaleColor("#222")
+                  setTailFemaleFontWeight("500")
+                  setTailFemaleFontSize(16)
 
-                setFemaleFamilyLineColor("#fff")
-                setFemaleFamilyColor("#222")
-                setFemaleFamilyFontWeight("500")
-                setFemaleFamilyFontSize(16)
+                  setBroodmareSireLineColor("#fff")
+                  setBroodmareSireColor("#222")
+                  setBroodmareSireFontWeight("500")
+                  setBroodmareSireFontSize(16)
 
-                setTJKLineColor("#fff")
-                setTJKColor("#222")
-                setTJKFontWeight("500")
-                setTJKFontSize(16)
+                  setLinebreedingLineColor("#fff")
+                  setLinebreedingColor("#222")
+                  setLinebreedingFontWeight("500")
+                  setLinebreedingFontSize(16)
 
-              }}>
-              <Icon name="cloudsmith" size={16} color={getNickColor} style={{ alignSelf: 'center' }} />
-              <Text style={[styles.TabNavigationItemText, { color: getNickColor, fontWeight: getNickFontWeight, fontSize: getNickFontSize }]}>Nick</Text>
-            </TouchableOpacity>
+                  setFemaleFamilyLineColor("#fff")
+                  setFemaleFamilyColor("#222")
+                  setFemaleFamilyFontWeight("500")
+                  setFemaleFamilyFontSize(16)
+
+                  setTJKLineColor("#fff")
+                  setTJKColor("#222")
+                  setTJKFontWeight("500")
+                  setTJKFontSize(16)
+
+                }}>
+                <Icon name="cloudsmith" size={16} color={getNickColor} style={{ alignSelf: 'center' }} />
+                <Text style={[styles.TabNavigationItemText, { color: getNickColor, fontWeight: getNickFontWeight, fontSize: getNickFontSize }]}>Nick</Text>
+              </TouchableOpacity>
+              :
+              null}
+
+            {isNick ?
+              <TouchableOpacity
+                style={[styles.TabNavigationItem, { borderColor: getFamilyLineColor }]}
+                onPress={() => {
+                  setScreenName("Family")
+
+
+                  setFamilyLineColor("#2169ab")
+                  setFamilyColor("#2169ab")
+                  setFamilyFontWeight("700")
+                  setFamilyFontSize(18)
+
+                  setNickLineColor("#fff")
+                  setNickColor("#222")
+                  setNickFontWeight("500")
+                  setNickFontSize(16)
+
+                  setProgencyLineColor("#fff")
+                  setProgencyColor("#222")
+                  setProgencyFontWeight("500")
+                  setProgencyFontSize(16)
+
+                  setPedigreeLineColor("#fff")
+                  setPedigreeColor("#222")
+                  setPedigreeFontWeight("500")
+                  setPedigreeFontSize(16)
+
+                  setProfileLineColor("#fff")
+                  setProfileColor("#222")
+                  setProfileFontWeight("500")
+                  setProfileFontSize(16)
+
+                  setSiblingsMareLineColor("#fff")
+                  setSiblingsMareColor("#222")
+                  setSiblingsMareFontWeight("500")
+                  setSiblingsMareFontSize(16)
+
+                  setSiblingsSireLineColor("#fff")
+                  setSiblingsSireColor("#222")
+                  setSiblingsSireFontWeight("500")
+                  setSiblingsSireFontSize(16)
+
+                  setSiblingsBroodmareSireLineColor("#fff")
+                  setSiblingsBroodmareSireColor("#222")
+                  setSiblingsBroodmareSireFontWeight("500")
+                  setSiblingsBroodmareSireFontSize(16)
+
+                  setTailFemaleLineColor("#fff")
+                  setTailFemaleColor("#222")
+                  setTailFemaleFontWeight("500")
+                  setTailFemaleFontSize(16)
+
+                  setBroodmareSireLineColor("#fff")
+                  setBroodmareSireColor("#222")
+                  setBroodmareSireFontWeight("500")
+                  setBroodmareSireFontSize(16)
+
+                  setLinebreedingLineColor("#fff")
+                  setLinebreedingColor("#222")
+                  setLinebreedingFontWeight("500")
+                  setLinebreedingFontSize(16)
+
+                  setFemaleFamilyLineColor("#fff")
+                  setFemaleFamilyColor("#222")
+                  setFemaleFamilyFontWeight("500")
+                  setFemaleFamilyFontSize(16)
+
+                  setTJKLineColor("#fff")
+                  setTJKColor("#222")
+                  setTJKFontWeight("500")
+                  setTJKFontSize(16)
+
+                }}>
+                <Icon name="cloudsmith" size={16} color={getFamilyColor} style={{ alignSelf: 'center' }} />
+                {Global.Language === 1 ?
+                  <Text style={[styles.TabNavigationItemText, { color: getFamilyColor, fontWeight: getFamilyFontWeight, fontSize: getFamilyFontSize }]}>Familya</Text>
+
+                  :
+                  <Text style={[styles.TabNavigationItemText, { color: getFamilyColor, fontWeight: getFamilyFontWeight, fontSize: getFamilyFontSize }]}>Family</Text>
+
+                }
+              </TouchableOpacity>
+              :
+              null}
+
 
             <TouchableOpacity
               style={[styles.TabNavigationItem, { borderColor: getSiblingsMareLineColor }]}
@@ -1260,6 +1404,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setSiblingsMareColor("#2169ab")
                 setSiblingsMareFontWeight("700")
                 setSiblingsMareFontSize(18)
+
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
 
                 setNickLineColor("#fff")
                 setNickColor("#222")
@@ -1334,6 +1483,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setSiblingsSireColor("#2169ab")
                 setSiblingsSireFontWeight("700")
                 setSiblingsSireFontSize(18)
+
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
 
                 setNickLineColor("#fff")
                 setNickColor("#222")
@@ -1414,6 +1568,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setNickFontWeight("500")
                 setNickFontSize(16)
 
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
+
                 setSiblingsSireLineColor("#fff")
                 setSiblingsSireColor("#222")
                 setSiblingsSireFontWeight("500")
@@ -1489,6 +1648,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setSiblingsBroodmareSireFontWeight("500")
                 setSiblingsBroodmareSireFontSize(16)
 
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
+
                 setNickLineColor("#fff")
                 setNickColor("#222")
                 setNickFontWeight("500")
@@ -1547,78 +1711,87 @@ export function HorseDetailScreen({ route, navigation }) {
               }
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.TabNavigationItem, { borderColor: getBroodmareSireLineColor }]}
-              onPress={() => {
-                setScreenName("BroodmareSire")
+            {isBroodmareSire ?
+              <TouchableOpacity
+                style={[styles.TabNavigationItem, { borderColor: getBroodmareSireLineColor }]}
+                onPress={() => {
+                  setScreenName("BroodmareSire")
 
-                setBroodmareSireLineColor("#2169ab")
-                setBroodmareSireColor("#2169ab")
-                setBroodmareSireFontWeight("700")
-                setBroodmareSireFontSize(18)
+                  setBroodmareSireLineColor("#2169ab")
+                  setBroodmareSireColor("#2169ab")
+                  setBroodmareSireFontWeight("700")
+                  setBroodmareSireFontSize(18)
 
-                setSiblingsBroodmareSireLineColor("#fff")
-                setSiblingsBroodmareSireColor("#222")
-                setSiblingsBroodmareSireFontWeight("500")
-                setSiblingsBroodmareSireFontSize(16)
+                  setFamilyLineColor("#fff")
+                  setFamilyColor("#222")
+                  setFamilyFontWeight("500")
+                  setFamilyFontSize(16)
 
-                setNickLineColor("#fff")
-                setNickColor("#222")
-                setNickFontWeight("500")
-                setNickFontSize(16)
+                  setSiblingsBroodmareSireLineColor("#fff")
+                  setSiblingsBroodmareSireColor("#222")
+                  setSiblingsBroodmareSireFontWeight("500")
+                  setSiblingsBroodmareSireFontSize(16)
 
-                setSiblingsSireLineColor("#fff")
-                setSiblingsSireColor("#222")
-                setSiblingsSireFontWeight("500")
-                setSiblingsSireFontSize(16)
+                  setNickLineColor("#fff")
+                  setNickColor("#222")
+                  setNickFontWeight("500")
+                  setNickFontSize(16)
 
-                setSiblingsMareLineColor("#fff")
-                setSiblingsMareColor("#222")
-                setSiblingsMareFontWeight("500")
-                setSiblingsMareFontSize(16)
+                  setSiblingsSireLineColor("#fff")
+                  setSiblingsSireColor("#222")
+                  setSiblingsSireFontWeight("500")
+                  setSiblingsSireFontSize(16)
 
-                setProgencyLineColor("#fff")
-                setProgencyColor("#222")
-                setProgencyFontWeight("500")
-                setProgencyFontSize(16)
+                  setSiblingsMareLineColor("#fff")
+                  setSiblingsMareColor("#222")
+                  setSiblingsMareFontWeight("500")
+                  setSiblingsMareFontSize(16)
 
-                setPedigreeLineColor("#fff")
-                setPedigreeColor("#222")
-                setPedigreeFontWeight("500")
-                setPedigreeFontSize(16)
+                  setProgencyLineColor("#fff")
+                  setProgencyColor("#222")
+                  setProgencyFontWeight("500")
+                  setProgencyFontSize(16)
 
-                setProfileLineColor("#fff")
-                setProfileColor("#222")
-                setProfileFontWeight("500")
-                setProfileFontSize(16)
+                  setPedigreeLineColor("#fff")
+                  setPedigreeColor("#222")
+                  setPedigreeFontWeight("500")
+                  setPedigreeFontSize(16)
 
-                setTailFemaleLineColor("#fff")
-                setTailFemaleColor("#222")
-                setTailFemaleFontWeight("500")
-                setTailFemaleFontSize(16)
+                  setProfileLineColor("#fff")
+                  setProfileColor("#222")
+                  setProfileFontWeight("500")
+                  setProfileFontSize(16)
 
-                setLinebreedingLineColor("#fff")
-                setLinebreedingColor("#222")
-                setLinebreedingFontWeight("500")
-                setLinebreedingFontSize(16)
+                  setTailFemaleLineColor("#fff")
+                  setTailFemaleColor("#222")
+                  setTailFemaleFontWeight("500")
+                  setTailFemaleFontSize(16)
 
-                setFemaleFamilyLineColor("#fff")
-                setFemaleFamilyColor("#222")
-                setFemaleFamilyFontWeight("500")
-                setFemaleFamilyFontSize(16)
+                  setLinebreedingLineColor("#fff")
+                  setLinebreedingColor("#222")
+                  setLinebreedingFontWeight("500")
+                  setLinebreedingFontSize(16)
 
-                setTJKLineColor("#fff")
-                setTJKColor("#222")
-                setTJKFontWeight("500")
-                setTJKFontSize(16)
-              }}>
-              <Icon name="cloudsmith" size={16} color={getBroodmareSireColor} style={{ alignSelf: 'center' }} />
-              {Global.Language === 1 ?
-                <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Annenin Babası</Text>
-                :
-                <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
-              }
-            </TouchableOpacity>
+                  setFemaleFamilyLineColor("#fff")
+                  setFemaleFamilyColor("#222")
+                  setFemaleFamilyFontWeight("500")
+                  setFemaleFamilyFontSize(16)
+
+                  setTJKLineColor("#fff")
+                  setTJKColor("#222")
+                  setTJKFontWeight("500")
+                  setTJKFontSize(16)
+                }}>
+                <Icon name="cloudsmith" size={16} color={getBroodmareSireColor} style={{ alignSelf: 'center' }} />
+                {Global.Language === 1 ?
+                  <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Annenin Babası</Text>
+                  :
+                  <Text style={[styles.TabNavigationItemText, { color: getBroodmareSireColor, fontWeight: getBroodmareSireFontWeight, fontSize: getBroodmareSireFontSize }]}>Broodmare Sire</Text>
+                }
+              </TouchableOpacity>
+              :
+              null}
+
 
             <TouchableOpacity
               style={[styles.TabNavigationItem, { borderColor: getLinebreedingLineColor }]}
@@ -1629,6 +1802,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setLinebreedingColor("#2169ab")
                 setLinebreedingFontWeight("700")
                 setLinebreedingFontSize(18)
+
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
 
                 setBroodmareSireLineColor("#fff")
                 setBroodmareSireColor("#222")
@@ -1703,6 +1881,11 @@ export function HorseDetailScreen({ route, navigation }) {
                 setFemaleFamilyColor("#2169ab")
                 setFemaleFamilyFontWeight("700")
                 setFemaleFamilyFontSize(18)
+
+                setFamilyLineColor("#fff")
+                setFamilyColor("#222")
+                setFamilyFontWeight("500")
+                setFamilyFontSize(16)
 
                 setLinebreedingLineColor("#fff")
                 setLinebreedingColor("#222")
@@ -1779,6 +1962,11 @@ export function HorseDetailScreen({ route, navigation }) {
                   setTJKColor("#2169ab")
                   setTJKFontWeight("700")
                   setTJKFontSize(18)
+
+                  setFamilyLineColor("#fff")
+                  setFamilyColor("#222")
+                  setFamilyFontWeight("500")
+                  setFamilyFontSize(16)
 
                   setFemaleFamilyLineColor("#fff")
                   setFemaleFamilyColor("#222")
@@ -1881,6 +2069,8 @@ export function HorseDetailScreen({ route, navigation }) {
             <HorseDetailScreenTJK />
             || getScreenName === "Nick" &&
             <HorseDetailScreenNick />
+            || getScreenName === "Family" &&
+            <HorseDetailFamilyaScreen />
           }
         </View>
 
@@ -2105,8 +2295,8 @@ const styles = StyleSheet.create({
   MainHeaderContainer: {
     marginBottom: 20
   },
-  DataTableText:{
-    width:100
+  DataTableText: {
+    width: 100
   }
 })
 

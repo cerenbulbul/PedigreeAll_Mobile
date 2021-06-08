@@ -4,14 +4,11 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Switch, NativeModules
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Flag from "react-native-flags";
 import AsyncStorage from '@react-native-community/async-storage'
-import { SearchBar } from 'react-native-elements';
 import RBSheet from "react-native-raw-bottom-sheet";
 
-import { useAuth } from './src/hooks/useAuth';
 import { SplashScreen } from './src/screens/SplashScreen';
 import { AuthContext } from "./src/context/AuthContext";
 import { MainScreen } from "./src/screens/MainScreen";
@@ -28,13 +25,11 @@ import { RacesScreen } from './src/screens/RacesScreen'
 import { CompareHorsesScreen } from './src/screens/CompareHorsesScreen'
 import CustomDrawerContent from "./src/CustomContent/CustomDrawerContent";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { AuthStackNavigator } from './src/navigation/AuthStackNavigator';
 import { ReportScreen } from './src/screens/ReportScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { SearchScreen } from './src/screens/SearchScreen';
 import { MyAddingRequestScreen } from './src/screens/MyAddingRequestScreen';
 import { MyEditRequestsScreen } from './src/screens/MyEditRequestsScreen';
-import { SettingBottomSheet } from './src/components/SettingBottomSheet';
 import { BlogItemScreen } from './src/screens/BlogItemScreen';
 import { StandardThoroughbredAnalysisScreen } from './src/screens/StandardThoroughbredAnalysisScreen';
 import { HorseDetailScreen } from './src/screens/HorseDetailScreen'
@@ -69,6 +64,10 @@ import { HorseDetailLinebreedingScreen } from './src/screens/HorseDetailLinebree
 import { HorseDetailScreenFemaleFamily } from './src/screens/HorseDetailScreenFemaleFamily'
 import { BreedingFoalsAsBroodMareSireScreen } from './src/screens/BreedingFoalsAsBroodMareSireScreen'
 import { Global } from './src/Global';
+
+import {MainSearchScreen} from './src/screens/MainSearchScreen'
+import {MainHypotheticalSearchScreen} from './src/screens/MainHypotheticalSearchScreen'
+import {MainEffectiveNickSearchScreen} from './src/screens/MainEffectiveNickSearchScreen'
 
 const Drawer = createDrawerNavigator();
 const LoginStack = createStackNavigator();
@@ -142,6 +141,10 @@ export default function App({navigation}) {
 
   const [getLanguageLoading, setLanguageLoading] = React.useState(false);
 
+  const [openingScreen, setOpeningScreen] =React.useState("LoginScreen");
+
+
+
   const saveData = async (data) => {
     try {
       await AsyncStorage.setItem('USER', data)
@@ -154,6 +157,52 @@ export default function App({navigation}) {
 
 
 
+  const readData = async () => {
+    try {
+      const userKey = await AsyncStorage.getItem('USER')
+      if (userKey !== null) {
+        const mail = JSON.parse(userKey)[0].EMAIL
+        if (mail === "info@pedigreeall.com") {
+          Global.IsLogin = false;
+          Global.SideNavigationData = JSON.parse(userKey)[0].PAGE_LIST;
+          setOpeningScreen("LoginScreen")
+        }
+        else{
+          Global.IsLogin = true;
+          Global.SideNavigationData = JSON.parse(userKey)[0].PAGE_LIST;
+          setOpeningScreen("Main")
+        }
+        setIsLoading(false)
+      }
+      else {
+        setOpeningScreen("LoginScreen")
+        Global.IsLogin = false
+        fetch('https://api.pedigreeall.com/systemuser/login', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            EMAIL: 'info@pedigreeall.com',
+            PASSWORD: 'Ccoft2020'
+          })
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.m_cDetail.m_eProcessState > 0) {
+              saveData(JSON.stringify(json.m_cData))
+            }
+
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+      }
+    } catch (e) {
+    }
+  }
+
 
   const deviceLanguage =
           Platform.OS === 'ios'
@@ -162,9 +211,12 @@ export default function App({navigation}) {
             : Platform.OS === 'android' && NativeModules.I18nManager.localeIdentifier
 
 
+  
+
   React.useEffect(() => {
     //Global.getBasket();
     //console.log(deviceLanguage)
+    readData();
 
    if (getLanguageClicking === false) {
      changeLanguage();
@@ -180,18 +232,18 @@ export default function App({navigation}) {
   const changeLanguage = () =>{
     if (deviceLanguage === "tr_TR") {
       Global.Language=1
-      setBottomNavigationMainName("Anasayfa")
+      setBottomNavigationMainName("Arama")
       setBottomNavigationProfileName("Profil")
-      setBottomNavigationBasketName("Sepet")
-      setBottomNavigationSearchName("Arama")
+      setBottomNavigationBasketName("Varsayımsal Eşleşme")
+      setBottomNavigationSearchName("EffectiveNick")
       
     }
     else{
       Global.Language=2
-      setBottomNavigationMainName("Main")
+      setBottomNavigationMainName("Search")
       setBottomNavigationProfileName("Profile")
-      setBottomNavigationBasketName("Basket")
-      setBottomNavigationSearchName("Search")
+      setBottomNavigationBasketName("Hypothetical Search")
+      setBottomNavigationSearchName("EffectiveNick")
       
     }
     setLanguageLoading(false)
@@ -205,51 +257,47 @@ export default function App({navigation}) {
 
   const TabScreen = () => {
     return (
-      <Tab.Navigator
-        initialRouteName="Main"
+      <>
+
+
+            <Tab.Navigator
+        initialRouteName="Search"
         barStyle={{
           backgroundColor: '#2e3f6e'
         }}
         options={{
           keyboardHidesTabBar: false,
         }}
+      
       >
+
+        
 
         <Tab.Screen
           name={getBottomNavigationMainName}
           component={AuthStackScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Icon name="home" size={18} color={color} />
+              <Icon name="search" size={18} color={color} />
             )
           }}
         />
 
-
-        <Tab.Screen
-          name={getBottomNavigationProfileName}
-          component={ProfileStackScreen}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <Icon name="user" size={18} color={color} />
-            )
-          }}
-        />
 
         <Tab.Screen
           name= {getBottomNavigationBasketName}
-          component={BasketStackScreen}
+          component={MainHypotheticalStackScreen}
           options={{
-            tabBarBadge: Global.TabBarBasketNotification ,
+            //tabBarBadge: Global.TabBarBasketNotification ,
             tabBarIcon: ({ color }) => (
-              <Icon name="shopping-basket" size={18} color={color} />
+              <Icon name="search" size={18} color={color} />
             )
           }}
         />
 
         <Tab.Screen
           name={getBottomNavigationSearchName}
-          component={SearchStackScreen}
+          component={MainEffectiveStackScreen}
           options={{
             tabBarIcon: ({ color }) => (
               <Icon name="search" size={18} color={color} />
@@ -257,6 +305,8 @@ export default function App({navigation}) {
           }}
         />
       </Tab.Navigator>
+      </>
+     
     );
   }
 
@@ -288,6 +338,36 @@ export default function App({navigation}) {
         component={BasketScreen}
       />
     </BasketAuthStack.Navigator>
+  );
+
+  const MainHypotheticalStack = createStackNavigator();
+  const MainHypotheticalStackScreen = () => (
+    <MainHypotheticalStack.Navigator
+      mode={"modal"}
+      screenOptions={{
+        headerShown: false,
+      }}>
+
+      <MainHypotheticalStack.Screen
+        name={"MainHypothetical"}
+        component={MainHypotheticalSearchScreen}
+      />
+    </MainHypotheticalStack.Navigator>
+  );
+
+  const MainEffectiveStack = createStackNavigator();
+  const MainEffectiveStackScreen = () => (
+    <MainEffectiveStack.Navigator
+      mode={"modal"}
+      screenOptions={{
+        headerShown: false,
+      }}>
+
+      <MainEffectiveStack.Screen
+        name={"MainEffectiveNickSearch"}
+        component={MainEffectiveNickSearchScreen}
+      />
+    </MainEffectiveStack.Navigator>
   );
 
   const SearchAuthStack = createStackNavigator();
@@ -424,7 +504,7 @@ export default function App({navigation}) {
   const DrawerScreen = () => (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
-      initialRouteName="Tab"
+      initialRouteName={openingScreen}
       drawerStyle={styles.SideNavigationContainer}
       drawerContentOptions={{
         activeTintColor: '#2e3f6e',
@@ -557,10 +637,15 @@ export default function App({navigation}) {
   const AuthStackScreen = () => (
     <AuthStack.Navigator
       mode={"modal"}
-      initialRouteName="MainStack"
+      initialRouteName="MainSearch"
       screenOptions={{
         headerShown: false,
       }}>
+        
+         <AuthStack.Screen
+        name="MainSearch"
+        component={MainSearchScreen}
+      />
       <AuthStack.Screen
         name="MainStack"
         component={MainStackScreen}
